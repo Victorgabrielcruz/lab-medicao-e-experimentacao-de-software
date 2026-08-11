@@ -1,12 +1,12 @@
 # GitHub Popular Repositories Analysis
 
-## 📘 Sobre o projeto
+## Sobre o projeto
 
 Este projeto foi desenvolvido para a disciplina **Laboratório de Experimentação de Software** e tem como objetivo estudar características de sistemas open-source populares por meio da mineração dos **1.000 repositórios com maior número de estrelas no GitHub**.
 
 Os dados serão coletados utilizando a **API GraphQL do GitHub** e posteriormente analisados para responder às questões de pesquisa propostas no laboratório.
 
-## 🎯 Escopo
+## Escopo
 
 O projeto analisará, de forma resumida:
 
@@ -30,17 +30,16 @@ Também fará parte do projeto:
 - elaboração dos relatórios;
 - snapshots do GitHub Projects ao final das sprints.
 
-## 👥 Integrantes
+## Integrantes
 
-| Integrante | GitHub | Responsabilidade |
-|---|---|---|
-| Nome do Integrante 1 | @github | RQ01 e RQ02 |
-| Nome do Integrante 2 | @github | RQ03 e RQ04 |
-| Nome do Integrante 3 | @github | RQ05 e RQ06 |
+| Integrante | GitHub |
+|---|---|
+| Víctor Gabriel Cruz Pereira | @Victorgabrielcruz |
+| Jonathan Sena da Silva | @github |
+| Matheus Fernandes de Oliveira | @github |
 
-A **RQ07 será desenvolvida a partir da integração dos resultados obtidos nas demais RQs**.
 
-## 🗂️ Estrutura do projeto
+## Estrutura do projeto
 
 - `src/github/` → integração com a API GraphQL do GitHub;
 - `src/collectors/` → coleta e paginação dos repositórios;
