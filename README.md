@@ -34,7 +34,7 @@ Também fará parte do projeto:
 
 | Integrante | GitHub |
 |---|---|
-| Víctor Gabriel Cruz Pereira | @Victorgabrielcruz |
+| Víctor Gabriel Cruz Pereira | [@Victorgabrielcruz](https://github.com/Victorgabrielcruz)  |
 | Jonathan Sena da Silva | @github |
 | Matheus Fernandes de Oliveira | @github |
 
