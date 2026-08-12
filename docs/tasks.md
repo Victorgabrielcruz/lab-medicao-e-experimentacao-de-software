@@ -8,9 +8,9 @@ Este documento organiza o plano de execução das tarefas. As tarefas listadas a
 
 | Integrante   | Responsabilidade |
 | ------------ | ---------------- |
-| Integrante A | RQ01 + RQ02      |
-| Integrante B | RQ03 + RQ04      |
-| Integrante C | RQ05 + RQ06      |
+| Víctor Gabriel Cruz Pereira | RQ01 + RQ02      |
+| Jonathan Sena da Silva | RQ03 + RQ04      |
+| Matheus Fernandes | RQ05 + RQ06      |
 
 A RQ07 será desenvolvida posteriormente através da integração dos resultados das demais RQs.
 
@@ -30,7 +30,7 @@ A RQ07 será desenvolvida posteriormente através da integração dos resultados
 
 ## S01-01 — Implementar métricas de idade e Pull Requests aceitas [S01]
 
-**Responsável:** Integrante A
+**Responsável:** Víctor Gabriel Cruz Pereira
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -71,7 +71,7 @@ Métricas de RQ01 e RQ02 disponíveis no pipeline para uso nas sprints seguintes
 
 ## S01-02 — Implementar métricas de releases e atividade do repositório [S01]
 
-**Responsável:** Integrante B
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -127,7 +127,7 @@ Métricas de RQ03 e RQ04 prontas para validação na base completa.
 
 ## S01-03 — Implementar métricas de linguagem e fechamento de issues [S01]
 
-**Responsável:** Integrante C
+**Responsável:** Matheus Fernandes
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -172,7 +172,7 @@ Métricas de RQ05 e RQ06 prontas para integração no pipeline.
 
 ## S01-04 — Construir coletor GraphQL de dados dos repositórios [S01]
 
-**Responsável:** Integrante A
+**Responsável:** Víctor Gabriel Cruz Pereira
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -225,7 +225,7 @@ Camada de coleta GraphQL pronta para alimentar as métricas.
 
 ## S01-05 — Configurar gestão e rastreabilidade das sprints [S01]
 
-**Responsável:** Integrante B
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -263,7 +263,7 @@ Kanban operacional com rastreabilidade por Issue.
 
 ## S01-06 — Implementar resiliência e tratamento de falhas da API [S01]
 
-**Responsável:** Integrante C
+**Responsável:** Matheus Fernandes
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -304,7 +304,7 @@ Coleta mais resiliente a instabilidades e limites da API.
 
 ## S02-01 — Implementar coleta paginada dos 1.000 repositórios [S02]
 
-**Responsável:** Integrante A
+**Responsável:** Víctor Gabriel Cruz Pereira
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -345,7 +345,7 @@ Pipeline de coleta completo para amostra oficial.
 
 ## S02-02 — Implementar persistência dos dados em CSV [S02]
 
-**Responsável:** Integrante B
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -386,7 +386,7 @@ Dados exportados para análise e relatório.
 
 ## S02-03 — Construir pipeline de transformação e cálculo das métricas [S02]
 
-**Responsável:** Integrante C
+**Responsável:** Matheus Fernandes
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -431,7 +431,7 @@ Base processada pronta para validação e análise.
 
 ## S02-04 — Validar idade dos repositórios e Pull Requests aceitas [S02]
 
-**Responsável:** Integrante A
+**Responsável:** Víctor Gabriel Cruz Pereira
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -471,7 +471,7 @@ RQ01 e RQ02 validadas para análise estatística.
 
 ## S02-05 — Validar releases e métricas de atividade dos repositórios [S02]
 
-**Responsável:** Integrante B
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -518,7 +518,7 @@ RQ03 e RQ04 consistentes para etapa analítica.
 
 ## S02-06 — Validar linguagem e percentual de issues fechadas [S02]
 
-**Responsável:** Integrante C
+**Responsável:** Matheus Fernandes
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -559,7 +559,7 @@ RQ05 e RQ06 aprovadas para análise final.
 
 ## S02-07 — Avaliar qualidade e completude dos dados coletados [S02]
 
-**Responsável:** Integrante A
+**Responsável:** Víctor Gabriel Cruz Pereira
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -601,7 +601,7 @@ Visão consolidada da confiabilidade dos dados.
 
 ## S02-08 — Registrar evidências do fluxo de trabalho da sprint [S02]
 
-**Responsável:** Integrante B
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
