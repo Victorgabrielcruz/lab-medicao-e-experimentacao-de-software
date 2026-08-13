@@ -2,6 +2,7 @@
 # updatedAt muda com qualquer metadado (ate uma estrela nova). A analise usa pushedAt.
 # A API nao entrega o primeiro commit: history(last:1) e recusado por exigir cursor
 # "before". O inicio do periodo de desenvolvimento usa createdAt como aproximacao.
+# releases.totalCount e truncado em 1000 pela API: valores no teto sao minimos, nao exatos.
 fragment RepoReleasesAndActivity on Repository {
   releases {
     totalCount

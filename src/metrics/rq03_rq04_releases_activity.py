@@ -15,13 +15,21 @@ ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 
-DATE_COLUMNS = [
-    "collected_at",
+# A API trunca releases.totalCount neste valor; acima disso o numero real e desconhecido.
+RELEASES_CAP = 1000
+
+DATE_COLUMNS = ["collected_at", "created_at", "pushed_at", "updated_at", "last_commit_date"]
+
+OUTPUT_COLUMNS = [
+    "name_with_owner",
+    "releases_count",
+    "releases_no_teto",
+    "total_commits",
     "created_at",
-    "pushed_at",
-    "updated_at",
-    "first_commit_date",
     "last_commit_date",
+    "days_since_last_commit",
+    "days_since_push",
+    "development_period_days",
 ]
 
 
@@ -35,27 +43,22 @@ def latest_raw_csv() -> Path:
 def load(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
     for column in DATE_COLUMNS:
-        # CSV coletado antes de first_commit_date existir: cria a coluna vazia.
-        serie = df[column] if column in df.columns else pd.Series(pd.NaT, index=df.index)
-        df[column] = pd.to_datetime(serie, utc=True, errors="coerce")
+        df[column] = pd.to_datetime(df[column], utc=True, errors="coerce")
     return df
 
 
 def add_metrics(df: pd.DataFrame) -> pd.DataFrame:
     reference = df["collected_at"]
 
+    df["releases_no_teto"] = df["releases_count"] >= RELEASES_CAP
+
     df["days_since_last_commit"] = (reference - df["last_commit_date"]).dt.days
     df["days_since_push"] = (reference - df["pushed_at"]).dt.days
 
-    # first_commit_date pode nao ter sido coletado; created_at e a aproximacao.
-    start = df["first_commit_date"].fillna(df["created_at"])
-    df["development_start"] = start
-    df["development_start_source"] = df["first_commit_date"].notna().map(
-        {True: "first_commit", False: "created_at"}
-    )
-    df["development_period_days"] = (df["last_commit_date"] - start).dt.days
+    # A API nao entrega o primeiro commit; created_at aproxima o inicio do desenvolvimento.
+    df["development_period_days"] = (df["last_commit_date"] - df["created_at"]).dt.days
 
-    # Historico importado de outro sistema: primeiro commit anterior a criacao do repo.
+    # Historico importado e abandonado: ultimo commit anterior a criacao do repositorio.
     df["development_period_days"] = df["development_period_days"].where(
         df["development_period_days"] >= 0
     )
@@ -64,10 +67,6 @@ def add_metrics(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize(df: pd.DataFrame) -> str:
-    total = len(df)
-    sem_commits = int(df["last_commit_date"].isna().sum())
-    fonte = df["development_start_source"].value_counts().to_dict()
-
     def stats(column: str) -> str:
         serie = df[column].dropna()
         if serie.empty:
@@ -77,37 +76,25 @@ def summarize(df: pd.DataFrame) -> str:
             f"| media {serie.mean():>10.1f} | min {serie.min():>8.0f} | max {serie.max():>9.0f}"
         )
 
-    linhas = [
-        f"repositorios .................. {total}",
-        f"sem commits (branch ausente) .. {sem_commits}",
-        f"origem do inicio do periodo ... {fonte}",
+    zeradas = int((df["releases_count"] == 0).sum())
+    no_teto = int(df["releases_no_teto"].sum())
+
+    return "\n".join([
+        f"repositorios .................. {len(df)}",
+        f"sem commits (branch ausente) .. {int(df['last_commit_date'].isna().sum())}",
         "",
         "RQ03 - releases",
         "  " + stats("releases_count"),
-        f"  {'repositorios com 0 releases':<28} "
-        f"{int((df['releases_count'] == 0).sum())} ({(df['releases_count'] == 0).mean():.1%})",
+        f"  {'repositorios com 0 releases':<28} {zeradas} ({zeradas / len(df):.1%})",
+        f"  {'no teto de ' + str(RELEASES_CAP):<28} {no_teto}"
+        + ("  <- media e maximo subestimados; use a mediana" if no_teto else ""),
         "",
         "RQ04 - atividade",
         "  " + stats("days_since_last_commit"),
         "  " + stats("days_since_push"),
         "  " + stats("development_period_days"),
         "  " + stats("total_commits"),
-    ]
-    return "\n".join(linhas)
-
-
-OUTPUT_COLUMNS = [
-    "name_with_owner",
-    "releases_count",
-    "total_commits",
-    "first_commit_date",
-    "last_commit_date",
-    "development_start",
-    "development_start_source",
-    "days_since_last_commit",
-    "days_since_push",
-    "development_period_days",
-]
+    ])
 
 
 def main() -> None:
