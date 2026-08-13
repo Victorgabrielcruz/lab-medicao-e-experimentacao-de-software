@@ -1,12 +1,15 @@
 namespace Lab01.Collector;
 
-public record GraphQlResponse(ResponseData Data);
+public record GraphQlResponse(ResponseData? Data, List<GraphQlError>? Errors);
+
+public record GraphQlError(string Message, string? Type);
 
 public record ResponseData(RateLimit RateLimit, SearchResult Search);
 
 public record RateLimit(int Cost, int Remaining, int Limit, string ResetAt);
 
-public record SearchResult(int RepositoryCount, PageInfo PageInfo, List<Repository> Nodes);
+// Nodes admite elemento nulo: repositorio removido ou bloqueado entre a busca e a resposta.
+public record SearchResult(int RepositoryCount, PageInfo PageInfo, List<Repository?> Nodes);
 
 public record PageInfo(bool HasNextPage, string? EndCursor);
 

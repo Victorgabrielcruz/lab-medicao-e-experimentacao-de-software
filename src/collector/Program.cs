@@ -4,18 +4,11 @@ using Lab01.Collector;
 // src/collector/bin/Debug/net8.0 -> raiz do repositorio
 var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../.."));
 
-var env = File.ReadAllLines(Path.Combine(root, ".env"))
-    .Where(line => line.Contains('=') && !line.TrimStart().StartsWith('#'))
-    .ToDictionary(line => line.Split('=', 2)[0].Trim(), line => line.Split('=', 2)[1].Trim());
-
-var searchQuery = env["SEARCH_QUERY"];
-var pageSize = int.Parse(env["PAGE_SIZE"]);
-var targetRepos = int.Parse(env["TARGET_REPOS"]);
-
-var api = new GitHubApi(env["GITHUB_TOKEN"], Path.Combine(root, "src", "github", "queries"));
-
 var collectedAt = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
 var stamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture);
+
+var logPath = Path.Combine(root, "logs", $"collect_{stamp}.log");
+Log.Start(logPath);
 
 var rawDir = Path.Combine(root, "data", "raw");
 Directory.CreateDirectory(rawDir);
@@ -24,27 +17,71 @@ var repos = new List<Repository>();
 string? cursor = null;
 var page = 1;
 
-while (repos.Count < targetRepos)
+try
 {
-    var (parsed, raw) = await api.FetchPageAsync(searchQuery, pageSize, cursor);
-    var search = parsed.Data.Search;
+    var env = ReadEnv(Path.Combine(root, ".env"));
 
-    File.WriteAllText(Path.Combine(rawDir, $"repos_raw_{stamp}_p{page:D3}.json"), raw);
-    repos.AddRange(search.Nodes);
+    var searchQuery = Required(env, "SEARCH_QUERY");
+    var pageSize = int.Parse(Required(env, "PAGE_SIZE"));
+    var targetRepos = int.Parse(Required(env, "TARGET_REPOS"));
 
-    Console.WriteLine($"pagina {page} | total {repos.Count}/{targetRepos} " +
-                      $"| custo {parsed.Data.RateLimit.Cost} | restante {parsed.Data.RateLimit.Remaining}");
+    var api = new GitHubApi(Required(env, "GITHUB_TOKEN"), Path.Combine(root, "src", "github", "queries"));
 
-    if (!search.PageInfo.HasNextPage) break;
+    Log.Info($"inicio | alvo {targetRepos} repositorios | pagina de {pageSize} | filtro \"{searchQuery}\"");
 
-    cursor = search.PageInfo.EndCursor;
-    page++;
+    while (repos.Count < targetRepos)
+    {
+        var (data, raw) = await api.FetchPageAsync(searchQuery, pageSize, cursor);
+
+        File.WriteAllText(Path.Combine(rawDir, $"repos_raw_{stamp}_p{page:D3}.json"), raw);
+
+        var nodes = data.Search.Nodes.OfType<Repository>().ToList();
+        repos.AddRange(nodes);
+
+        if (nodes.Count < data.Search.Nodes.Count)
+            Log.Warn($"pagina {page}: {data.Search.Nodes.Count - nodes.Count} node(s) nulo(s) descartado(s)");
+
+        Log.Info($"pagina {page} | total {repos.Count}/{targetRepos} " +
+                 $"| custo {data.RateLimit.Cost} | restante {data.RateLimit.Remaining}");
+
+        if (!data.Search.PageInfo.HasNextPage)
+        {
+            Log.Warn($"a busca acabou com {repos.Count} repositorios, abaixo do alvo de {targetRepos}");
+            break;
+        }
+
+        cursor = data.Search.PageInfo.EndCursor;
+        page++;
+    }
+
+    var csvPath = Path.Combine(rawDir, $"repos_raw_{stamp}.csv");
+    WriteCsv(csvPath, repos.Take(targetRepos), collectedAt);
+
+    Log.Info($"fim | {Math.Min(repos.Count, targetRepos)} repositorios | {page} paginas | csv: {csvPath}");
+    return 0;
+}
+catch (FatalApiException ex)
+{
+    Log.Error(ex.Message);
+    Log.Error($"coleta interrompida na pagina {page} com {repos.Count} repositorios. " +
+              $"As paginas ja baixadas estao em data/raw/. Log: {logPath}");
+    return 1;
 }
 
-var csvPath = Path.Combine(rawDir, $"repos_raw_{stamp}.csv");
-WriteCsv(csvPath, repos.Take(targetRepos), collectedAt);
+static Dictionary<string, string> ReadEnv(string path)
+{
+    if (!File.Exists(path))
+        throw new FatalApiException($"arquivo .env nao encontrado em {path}");
 
-Console.WriteLine($"\ncsv: {csvPath}");
+    return File.ReadAllLines(path)
+        .Where(line => line.Contains('=') && !line.TrimStart().StartsWith('#'))
+        .ToDictionary(line => line.Split('=', 2)[0].Trim(), line => line.Split('=', 2)[1].Trim());
+}
+
+static string Required(Dictionary<string, string> env, string key) =>
+    env.TryGetValue(key, out var value) && value.Length > 0
+        ? value
+        : throw new FatalApiException($"chave {key} ausente ou vazia no .env");
 
 static void WriteCsv(string path, IEnumerable<Repository> repos, string collectedAt)
 {
