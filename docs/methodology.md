@@ -262,6 +262,16 @@ Será calculada a distribuição dos repositórios da amostra de acordo com sua 
 
 Também poderão ser calculadas frequências absolutas e relativas por linguagem.
 
+Para classificar "linguagens mais populares" nas RQs 05 e 07, será utilizado o ranking
+do [GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/),
+baseado na contagem de contribuidores na plataforma GitHub. Serão consideradas populares:
+TypeScript, Python, JavaScript, Java, C#, PHP, Shell, C++, HCL e Go. Um repositório será
+marcado como linguagem popular quando sua `primaryLanguage` estiver nessa lista.
+
+Quando a API retornar `primaryLanguage` nula ou vazia, o valor será normalizado como
+`Sem linguagem identificada`; esse caso será mantido na análise e não será classificado
+como linguagem popular.
+
 ---
 
 ### RQ06 — Issues Fechadas
@@ -273,6 +283,10 @@ A métrica será calculada utilizando:
 `percentual = issues_fechadas / (issues_abertas + issues_fechadas) × 100`
 
 Repositórios sem issues serão tratados separadamente, evitando divisão por zero e evitando interpretar ausência de issues como percentual de fechamento.
+
+No dataset processado, repositórios sem issues terão `has_issues = false` e
+`closed_issues_percentage` vazio (`null`). Portanto, ausência de issues não será
+interpretada como 0% nem como 100% de fechamento.
 
 ---
 
