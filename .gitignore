@@ -1,0 +1,30 @@
+# Segredos
+.env
+.env.local
+*.token
+appsettings.Development.json
+
+# Dados brutos (regeneraveis pelo script). O CSV processado e entregavel e deve ser comitado.
+data/raw/*
+!data/raw/.gitkeep
+logs/
+*.log
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
