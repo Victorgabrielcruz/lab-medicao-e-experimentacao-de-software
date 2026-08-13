@@ -89,13 +89,14 @@ static void WriteCsv(string path, IEnumerable<Repository> repos, string collecte
     {
         "id,name_with_owner,url,owner,stargazer_count,is_archived,collected_at," +
         "created_at,merged_pull_requests,total_pull_requests," +
-        "releases_count,updated_at,pushed_at,default_branch,total_commits,last_commit_date," +
+        "releases_count,updated_at,pushed_at,default_branch,total_commits," +
+        "first_commit_date,last_commit_date," +
         "primary_language,open_issues,closed_issues"
     };
 
     foreach (var r in repos)
     {
-        var history = r.DefaultBranchRef?.Target?.History;
+        var commits = r.DefaultBranchRef?.Target;
 
         lines.Add(string.Join(",",
             r.Id,
@@ -112,8 +113,9 @@ static void WriteCsv(string path, IEnumerable<Repository> repos, string collecte
             r.UpdatedAt,
             r.PushedAt,
             Csv(r.DefaultBranchRef?.Name),
-            history?.TotalCount,
-            history?.Nodes.FirstOrDefault()?.CommittedDate,
+            commits?.LastCommit.TotalCount,
+            commits?.FirstCommit?.Nodes.FirstOrDefault()?.CommittedDate,
+            commits?.LastCommit.Nodes.FirstOrDefault()?.CommittedDate,
             Csv(r.PrimaryLanguage?.Name),
             r.OpenIssues.TotalCount,
             r.ClosedIssues.TotalCount));

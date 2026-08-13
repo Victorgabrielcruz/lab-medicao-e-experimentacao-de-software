@@ -39,7 +39,7 @@ public record Language(string Name);
 
 public record BranchRef(string Name, CommitTarget? Target);
 
-public record CommitTarget(History History);
+public record CommitTarget(History LastCommit, History? FirstCommit);
 
 public record History(int TotalCount, List<Commit> Nodes);
 
