@@ -1,0 +1,22 @@
+# RQ03 releases | RQ04 frequencia de atualizacao
+# updatedAt muda com qualquer metadado (ate uma estrela nova). A analise usa pushedAt.
+fragment RepoReleasesAndActivity on Repository {
+  releases {
+    totalCount
+  }
+  updatedAt
+  pushedAt
+  defaultBranchRef {
+    name
+    target {
+      ... on Commit {
+        history(first: 1) {
+          totalCount
+          nodes {
+            committedDate
+          }
+        }
+      }
+    }
+  }
+}
