@@ -1,7 +1,7 @@
 # RQ03 releases | RQ04 frequencia de atualizacao
 # updatedAt muda com qualquer metadado (ate uma estrela nova). A analise usa pushedAt.
-# firstCommit usa history(last: 1) e nao e documentado como estavel: se a API
-# recusar ou der timeout, apague o bloco e a analise cai para createdAt.
+# A API nao entrega o primeiro commit: history(last:1) e recusado por exigir cursor
+# "before". O inicio do periodo de desenvolvimento usa createdAt como aproximacao.
 fragment RepoReleasesAndActivity on Repository {
   releases {
     totalCount
@@ -14,11 +14,6 @@ fragment RepoReleasesAndActivity on Repository {
       ... on Commit {
         lastCommit: history(first: 1) {
           totalCount
-          nodes {
-            committedDate
-          }
-        }
-        firstCommit: history(last: 1) {
           nodes {
             committedDate
           }

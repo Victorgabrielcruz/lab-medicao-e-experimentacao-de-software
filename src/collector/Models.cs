@@ -8,7 +8,6 @@ public record ResponseData(RateLimit RateLimit, SearchResult Search);
 
 public record RateLimit(int Cost, int Remaining, int Limit, string ResetAt);
 
-// Nodes admite elemento nulo: repositorio removido ou bloqueado entre a busca e a resposta.
 public record SearchResult(int RepositoryCount, PageInfo PageInfo, List<Repository?> Nodes);
 
 public record PageInfo(bool HasNextPage, string? EndCursor);
@@ -39,7 +38,7 @@ public record Language(string Name);
 
 public record BranchRef(string Name, CommitTarget? Target);
 
-public record CommitTarget(History LastCommit, History? FirstCommit);
+public record CommitTarget(History LastCommit);
 
 public record History(int TotalCount, List<Commit> Nodes);
 
