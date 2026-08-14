@@ -1,5 +1,6 @@
 using System.Globalization;
 using Lab01.Collector;
+using Lab01.Metrics;
 
 // src/collector/bin/Debug/net8.0 -> raiz do repositorio
 var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../.."));
@@ -57,7 +58,13 @@ try
     var csvPath = Path.Combine(rawDir, $"repos_raw_{stamp}.csv");
     WriteCsv(csvPath, repos.Take(targetRepos), collectedAt);
 
-    Log.Info($"fim | {Math.Min(repos.Count, targetRepos)} repositorios | {page} paginas | csv: {csvPath}");
+    var refinedDir = Path.Combine(root, "data", "processed");
+    Directory.CreateDirectory(refinedDir);
+    var refinedCsvPath = Path.Combine(refinedDir, $"pilot_rq05_rq06_{stamp}.csv");
+    WriteRefinedCsv(refinedCsvPath, repos.Take(targetRepos), collectedAt);
+
+    Log.Info($"fim | {Math.Min(repos.Count, targetRepos)} repositorios | {page} paginas | " +
+             $"csv: {csvPath} | csv refinado: {refinedCsvPath}");
     return 0;
 }
 catch (FatalApiException ex)
@@ -124,3 +131,32 @@ static void WriteCsv(string path, IEnumerable<Repository> repos, string collecte
 
 static string Csv(string? value) =>
     string.IsNullOrEmpty(value) ? "" : value.Contains(',') ? $"\"{value}\"" : value;
+
+static void WriteRefinedCsv(string path, IEnumerable<Repository> repos, string collectedAt)
+{
+    var lines = new List<string>
+    {
+        "id,name_with_owner,collected_at,primary_language,is_popular_language," +
+        "open_issues,closed_issues,total_issues,has_issues,closed_issues_percentage"
+    };
+
+    foreach (var r in repos)
+    {
+        var metrics = Rq05Rq06Processor.Calculate(
+            r.PrimaryLanguage?.Name, r.OpenIssues.TotalCount, r.ClosedIssues.TotalCount);
+
+        lines.Add(string.Join(",",
+            r.Id,
+            Csv(r.NameWithOwner),
+            collectedAt,
+            Csv(metrics.PrimaryLanguage),
+            metrics.IsPopularLanguage.ToString().ToLowerInvariant(),
+            r.OpenIssues.TotalCount,
+            r.ClosedIssues.TotalCount,
+            metrics.TotalIssues,
+            metrics.HasIssues.ToString().ToLowerInvariant(),
+            metrics.ClosedIssuesPercentage?.ToString(CultureInfo.InvariantCulture) ?? ""));
+    }
+
+    File.WriteAllLines(path, lines);
+}

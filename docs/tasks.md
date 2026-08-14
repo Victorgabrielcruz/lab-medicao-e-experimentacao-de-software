@@ -167,11 +167,11 @@ Implementar as métricas de linguagem primária (RQ05) e percentual de issues fe
 
 ### Critérios de aceitação
 
-* [ ] Métrica de RQ05 implementada.
-* [ ] Métrica de RQ06 implementada.
-* [ ] Cálculo de percentual validado com casos de teste.
-* [ ] Divisão por zero tratada.
-* [ ] Dataset piloto produzido.
+* [x] Métrica de RQ05 implementada.
+* [x] Métrica de RQ06 implementada.
+* [x] Cálculo de percentual validado com casos de teste.
+* [x] Divisão por zero tratada.
+* [ ] Dataset piloto produzido (depende da execução do coletor com token válido).
 
 ### Resultado esperado
 
@@ -640,4 +640,3 @@ Registrar snapshots do board ao fim da sprint para evidência do processo.
 ### Resultado esperado
 
 Histórico rastreável da execução no GitHub Projects.
-
