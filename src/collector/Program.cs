@@ -95,7 +95,7 @@ static void WriteCsv(string path, IEnumerable<Repository> repos, string collecte
 
     foreach (var r in repos)
     {
-        var history = r.DefaultBranchRef?.Target?.History;
+        var commits = r.DefaultBranchRef?.Target;
 
         lines.Add(string.Join(",",
             r.Id,
@@ -112,8 +112,8 @@ static void WriteCsv(string path, IEnumerable<Repository> repos, string collecte
             r.UpdatedAt,
             r.PushedAt,
             Csv(r.DefaultBranchRef?.Name),
-            history?.TotalCount,
-            history?.Nodes.FirstOrDefault()?.CommittedDate,
+            commits?.LastCommit.TotalCount,
+            commits?.LastCommit.Nodes.FirstOrDefault()?.CommittedDate,
             Csv(r.PrimaryLanguage?.Name),
             r.OpenIssues.TotalCount,
             r.ClosedIssues.TotalCount));
