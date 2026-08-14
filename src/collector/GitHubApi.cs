@@ -33,7 +33,41 @@ public class GitHubApi
         using var content = new StringContent(payload, Encoding.UTF8, "application/json");
         var response = await _http.PostAsync(ApiUrl, content);
         var body = await response.Content.ReadAsStringAsync();
+        var parsed = JsonSerializer.Deserialize<GraphQlResponse>(body, Json);
 
-        return (JsonSerializer.Deserialize<GraphQlResponse>(body, Json)!, body);
+        if (!response.IsSuccessStatusCode || parsed?.Data is null)
+        {
+            throw new InvalidOperationException(
+                $"A API GraphQL do GitHub não retornou dados (HTTP {(int)response.StatusCode}). " +
+                $"Detalhe: {GetErrorMessage(body)}");
+        }
+
+        return (parsed, body);
+    }
+
+    private static string GetErrorMessage(string body)
+    {
+        try
+        {
+            using var document = JsonDocument.Parse(body);
+            if (document.RootElement.TryGetProperty("message", out var message))
+                return message.GetString() ?? "mensagem não informada";
+
+            if (document.RootElement.TryGetProperty("errors", out var errors))
+            {
+                var details = errors.EnumerateArray()
+                    .Select(error => error.TryGetProperty("message", out var errorMessage)
+                        ? errorMessage.GetString()
+                        : null)
+                    .Where(message => !string.IsNullOrWhiteSpace(message));
+                return string.Join("; ", details);
+            }
+        }
+        catch (JsonException)
+        {
+            // A resposta não era JSON; a mensagem genérica abaixo será usada.
+        }
+
+        return "mensagem não informada";
     }
 }
