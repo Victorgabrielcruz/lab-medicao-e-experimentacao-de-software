@@ -1,12 +1,14 @@
 namespace Lab01.Collector;
 
-public record GraphQlResponse(ResponseData Data);
+public record GraphQlResponse(ResponseData? Data, List<GraphQlError>? Errors);
+
+public record GraphQlError(string Message, string? Type);
 
 public record ResponseData(RateLimit RateLimit, SearchResult Search);
 
 public record RateLimit(int Cost, int Remaining, int Limit, string ResetAt);
 
-public record SearchResult(int RepositoryCount, PageInfo PageInfo, List<Repository> Nodes);
+public record SearchResult(int RepositoryCount, PageInfo PageInfo, List<Repository?> Nodes);
 
 public record PageInfo(bool HasNextPage, string? EndCursor);
 
@@ -36,7 +38,7 @@ public record Language(string Name);
 
 public record BranchRef(string Name, CommitTarget? Target);
 
-public record CommitTarget(History History);
+public record CommitTarget(History LastCommit);
 
 public record History(int TotalCount, List<Commit> Nodes);
 

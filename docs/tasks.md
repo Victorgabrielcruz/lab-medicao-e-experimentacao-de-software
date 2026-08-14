@@ -96,14 +96,17 @@ Implementar as métricas de número de releases (RQ03) e atividade/frequência d
 
 **Período de desenvolvimento:**
 
-`data_do_último_commit − data_do_primeiro_commit`
+`data_do_último_commit − data_de_criação_do_repositório`
+
+A fórmula original usava o primeiro commit, mas a API não devolve esse dado numa requisição só: `history(last: 1)` é recusado pedindo um cursor `before`. As alternativas custam uma requisição extra por repositório, o que dobraria o tempo de coleta na Sprint 2. Ficou `createdAt` como aproximação do início, o que subestima o período de repositórios com histórico importado de outro sistema.
 
 O período de desenvolvimento será utilizado como aproximação do intervalo em que o repositório apresentou atividade de desenvolvimento. O último commit não deverá ser interpretado automaticamente como data de conclusão do projeto.
 
 ### Arquivos/módulos envolvidos
 
-* `src/metrics/`
-* `src/analysis/`
+* `src/metrics/rq03_rq04_releases_activity.py`
+* `src/github/queries/30-rq03-rq04-releases-activity.graphql`
+* `data/processed/pilot_rq03_rq04.csv`
 
 ### Dependências
 
@@ -111,13 +114,19 @@ O período de desenvolvimento será utilizado como aproximação do intervalo em
 
 ### Critérios de aceitação
 
-* [ ] Métrica de RQ03 implementada.
-* [ ] Data do primeiro commit disponível.
-* [ ] Data do último commit disponível.
-* [ ] Tempo desde o último commit calculado corretamente.
-* [ ] Período de desenvolvimento calculado corretamente.
-* [ ] Quantidade de commits disponível.
-* [ ] Resultados de teste disponíveis para revisão interna.
+* [x] Métrica de RQ03 implementada.
+* [ ] Data do primeiro commit disponível. Inviável pela API, ver acima.
+* [x] Data do último commit disponível.
+* [x] Tempo desde o último commit calculado corretamente.
+* [x] Período de desenvolvimento calculado corretamente, com a aproximação acima.
+* [x] Quantidade de commits disponível.
+* [x] Resultados de teste disponíveis para revisão interna.
+
+### Observações
+
+A RQ04 usa `pushedAt` e não `updatedAt`. O `updatedAt` muda com qualquer alteração de metadado, até estrela nova, e inflaria a atividade de desenvolvimento. Os dois campos estão no CSV, o `updatedAt` fica só como controle.
+
+Na validação manual de 8 repositórios apareceu um problema que não estava previsto: a API trunca `releases.totalCount` em 1000, e 4 repositórios da amostra bateram exatamente nesse valor. Média e máximo da RQ03 ficam subestimados, a mediana não é afetada. Os casos estão marcados na coluna `releases_no_teto`.
 
 ### Resultado esperado
 
