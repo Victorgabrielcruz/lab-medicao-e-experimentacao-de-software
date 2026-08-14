@@ -60,7 +60,7 @@ try
 
     var refinedDir = Path.Combine(root, "data", "processed");
     Directory.CreateDirectory(refinedDir);
-    var refinedCsvPath = Path.Combine(refinedDir, $"repos_refined_{stamp}.csv");
+    var refinedCsvPath = Path.Combine(refinedDir, $"pilot_rq05_rq06_{stamp}.csv");
     WriteRefinedCsv(refinedCsvPath, repos.Take(targetRepos), collectedAt);
 
     Log.Info($"fim | {Math.Min(repos.Count, targetRepos)} repositorios | {page} paginas | " +

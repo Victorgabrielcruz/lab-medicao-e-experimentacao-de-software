@@ -1,6 +1,0 @@
-id,name_with_owner,collected_at,primary_language,is_popular_language,open_issues,closed_issues,total_issues,has_issues,closed_issues_percentage
-MDEwOlJlcG9zaXRvcnkxMzI3NTA3MjQ=,codecrafters-io/build-your-own-x,2026-08-14T01:24:27Z,Markdown,false,267,677,944,true,71.716101694915254237288135590
-MDEwOlJlcG9zaXRvcnkyMTczNzQ2NQ==,sindresorhus/awesome,2026-08-14T01:24:27Z,Sem linguagem identificada,false,16,352,368,true,95.65217391304347826086956522
-MDEwOlJlcG9zaXRvcnk1NDM0Njc5OQ==,public-apis/public-apis,2026-08-14T01:24:27Z,Python,true,10,911,921,true,98.91422366992399565689467970
-MDEwOlJlcG9zaXRvcnkyODQ1NzgyMw==,freeCodeCamp/freeCodeCamp,2026-08-14T01:24:27Z,TypeScript,true,172,21888,22060,true,99.22030825022665457842248413
-MDEwOlJlcG9zaXRvcnkxMzQ5MTg5NQ==,EbookFoundation/free-programming-books,2026-08-14T01:24:27Z,Python,true,38,1254,1292,true,97.05882352941176470588235294

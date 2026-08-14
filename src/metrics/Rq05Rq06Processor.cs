@@ -21,18 +21,10 @@ public static class Rq05Rq06Processor
             : primaryLanguage.Trim();
         var totalIssues = openIssues + closedIssues;
 
-        return new Rq05Rq06Metrics(
-            language,
-            language != UnidentifiedLanguage && PopularLanguages.Contains(language),
-            totalIssues,
-            totalIssues > 0,
-            totalIssues == 0 ? null : (decimal)closedIssues / totalIssues * 100m);
+        return new Rq05Rq06Metrics(language, language != UnidentifiedLanguage && PopularLanguages.Contains(language),
+            totalIssues, totalIssues > 0, totalIssues == 0 ? null : (decimal)closedIssues / totalIssues * 100m);
     }
 }
 
-public record Rq05Rq06Metrics(
-    string PrimaryLanguage,
-    bool IsPopularLanguage,
-    int TotalIssues,
-    bool HasIssues,
-    decimal? ClosedIssuesPercentage);
+public record Rq05Rq06Metrics(string PrimaryLanguage, bool IsPopularLanguage, int TotalIssues,
+    bool HasIssues, decimal? ClosedIssuesPercentage);

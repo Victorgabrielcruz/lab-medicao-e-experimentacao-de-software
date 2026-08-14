@@ -7,16 +7,12 @@ AssertMetrics(null, 0, 0, Rq05Rq06Processor.UnidentifiedLanguage, false, 0, fals
 
 Console.WriteLine("RQ05/RQ06: todos os testes passaram.");
 
-static void AssertMetrics(
-    string? language, int open, int closed, string expectedLanguage, bool expectedPopular,
+static void AssertMetrics(string? language, int open, int closed, string expectedLanguage, bool expectedPopular,
     int expectedTotal, bool expectedHasIssues, decimal? expectedPercentage)
 {
     var result = Rq05Rq06Processor.Calculate(language, open, closed);
-    if (result.PrimaryLanguage != expectedLanguage ||
-        result.IsPopularLanguage != expectedPopular ||
-        result.TotalIssues != expectedTotal ||
-        result.HasIssues != expectedHasIssues ||
-        result.ClosedIssuesPercentage != expectedPercentage)
+    if (result.PrimaryLanguage != expectedLanguage || result.IsPopularLanguage != expectedPopular || result.TotalIssues != expectedTotal ||
+        result.HasIssues != expectedHasIssues || result.ClosedIssuesPercentage != expectedPercentage)
     {
         throw new InvalidOperationException($"Resultado inesperado para {language ?? "null"}.");
     }

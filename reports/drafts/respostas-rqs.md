@@ -78,15 +78,46 @@ Uma limitação aqui: o início do período usa a data de criação do repositó
 
 Métrica: linguagem primária de cada repositório.
 
-O grupo ainda precisa definir e citar a fonte usada pra "linguagens mais populares", que pode ser TIOBE, GitHut ou o Octoverse do GitHub. A mesma fonte tem que valer pro laboratório inteiro.
+**Fonte e hipótese.** Foi usado o [GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/). A fonte classifica como mais populares TypeScript, Python, JavaScript, Java, C#, PHP, Shell, C++, HCL e Go. A expectativa era que a maior parte dos repositórios mais estrelados usasse uma dessas linguagens, embora listas curadas e materiais de documentação pudessem não ter linguagem primária.
 
-*A fazer, Matheus.*
+**O que os dados mostram.** A configuração era para 100 repositórios, mas a API retornou erro 502 na quarta página; por isso esta análise usa os 75 repositórios válidos que foram persistidos nas três primeiras páginas. Desses 75, 50 (66,7%) têm uma linguagem do top 10 do Octoverse e 25 (33,3%) não têm.
+
+| linguagem primária | repositórios | percentual |
+|---|---:|---:|
+| Python | 20 | 26,7% |
+| TypeScript | 14 | 18,7% |
+| Sem linguagem identificada | 11 | 14,7% |
+| JavaScript | 7 | 9,3% |
+| Shell | 4 | 5,3% |
+| Go | 3 | 4,0% |
+| C++ | 1 | 1,3% |
+| Java | 1 | 1,3% |
+| Outras linguagens | 14 | 18,7% |
+
+As linguagens populares mais frequentes são Python, TypeScript e JavaScript: juntas, aparecem em 41 dos 75 repositórios (54,7%). A categoria `Sem linguagem identificada` não foi descartada; ela reúne repositórios para os quais a API não informou `primaryLanguage`.
+
+**Discussão.** A hipótese se confirmou para a maior parte da amostra: aproximadamente dois terços dos repositórios usam linguagens populares conforme a mesma plataforma de onde a amostra foi coletada. Mas o resultado não significa que popularidade dependa apenas da linguagem. Os 11 repositórios sem linguagem e parte das 14 ocorrências de outras linguagens incluem projetos de documentação, listas e materiais que não são necessariamente aplicações com código executável. Na coleta de 1.000 repositórios, essa categoria deve continuar separada, porque removê-la artificialmente aumentaria o percentual de linguagens populares.
 
 ## RQ06. Sistemas populares possuem um alto percentual de issues fechadas?
 
 Métrica: razão entre issues fechadas e total de issues.
 
-*A fazer, Matheus.*
+**Hipótese.** Esperávamos um percentual alto de Issues fechadas. Projetos populares recebem muitos relatos e pedidos, mas também tendem a ter mais mantenedores e colaboradores para classificar, resolver ou encerrar Issues antigas.
+
+**O que os dados mostram.** Também nesta RQ foram usados os 75 repositórios persistidos antes da falha 502 na quarta página. Nove deles não possuem Issues abertas nem fechadas e, portanto, não entram no cálculo do percentual para evitar divisão por zero. Nos 66 repositórios com Issues, os resultados foram:
+
+| | percentual de Issues fechadas |
+|---|---:|
+| mediana | 92,6% |
+| média | 81,8% |
+| 1º quartil | 74,1% |
+| 3º quartil | 97,1% |
+| mínimo | 13,3% |
+| máximo | 100,0% |
+
+Por faixa: 1 repositório está entre 0% e 24,9%, 6 entre 25% e 49,9%, 10 entre 50% e 74,9%, 46 entre 75% e 99,9%, e 3 chegaram a 100%. Assim, 49 dos 66 repositórios com Issues (74,2%) têm pelo menos 75% de fechamento; 36 (54,5%) têm pelo menos 90%.
+
+**Discussão.** A hipótese se confirmou com folga. A mediana de 92,6% mostra que o repositório típico da amostra fecha a maior parte das Issues que recebe. A média menor que a mediana (81,8%) revela alguns casos com percentuais baixos puxando o resultado para baixo, mas eles são minoria: apenas 7 dos 66 repositórios com Issues ficam abaixo de 50%. Os nove repositórios sem Issues devem continuar reportados separadamente; ausência de Issues não é evidência de 0% nem de 100% de fechamento.
 
 ## RQ07. Sistemas escritos em linguagens mais populares recebem mais contribuição externa, lançam mais releases e são atualizados com mais frequência?
 
