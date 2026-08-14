@@ -10,13 +10,79 @@ As hipóteses foram escritas como previsão para a base de 1.000, antes dessa co
 
 Métrica: idade do repositório, a partir da data de criação.
 
-*A fazer, Víctor.*
+**Hipótese.** A hipótese para esta questão é que sistemas populares tendem a ser maduros/antigos, considerando que projetos que permanecem populares no GitHub podem apresentar maior tempo de desenvolvimento e manutenção.
+
+**O que os dados mostram.**
+
+| Estatística   |   Idade do repositório |
+| ------------- | ---------------------: |
+| Média         |   **7 anos e 8 meses** |
+| Mediana       |   **8 anos e 3 meses** |
+| 1º quartil    |   **3 anos e 4 meses** |
+| 3º quartil    |  **11 anos e 8 meses** |
+| Mínimo        |            **4 meses** |
+| Máximo        | **16 anos e 11 meses** |
+| Desvio padrão |  **4 anos e 10 meses** |
+
+A distribuição dos repositórios por faixa de idade foi:
+| Faixa de idade        | Quantidade | Percentual |
+| --------------------- | ---------: | ---------: |
+| Até 2 anos            |         18 |        18% |
+| Mais de 2 até 5 anos  |         18 |        18% |
+| Mais de 5 até 10 anos |         24 |        24% |
+| Mais de 10 anos       |         40 |        40% |
+| **Total**             |    **100** |   **100%** |
+
+**Discussão.** Os resultados da amostra piloto fornecem evidências favoráveis à hipótese de que sistemas populares tendem a ser maduros ou antigos. A idade média dos repositórios foi de aproximadamente 7 anos e 8 meses, enquanto a mediana foi de 8 anos e 3 meses.
+
+A distribuição por faixas reforça essa tendência. 64% dos repositórios possuem mais de 5 anos, sendo que 40% possuem mais de 10 anos. Portanto, a maior parte da amostra é composta por projetos que possuem um período considerável de existência.
+
+O intervalo entre o primeiro e o terceiro quartil também demonstra uma variação relevante na idade dos projetos: metade dos repositórios possui idade entre aproximadamente 3 anos e 4 meses e 11 anos e 8 meses.
+
+Apesar dessa concentração em projetos mais antigos, a amostra também apresenta repositórios relativamente recentes. 18% possuem até 2 anos, incluindo projetos com aproximadamente 4 meses de existência. Isso demonstra que a idade não é uma condição necessária para um repositório alcançar popularidade.
+
+Dessa forma, a hipótese é apoiada pela amostra piloto, uma vez que a maioria dos repositórios populares analisados possui vários anos de existência. Entretanto, os resultados não permitem afirmar que todo sistema popular seja necessariamente antigo.
+
 
 ## RQ02. Sistemas populares recebem muita contribuição externa?
 
 Métrica: total de pull requests aceitas.
 
-*A fazer, Víctor.*
+**Hipótese.** A hipótese para esta questão é que sistemas populares recebem muita contribuição externa, considerando que projetos com maior popularidade podem atrair uma comunidade maior de desenvolvedores e, consequentemente, mais contribuições por meio de Pull Requests.
+
+**O que os dados mostram.**
+| Estatística   | Pull Requests aceitas |
+| ------------- | --------------------: |
+| Média         |      **7.302,54 PRs** |
+| Mediana       |      **1.253,50 PRs** |
+| 1º quartil    |           **243 PRs** |
+| 3º quartil    |         **7.014 PRs** |
+| Mínimo        |             **0 PRs** |
+| Máximo        |        **73.425 PRs** |
+| Desvio padrão |     **14.112,05 PRs** |
+
+A distribuição por quantidade de Pull Requests aceitas foi:
+
+| Pull Requests aceitas | Quantidade | Percentual |
+| --------------------- | ---------: | ---------: |
+| 0 PRs                 |          3 |         3% |
+| 1–99 PRs              |          9 |         9% |
+| 100–999 PRs           |         34 |        34% |
+| 1.000–9.999 PRs       |         35 |        35% |
+| 10.000+ PRs           |         19 |        19% |
+| **Total**             |    **100** |   **100%** |
+
+**Discussão.** Os resultados da amostra piloto fornecem forte evidência favorável à hipótese de que sistemas populares recebem contribuições externas.
+
+A mediana foi de 1.253,5 Pull Requests aceitas, indicando que metade dos repositórios analisados possui pelo menos esse número de contribuições incorporadas. Além disso, 97% dos repositórios possuem pelo menos uma Pull Request aceita.
+
+A distribuição também mostra que 88% dos repositórios possuem pelo menos 100 Pull Requests aceitas, enquanto 54% possuem pelo menos 1.000. Esses valores indicam que a participação externa está presente em grande parte dos projetos analisados.
+
+Entretanto, existe uma diferença bastante significativa entre a média e a mediana. Enquanto a média foi de 7.302,54 PRs, a mediana foi de apenas 1.253,50 PRs. Essa diferença, juntamente com o desvio padrão de 14.112,05 PRs, indica uma distribuição bastante assimétrica.
+
+Essa assimetria é explicada pela existência de alguns repositórios com volumes extremamente elevados de contribuições. O maior valor observado foi de 73.425 Pull Requests aceitas, enquanto 19% dos projetos possuem pelo menos 10.000 PRs.
+
+Por esse motivo, a mediana representa melhor o comportamento típico da amostra do que a média. Ainda assim, a grande quantidade de repositórios com centenas ou milhares de Pull Requests aceitas fornece evidências de uma participação externa significativa.
 
 ## RQ03. Sistemas populares lançam releases com frequência?
 
