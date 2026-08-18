@@ -5,6 +5,7 @@
 appsettings.Development.json
 
 # Dados brutos (regeneraveis pelo script). O CSV processado e entregavel e deve ser comitado.
+lab01/data/raw/*
 data/raw/*
 !data/raw/.gitkeep
 logs/

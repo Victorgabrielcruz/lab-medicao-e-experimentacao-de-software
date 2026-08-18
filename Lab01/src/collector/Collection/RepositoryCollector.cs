@@ -102,8 +102,12 @@ public sealed class RepositoryCollector
 
             if (!data.Search.PageInfo.HasNextPage)
             {
-                Log.Warn($"a busca terminou com {repositories.Count} repositorios, abaixo do alvo de " +
-                         $"{_options.TargetRepos}. O search do GitHub devolve no maximo 1000 resultados");
+                if (repositories.Count < _options.TargetRepos)
+                    Log.Warn($"a busca acabou com {repositories.Count} repositorios, abaixo do alvo de " +
+                             $"{_options.TargetRepos}. O search do GitHub devolve no maximo 1000 resultados");
+                else
+                    Log.Info($"a busca acabou junto com o alvo de {_options.TargetRepos} repositorios");
+
                 break;
             }
 

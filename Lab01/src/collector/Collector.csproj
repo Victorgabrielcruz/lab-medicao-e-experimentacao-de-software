@@ -8,8 +8,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="../metrics/**/*.cs" LinkBase="Metrics" />
-  </ItemGroup>
-
 </Project>
