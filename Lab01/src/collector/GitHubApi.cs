@@ -23,6 +23,9 @@ public class GitHubApi
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("lab01-eng-sw");
     }
 
+    public static ResponseData ParsePage(string rawJson) =>
+        JsonSerializer.Deserialize<GraphQlResponse>(rawJson, Json)!.Data!;
+
     public async Task<(ResponseData Data, string Raw)> FetchPageAsync(
         string searchQuery, int pageSize, string? cursor)
     {
