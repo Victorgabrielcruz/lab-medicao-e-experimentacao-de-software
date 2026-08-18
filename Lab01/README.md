@@ -52,3 +52,15 @@ Também fará parte do projeto:
 - `reports/final/` → relatório final;
 - `reports/figures/` → gráficos e visualizações;
 - `tests/` → testes e validações.
+
+## Pipeline de processamento
+
+Após a coleta, gere a base única das RQs 01–06 com:
+
+```bash
+cd Lab01
+python3 -m pip install -r requirements.txt
+python3 src/analysis/build_processed_dataset.py data/raw/repos_raw_<coleta>.csv
+```
+
+Veja o schema e as regras de normalização em `docs/processed-dataset.md`.
