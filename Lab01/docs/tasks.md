@@ -640,3 +640,243 @@ Registrar snapshots do board ao fim da sprint para evidência do processo.
 ### Resultado esperado
 
 Histórico rastreável da execução no GitHub Projects.
+
+# Sprint 3 — Lab01S03
+
+## S03-01 — Consolidar dataset para análise da RQ07 [S03]
+
+**Responsável:**  
+**Tipo:** Obrigatória
+
+### Objetivo
+
+Integrar as métricas RQ01–RQ06 em um único dataset consistente para permitir a análise conjunta da RQ07.
+
+### O que deve ser feito
+
+* Integrar as métricas RQ01 e RQ02.
+* Integrar as métricas RQ03 e RQ04.
+* Integrar as métricas RQ05 e RQ06.
+* Garantir uma linha por repositório.
+* Garantir que todas as métricas estejam associadas corretamente ao mesmo repositório.
+* Verificar valores ausentes e inconsistências.
+* Validar a quantidade final de repositórios.
+* Preparar o dataset consolidado para a análise da RQ07.
+
+### Arquivos/módulos envolvidos
+
+* `src/analysis/`
+* `data/processed/`
+* `tests/`
+
+### Dependências
+
+* S02-03
+* S02-04
+* S02-05
+* S02-06
+* S02-07
+
+### Critérios de aceitação
+
+* [ ] Dataset consolidado contém os repositórios da amostra oficial.
+* [ ] Métricas RQ01–RQ06 estão disponíveis.
+* [ ] Não existem repositórios duplicados.
+* [ ] Métricas estão associadas corretamente ao respectivo repositório.
+* [ ] Valores ausentes estão identificados.
+* [ ] Inconsistências relevantes estão registradas.
+* [ ] Dataset está pronto para utilização na análise da RQ07.
+
+### Resultado esperado
+
+Dataset consolidado contendo as métricas RQ01–RQ06, pronto para a análise integrada da RQ07.
+
+
+---
+
+## S03-02 — Implementar análise da RQ07 [S03]
+
+**Responsável:**
+**Tipo:** Obrigatória
+
+### Objetivo
+
+Implementar a análise integrada das características dos repositórios populares utilizando as métricas RQ01–RQ06.
+
+### O que deve ser feito
+
+* Carregar o dataset consolidado.
+* Definir as variáveis utilizadas na análise da RQ07.
+* Realizar análise exploratória das métricas RQ01–RQ06.
+* Avaliar a relação entre popularidade e as demais características dos repositórios.
+* Calcular medidas de correlação quando aplicável.
+* Identificar padrões e possíveis outliers.
+* Gerar estatísticas necessárias para responder à RQ07.
+* Produzir tabelas e visualizações necessárias para interpretação dos resultados.
+
+### Arquivos/módulos envolvidos
+
+* `src/analysis/rq07_analysis.py`
+* `tests/test_rq07_analysis.py`
+
+### Dependências
+
+* S03-01
+
+### Critérios de aceitação
+
+* [ ] Dataset consolidado é carregado corretamente.
+* [ ] Métricas RQ01–RQ06 são utilizadas na análise.
+* [ ] Relações relevantes entre as métricas são calculadas.
+* [ ] Estatísticas necessárias para a RQ07 são produzidas.
+* [ ] Outliers relevantes são identificados.
+* [ ] Visualizações necessárias são geradas.
+* [ ] Análise executa sem erros.
+
+### Resultado esperado
+
+Análise quantitativa da RQ07 implementada, com estatísticas, relações entre as métricas e evidências necessárias para responder à questão de pesquisa.
+
+
+---
+
+## S03-03 — Interpretar e documentar resultados da RQ07 [S03]
+
+**Responsável:** 
+**Tipo:** Obrigatória
+
+### Objetivo
+
+Interpretar os resultados obtidos na análise da RQ07 e produzir a resposta da questão de pesquisa para integração ao relatório final.
+
+### O que deve ser feito
+
+* Interpretar os resultados estatísticos obtidos.
+* Relacionar os resultados às hipóteses definidas para a RQ07.
+* Identificar as características mais relevantes dos repositórios populares.
+* Discutir relações encontradas entre as métricas.
+* Identificar resultados inesperados.
+* Registrar limitações da análise.
+* Elaborar a resposta final da RQ07.
+* Preparar os resultados para integração ao relatório do projeto.
+
+### Arquivos/módulos envolvidos
+
+* `reports/`
+* `docs/`
+
+### Dependências
+
+* S03-02
+
+### Critérios de aceitação
+
+* [ ] RQ07 possui uma resposta baseada nos dados coletados.
+* [ ] Hipótese da RQ07 é discutida.
+* [ ] Principais resultados são apresentados.
+* [ ] Relações relevantes entre as métricas são discutidas.
+* [ ] Resultados inesperados são registrados quando existentes.
+* [ ] Limitações da análise estão documentadas.
+* [ ] Texto final está pronto para integração ao relatório.
+
+### Resultado esperado
+
+Resposta final da RQ07 documentada e fundamentada nos resultados da análise das métricas RQ01–RQ06.
+
+## S03-04 — Identificar outliers nos repositórios [S03] — EXTRA
+
+**Responsável:**  
+**Tipo:** Extra / Opcional
+
+### Objetivo
+
+Identificar repositórios que apresentam valores significativamente diferentes do comportamento geral da amostra nas métricas analisadas no Lab01.
+
+Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas obrigatórias da RQ07.
+
+### O que deve ser feito
+
+* Utilizar o dataset consolidado das métricas RQ01–RQ06.
+* Identificar outliers nas principais métricas quantitativas.
+* Avaliar diferentes métodos de identificação de outliers, quando aplicável.
+* Utilizar medidas estatísticas como quartis e IQR.
+* Identificar repositórios com valores extremos de:
+  * idade;
+  * Pull Requests aceitas;
+  * releases;
+  * atividade;
+  * percentual de issues fechadas;
+  * popularidade.
+* Registrar os repositórios identificados como possíveis outliers.
+* Comparar os outliers com o comportamento geral da amostra.
+* Evitar remover automaticamente os outliers do dataset principal.
+
+### Arquivos/módulos envolvidos
+
+* `src/analysis/rq07_outliers.py`
+* `tests/test_rq07_outliers.py`
+
+### Dependências
+
+* S03-01
+* S03-02
+
+### Critérios de aceitação
+
+* [ ] Outliers são identificados utilizando um método estatístico definido.
+* [ ] O método utilizado é documentado.
+* [ ] Outliers das principais métricas são identificados.
+* [ ] Os repositórios identificados podem ser rastreados pelo seu nome.
+* [ ] Os resultados são apresentados sem alterar o dataset original.
+* [ ] A análise executa sem erros.
+
+### Resultado esperado
+
+Lista dos principais repositórios identificados como outliers nas métricas analisadas, acompanhada das respectivas métricas e valores extremos.
+
+**EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
+
+## S03-05 — Analisar e interpretar os outliers identificados [S03] — EXTRA
+
+**Responsável:**
+**Tipo:** Extra / Opcional
+
+### Objetivo
+
+Analisar os repositórios identificados como outliers e verificar quais características podem explicar seus comportamentos extremos.
+
+Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas obrigatórias da RQ07.
+
+### O que deve ser feito
+
+* Analisar os principais outliers encontrados na S03-04.
+* Comparar os valores dos outliers com média, mediana e quartis da amostra.
+* Identificar padrões entre os repositórios extremos.
+* Verificar se os outliers apresentam características específicas relacionadas à popularidade.
+* Avaliar se os valores extremos podem representar casos relevantes ou possíveis anomalias nos dados.
+* Registrar exemplos representativos.
+* Documentar os principais achados.
+
+### Arquivos/módulos envolvidos
+
+* `src/analysis/rq07_outliers.py`
+* `reports/`
+* `docs/`
+
+### Dependências
+
+* S03-04
+
+### Critérios de aceitação
+
+* [ ] Principais outliers possuem interpretação documentada.
+* [ ] Comparação com o comportamento geral da amostra é apresentada.
+* [ ] Casos relevantes são destacados.
+* [ ] Possíveis anomalias ou problemas nos dados são registrados.
+* [ ] Os resultados podem ser utilizados como complemento à discussão da RQ07.
+
+### Resultado esperado
+
+Análise interpretativa dos principais outliers encontrados, identificando comportamentos extremos e possíveis explicações para esses casos.
+
+**EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
