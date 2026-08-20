@@ -37,6 +37,18 @@ POPULAR_LANGUAGES = {
     "go",
 }
 
+PILOT_COLUMNS = [
+    "name_with_owner",
+    "primary_language",
+    "language_group",
+    "is_popular_language",
+    "open_issues",
+    "closed_issues",
+    "total_issues",
+    "has_issues",
+    "closed_issues_percentage",
+]
+
 
 def normalize_language(primary_language) -> str:
     """Linguagem primária tratada. Vazio ou nulo vira categoria própria."""
@@ -140,6 +152,13 @@ def summarize(df: pd.DataFrame) -> str:
     return "\n".join(linhas)
 
 
+def save_pilot(df: pd.DataFrame, output: Path) -> Path:
+    """Exporta a visão específica de RQ05/RQ06 a partir de métricas já calculadas."""
+    output.parent.mkdir(parents=True, exist_ok=True)
+    df[PILOT_COLUMNS].to_csv(output, index=False)
+    return output
+
+
 def main() -> None:
     source = Path(sys.argv[1]) if len(sys.argv) > 1 else latest_raw_csv()
     print(f"Entrada: {source}\n")
@@ -147,22 +166,8 @@ def main() -> None:
     df = add_metrics(pd.read_csv(source))
     print(summarize(df))
 
-    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     output = PROCESSED_DIR / "pilot_rq05_rq06.csv"
-
-    columns = [
-        "name_with_owner",
-        "primary_language",
-        "language_group",
-        "is_popular_language",
-        "open_issues",
-        "closed_issues",
-        "total_issues",
-        "has_issues",
-        "closed_issues_percentage",
-    ]
-
-    df[columns].to_csv(output, index=False)
+    save_pilot(df, output)
     print(f"\nSaída: {output}")
 
 

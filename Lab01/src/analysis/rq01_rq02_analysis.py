@@ -6,7 +6,7 @@ import sys
 import pandas as pd
 
 from src.metrics.rq01_rq02_age_pullrequests import (
-    calculate_metrics,
+    add_metrics,
     load_data,
 )
 
@@ -111,7 +111,7 @@ def main() -> None:
     print(f"Dataset: {input_file}")
 
     df = load_data(input_file)
-    df = calculate_metrics(df)
+    df = add_metrics(df)
 
     analyze_rq01(df)
     analyze_rq02(df)
