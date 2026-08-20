@@ -457,8 +457,8 @@ Validar consistência das métricas RQ01 e RQ02 na base completa.
 
 ### Arquivos/módulos envolvidos
 
-* `tests/`
-* `src/metrics/`
+* `src/metrics/rq01_rq02_validation.py`
+* `tests/test_rq01_rq02_validation.py`
 * `data/processed/`
 
 ### Dependências
@@ -467,10 +467,52 @@ Validar consistência das métricas RQ01 e RQ02 na base completa.
 
 ### Critérios de aceitação
 
-* [ ] Regras de validação executadas.
-* [ ] Não há inconsistências críticas em RQ01/RQ02.
-* [ ] Pull Requests aceitas validadas.
-* [ ] Evidências de validação registradas.
+* [x] Regras de validação executadas.
+* [x] Não há inconsistências críticas em RQ01/RQ02. Validado contra a coleta
+  completa de 1.000 repositórios (`data/raw/repos_raw_2026-08-20T222207Z.csv`):
+  0 inconsistências, 124 outliers registrados (apenas em `accepted_pull_requests`,
+  evidência mantida, não removida).
+* [x] Pull Requests aceitas validadas.
+* [x] Evidências de validação registradas.
+
+### Observações
+
+`src/metrics/rq01_rq02_validation.py` segue o mesmo padrão de
+`rq03_rq04_validation.py`: compara o CSV processado contra o bruto por `id` e
+não altera nenhum dos dois. Ele verifica:
+
+* completude de `created_at`, `collected_at`, `age_years` e
+  `accepted_pull_requests`;
+* faixa de valores da idade — `age_years >= 0` e `created_at` não anterior à
+  fundação do GitHub (2008-04-10);
+* reprodução da fórmula `age_years = (collected_at - created_at) / 365.25 dias`
+  a partir das datas brutas;
+* `accepted_pull_requests` igual a `merged_pull_requests` (estado `MERGED`) e
+  nunca maior que `total_pull_requests`;
+* outliers de `age_years` e `accepted_pull_requests` por IQR, registrados como
+  evidência e não removidos;
+* amostra fixa e reproduzível (seed 42) de repositórios para conferência
+  manual, incluída no relatório Markdown.
+
+Uso:
+
+```bash
+python src/metrics/rq01_rq02_validation.py \
+  data/raw/repos_raw_<coleta>.csv \
+  data/processed/repos_processed_<coleta>.csv
+```
+
+Gera `data/processed/validation_rq01_rq02_<coleta>.csv` e
+`reports/drafts/validation_rq01_rq02_<coleta>.md`. Testado com 8 casos
+unitários (dataset válido, divergência de fórmula, idade negativa, criação
+anterior ao GitHub, PRs aceitas divergentes/maiores que o total, campos
+ausentes e outliers).
+
+**Execução na base completa (2026-08-20T22:22:07Z, 1.000 repositórios):**
+0 inconsistências críticas; 124 outliers, todos em `accepted_pull_requests`
+(repositórios muito populares com PRs muito acima da mediana da amostra —
+esperado, mantido como evidência para revisão). Idade dos repositórios e PRs
+aceitas dentro da faixa esperada em todos os registros.
 
 ### Resultado esperado
 
