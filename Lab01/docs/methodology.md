@@ -105,7 +105,7 @@ Entre os campos coletados estarão:
 * número de estrelas;
 * data de criação;
 * data da última atualização;
-* primeiro commit;
+* data de criação do repositório, usada como aproximação do início do desenvolvimento;
 * último commit;
 * quantidade de commits;
 * linguagem primária;
@@ -155,7 +155,7 @@ Os dados coletados deverão cobrir o mínimo necessário para responder às RQs.
 ### Informações temporais
 
 * data de criação;
-* data do primeiro commit;
+* data de criação do repositório, como aproximação da data do primeiro commit;
 * data do último commit;
 * data da última atualização;
 * data/hora da coleta.
@@ -242,11 +242,18 @@ Essa métrica será utilizada como indicador de atividade recente.
 
 ### Período de desenvolvimento
 
-Calculado pela diferença entre o primeiro e o último commit identificado.
+Calculado pela diferença entre a data de criação e o último commit identificado.
 
-`tempo_de_desenvolvimento = data_do_último_commit − data_do_primeiro_commit`
+`tempo_de_desenvolvimento = data_do_último_commit − data_de_criação`
 
-Essa métrica representa uma aproximação do período em que houve atividade de desenvolvimento no repositório.
+A API GraphQL não disponibiliza a data do primeiro commit em uma única consulta
+viável para a coleta de 1.000 repositórios. Por isso, `createdAt` será usado como
+aproximação do início do desenvolvimento. A métrica pode subestimar o período real
+quando o repositório recebeu histórico importado de outro sistema de controle de versão.
+
+Na Sprint 2, essa aproximação será validada inicialmente na amostra de 100
+repositórios e a mesma rotina será executada novamente sobre os 1.000 registros
+após a coleta completa.
 
 ### Observação
 
