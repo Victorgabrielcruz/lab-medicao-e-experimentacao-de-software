@@ -1,7 +1,8 @@
 # Base Processada — RQs 01 a 06
 
 O pipeline `src/analysis/build_processed_dataset.py` recebe o CSV bruto gerado pelo
-coletor e produz uma única base padronizada para validação e análise das RQs 01–06.
+coletor e produz a base padronizada para validação e análise das RQs 01–06, além de
+uma visão piloto específica de RQ05/RQ06.
 
 ## Execução
 
@@ -37,13 +38,25 @@ normalizados e acrescenta:
 | RQ02 | `accepted_pull_requests` |
 | RQ03 | `releases_no_teto` |
 | RQ04 | `days_since_last_commit`, `days_since_push`, `development_period_days` |
-| RQ05 | `is_popular_language` |
+| RQ05 | `language_group`, `is_popular_language` |
 | RQ06 | `total_issues`, `has_issues`, `closed_issues_percentage` |
 
-As datas são convertidas para UTC e gravadas em ISO 8601. Linguagem ausente é
-normalizada como `Sem linguagem identificada`. Repositórios sem Issues recebem
-`has_issues = false` e percentual fechado vazio.
+As datas são convertidas para UTC e gravadas em ISO 8601. O campo
+`primary_language` é preservado como veio do coletor; `language_group` é sua
+versão normalizada, em que linguagem ausente vira `Sem linguagem identificada`.
+A comparação com a lista do Octoverse não diferencia maiúsculas de minúsculas.
+Repositórios sem Issues recebem `has_issues = false` e percentual fechado vazio.
 
 O pipeline remove registros duplicados pelo `id`, valida números negativos e rejeita
 datas inválidas. Para o mesmo CSV de entrada e a mesma versão do código, o CSV de
 saída é determinístico e pode ser reexecutado sem alterar os dados brutos.
+
+Cada execução gera dois arquivos em `data/processed/`:
+
+```text
+repos_processed_<coleta>.csv  # base integrada, oficial para RQs 01–06
+pilot_rq05_rq06.csv           # visão específica, padronizada com os pilotos das outras RQs
+```
+
+O piloto é derivado da mesma base já processada; ele não lê novamente o CSV bruto nem
+reimplementa regras de métrica.

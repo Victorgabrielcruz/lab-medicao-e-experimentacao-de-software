@@ -10,7 +10,7 @@ import pandas as pd
 ANALYSIS_DIR = Path(__file__).resolve().parents[1] / "src" / "analysis"
 sys.path.insert(0, str(ANALYSIS_DIR))
 
-from build_processed_dataset import build, calculate_metrics, normalize  # noqa: E402
+from build_processed_dataset import apply_metrics, build, normalize  # noqa: E402
 
 
 def raw_row(**overrides):
@@ -34,7 +34,7 @@ class ProcessedDatasetTests(unittest.TestCase):
             raw_row(id="repo-2", primary_language="", open_issues="0", closed_issues="0", last_commit_date=""),
         ])
 
-        result = calculate_metrics(normalize(raw))
+        result = apply_metrics(normalize(raw))
 
         first, second = result.iloc[0], result.iloc[1]
         self.assertAlmostEqual(first["age_years"], 730 / 365.25)
@@ -45,7 +45,8 @@ class ProcessedDatasetTests(unittest.TestCase):
         self.assertTrue(first["is_popular_language"])
         self.assertEqual(first["total_issues"], 100)
         self.assertAlmostEqual(first["closed_issues_percentage"], 80.0)
-        self.assertEqual(second["primary_language"], "Sem linguagem identificada")
+        self.assertEqual(second["primary_language"], "")
+        self.assertEqual(second["language_group"], "Sem linguagem identificada")
         self.assertFalse(second["has_issues"])
         self.assertTrue(pd.isna(second["closed_issues_percentage"]))
         self.assertTrue(pd.isna(second["days_since_last_commit"]))
@@ -65,10 +66,28 @@ class ProcessedDatasetTests(unittest.TestCase):
             result = pd.read_csv(first_output)
             self.assertTrue(result.loc[1, "releases_no_teto"])
 
+            pilot = root / "pilot_rq05_rq06.csv"
+            self.assertTrue(pilot.exists())
+            self.assertEqual(
+                list(pd.read_csv(pilot).columns),
+                [
+                    "name_with_owner", "primary_language", "language_group",
+                    "is_popular_language", "open_issues", "closed_issues",
+                    "total_issues", "has_issues", "closed_issues_percentage",
+                ],
+            )
+
     def test_rejects_invalid_required_date(self):
         raw = pd.DataFrame([raw_row(created_at="não é uma data")])
         with self.assertRaisesRegex(ValueError, "created_at: data inválida"):
             normalize(raw)
+
+    def test_pipeline_uses_case_insensitive_language_rule_from_rq05_rq06(self):
+        result = apply_metrics(normalize(pd.DataFrame([raw_row(primary_language="  typescript  ")])))
+
+        self.assertEqual(result.loc[0, "primary_language"], "  typescript  ")
+        self.assertEqual(result.loc[0, "language_group"], "typescript")
+        self.assertTrue(result.loc[0, "is_popular_language"])
 
 
 if __name__ == "__main__":

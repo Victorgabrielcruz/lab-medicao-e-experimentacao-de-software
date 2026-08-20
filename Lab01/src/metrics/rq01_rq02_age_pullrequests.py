@@ -42,7 +42,7 @@ def load_data(path: Path) -> pd.DataFrame:
     return df
 
 
-def calculate_metrics(df: pd.DataFrame) -> pd.DataFrame:
+def add_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """Calcula as métricas RQ01 e RQ02."""
 
     # RQ01 - idade do repositório em anos
@@ -108,7 +108,7 @@ def main() -> None:
     print(f"Entrada: {input_file}")
 
     df = load_data(input_file)
-    df = calculate_metrics(df)
+    df = add_metrics(df)
 
     validate_data(df)
 

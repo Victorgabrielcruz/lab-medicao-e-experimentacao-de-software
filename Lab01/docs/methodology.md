@@ -266,7 +266,9 @@ Para classificar "linguagens mais populares" nas RQs 05 e 07, será utilizado o 
 do [GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/),
 baseado na contagem de contribuidores na plataforma GitHub. Serão consideradas populares:
 TypeScript, Python, JavaScript, Java, C#, PHP, Shell, C++, HCL e Go. Um repositório será
-marcado como linguagem popular quando sua `primaryLanguage` estiver nessa lista.
+marcado como linguagem popular quando sua `primaryLanguage` estiver nessa lista. A lista
+é definida uma única vez no módulo `src/metrics/rq05_rq06_language_issues.py` e a
+comparação não diferencia maiúsculas de minúsculas.
 
 Quando a API retornar `primaryLanguage` nula ou vazia, o valor será normalizado como
 `Sem linguagem identificada`; esse caso será mantido na análise e não será classificado

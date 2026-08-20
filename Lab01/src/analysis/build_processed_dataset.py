@@ -9,20 +9,23 @@ Sem argumento, processa o CSV bruto mais recente em data/raw/.
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from src.metrics import rq01_rq02_age_pullrequests as rq01_rq02
+from src.metrics import rq03_rq04_releases_activity as rq03_rq04
+from src.metrics import rq05_rq06_language_issues as rq05_rq06
+
+
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
-RELEASES_CAP = 1000
-UNIDENTIFIED_LANGUAGE = "Sem linguagem identificada"
-POPULAR_LANGUAGES = {
-    "TypeScript", "Python", "JavaScript", "Java", "C#",
-    "PHP", "Shell", "C++", "HCL", "Go",
-}
 
 RAW_COLUMNS = [
     "id", "name_with_owner", "url", "owner", "stargazer_count", "is_archived",
@@ -40,7 +43,8 @@ OPTIONAL_NUMBERS = ["total_commits"]
 DERIVED_COLUMNS = [
     "age_years", "accepted_pull_requests", "releases_no_teto",
     "days_since_last_commit", "days_since_push", "development_period_days",
-    "is_popular_language", "total_issues", "has_issues", "closed_issues_percentage",
+    "language_group", "is_popular_language", "total_issues", "has_issues",
+    "closed_issues_percentage",
 ]
 
 
@@ -56,6 +60,11 @@ def output_for(source: Path) -> Path:
     """Gera um nome de saída determinístico a partir do arquivo de entrada."""
     name = source.name.replace("repos_raw_", "repos_processed_", 1)
     return PROCESSED_DIR / name
+
+
+def pilot_output_for(processed_output: Path) -> Path:
+    """Mantém o piloto de RQ05/RQ06 junto da saída processada da mesma execução."""
+    return processed_output.parent / "pilot_rq05_rq06.csv"
 
 
 def _raise_invalid(column: str, mask: pd.Series, reason: str) -> None:
@@ -103,36 +112,22 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     _raise_invalid("is_archived", normalized_boolean.isna(), "booleano inválido")
     df["is_archived"] = normalized_boolean.astype(bool)
 
-    df["primary_language"] = df["primary_language"].fillna("").astype(str).str.strip()
-    df.loc[df["primary_language"].eq(""), "primary_language"] = UNIDENTIFIED_LANGUAGE
     return df
 
 
-def calculate_metrics(df: pd.DataFrame) -> pd.DataFrame:
+def apply_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """Acrescenta as métricas derivadas das RQs 01–06 ao dataset normalizado."""
     df = df.copy()
 
-    # RQ01 e RQ02
-    df["age_years"] = (df["collected_at"] - df["created_at"]).dt.total_seconds() / 31_557_600
-    _raise_invalid("age_years", df["age_years"] < 0, "idade negativa")
-    df["accepted_pull_requests"] = df["merged_pull_requests"]
+    # Cada módulo é a única fonte das regras da sua RQ; este arquivo apenas as orquestra.
+    df = rq01_rq02.add_metrics(df)
+    rq01_rq02.validate_data(df)
+    df = rq03_rq04.add_metrics(df)
+    df = rq05_rq06.add_metrics(df)
 
-    # RQ03 e RQ04
-    df["releases_no_teto"] = df["releases_count"] >= RELEASES_CAP
-    df["days_since_last_commit"] = (df["collected_at"] - df["last_commit_date"]).dt.days.astype("Int64")
-    df["days_since_push"] = (df["collected_at"] - df["pushed_at"]).dt.days.astype("Int64")
-    df["development_period_days"] = (df["last_commit_date"] - df["created_at"]).dt.days.astype("Int64")
-    df.loc[df["development_period_days"] < 0, "development_period_days"] = pd.NA
-
-    # RQ05 e RQ06
-    df["is_popular_language"] = df["primary_language"].isin(POPULAR_LANGUAGES)
-    df["total_issues"] = df["open_issues"] + df["closed_issues"]
-    df["has_issues"] = df["total_issues"] > 0
-    df["closed_issues_percentage"] = pd.Series(pd.NA, index=df.index, dtype="Float64")
-    has_issues = df["has_issues"]
-    df.loc[has_issues, "closed_issues_percentage"] = (
-        df.loc[has_issues, "closed_issues"] / df.loc[has_issues, "total_issues"] * 100
-    )
+    # A normalização de tipo é responsabilidade do pipeline, não uma nova regra de métrica.
+    for column in ["days_since_last_commit", "days_since_push", "development_period_days"]:
+        df[column] = df[column].astype("Int64")
 
     _raise_invalid(
         "closed_issues_percentage",
@@ -154,11 +149,13 @@ def save(df: pd.DataFrame, output: Path) -> Path:
 
 
 def build(source: Path, output: Path | None = None) -> Path:
-    """Executa o pipeline completo e retorna o caminho do CSV processado."""
+    """Gera a base unificada e a visão piloto de RQ05/RQ06 a partir da mesma base."""
     destination = output or output_for(source)
     df = normalize(pd.read_csv(source, dtype={"id": "string"}))
-    df = calculate_metrics(df)
-    return save(df, destination)
+    df = apply_metrics(df)
+    save(df, destination)
+    rq05_rq06.save_pilot(df, pilot_output_for(destination))
+    return destination
 
 
 def main() -> None:
@@ -171,6 +168,7 @@ def main() -> None:
     output = build(source, args.output)
     print(f"Entrada: {source}")
     print(f"Saída: {output}")
+    print(f"Piloto RQ05/RQ06: {pilot_output_for(output)}")
     print(f"Registros processados: {len(pd.read_csv(output))}")
 
 
