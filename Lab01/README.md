@@ -41,10 +41,11 @@ Também fará parte do projeto:
 
 ## Estrutura do projeto
 
-- `src/github/` → integração com a API GraphQL do GitHub;
-- `src/collectors/` → coleta e paginação dos repositórios;
-- `src/metrics/` → implementação das métricas das questões de pesquisa;
-- `src/analysis/` → análise dos resultados;
+- `src/github/` → consultas GraphQL versionadas (`src/github/queries/`);
+- `src/collector/` → coletor em C# (.NET 8): paginação, resiliência e escrita do CSV bruto;
+- `src/metrics/` → implementação e validação das métricas das questões de pesquisa;
+- `src/analysis/` → pipeline de transformação (base processada);
+- `src/snapshots/` → exportação do estado do GitHub Projects por sprint;
 - `data/raw/` → dados brutos;
 - `data/processed/` → dados processados;
 - `data/snapshots/` → snapshots das sprints/GitHub Projects;
@@ -53,14 +54,28 @@ Também fará parte do projeto:
 - `reports/figures/` → gráficos e visualizações;
 - `tests/` → testes e validações.
 
-## Pipeline de processamento
+## Como executar
 
-Após a coleta, gere a base única das RQs 01–06 com:
+Guia completo, passo a passo (pré-requisitos, `.env`, coleta, pipeline,
+validação, snapshot do board, testes e troubleshooting):
+**[`docs/tutorial-execucao.md`](docs/tutorial-execucao.md)**.
+
+Resumo rápido:
 
 ```bash
 cd Lab01
 python3 -m pip install -r requirements.txt
+cp .env.example .env                       # preencher GITHUB_TOKEN
+
+dotnet run --project src/collector         # coleta -> data/raw/repos_raw_<coleta>.csv
+
 python3 src/analysis/build_processed_dataset.py data/raw/repos_raw_<coleta>.csv
+
+python3 src/metrics/rq01_rq02_validation.py data/raw/repos_raw_<coleta>.csv data/processed/repos_processed_<coleta>.csv
+python3 src/metrics/rq03_rq04_validation.py data/raw/repos_raw_<coleta>.csv data/processed/repos_processed_<coleta>.csv
+python3 src/metrics/rq05_rq06_validation.py data/raw/repos_raw_<coleta>.csv data/processed/repos_processed_<coleta>.csv
+
+python3 -m unittest discover -s tests      # testes automatizados
 ```
 
 Veja o schema e as regras de normalização em `docs/processed-dataset.md`.
