@@ -91,6 +91,24 @@ Essa informação será registrada em formato ISO 8601 e utilizada para calcular
 
 A data de referência deverá ser registrada juntamente aos dados da execução para permitir a reprodução e interpretação dos resultados.
 
+### Limitação conhecida: `collected_at` fixo durante coleta paginada
+
+`collected_at` é definido uma única vez, no início da execução, e replicado em
+todas as linhas da mesma coleta (ver `docs/raw-dataset.md`). Como a coleta
+paginada de 1.000 repositórios leva minutos para percorrer todas as páginas,
+repositórios muito ativos podem receber um novo `push` ou commit durante essa
+janela de execução, resultando em `pushed_at` ou `last_commit_date` alguns
+segundos ou minutos **posteriores** ao `collected_at` registrado.
+
+Na validação da coleta completa de 2026-08-20T22:22:07Z, 27 repositórios
+apresentaram essa defasagem (`pushed_at` ou `last_commit_date` até ~5 minutos
+após `collected_at`) — ver `reports/drafts/validation_rq03_rq04_2026-08-20T222207Z.md`.
+Trata-se de uma condição de corrida esperada em coletas longas contra uma API
+em produção, não de erro de coleta ou de processamento. Esses casos são
+registrados como inconsistência pelo script de validação (a data violou a
+regra `data <= collected_at`), mas não indicam problema de qualidade dos
+dados nem exigem descarte do registro.
+
 ---
 
 ## 6. API GraphQL
@@ -395,7 +413,8 @@ A metodologia apresenta as seguintes limitações:
 * o primeiro e o último commit representam aproximações do período de desenvolvimento;
 * o último commit não representa necessariamente a conclusão do projeto;
 * métricas de contribuição externa dependem da disponibilidade e granularidade dos dados fornecidos pelo GitHub;
-* resultados da RQ07 dependem da qualidade e completude das métricas utilizadas nas análises integradas.
+* resultados da RQ07 dependem da qualidade e completude das métricas utilizadas nas análises integradas;
+* `collected_at` é fixado no início da coleta paginada, então repositórios muito ativos podem registrar `pushed_at` ou `last_commit_date` alguns minutos posteriores a essa referência (ver seção 5), sem que isso represente erro de coleta.
 
 ---
 

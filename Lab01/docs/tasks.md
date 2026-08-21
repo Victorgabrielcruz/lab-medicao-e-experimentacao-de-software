@@ -181,7 +181,7 @@ Métricas de RQ05 e RQ06 prontas para integração no pipeline.
 
 ## S01-04 — Construir coletor GraphQL de dados dos repositórios [S01]
 
-**Responsável:** Víctor Gabriel Cruz Pereira
+**Responsável:** Jonathan Sena da Silva
 **Tipo:** Obrigatória
 
 ### Objetivo
@@ -553,13 +553,36 @@ Validar consistência das métricas de releases e atividade de atualização na 
 
 ### Critérios de aceitação
 
-* [ ] RQ03 validada para os 1.000 repositórios.
-* [ ] Primeiro e último commit validados.
-* [ ] Tempo desde o último commit validado.
-* [ ] Período de desenvolvimento validado.
-* [ ] Quantidade de commits validada.
-* [ ] Casos excepcionais documentados.
-* [ ] Métricas aprovadas para análise.
+* [x] RQ03 validada para os 1.000 repositórios.
+* [x] Primeiro e último commit validados (primeiro commit segue como proxy
+  por `created_at`, conforme limitação documentada em S01-02/methodology.md).
+* [x] Tempo desde o último commit validado.
+* [x] Período de desenvolvimento validado.
+* [x] Quantidade de commits validada.
+* [x] Casos excepcionais documentados.
+* [x] Métricas aprovadas para análise.
+
+### Observações
+
+Validação executada contra a coleta completa
+(`data/raw/repos_raw_2026-08-20T222207Z.csv` /
+`data/processed/repos_processed_2026-08-20T222207Z.csv`), gerando
+`data/processed/validation_rq03_rq04_2026-08-20T222207Z.csv` e
+`reports/drafts/validation_rq03_rq04_2026-08-20T222207Z.md`.
+
+Resultado: 1.000 repositórios validados, 27 inconsistências, 604 outliers
+(IQR), 23 repositórios no teto de `releases_count`, 0 sem último commit.
+
+As 27 inconsistências são todas do tipo "data futura em relação à referência
+da coleta" (`pushed_at`/`last_commit_date` posteriores a `collected_at`, com
+defasagem máxima de ~4min50s). Causa: `collected_at` é fixado no início da
+coleta paginada, mas a coleta de 1.000 repositórios leva minutos para
+percorrer todas as páginas, e repositórios muito ativos (ex.:
+`spring-projects/spring-boot`, `grpc/grpc`, `pytorch/pytorch`) receberam
+push/commit real durante essa janela. Não é erro de coleta ou processamento —
+é uma condição de corrida esperada, documentada em `docs/methodology.md`
+(seções 5 e 13). Nenhum dado foi alterado ou removido; os registros
+permanecem como evidência.
 
 ### Resultado esperado
 
@@ -597,10 +620,30 @@ Validar consistência das métricas de linguagem primária e percentual de issue
 
 ### Critérios de aceitação
 
-* [ ] Métrica RQ05 validada sem falhas críticas.
-* [ ] Métrica RQ06 validada com cálculos corretos.
-* [ ] Casos sem issues tratados corretamente.
-* [ ] Evidências documentadas para revisão.
+* [x] Métrica RQ05 validada sem falhas críticas.
+* [x] Métrica RQ06 validada com cálculos corretos.
+* [x] Casos sem issues tratados corretamente.
+* [x] Evidências documentadas para revisão.
+
+### Observações
+
+`src/metrics/rq05_rq06_validation.py` compara o CSV processado contra o bruto
+por `id`, sem alterar nenhum dos dois, reproduzindo `normalize_language`,
+`is_popular_language` e `closed_issues_percentage` a partir dos dados brutos.
+Testado em `tests/test_rq05_rq06_validation.py` (3 casos: dataset válido,
+divergências de linguagem/issues/percentual, observações válidas de
+linguagem ausente e repositório sem issues).
+
+Validação executada contra a coleta completa
+(`data/raw/repos_raw_2026-08-20T222207Z.csv` /
+`data/processed/repos_processed_2026-08-20T222207Z.csv`), gerando
+`data/processed/validation_rq05_rq06_2026-08-20T222207Z.csv` e
+`reports/drafts/validation_rq05_rq06_2026-08-20T222207Z.md`.
+
+Resultado: 1.000 repositórios validados, **0 inconsistências**, 87
+repositórios sem linguagem primária (consistente com o valor documentado em
+`docs/raw-dataset.md`) e 43 repositórios sem issues, todos com
+`closed_issues_percentage` corretamente ausente (sem divisão por zero).
 
 ### Resultado esperado
 
@@ -639,10 +682,24 @@ Documentar qualidade, completude e limitações dos dados coletados.
 
 ### Critérios de aceitação
 
-* [ ] Relatório cobre todas as RQ01–RQ06.
-* [ ] Limitações e riscos estão explícitos.
-* [ ] Problemas encontrados estão documentados.
-* [ ] Documento disponível para revisão do grupo.
+* [x] Relatório cobre todas as RQ01–RQ06.
+* [x] Limitações e riscos estão explícitos.
+* [x] Problemas encontrados estão documentados.
+* [x] Documento disponível para revisão do grupo.
+
+### Observações
+
+Relatório consolidado em `reports/drafts/data_quality_2026-08-20T222207Z.md`,
+reunindo os achados de S02-04, S02-05 e S02-06 contra a coleta completa
+(1.000 repositórios). Cobre: cardinalidade e unicidade de `id`; as 27
+inconsistências de RQ03/RQ04 (data futura por `collected_at` fixo durante
+coleta paginada longa, sem impacto na qualidade); o teto de
+`releases_count` (23 casos); ausência esperada de linguagem (87) e de
+issues (43); os 728 outliers por IQR das quatro validações; estratégias de
+mitigação (nenhuma alteração de dado bruto, casos marcados em colunas
+dedicadas, regra de validação mantida estrita); e as limitações herdadas da
+metodologia (proxy de primeiro commit, teto de releases, `collected_at`
+fixo).
 
 ### Resultado esperado
 

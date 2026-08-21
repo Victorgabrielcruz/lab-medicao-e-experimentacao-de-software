@@ -1,0 +1,131 @@
+record_type,id,name_with_owner,field,expected,actual,detail
+observation,MDEwOlJlcG9zaXRvcnkyMTczNzQ2NQ==,sindresorhus/awesome,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2MDQ5MzEwMQ==,jwasham/coding-interview-university,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzNjYzMzM3MA==,awesome-selfhosted/awesome-selfhosted,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNzc3MzY1MzM=,996icu/996.ICU,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMzgzOTMxMzk=,trimstray/the-book-of-secret-knowledge,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDORCCMkQ,multica-ai/andrej-karpathy-skills,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMjEzOTU1MTA=,CyC2018/CS-Notes,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNDQ0MDI3MA==,getify/You-Dont-Know-JS,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMDYyODk3,github/gitignore,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzNTk1NTY2Ng==,jlevy/the-art-of-command-line,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOODsgVw,x1xhlol/system-prompts-and-models-of-ai-tools,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk1NTA3NjA2Mw==,Hack-with-Github/Awesome-Hacking,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNDA5ODA2OQ==,justjavac/free-programming-books-zh_CN,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOR2Chew,VoltAgent/awesome-design-md,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNDM5NTA0MDg=,Anduin2017/HowToCook,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNTI4NzAzNzI=,ruanyf/weekly,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMDEyOTY4ODE=,mtdvio/every-programmer-should-know,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNzI1NjI0NzU=,florinpop17/app-ideas,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDONWz9pg,punkpeye/awesome-mcp-servers,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDONs2Wmg,deepseek-ai/DeepSeek-R1,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk0NDg4MjIwMQ==,MunGell/awesome-for-beginners,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOKVORZg,ByteByteGoHq/system-design-101,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk0NzAxODIzOQ==,DopplerHQ/awesome-interview-questions,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk3MTU4MzYwMg==,Developer-Y/cs-video-courses,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOJwwGvg,mlabonne/llm-course,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNjg5ODg3OQ==,awesomedata/awesome-public-datasets,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk4Mzk5OTcwMA==,sdmg15/Best-websites-a-programmer-should-visit,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMjY3MDg1Nw==,enaqx/awesome-react,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk0NDU3MTcxOA==,vuejs/awesome-vue,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMTU0Nzg4MjA=,binhnguyennus/awesome-scalability,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTkzNTAzMQ==,fffaraz/awesome-cpp,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOLOlZBA,daytonaio/daytona,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNjY4OTU5OA==,prakhar1989/awesome-courses,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNjE3ODc3NTg=,bradtraversy/design-resources-for-developers,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTczNzI2Ng==,sindresorhus/awesome-nodejs,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxOTE1Mjk3MzI=,lydiahallie/javascript-questions,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOImYX0A,PlexPt/awesome-chatgpt-prompts-zh,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMjgzOTg2MzY=,xingshaocheng/architect-awesome,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxODcwODg2MA==,tiimgreen/github-cheat-sheet,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyODQyODcyOQ==,wasabeef/awesome-android-ui,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2ODcyMDg2Nw==,firstcontributions/first-contributions,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk1Njk2OTExNg==,ngosang/trackerslist,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNDk1MzQ0OA==,google/material-design-icons,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDORA0Gfg,VoltAgent/awesome-openclaw-skills,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyOTg4NzQ5OQ==,dkhamsing/open-source-ios-apps,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMzk4MjQ0MjM=,Avik-Jain/100-Days-Of-ML-Code,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMDkzNDMwOTg=,serhii-londar/open-source-mac-os-apps,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2MjgxMjI2MQ==,kelseyhightower/kubernetes-the-hard-way,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTY0ODAwMQ==,akullpp/awesome-java,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMzYwNjIyNDA=,DovAmir/awesome-design-patterns,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk4MjIyNzU4NQ==,nilbuild/design-patterns-for-humans,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2MTg5MzM5OQ==,brillout/awesome-react-components,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMTE3NzkyOA==,karan/Projects,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyODY5OTQ3MQ==,lukasz-madon/awesome-remote-job,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNjM1OTEyNzg=,GitHubDaily/GitHubDaily,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMDg2NTQzNg==,dypsilon/frontend-dev-bookmarks,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOODMFTA,elder-plinius/CL4R1T4S,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOQyvZCA,kepano/obsidian-skills,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk5ODAyOTU5Mg==,ziishaned/learn-regex,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOH0x3oA,karanpratapsingh/system-design,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNDE5NDE3NA==,alex/what-happens-when,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxOTMyOTIwNjE=,zbezj/HEU_KMS_Activator,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMjExOTcyMQ==,k88hudson/git-flight-rules,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOIwXaJw,LC044/WeChatMsg,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNzAxNzE1Njc=,freefq/free,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOJaT1fQ,chatanywhere/GPT_API_free,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOLDYetA,deepseek-ai/awesome-deepseek-integration,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOMA9nfw,karpathy/LLM101n,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTU1Mjk3MQ==,alebcay/awesome-shell,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMjExMjk1MTk=,AobingJava/JavaFamily,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyNDI5NzEyMg==,veggiemonk/awesome-docker,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzMjYxNzQ3NDE=,ashishpatel26/500-AI-Machine-learning-Deep-learning-Computer-vision-NLP-Projects-with-code,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzMTc4MzYyNDg=,GorvGoyl/Clone-Wars,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNzgwOTIxMzQ=,formulahendry/955.WLB,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2OTg4MDIw,SheetJS/sheetjs,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMjgyMDUzNw==,slatedocs/slate,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk3NjY3OTQ5Ng==,kuchin/awesome-cto,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOHL0RdA,geekan/HowToLiveLonger,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTM5Mzg3MQ==,sorrycc/awesome-javascript,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyODM4NzQwNg==,awesome-foss/awesome-sysadmin,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk0NTUxMjk4OQ==,xitu/gold-miner,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTE2NjY=,nodejs/node-v0.x-archive,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOGQiQXg,mli/paper-reading,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOGRJJAQ,waydabber/BetterDisplay,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOREtPzg,Leey21/awesome-ai-research-writing,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOJIZL3g,cursor/cursor,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzMjg4MzEyNDQ=,ibraheemdev/modern-unix,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTI4OTExMA==,vinta/awesome-python,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzNjYzMzM3MA==,awesome-selfhosted/awesome-selfhosted,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxNzc3MzY1MzM=,996icu/996.ICU,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkyMzI1Mjk4,torvalds/linux,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMzgzOTMxMzk=,trimstray/the-book-of-secret-knowledge,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDORCCMkQ,multica-ai/andrej-karpathy-skills,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOMCtNDQ,DigitalPlatDev/FreeDomain,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMDYyODk3,github/gitignore,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOT3T1gw,deepseek-ai/deepseek-harness,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzMjQ4NDM4MQ==,ripienaar/free-for-dev,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk1NTA3NjA2Mw==,Hack-with-Github/Awesome-Hacking,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxNDA5ODA2OQ==,justjavac/free-programming-books-zh_CN,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOIAstBQ,openai/whisper,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk0MTY0NDgy,django/django,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxODYzMzI5,laravel/laravel,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk3MTU4MzYwMg==,Developer-Y/cs-video-courses,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk3MTIyMDc1Nw==,swisskyrepo/PayloadsAllTheThings,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMDExMzgzMTU=,d2l-ai/d2l-zh,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMTU0Nzg4MjA=,binhnguyennus/awesome-scalability,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxODQwODYzNQ==,chrislgarry/Apollo-11,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkyNjE3ODc3NTg=,bradtraversy/design-resources-for-developers,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxNjE0NDEw,FFmpeg/FFmpeg,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzNjUwMg==,git/git,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk5MDUyODgzMA==,Solido/awesome-flutter,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk1NDgzMzMw,soimort/you-get,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOK_txHA,maybe-finance/maybe,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzNDMyMjY2,JetBrains/kotlin,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOLhdsRA,xai-org/grok-1,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMzk4MjQ0MjM=,Avik-Jain/100-Days-Of-ML-Code,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk4NTAzMTQ0Mg==,poteto/hiring-without-whiteboards,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk3NTY5NTc4,discourse/discourse,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxODc5NjE5MDc=,gedoor/legado,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOIwXaJw,LC044/WeChatMsg,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzMTMzMzA5OTg=,bradtraversy/50projects50days,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzNzc0MzI4,wg/wrk,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOMA9nfw,karpathy/LLM101n,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOHkl5Tw,hehonghui/awesome-english-ebooks,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk4OTg5ODQy,unknwon/the-way-to-go_ZH_CN,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOGQiQXg,mli/paper-reading,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkyMjExMjQz,apache/kafka,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk0MDg2NjE2,shadowsocks/shadowsocks,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxODI4Nzk1,AFNetworking/AFNetworking,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOJIZL3g,cursor/cursor,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
