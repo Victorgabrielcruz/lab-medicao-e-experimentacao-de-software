@@ -57,11 +57,21 @@ Implementar as métricas de idade do repositório (RQ01) e quantidade de Pull Re
 
 ### Critérios de aceitação
 
-* [ ] Métrica de RQ01 implementada.
-* [ ] Idade calculada corretamente a partir da data de criação.
-* [ ] Métrica de RQ02 implementada.
-* [ ] Apenas Pull Requests `MERGED` são contabilizadas.
-* [ ] Saída gerada sem erros para os registros de teste.
+* [x] Métrica de RQ01 implementada.
+* [x] Idade calculada corretamente a partir da data de criação.
+* [x] Métrica de RQ02 implementada.
+* [x] Apenas Pull Requests `MERGED` são contabilizadas.
+* [x] Saída gerada sem erros para os registros de teste.
+
+### Observações
+
+Implementado em `src/metrics/rq01_rq02_age_pullrequests.py`. `age_years` é
+calculado como `(collected_at - created_at) / 365.25 dias` e
+`accepted_pull_requests` é copiado de `merged_pull_requests` (já filtrado para
+`MERGED` pela query GraphQL). Testado em `tests/` e confirmado na coleta
+completa de 1.000 repositórios (`data/processed/repos_processed_2026-08-20T222207Z.csv`,
+colunas `age_years`/`accepted_pull_requests`), validado sem inconsistências em
+S02-04.
 
 ### Resultado esperado
 
@@ -218,13 +228,23 @@ Centralizar e integrar a consulta GraphQL com todos os campos necessários às R
 
 ### Critérios de aceitação
 
-* [ ] Consulta retorna os campos mínimos para as RQs.
-* [ ] Primeiro e último commit estão disponíveis.
-* [ ] Quantidade de commits está disponível.
-* [ ] Releases, issues e Pull Requests estão disponíveis.
-* [ ] Dados necessários para RQ07 estão disponíveis.
-* [ ] Integração executa sem erro em amostra de páginas.
-* [ ] Estrutura de resposta documentada para uso interno.
+* [x] Consulta retorna os campos mínimos para as RQs.
+* [x] Primeiro e último commit estão disponíveis. Primeiro commit segue como
+  limitação documentada (proxy por `created_at`, ver S01-02).
+* [x] Quantidade de commits está disponível.
+* [x] Releases, issues e Pull Requests estão disponíveis.
+* [x] Dados necessários para RQ07 estão disponíveis.
+* [x] Integração executa sem erro em amostra de páginas.
+* [x] Estrutura de resposta documentada para uso interno.
+
+### Observações
+
+Consulta versionada em `src/github/queries/` (`00-popular-repos`,
+`10-repo-identity`, `20-rq01-rq02-age-pullrequests`,
+`30-rq03-rq04-releases-activity`, `40-rq05-rq06-language-issues`), consumida
+por `src/collector/Github/GitHubApi.cs`. Schema da resposta documentado em
+`docs/raw-dataset.md`. Confirmado em produção pela coleta completa dos 1.000
+repositórios em `data/raw/repos_raw_2026-08-20T222207Z.csv`.
 
 ### Resultado esperado
 
@@ -264,6 +284,13 @@ Configurar o board do projeto para rastrear tarefas por sprint com responsáveis
 * [ ] Responsáveis atribuídos em cada Issue.
 * [ ] Issues vinculadas à Sprint 1.
 
+### Observações
+
+Task de gestão no GitHub Projects, sem artefato de código no repositório
+local para conferir automaticamente. Confirmar diretamente no board do
+projeto; `src/snapshots/snapshot_project.py` (ver S02-08) pode ser usado para
+exportar o estado atual do board e evidenciar o cumprimento destes critérios.
+
 ### Resultado esperado
 
 Kanban operacional com rastreabilidade por Issue.
@@ -298,10 +325,19 @@ Adicionar tratamento robusto para falhas de requisição, autenticação e limit
 
 ### Critérios de aceitação
 
-* [ ] Falhas transitórias não interrompem a coleta imediatamente.
-* [ ] Erros fatais são reportados com mensagem clara.
-* [ ] Logs de erro ficam registrados para inspeção.
-* [ ] Retentativas possuem limite definido.
+* [x] Falhas transitórias não interrompem a coleta imediatamente.
+* [x] Erros fatais são reportados com mensagem clara.
+* [x] Logs de erro ficam registrados para inspeção.
+* [x] Retentativas possuem limite definido.
+
+### Observações
+
+Implementado em `src/collector/Github/Errors.cs` (`TransientApiException` para
+rede/timeout/5xx/429/rate limit, `FatalApiException` para 401/400/token
+inválido) e `GitHubApi.cs` (retentativa com backoff exponencial, até 4
+tentativas, mensagens fatais claras). Logs gravados por execução em `logs/`
+via `Log.cs`. Checkpoint em `data/raw/checkpoint.json` permite retomar a
+coleta após falha fatal sem repetir requisições já concluídas.
 
 ### Resultado esperado
 
@@ -341,10 +377,19 @@ Garantir coleta completa e consistente dos 1.000 repositórios usando cursores G
 
 ### Critérios de aceitação
 
-* [ ] Coleta alcança exatamente 1.000 repositórios válidos.
-* [ ] Paginação funciona sem duplicações.
-* [ ] Progresso de páginas registrado em log.
-* [ ] Cursores são tratados corretamente.
+* [x] Coleta alcança exatamente 1.000 repositórios válidos.
+* [x] Paginação funciona sem duplicações.
+* [x] Progresso de páginas registrado em log.
+* [x] Cursores são tratados corretamente.
+
+### Observações
+
+Implementado em `src/collector/Collection/RepositoryCollector.cs`: loop por
+`endCursor`/`hasNextPage`, deduplicação por `id` (repositório pode trocar de
+página durante a coleta por mudança de ranking), checkpoint de retomada em
+`Checkpoint.cs`/`PageStore.cs` e log por página em `logs/`. Confirmado pela
+coleta oficial `data/raw/repos_raw_2026-08-20T222207Z.csv` (1.000 linhas, 0
+duplicados descartados sem substituição).
 
 ### Resultado esperado
 
@@ -382,10 +427,19 @@ Exportar dados coletados e métricas para arquivos CSV padronizados.
 
 ### Critérios de aceitação
 
-* [ ] CSV bruto gerado após coleta.
-* [ ] CSV processado gerado após métricas.
-* [ ] Arquivos legíveis e consistentes.
-* [ ] Schema documentado.
+* [x] CSV bruto gerado após coleta.
+* [x] CSV processado gerado após métricas.
+* [x] Arquivos legíveis e consistentes.
+* [x] Schema documentado.
+
+### Observações
+
+CSV bruto gravado por `src/collector/Export/RawCsvWriter.cs`
+(`data/raw/repos_raw_<coleta>.csv`); CSV processado gerado por
+`src/analysis/build_processed_dataset.py`
+(`data/processed/repos_processed_<coleta>.csv`). Convenções de codificação,
+separador e tipos documentadas em `docs/raw-dataset.md` e
+`docs/processed-dataset.md`, e verificadas por `tests/test_csv_format.py`.
 
 ### Resultado esperado
 
@@ -426,11 +480,22 @@ Consolidar o fluxo de transformação dos dados brutos em métricas processadas.
 
 ### Critérios de aceitação
 
-* [ ] Pipeline executa fim a fim sem erro.
-* [ ] Métricas aparecem no dataset processado.
-* [ ] Datas são normalizadas.
-* [ ] Métricas temporais são calculadas corretamente.
-* [ ] Etapas do pipeline são reexecutáveis.
+* [x] Pipeline executa fim a fim sem erro.
+* [x] Métricas aparecem no dataset processado.
+* [x] Datas são normalizadas.
+* [x] Métricas temporais são calculadas corretamente.
+* [x] Etapas do pipeline são reexecutáveis.
+
+### Observações
+
+Implementado em `src/analysis/build_processed_dataset.py`, orquestrando
+`src/metrics/rq01_rq02_age_pullrequests.py`,
+`src/metrics/rq03_rq04_releases_activity.py` e
+`src/metrics/rq05_rq06_language_issues.py`. Normaliza tipos/datas, remove
+duplicidade por `id`, valida negativos e gera saída determinística. Testado em
+`tests/test_build_processed_dataset.py` e confirmado na execução completa
+(`repos_processed_2026-08-20T222207Z.csv`, 1.000 registros, todas as colunas
+derivadas de RQ01–RQ06 presentes).
 
 ### Resultado esperado
 
@@ -733,8 +798,19 @@ Registrar snapshots do board ao fim da sprint para evidência do processo.
 ### Critérios de aceitação
 
 * [ ] Snapshot da Sprint 2 gerado.
-* [ ] Artefato armazenado em local definido.
+* [x] Artefato armazenado em local definido. Rotina e diretório definidos
+  (`data/snapshots/`), só falta a execução para a Sprint 2.
 * [ ] Snapshot vinculado às Issues da sprint.
+
+### Observações
+
+Rotina implementada em `src/snapshots/snapshot_project.py` (exporta itens do
+GitHub Projects v2 via GraphQL para `data/snapshots/snapshot_<sprint>_<carimbo>.csv`,
+sem sobrescrever execuções anteriores). Só existe o snapshot da Sprint 1
+(`data/snapshots/snapshot_Lab01S01_20260814T013915Z.csv`); falta rodar
+`python src/snapshots/snapshot_project.py Lab01S02` (requer token com escopo
+`read:project`, ver `.env.example`) para gerar o snapshot da Sprint 2 e
+vinculá-lo às Issues correspondentes.
 
 ### Resultado esperado
 
