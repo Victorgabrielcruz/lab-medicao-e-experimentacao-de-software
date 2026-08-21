@@ -100,7 +100,9 @@ class AddMetricsTest(unittest.TestCase):
         self.assertEqual(percentuais.iloc[2], 100)
 
     def test_preserva_a_coluna_bruta(self):
-        self.assertEqual(list(self.df["primary_language"]), ["Python", None, "Rust"])
+        self.assertEqual(self.df["primary_language"].iloc[0], "Python")
+        self.assertTrue(pd.isna(self.df["primary_language"].iloc[1]))
+        self.assertEqual(self.df["primary_language"].iloc[2], "Rust")
 
     def test_issues_negativas_falham(self):
         df = pd.DataFrame(
