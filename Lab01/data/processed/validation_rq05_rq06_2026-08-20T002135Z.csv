@@ -1,0 +1,26 @@
+record_type,id,name_with_owner,field,expected,actual,detail
+observation,MDEwOlJlcG9zaXRvcnkyMTczNzQ2NQ==,sindresorhus/awesome,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk2MDQ5MzEwMQ==,jwasham/coding-interview-university,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzNjYzMzM3MA==,awesome-selfhosted/awesome-selfhosted,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNzc3MzY1MzM=,996icu/996.ICU,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMzgzOTMxMzk=,trimstray/the-book-of-secret-knowledge,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDORCCMkQ,multica-ai/andrej-karpathy-skills,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMjEzOTU1MTA=,CyC2018/CS-Notes,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNDQ0MDI3MA==,getify/You-Dont-Know-JS,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxMDYyODk3,github/gitignore,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkzNTk1NTY2Ng==,jlevy/the-art-of-command-line,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,R_kgDOODsgVw,x1xhlol/system-prompts-and-models-of-ai-tools,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnk1NTA3NjA2Mw==,Hack-with-Github/Awesome-Hacking,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkxNDA5ODA2OQ==,justjavac/free-programming-books-zh_CN,primary_language,,,linguagem ausente; categoria normalizada aplicada
+observation,MDEwOlJlcG9zaXRvcnkyMTI4OTExMA==,vinta/awesome-python,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzNjYzMzM3MA==,awesome-selfhosted/awesome-selfhosted,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxNzc3MzY1MzM=,996icu/996.ICU,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkyMzI1Mjk4,torvalds/linux,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMzgzOTMxMzk=,trimstray/the-book-of-secret-knowledge,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDORCCMkQ,multica-ai/andrej-karpathy-skills,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOMCtNDQ,DigitalPlatDev/FreeDomain,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxMDYyODk3,github/gitignore,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,R_kgDOT3T1gw,deepseek-ai/deepseek-harness,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkzMjQ4NDM4MQ==,ripienaar/free-for-dev,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnk1NTA3NjA2Mw==,Hack-with-Github/Awesome-Hacking,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
+observation,MDEwOlJlcG9zaXRvcnkxNDA5ODA2OQ==,justjavac/free-programming-books-zh_CN,closed_issues_percentage,,,repositório sem issues; percentual permanece ausente
