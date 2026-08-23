@@ -20,6 +20,8 @@ public sealed class ProjectPaths
     public string RawDir => Path.Combine(Root, "data", "raw");
 
     public string ProcessedDir => Path.Combine(Root, "data", "processed");
+    
+    public string CacheDir => Path.Combine(Root, "data", "cache");
 
     public string LogsDir => Path.Combine(Root, "logs");
 

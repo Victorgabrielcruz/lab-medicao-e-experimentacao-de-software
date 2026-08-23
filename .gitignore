@@ -11,6 +11,9 @@ data/raw/*
 logs/
 *.log
 
+# Cache local da coleta (regenerável automaticamente)
+Lab01/data/cache/
+
 # .NET
 bin/
 obj/
