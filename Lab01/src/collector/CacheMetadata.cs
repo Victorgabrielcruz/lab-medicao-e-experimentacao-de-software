@@ -12,6 +12,8 @@ public sealed record CacheMetadata(
     bool Completed
 )
 {
+    private static readonly TimeSpan CacheLifetime = TimeSpan.FromHours(24);
+    
     public bool CanUseCache(CollectorOptions options, DateTimeOffset nowUtc, string queryVersion)
     {
         if (!Completed)
@@ -41,7 +43,7 @@ public sealed record CacheMetadata(
         if (CompletedAt > nowUtc)
             return false;
 
-        if (nowUtc - CompletedAt.Value >= TimeSpan.FromHours(24))
+        if (nowUtc - CompletedAt.Value >= CacheLifetime)
             return false;
 
         return true;
