@@ -6,7 +6,8 @@ public sealed record CollectorOptions(
     string Token,
     string SearchQuery,
     int PageSize,
-    int TargetRepos)
+    int TargetRepos,
+    bool UseCache)
 {
     public static CollectorOptions FromEnvFile(string path)
     {
@@ -21,7 +22,8 @@ public sealed record CollectorOptions(
             Required(env, "GITHUB_TOKEN"),
             Required(env, "SEARCH_QUERY"),
             int.Parse(Required(env, "PAGE_SIZE")),
-            int.Parse(Required(env, "TARGET_REPOS")));
+            int.Parse(Required(env, "TARGET_REPOS")),
+            bool.Parse(Required(env, "USE_CACHE")));
     }
 
     private static string Required(Dictionary<string, string> env, string key) =>
