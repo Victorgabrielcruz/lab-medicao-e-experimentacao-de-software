@@ -1164,6 +1164,63 @@ Dashboard interativo em Streamlit, alimentado pela base processada oficial, apre
 
 **EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
 
+## S03-08 — Implementar cache local da coleta [S03] — EXTRA
+
+**Responsável:** Matheus Fernandes
+**Tipo:** Extra / Opcional
+
+### Objetivo
+
+Implementar cache local para a coleta de repositórios via API GraphQL do GitHub, evitando novas requisições à API quando já existe uma coleta recente e compatível disponível localmente.
+
+Esta task é uma **atividade extra da Sprint 3**, complementar à resiliência já implementada em S01-06. Ela não altera os campos coletados nem o formato do CSV bruto gerado; apenas evita refazer requisições à API quando uma coleta anterior equivalente já está disponível.
+
+### O que deve ser feito
+
+* Salvar metadados da coleta em `data/cache/metadata.json` após uma execução bem-sucedida (parâmetros usados, data/hora de conclusão, caminhos dos arquivos JSON gerados).
+* Adicionar a opção `USE_CACHE` (`.env`/`CollectorOptions`):
+  * `USE_CACHE=true`: antes de coletar, verificar se a coleta anterior registrada em `metadata.json` usou os mesmos parâmetros, foi concluída há menos de 24 horas e se os arquivos JSON referenciados ainda existem e são válidos; em caso positivo, reaproveitar os dados localmente, sem novas requisições à API.
+  * `USE_CACHE=false`: ignorar o cache e forçar nova coleta via API, atualizando o `metadata.json` ao final.
+* Cair de volta (fallback) para a coleta via API sempre que o cache estiver ausente, expirado (mais de 24h), com parâmetros incompatíveis ou com arquivos JSON ausentes/inválidos.
+* Garantir que uma coleta cacheada produza o CSV bruto no mesmo formato de uma coleta feita via API.
+* Atualizar `metadata.json` somente após uma nova coleta concluída com sucesso pela API (nunca a partir de uma execução servida pelo cache).
+* Documentar a variável `USE_CACHE` em `.env.example` e em `docs/tutorial-execucao.md`.
+
+### Arquivos/módulos envolvidos
+
+* `src/collector/CollectorOptions.cs`
+* `src/collector/Collection/`
+* `data/cache/metadata.json`
+* `.env.example`
+* `docs/tutorial-execucao.md`
+
+### Dependências
+
+* S01-04
+* S01-06
+
+### Critérios de aceitação
+
+* [x] Coletas cacheadas mantêm o mesmo formato de CSV bruto de uma coleta via API.
+* [x] Cache inválido, expirado (>24h), incompatível (parâmetros diferentes) ou com JSONs ausentes utiliza a API como fallback.
+* [x] `metadata.json` é atualizado somente após uma nova coleta concluída pela API.
+* [x] `USE_CACHE=false` força a atualização dos dados, ignorando qualquer cache existente.
+* [x] Build do coletor executado sem erros.
+
+### Observações
+
+Implementado via PR #47 ("feat: implementa cache local da coleta"). Cache
+controlado pela variável `USE_CACHE` e metadados persistidos em
+`data/cache/metadata.json` (parâmetros da coleta, timestamp de conclusão e
+referência aos arquivos JSON brutos). Validado manualmente conforme os
+critérios acima; build do coletor (`dotnet build`) executado sem erros.
+
+### Resultado esperado
+
+Coletas repetidas com os mesmos parâmetros, dentro da janela de 24h, deixam de gerar novas requisições à API do GitHub, reduzindo tempo de execução e consumo de rate limit durante testes e reexecuções do pipeline.
+
+**EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
+
 ---
 
 # Relatório Final
