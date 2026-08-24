@@ -1055,3 +1055,158 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 Análise interpretativa dos principais outliers encontrados, identificando comportamentos extremos e possíveis explicações para esses casos.
 
 **EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
+
+## S03-06 — Criar pipeline único de execução (pós-coleta) [S03] — EXTRA
+
+**Responsável:**
+**Tipo:** Extra / Opcional
+
+### Objetivo
+
+Automatizar em um único comando o trecho do fluxo já existente do projeto que roda em Python — geração do dataset processado, validação das RQ01–RQ06 e (quando aplicável) a análise da RQ07 —, hoje executado manualmente passo a passo conforme `docs/tutorial-execucao.md`.
+
+Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas obrigatórias da RQ07. Ela não substitui nem altera nenhuma das etapas nem das métricas já implementadas; apenas orquestra os scripts Python existentes.
+
+**Revisão de escopo:** a etapa de coleta (`dotnet run --project src/collector`) **não** faz parte deste pipeline único. O coletor é um projeto C#/.NET separado (`src/collector/Collector.csproj`), com seu próprio ciclo de build/execução e requisitos de ambiente (SDK do .NET), independentes do interpretador Python usado nas demais etapas. Amarrar as duas linguagens num único processo orquestrador criaria acoplamento desnecessário (o script teria que localizar e parsear a saída do `dotnet run` para descobrir o nome do CSV gerado, além de exigir .NET instalado em qualquer ambiente que rode o orquestrador, inclusive em CI/testes automatizados). Por isso, a coleta continua sendo um passo manual e separado, documentado em `docs/tutorial-execucao.md`; o pipeline único assume como **entrada obrigatória** um CSV bruto já coletado (`data/raw/repos_raw_<coleta>.csv`).
+
+### O que deve ser feito
+
+* Criar um script orquestrador (`scripts/run_pipeline.py`) que receba o caminho de um CSV bruto já coletado (obrigatório, via argumento) e execute, na ordem:
+  1. `src/analysis/build_processed_dataset.py` sobre o CSV bruto informado;
+  2. os três scripts de validação (`rq01_rq02`, `rq03_rq04`, `rq05_rq06`);
+  3. a análise da RQ07 (`src/analysis/rq07_analysis.py`), quando essa task (S03-02) já estiver concluída.
+* Validar, antes de iniciar, que o CSV bruto informado existe e é legível; interromper com mensagem clara caso contrário (não é responsabilidade deste script rodar a coleta).
+* Interromper o pipeline e reportar claramente a etapa e o motivo em caso de falha em qualquer passo (ex.: CSV ausente/malformado, inconsistência crítica).
+* Registrar, ao final, o caminho de cada artefato gerado (processado, validações).
+* Documentar o uso do script em `docs/tutorial-execucao.md`, deixando explícito que a coleta (`dotnet run --project src/collector`) deve ser executada manualmente antes, sem remover o passo a passo manual já existente (o script é um atalho para a parte Python, não uma substituição da documentação detalhada nem da coleta).
+
+### Arquivos/módulos envolvidos
+
+* `scripts/run_pipeline.py`
+* `docs/tutorial-execucao.md`
+* `tests/test_run_pipeline.py`
+
+### Dependências
+
+* S02-04
+* S02-05
+* S02-06
+* S02-07
+* S03-02 (a etapa de RQ07 do pipeline só roda quando esta task estiver concluída)
+
+### Critérios de aceitação
+
+* [ ] Um único comando executa processamento e as três validações em sequência, a partir de um CSV bruto informado.
+* [ ] Script recusa executar (com mensagem clara) se o CSV bruto informado não existir ou for inválido, sem tentar rodar a coleta.
+* [ ] Falha em qualquer etapa interrompe o pipeline com mensagem clara indicando qual etapa falhou.
+* [ ] Caminhos dos artefatos gerados são exibidos ao final da execução.
+* [ ] Uso documentado em `docs/tutorial-execucao.md`, incluindo a observação de que a coleta C# é um passo manual prévio, fora do escopo deste script.
+* [ ] Script executa sem erros sobre um CSV bruto de amostra piloto (100 repositórios).
+
+### Resultado esperado
+
+Comando único que reproduz, a partir de um CSV bruto já coletado manualmente, o fluxo de processamento e validação já documentado, reduzindo erro manual e facilitando a reexecução do laboratório a cada nova sprint — sem depender de integrar a etapa de coleta em C# ao orquestrador Python.
+
+**EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
+
+## S03-07 — Criar dashboard Streamlit com as métricas e resultados das RQs [S03] — EXTRA
+
+**Responsável:** Víctor Gabriel Cruz Pereira
+**Tipo:** Extra / Opcional
+
+### Objetivo
+
+Criar uma interface visual, usando Streamlit, que apresente as métricas utilizadas e os resultados obtidos para as RQ01–RQ06 (e RQ07, quando disponível) a partir da base processada, complementando os relatórios em Markdown com uma visualização interativa.
+
+Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas obrigatórias da RQ07. O dashboard é somente leitura: ele não recalcula métricas nem substitui os scripts de `src/metrics/` e `src/analysis/`, apenas lê e exibe a base processada já validada.
+
+### O que deve ser feito
+
+* Criar `src/dashboard/app.py`, lendo o CSV processado mais recente de `data/processed/` (com opção de escolher outra execução/coleta na própria interface).
+* Exibir uma visão geral da coleta: quantidade de repositórios, data de referência (`collected_at`), repositórios arquivados, repositórios sem linguagem identificada.
+* Para cada RQ (01 a 06), apresentar: a métrica/fórmula utilizada (texto curto, coerente com `docs/methodology.md`), estatísticas descritivas (mediana, média, mínimo, máximo) e ao menos uma visualização (histograma, barras ou equivalente).
+* Para a RQ07 (quando a análise da S03-02 estiver disponível), apresentar a comparação entre linguagens populares e não populares nas métricas de RQ02, RQ03 e RQ04.
+* Adicionar filtro por linguagem primária e, se fizer sentido, por status de arquivamento.
+* Tratar o caso de não existir nenhum CSV processado ainda, orientando o usuário a rodar o pipeline antes.
+* Permitir a exportação de cada gráfico exibido no dashboard (ex.: botão de download em PNG/SVG e/ou dos dados subjacentes em CSV), para que os gráficos possam ser reaproveitados diretamente no Relatório Final.
+* Adicionar `streamlit` (e dependências de gráficos, se usadas) a `requirements.txt`.
+* Documentar como iniciar o dashboard (`streamlit run src/dashboard/app.py`) em `docs/tutorial-execucao.md` e no `README.md`.
+
+### Arquivos/módulos envolvidos
+
+* `src/dashboard/app.py`
+* `requirements.txt`
+* `docs/tutorial-execucao.md`
+* `README.md`
+
+### Dependências
+
+* S02-04
+* S02-05
+* S02-06
+* S02-07
+* S03-06 (o dashboard é a etapa final do pipeline único, quando esta também for implementada)
+
+### Critérios de aceitação
+
+* [ ] Dashboard sobe com `streamlit run src/dashboard/app.py` sem erros.
+* [ ] Visão geral da coleta é exibida corretamente.
+* [ ] Métrica, estatísticas e ao menos um gráfico são exibidos para cada uma das RQ01–RQ06.
+* [ ] Comparação da RQ07 é exibida quando a análise correspondente estiver disponível.
+* [ ] Filtro por linguagem funciona sem quebrar os gráficos e estatísticas.
+* [ ] Todo gráfico exibido possui opção de exportação (download em imagem e/ou CSV dos dados).
+* [ ] Caso de ausência de CSV processado é tratado com mensagem clara, sem erro não tratado.
+* [ ] Uso documentado em `docs/tutorial-execucao.md` e no `README.md`.
+
+### Resultado esperado
+
+Dashboard interativo em Streamlit, alimentado pela base processada oficial, apresentando as métricas utilizadas e os resultados de cada RQ, com opção de exportação dos gráficos, para apoiar a leitura do relatório final e a "Configuração do processo" apresentada na correção.
+
+**EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
+
+---
+
+# Relatório Final
+
+## RF-01 — Elaborar o Relatório Final do Lab01
+
+**Responsável:** Víctor Gabriel Cruz Pereira
+**Tipo:** Obrigatória
+
+### Objetivo
+
+Elaborar o documento do Relatório Final do Lab01, seguindo a estrutura definida em `docs/Template_Relatorio_Laboratorio.md`, consolidando hipóteses, metodologia, resultados por RQ (RQ01–RQ07), discussão e a seção "Configuração do processo" (colunas do board, política de WIP e print do quadro Kanban).
+
+Esta task fica sob a responsabilidade de Víctor Gabriel Cruz Pereira por ele já ser o responsável pela criação do dashboard (S03-07): os gráficos exportados diretamente do dashboard (PNG/SVG e/ou CSV) são a fonte usada para ilustrar a seção 4.2 (Visualização Gráfica) do relatório, evitando divergência entre o que é mostrado no dashboard e o que é apresentado no relatório.
+
+### O que deve ser feito
+
+* Preencher `docs/Template_Relatorio_Laboratorio.md` (convertido a partir de `docs/Template_Relatorio_Laboratorio.docx`) com o conteúdo real do grupo, removendo os parágrafos de "ORIENTAÇÃO".
+* Redigir introdução, contexto, metodologia (desafios, decisões, etapas, ferramentas, tabela de métricas e inovações) e conclusão.
+* Exportar do dashboard Streamlit (S03-07) os gráficos referentes a cada RQ (RQ01–RQ07) e inseri-los na seção de resultados/visualização gráfica do relatório.
+* Redigir a discussão comparando hipótese informal vs. resultado obtido, por RQ.
+* Incluir a seção "Configuração do processo": colunas do board, política de WIP e print do GitHub Projects ao final do laboratório.
+* Salvar o relatório final em `reports/final/`.
+
+### Arquivos/módulos envolvidos
+
+* `docs/Template_Relatorio_Laboratorio.md`
+* `reports/final/`
+* `src/dashboard/app.py` (fonte dos gráficos exportados)
+
+### Dependências
+
+* S03-02
+* S03-03
+* S03-07
+
+### Critérios de aceitação
+
+* [ ] Relatório final segue a estrutura de `docs/Template_Relatorio_Laboratorio.md`, sem parágrafos de "ORIENTAÇÃO" remanescentes.
+* [ ] Todas as RQs (RQ01–RQ07) possuem resultado, gráfico exportado do dashboard e discussão hipótese vs. resultado.
+* [ ] Seção "Configuração do processo" presente, com print do board e política de WIP.
+* [ ] Relatório final salvo em `reports/final/`.
+
+### Resultado esperado
+
+Relatório Final do Lab01 completo, com os gráficos de cada RQ exportados diretamente do dashboard Streamlit, pronto para entrega.
