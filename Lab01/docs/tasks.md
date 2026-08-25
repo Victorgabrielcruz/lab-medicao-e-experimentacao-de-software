@@ -854,13 +854,37 @@ Integrar as métricas RQ01–RQ06 em um único dataset consistente para permitir
 
 ### Critérios de aceitação
 
-* [ ] Dataset consolidado contém os repositórios da amostra oficial.
-* [ ] Métricas RQ01–RQ06 estão disponíveis.
-* [ ] Não existem repositórios duplicados.
-* [ ] Métricas estão associadas corretamente ao respectivo repositório.
-* [ ] Valores ausentes estão identificados.
-* [ ] Inconsistências relevantes estão registradas.
-* [ ] Dataset está pronto para utilização na análise da RQ07.
+* [x] Dataset consolidado contém os repositórios da amostra oficial.
+* [x] Métricas RQ01–RQ06 estão disponíveis.
+* [x] Não existem repositórios duplicados.
+* [x] Métricas estão associadas corretamente ao respectivo repositório.
+* [x] Valores ausentes estão identificados.
+* [x] Inconsistências relevantes estão registradas.
+* [x] Dataset está pronto para utilização na análise da RQ07.
+
+### Observações
+
+Implementado em `src/analysis/consolidate_rq07_dataset.py`, que reaproveita
+(sem recalcular) a base já integrada por `build_processed_dataset.py`
+(S02-03) e confirma, por identificador: ausência de duplicidade, presença de
+todas as colunas derivadas de RQ01–RQ06 e contagem de valores ausentes
+esperados (`days_since_last_commit`/`days_since_push`/`development_period_days`
+quando não há commit, `closed_issues_percentage` quando não há issues).
+Gera dois artefatos por execução:
+
+```text
+data/processed/repos_rq07_consolidated_<coleta>.csv
+reports/drafts/consolidation_rq07_<coleta>.md
+```
+
+Testado em `tests/test_consolidate_rq07_dataset.py` (dataset válido,
+detecção de IDs duplicados, detecção de coluna obrigatória ausente,
+execução fim a fim com escrita dos dois artefatos e leitura do `id` como
+texto). Rodado contra a coleta completa (`repos_processed_2026-08-20T222207Z.csv`):
+1.000 repositórios, 0 IDs duplicados, 0 colunas ausentes, 87 sem linguagem
+primária e 43 sem issues — os mesmos números já documentados em
+`docs/rq05-rq06-validation.md` e `reports/drafts/data_quality_2026-08-20T222207Z.md`,
+confirmando que nenhuma métrica foi alterada na consolidação.
 
 ### Resultado esperado
 
