@@ -1,0 +1,13 @@
+grupo,metrica,descricao,n,media,mediana,q1,q3,tipo,pearson,spearman
+Popular,accepted_pull_requests,Pull requests aceitas,702,4519.091168091168,1000.0,222.0,3908.25,grupo,,
+Popular,releases_count,Releases,702,153.0014245014245,62.0,6.0,186.0,grupo,,
+Popular,days_since_push,Dias desde o último push,702,90.6068376068376,1.0,0.0,20.75,grupo,,
+Não popular,accepted_pull_requests,Pull requests aceitas,211,4424.781990521327,670.0,181.0,3216.5,grupo,,
+Não popular,releases_count,Releases,211,89.90521327014218,30.0,0.0,114.0,grupo,,
+Não popular,days_since_push,Dias desde o último push,211,116.82938388625593,3.0,0.0,36.5,grupo,,
+,age_years,Idade (anos),1000,,,,,correlacao,0.0005278504056943859,-0.03299262948751893
+,accepted_pull_requests,Pull requests aceitas,1000,,,,,correlacao,0.08344461118690384,0.10716572360774765
+,releases_count,Releases,1000,,,,,correlacao,-0.021990605244568116,-0.018631806602586568
+,days_since_push,Dias desde o último push,1000,,,,,correlacao,-0.08713664274060767,-0.11085698120032969
+,total_issues,Issues totais,1000,,,,,correlacao,0.16818771369082888,0.08636228330929477
+,closed_issues_percentage,% de issues fechadas,957,,,,,correlacao,0.033437574912748444,0.040686575303398635

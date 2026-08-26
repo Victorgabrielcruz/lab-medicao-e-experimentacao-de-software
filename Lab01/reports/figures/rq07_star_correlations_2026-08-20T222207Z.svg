@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="480" viewBox="0 0 900 480">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="35" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">Correlação de Spearman com estrelas</text>
+<line x1="100" y1="230.0" x2="860" y2="230.0" stroke="#555"/>
+<rect x="126.1" y="230.0" width="74.5" height="47.6" fill="#ff7f0e"/>
+<text x="163.3" y="295.6" text-anchor="middle" font-family="Arial" font-size="13">-0.03</text>
+<text x="163.3" y="435" text-anchor="middle" font-family="Arial" font-size="12">Idade (anos)</text>
+<rect x="252.7" y="75.3" width="74.5" height="154.7" fill="#ff7f0e"/>
+<text x="290.0" y="68.3" text-anchor="middle" font-family="Arial" font-size="13">0.11</text>
+<text x="290.0" y="435" text-anchor="middle" font-family="Arial" font-size="12">Pull requests aceitas</text>
+<rect x="379.4" y="230.0" width="74.5" height="26.9" fill="#ff7f0e"/>
+<text x="416.7" y="274.9" text-anchor="middle" font-family="Arial" font-size="13">-0.02</text>
+<text x="416.7" y="435" text-anchor="middle" font-family="Arial" font-size="12">Releases</text>
+<rect x="506.1" y="230.0" width="74.5" height="160.0" fill="#ff7f0e"/>
+<text x="543.3" y="408.0" text-anchor="middle" font-family="Arial" font-size="13">-0.11</text>
+<text x="543.3" y="435" text-anchor="middle" font-family="Arial" font-size="12">Dias desde o último push</text>
+<rect x="632.7" y="105.4" width="74.5" height="124.6" fill="#ff7f0e"/>
+<text x="670.0" y="98.4" text-anchor="middle" font-family="Arial" font-size="13">0.09</text>
+<text x="670.0" y="435" text-anchor="middle" font-family="Arial" font-size="12">Issues totais</text>
+<rect x="759.4" y="171.3" width="74.5" height="58.7" fill="#ff7f0e"/>
+<text x="796.7" y="164.3" text-anchor="middle" font-family="Arial" font-size="13">0.04</text>
+<text x="796.7" y="435" text-anchor="middle" font-family="Arial" font-size="12">% de issues fechadas</text>
+</svg>
