@@ -66,10 +66,29 @@ class MetricFences:
 
 
 @dataclass
+class MetricProfile:
+    """Como o grupo sinalizado se compara ao resto da amostra."""
+
+    column: str
+    label: str
+    flagged: int
+    median_flagged: float
+    median_rest: float
+    without_language: float
+    without_language_sample: float
+    archived: int
+    zero_releases: float
+    zero_releases_sample: float
+
+
+@dataclass
 class OutlierResult:
     fences: list[MetricFences]
     outliers: pd.DataFrame
     total_rows: int
+    profiles: list[MetricProfile]
+    overlap: pd.Series
+    multi_metric: pd.DataFrame
 
 
 def latest_consolidated_csv() -> Path:
@@ -184,6 +203,56 @@ def observacao_for(df: pd.DataFrame, fences: MetricFences, index) -> list[str]:
     return ["valor truncado pela API" if bool(v) else "" for v in no_teto]
 
 
+def profile_for(df: pd.DataFrame, fences: MetricFences, nomes: set[str]) -> MetricProfile:
+    """Compara o grupo sinalizado com o restante da amostra."""
+    dentro = df[df["name_with_owner"].isin(nomes)]
+    fora = df[~df["name_with_owner"].isin(nomes)]
+
+    sem_linguagem = float(dentro["primary_language"].isna().mean()) if len(dentro) else 0.0
+    arquivados = int(dentro["is_archived"].sum()) if "is_archived" in dentro else 0
+
+    def zero_releases(frame: pd.DataFrame) -> float:
+        if "releases_count" not in frame or frame.empty:
+            return 0.0
+
+        return float((frame["releases_count"] == 0).mean())
+
+    return MetricProfile(
+        column=fences.column,
+        label=fences.label,
+        flagged=len(dentro),
+        median_flagged=float(dentro[fences.column].median()) if len(dentro) else float("nan"),
+        median_rest=float(fora[fences.column].median()) if len(fora) else float("nan"),
+        without_language=sem_linguagem,
+        without_language_sample=float(df["primary_language"].isna().mean()),
+        archived=arquivados,
+        zero_releases=zero_releases(dentro),
+        zero_releases_sample=zero_releases(df),
+    )
+
+
+def overlap_for(outliers: pd.DataFrame) -> tuple[pd.Series, pd.DataFrame]:
+    """Quantas metricas sinalizam cada repositorio, e quem repete mais."""
+    if outliers.empty:
+        return pd.Series(dtype=int), pd.DataFrame(columns=["name_with_owner", "metricas", "quais"])
+
+    por_repo = outliers.groupby("name_with_owner")["metrica"]
+
+    contagem = por_repo.size()
+    resumo = contagem.value_counts().sort_index()
+
+    multi = pd.DataFrame(
+        {
+            "name_with_owner": contagem.index,
+            "metricas": contagem.values,
+            "quais": por_repo.apply(lambda s: ", ".join(sorted(s))).values,
+        }
+    )
+    multi = multi[multi["metricas"] >= 2].sort_values("metricas", ascending=False)
+
+    return resumo, multi.reset_index(drop=True)
+
+
 def analyze(df: pd.DataFrame) -> OutlierResult:
     fences = [fences_for(df, coluna, rotulo) for coluna, rotulo in METRICS.items()]
     partes = [outliers_for(df, f) for f in fences]
@@ -195,7 +264,24 @@ def analyze(df: pd.DataFrame) -> OutlierResult:
         else partes[0] if partes else pd.DataFrame()
     )
 
-    return OutlierResult(fences=fences, outliers=outliers, total_rows=len(df))
+    nomes_por_metrica = {
+        f.column: set(outliers.loc[outliers["metrica"] == f.column, "name_with_owner"])
+        if not outliers.empty
+        else set()
+        for f in fences
+    }
+
+    profiles = [profile_for(df, f, nomes_por_metrica[f.column]) for f in fences]
+    resumo, multi = overlap_for(outliers)
+
+    return OutlierResult(
+        fences=fences,
+        outliers=outliers,
+        total_rows=len(df),
+        profiles=profiles,
+        overlap=resumo,
+        multi_metric=multi,
+    )
 
 
 def output_for(source: Path, prefixo: str, extensao: str) -> Path:
@@ -275,7 +361,53 @@ def build_report(result: OutlierResult, source: Path, csv_output: Path) -> str:
             f"| {f.below + f.above} | {f.zscore_flagged} |"
         )
 
-    linhas += ["", "## Repositórios sinalizados por métrica", ""]
+    linhas += [
+        "",
+        "## Comparação com o comportamento geral da amostra",
+        "",
+        "| métrica | sinalizados | mediana do grupo | mediana do resto | sem linguagem | arquivados |",
+        "|---|---|---|---|---|---|",
+    ]
+
+    for p in result.profiles:
+        if p.flagged == 0:
+            linhas.append(f"| {p.label} | 0 | | | | |")
+            continue
+
+        linhas.append(
+            f"| {p.label} | {p.flagged} | {p.median_flagged:.1f} | {p.median_rest:.1f} "
+            f"| {p.without_language:.0%} (amostra {p.without_language_sample:.0%}) | {p.archived} |"
+        )
+
+    linhas += [
+        "",
+        "## Repositórios sinalizados em mais de uma métrica",
+        "",
+    ]
+
+    if result.overlap.empty:
+        linhas += ["Nenhum.", ""]
+    else:
+        linhas += ["| métricas simultâneas | repositórios |", "|---|---|"]
+
+        for quantidade, repos in result.overlap.items():
+            linhas.append(f"| {quantidade} | {repos} |")
+
+        if not result.multi_metric.empty:
+            linhas += [
+                "",
+                "| repositório | métricas | quais |",
+                "|---|---|---|",
+            ]
+
+            for _, linha in result.multi_metric.head(15).iterrows():
+                linhas.append(
+                    f"| {linha['name_with_owner']} | {linha['metricas']} | {linha['quais']} |"
+                )
+
+        linhas.append("")
+
+    linhas += ["## Repositórios sinalizados por métrica", ""]
 
     for f in result.fences:
         marcados = result.outliers[result.outliers["metrica"] == f.column]
