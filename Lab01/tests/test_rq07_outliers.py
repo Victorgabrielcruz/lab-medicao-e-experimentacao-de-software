@@ -19,6 +19,8 @@ from rq07_outliers import (
     build_report,
     fences_for,
     outliers_for,
+    overlap_for,
+    profile_for,
 )
 
 
@@ -139,6 +141,94 @@ class AnalyzeTest(unittest.TestCase):
 
         self.assertIn("Q1 - 1.5 x IQR", texto)
         self.assertIn("org/repo9", texto)
+
+
+class ProfileTest(unittest.TestCase):
+    """Comparação do grupo sinalizado com o resto da amostra (S03-05)."""
+
+    def test_compara_medianas_do_grupo_e_do_resto(self):
+        df = base()
+        fences = fences_for(df, "age_years", "idade")
+        perfil = profile_for(df, fences, {"org/repo9"})
+
+        self.assertEqual(perfil.flagged, 1)
+        self.assertEqual(perfil.median_flagged, 100)
+        self.assertEqual(perfil.median_rest, 5)
+
+    def test_mede_ausencia_de_linguagem_no_grupo(self):
+        df = base(primary_language=["Python"] * 9 + [None])
+        fences = fences_for(df, "age_years", "idade")
+        perfil = profile_for(df, fences, {"org/repo9"})
+
+        self.assertEqual(perfil.without_language, 1.0)
+        self.assertAlmostEqual(perfil.without_language_sample, 0.1)
+
+    def test_conta_arquivados_e_sem_releases(self):
+        df = base(
+            is_archived=[False] * 9 + [True],
+            releases_count=[5] * 9 + [0],
+        )
+        fences = fences_for(df, "age_years", "idade")
+        perfil = profile_for(df, fences, {"org/repo9"})
+
+        self.assertEqual(perfil.archived, 1)
+        self.assertEqual(perfil.zero_releases, 1.0)
+
+    def test_grupo_vazio_nao_quebra(self):
+        df = base()
+        fences = fences_for(df, "stargazer_count", "estrelas")
+        perfil = profile_for(df, fences, set())
+
+        self.assertEqual(perfil.flagged, 0)
+        self.assertEqual(perfil.without_language, 0.0)
+
+
+class OverlapTest(unittest.TestCase):
+    """Repositórios sinalizados em mais de uma métrica."""
+
+    def outliers(self) -> pd.DataFrame:
+        return pd.DataFrame(
+            {
+                "name_with_owner": ["a/a", "a/a", "a/a", "b/b", "b/b", "c/c"],
+                "metrica": [
+                    "age_years",
+                    "releases_count",
+                    "stargazer_count",
+                    "age_years",
+                    "releases_count",
+                    "age_years",
+                ],
+            }
+        )
+
+    def test_conta_quantos_repositorios_por_numero_de_metricas(self):
+        resumo, _ = overlap_for(self.outliers())
+
+        self.assertEqual(resumo[1], 1)
+        self.assertEqual(resumo[2], 1)
+        self.assertEqual(resumo[3], 1)
+
+    def test_lista_apenas_quem_repete(self):
+        _, multi = overlap_for(self.outliers())
+
+        self.assertEqual(list(multi["name_with_owner"]), ["a/a", "b/b"])
+        self.assertEqual(multi.iloc[0]["metricas"], 3)
+        self.assertIn("stargazer_count", multi.iloc[0]["quais"])
+
+    def test_sem_outliers_devolve_estruturas_vazias(self):
+        resumo, multi = overlap_for(pd.DataFrame(columns=["name_with_owner", "metrica"]))
+
+        self.assertTrue(resumo.empty)
+        self.assertTrue(multi.empty)
+
+
+class RelatorioInterpretativoTest(unittest.TestCase):
+    def test_relatorio_traz_comparacao_e_sobreposicao(self):
+        resultado = analyze(base())
+        texto = build_report(resultado, Path("origem.csv"), Path("saida.csv"))
+
+        self.assertIn("Comparação com o comportamento geral da amostra", texto)
+        self.assertIn("Repositórios sinalizados em mais de uma métrica", texto)
 
 
 if __name__ == "__main__":
