@@ -164,6 +164,43 @@ e `docs/rq05-rq06-validation.md`.
 
 ---
 
+## 6b. Atalho: pipeline único (passos 5 e 6 em um só comando)
+
+Os passos 5 e 6, além da consolidação, análise e validação da RQ07, também
+podem ser executados de uma vez com `scripts/run_pipeline.py`, a partir de um
+CSV bruto **já coletado**:
+
+```bash
+cd Lab01
+python scripts/run_pipeline.py data/raw/repos_raw_<coleta>.csv
+```
+
+O script:
+
+* **não roda a coleta** — `dotnet run --project src/collector` continua
+  sendo um passo manual e prévio, executado conforme a seção 4 acima; o
+  pipeline único exige como entrada obrigatória o CSV bruto já gerado por
+  essa coleta;
+* recusa executar, com mensagem clara, se o CSV bruto informado não existir
+  ou estiver vazio/ilegível;
+* executa, em sequência, `build_processed_dataset.py`, as três validações
+  (`rq01_rq02`, `rq03_rq04`, `rq05_rq06`) e, por fim, a consolidação, a
+  análise e a validação da RQ07 (`consolidate_rq07_dataset.py`,
+  `rq07_analysis.py` e `rq07_validation.py`);
+* interrompe o pipeline assim que qualquer etapa falhar (CSV malformado,
+  inconsistência crítica de validação etc.), indicando claramente qual etapa
+  falhou e o motivo;
+* imprime, ao final, o caminho de cada artefato gerado.
+
+Nenhuma etapa nem métrica é reimplementada pelo orquestrador: ele só chama,
+na ordem certa, os mesmos scripts descritos nas seções 5 e 6 deste tutorial.
+A etapa de RQ07 roda incondicionalmente, no mesmo pé de igualdade das demais
+RQs: `rq07_validation.py` (ver `docs/rq07-validation.md`) valida
+`rq07_analysis.py` do mesmo jeito que as outras três validações já validam
+suas respectivas RQs.
+
+---
+
 ## 7. Gerar o snapshot do board (GitHub Projects)
 
 Opcional, usado para evidenciar o andamento da sprint (task S01-05/S02-08).
@@ -211,6 +248,7 @@ python -m unittest tests.test_rq01_rq02_validation -v
 | Validação RQ01/RQ02 | `data/processed/validation_rq01_rq02_<coleta>.csv`, `reports/drafts/validation_rq01_rq02_<coleta>.md` |
 | Validação RQ03/RQ04 | `data/processed/validation_rq03_rq04_<coleta>.csv`, `reports/drafts/validation_rq03_rq04_<coleta>.md` |
 | Validação RQ05/RQ06 | `data/processed/validation_rq05_rq06_<coleta>.csv`, `reports/drafts/validation_rq05_rq06_<coleta>.md` |
+| Pipeline único (`scripts/run_pipeline.py`) | Os mesmos artefatos das linhas acima, gerados em sequência, mais a consolidação, análise e validação da RQ07 |
 | Qualidade dos dados | `reports/drafts/data_quality_<coleta>.md` |
 | Snapshot do board | `data/snapshots/snapshot_<sprint>_<carimbo>.csv` |
 
@@ -235,5 +273,8 @@ python -m unittest tests.test_rq01_rq02_validation -v
 * `docs/methodology.md` — metodologia completa de coleta e cálculo das RQs.
 * `docs/raw-dataset.md` / `docs/processed-dataset.md` — schemas dos CSVs.
 * `docs/rq01-rq02-validation.md`, `docs/rq03-rq04-validation.md`,
-  `docs/rq05-rq06-validation.md` — manuais de validação por par de RQs.
+  `docs/rq05-rq06-validation.md`, `docs/rq07-validation.md` — manuais de
+  validação por RQ (ou par de RQs).
+* `scripts/run_pipeline.py` / `tests/test_run_pipeline.py` — pipeline único
+  que orquestra os passos 5 e 6 e a análise/validação da RQ07 em um comando.
 * `docs/tasks.md` — plano de execução por sprint e critérios de aceitação.

@@ -936,6 +936,15 @@ Implementar a análise integrada das características dos repositórios populare
 
 Análise quantitativa da RQ07 implementada, com estatísticas, relações entre as métricas e evidências necessárias para responder à questão de pesquisa.
 
+### Observações
+
+`src/analysis/rq07_analysis.py` já está implementado e testado
+(`tests/test_rq07_analysis.py`) e agora conta com validação própria em
+`src/analysis/rq07_validation.py` (`tests/test_rq07_validation.py`, ver
+`docs/rq07-validation.md`), que reproduz as estatísticas de grupo,
+correlações e outliers a partir do dataset consolidado e os compara aos
+artefatos gerados. Os checkboxes acima permanecem para o responsável marcar
+formalmente a conclusão da task.
 
 ---
 
@@ -1098,7 +1107,7 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 * Criar um script orquestrador (`scripts/run_pipeline.py`) que receba o caminho de um CSV bruto já coletado (obrigatório, via argumento) e execute, na ordem:
   1. `src/analysis/build_processed_dataset.py` sobre o CSV bruto informado;
   2. os três scripts de validação (`rq01_rq02`, `rq03_rq04`, `rq05_rq06`);
-  3. a análise da RQ07 (`src/analysis/rq07_analysis.py`), quando essa task (S03-02) já estiver concluída.
+  3. a consolidação, a análise e a validação da RQ07 (`consolidate_rq07_dataset.py`, `rq07_analysis.py` e `rq07_validation.py`).
 * Validar, antes de iniciar, que o CSV bruto informado existe e é legível; interromper com mensagem clara caso contrário (não é responsabilidade deste script rodar a coleta).
 * Interromper o pipeline e reportar claramente a etapa e o motivo em caso de falha em qualquer passo (ex.: CSV ausente/malformado, inconsistência crítica).
 * Registrar, ao final, o caminho de cada artefato gerado (processado, validações).
@@ -1116,16 +1125,34 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 * S02-05
 * S02-06
 * S02-07
-* S03-02 (a etapa de RQ07 do pipeline só roda quando esta task estiver concluída)
 
 ### Critérios de aceitação
 
-* [ ] Um único comando executa processamento e as três validações em sequência, a partir de um CSV bruto informado.
-* [ ] Script recusa executar (com mensagem clara) se o CSV bruto informado não existir ou for inválido, sem tentar rodar a coleta.
-* [ ] Falha em qualquer etapa interrompe o pipeline com mensagem clara indicando qual etapa falhou.
-* [ ] Caminhos dos artefatos gerados são exibidos ao final da execução.
-* [ ] Uso documentado em `docs/tutorial-execucao.md`, incluindo a observação de que a coleta C# é um passo manual prévio, fora do escopo deste script.
-* [ ] Script executa sem erros sobre um CSV bruto de amostra piloto (100 repositórios).
+* [x] Um único comando executa processamento e as três validações em sequência, a partir de um CSV bruto informado.
+* [x] Script recusa executar (com mensagem clara) se o CSV bruto informado não existir ou for inválido, sem tentar rodar a coleta.
+* [x] Falha em qualquer etapa interrompe o pipeline com mensagem clara indicando qual etapa falhou.
+* [x] Caminhos dos artefatos gerados são exibidos ao final da execução.
+* [x] Uso documentado em `docs/tutorial-execucao.md`, incluindo a observação de que a coleta C# é um passo manual prévio, fora do escopo deste script.
+* [x] Script executa sem erros sobre um CSV bruto de amostra piloto (100 repositórios).
+
+### Observações
+
+Implementado em `scripts/run_pipeline.py`, que orquestra via subprocesso, na
+ordem: `build_processed_dataset.py`, as três validações
+(`rq01_rq02`/`rq03_rq04`/`rq05_rq06`) e, por fim,
+`consolidate_rq07_dataset.py` + `rq07_analysis.py` + `rq07_validation.py`.
+Nenhuma métrica é recalculada aqui — o orquestrador só chama os scripts já
+existentes e lê os caminhos de saída impressos por eles. Testado em
+`tests/test_run_pipeline.py` (validação de entrada ausente/vazia, extração de
+caminhos, filtro de linhas de artefato e execução ponta a ponta sobre uma
+amostra piloto de 5 repositórios, com limpeza dos artefatos gerados ao final
+do teste).
+
+A etapa de RQ07 deixou de depender da conclusão formal da S03-02: com a
+criação de `src/analysis/rq07_validation.py` (validação da RQ07, no mesmo
+padrão das demais RQs — ver `docs/rq07-validation.md`), a etapa de RQ07 do
+pipeline agora é validada da mesma forma que RQ01–RQ06, e roda
+incondicionalmente, sem gate de nenhuma outra task.
 
 ### Resultado esperado
 
