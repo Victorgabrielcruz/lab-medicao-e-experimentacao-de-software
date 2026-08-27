@@ -1,4 +1,4 @@
-"""Valida o formato dos CSV gerados, conforme docs/raw-dataset.md.
+"""Valida o formato dos CSV gerados, conforme docs/dataset/raw-dataset.md.
 
 Roda sobre os arquivos presentes em data/. Se nao houver nenhum, os testes sao
 pulados em vez de falhar, para nao quebrar quem clonou o repositorio sem ter
@@ -17,7 +17,7 @@ RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 
 # Contrato entre a coleta em C# e a analise em Python. Mudar aqui exige mudar
-# RawCsvWriter.cs, docs/raw-dataset.md e quem le o arquivo.
+# RawCsvWriter.cs, docs/dataset/raw-dataset.md e quem le o arquivo.
 RAW_HEADER = [
     "id",
     "name_with_owner",

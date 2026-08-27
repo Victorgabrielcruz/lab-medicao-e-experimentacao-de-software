@@ -79,6 +79,6 @@ python -m unittest discover -s tests
 ## Referências
 
 * `docs/methodology.md` — seção 9 (fórmulas de RQ05 e RQ06).
-* `docs/processed-dataset.md` — schema da base processada.
-* `docs/raw-dataset.md` — schema do CSV bruto.
+* `docs/dataset/processed-dataset.md` — schema da base processada.
+* `docs/dataset/raw-dataset.md` — schema do CSV bruto.
 * `docs/tasks.md` — task S02-06, com o resultado da última execução completa.

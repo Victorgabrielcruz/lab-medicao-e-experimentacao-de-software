@@ -41,10 +41,14 @@ Também fará parte do projeto:
 
 ## Estrutura do projeto
 
+- `docs/` → enunciado, metodologia e tarefas — veja [`docs/README.md`](docs/README.md)
+  para o índice completo (schemas em `docs/dataset/`, manuais de validação em
+  `docs/validation/` e modelo do relatório final em `docs/templates/`);
 - `src/github/` → consultas GraphQL versionadas (`src/github/queries/`);
 - `src/collector/` → coletor em C# (.NET 8): paginação, resiliência e escrita do CSV bruto;
 - `src/metrics/` → implementação e validação das métricas das questões de pesquisa;
 - `src/analysis/` → pipeline de transformação (base processada);
+- `src/dashboard/` → dashboard Streamlit com métricas e resultados das RQs;
 - `src/snapshots/` → exportação do estado do GitHub Projects por sprint;
 - `data/raw/` → dados brutos;
 - `data/processed/` → dados processados;
@@ -75,7 +79,9 @@ python3 src/metrics/rq01_rq02_validation.py data/raw/repos_raw_<coleta>.csv data
 python3 src/metrics/rq03_rq04_validation.py data/raw/repos_raw_<coleta>.csv data/processed/repos_processed_<coleta>.csv
 python3 src/metrics/rq05_rq06_validation.py data/raw/repos_raw_<coleta>.csv data/processed/repos_processed_<coleta>.csv
 
+python -m streamlit run src/dashboard/app.py       # dashboard com as métricas e resultados das RQs
+
 python3 -m unittest discover -s tests      # testes automatizados
 ```
 
-Veja o schema e as regras de normalização em `docs/processed-dataset.md`.
+Veja o schema e as regras de normalização em `docs/dataset/processed-dataset.md`.

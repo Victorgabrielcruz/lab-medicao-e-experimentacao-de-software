@@ -2,9 +2,19 @@
 
 Laboratório 01, disciplina de Laboratório de Experimentação de Software.
 
-Os números abaixo vêm de uma amostra piloto de 100 repositórios, coletada em 2026-08-13 com o filtro `stars:>10000 sort:stars-desc` pela API GraphQL do GitHub. A amostra oficial de 1.000 repositórios será coletada na Sprint 2, então os resultados aqui valem como indício e podem mudar. Os dados brutos estão em `data/raw/repos_raw_2026-08-13T225359Z.csv`.
+Os números abaixo vêm da coleta oficial de 1.000 repositórios
+(`data/raw/repos_raw_2026-08-20T222207Z.csv`), processada e validada em
+`data/processed/repos_processed_2026-08-20T222207Z.csv` (ver
+`docs/validation/rq01-rq02-validation.md`, `docs/validation/rq03-rq04-validation.md`,
+`docs/validation/rq05-rq06-validation.md` e `docs/validation/rq07-validation.md`,
+todas sem inconsistências críticas). Data de referência da coleta
+(`collected_at`): 2026-08-20T22:22:07Z.
 
-As hipóteses foram escritas como previsão para a base de 1.000, antes dessa coleta maior acontecer.
+As hipóteses foram escritas como previsão para esta base, antes da coleta
+oficial acontecer, a partir do indício observado na amostra piloto de 100
+repositórios (coletada em 2026-08-13, `data/raw/repos_raw_2026-08-13T225359Z.csv`).
+Onde o resultado da base completa diverge do indício da amostra piloto, isso
+é discutido explicitamente em cada RQ.
 
 ## RQ01. Sistemas populares são maduros/antigos?
 
@@ -17,31 +27,28 @@ Métrica: idade do repositório, a partir da data de criação.
 | Estatística   |   Idade do repositório |
 | ------------- | ---------------------: |
 | Média         |   **7 anos e 8 meses** |
-| Mediana       |   **8 anos e 3 meses** |
-| 1º quartil    |   **3 anos e 4 meses** |
-| 3º quartil    |  **11 anos e 8 meses** |
-| Mínimo        |            **4 meses** |
-| Máximo        | **16 anos e 11 meses** |
-| Desvio padrão |  **4 anos e 10 meses** |
+| Mediana       |   **7 anos e 9 meses** |
+| 1º quartil    |   **3 anos e 6 meses** |
+| 3º quartil    |  **11 anos e 4 meses** |
+| Mínimo        |            **~7 dias** |
+| Máximo        | **18 anos e 4 meses** |
+| Desvio padrão |  **4 anos e 6 meses** |
 
-A distribuição dos repositórios por faixa de idade foi:
+A distribuição dos 1.000 repositórios por faixa de idade foi:
+
 | Faixa de idade        | Quantidade | Percentual |
 | --------------------- | ---------: | ---------: |
-| Até 2 anos            |         18 |        18% |
-| Mais de 2 até 5 anos  |         18 |        18% |
-| Mais de 5 até 10 anos |         24 |        24% |
-| Mais de 10 anos       |         40 |        40% |
-| **Total**             |    **100** |   **100%** |
+| Até 2 anos            |        139 |       13,9% |
+| Mais de 2 até 5 anos  |        185 |       18,5% |
+| Mais de 5 até 10 anos |        331 |       33,1% |
+| Mais de 10 anos       |        345 |       34,5% |
+| **Total**             |  **1.000** |    **100%** |
 
-**Discussão.** Os resultados da amostra piloto fornecem evidências favoráveis à hipótese de que sistemas populares tendem a ser maduros ou antigos. A idade média dos repositórios foi de aproximadamente 7 anos e 8 meses, enquanto a mediana foi de 8 anos e 3 meses.
+**Discussão.** Os resultados da base completa confirmam a hipótese de que sistemas populares tendem a ser maduros ou antigos, na mesma direção observada na amostra piloto. A idade média foi de aproximadamente 7 anos e 8 meses e a mediana de 7 anos e 9 meses — muito próximas uma da outra, o que indica uma distribuição menos assimétrica do que a de outras métricas do laboratório (ex.: RQ02, RQ03).
 
-A distribuição por faixas reforça essa tendência. 64% dos repositórios possuem mais de 5 anos, sendo que 40% possuem mais de 10 anos. Portanto, a maior parte da amostra é composta por projetos que possuem um período considerável de existência.
+A distribuição por faixas reforça a tendência: 67,6% dos repositórios têm mais de 5 anos, e 34,5% têm mais de 10 anos. Ainda assim, 13,9% têm até 2 anos, incluindo casos com poucos dias de existência, o que confirma que idade não é condição necessária para popularidade — apenas favorece.
 
-O intervalo entre o primeiro e o terceiro quartil também demonstra uma variação relevante na idade dos projetos: metade dos repositórios possui idade entre aproximadamente 3 anos e 4 meses e 11 anos e 8 meses.
-
-Apesar dessa concentração em projetos mais antigos, a amostra também apresenta repositórios relativamente recentes. 18% possuem até 2 anos, incluindo projetos com aproximadamente 4 meses de existência. Isso demonstra que a idade não é uma condição necessária para um repositório alcançar popularidade.
-
-Dessa forma, a hipótese é apoiada pela amostra piloto, uma vez que a maioria dos repositórios populares analisados possui vários anos de existência. Entretanto, os resultados não permitem afirmar que todo sistema popular seja necessariamente antigo.
+Comparado ao indício da amostra piloto (mediana de 8 anos e 3 meses, 40% acima de 10 anos), a base completa mostra uma composição um pouco menos concentrada em projetos muito antigos (34,5% acima de 10 anos) e mais repositórios jovens (13,9% com até 2 anos, contra 18% na piloto, valor semelhante). A diferença é pequena e não muda a conclusão: a hipótese é apoiada, sem que isso signifique que todo sistema popular seja necessariamente antigo.
 
 
 ## RQ02. Sistemas populares recebem muita contribuição externa?
@@ -53,36 +60,32 @@ Métrica: total de pull requests aceitas.
 **O que os dados mostram.**
 | Estatística   | Pull Requests aceitas |
 | ------------- | --------------------: |
-| Média         |      **7.302,54 PRs** |
-| Mediana       |      **1.253,50 PRs** |
-| 1º quartil    |           **243 PRs** |
-| 3º quartil    |         **7.014 PRs** |
+| Média         |      **4.243,18 PRs** |
+| Mediana       |        **768,00 PRs** |
+| 1º quartil    |        **175,00 PRs** |
+| 3º quartil    |      **3.425,25 PRs** |
 | Mínimo        |             **0 PRs** |
-| Máximo        |        **73.425 PRs** |
-| Desvio padrão |     **14.112,05 PRs** |
+| Máximo        |    **103.403 PRs** |
+| Desvio padrão |     **10.681,43 PRs** |
 
 A distribuição por quantidade de Pull Requests aceitas foi:
 
 | Pull Requests aceitas | Quantidade | Percentual |
 | --------------------- | ---------: | ---------: |
-| 0 PRs                 |          3 |         3% |
-| 1–99 PRs              |          9 |         9% |
-| 100–999 PRs           |         34 |        34% |
-| 1.000–9.999 PRs       |         35 |        35% |
-| 10.000+ PRs           |         19 |        19% |
-| **Total**             |    **100** |   **100%** |
+| 0 PRs                 |          20 |        2,0% |
+| 1–99 PRs              |         161 |       16,1% |
+| 100–999 PRs           |         367 |       36,7% |
+| 1.000–9.999 PRs       |         353 |       35,3% |
+| 10.000+ PRs           |          99 |        9,9% |
+| **Total**             |    **1.000** |   **100%** |
 
-**Discussão.** Os resultados da amostra piloto fornecem forte evidência favorável à hipótese de que sistemas populares recebem contribuições externas.
+**Discussão.** Os resultados da base completa confirmam a hipótese de que sistemas populares recebem contribuições externas, com magnitude um pouco menor do que a sugerida pela amostra piloto. A mediana foi de 768 Pull Requests aceitas — abaixo da mediana de 1.253,5 observada na piloto —, e 98% dos repositórios possuem pelo menos uma PR aceita.
 
-A mediana foi de 1.253,5 Pull Requests aceitas, indicando que metade dos repositórios analisados possui pelo menos esse número de contribuições incorporadas. Além disso, 97% dos repositórios possuem pelo menos uma Pull Request aceita.
+A distribuição mostra que 72,7% dos repositórios possuem pelo menos 100 Pull Requests aceitas, e 45,2% possuem pelo menos 1.000. Esses percentuais são um pouco menores do que os da amostra piloto (88% e 54%, respectivamente), o que é esperado: a amostra de 1.000 inclui repositórios com menos estrelas que os 100 mais estrelados da coleta piloto, e a mediana de contribuição tende a cair conforme a amostra se distancia do topo do ranking.
 
-A distribuição também mostra que 88% dos repositórios possuem pelo menos 100 Pull Requests aceitas, enquanto 54% possuem pelo menos 1.000. Esses valores indicam que a participação externa está presente em grande parte dos projetos analisados.
+A assimetria segue forte: a média (4.243,18 PRs) é mais de 5 vezes a mediana (768 PRs), e o desvio padrão de 10.681,43 PRs confirma isso. Essa assimetria é explicada por poucos repositórios com volume extremamente alto de contribuições — 124 deles foram sinalizados como outliers por IQR (ver `reports/drafts/outliers_2026-08-20T222207Z.md`), com destaque para `firstcontributions/first-contributions` (103.403 PRs), `llvm/llvm-project` (97.396) e `elastic/elasticsearch` (95.655).
 
-Entretanto, existe uma diferença bastante significativa entre a média e a mediana. Enquanto a média foi de 7.302,54 PRs, a mediana foi de apenas 1.253,50 PRs. Essa diferença, juntamente com o desvio padrão de 14.112,05 PRs, indica uma distribuição bastante assimétrica.
-
-Essa assimetria é explicada pela existência de alguns repositórios com volumes extremamente elevados de contribuições. O maior valor observado foi de 73.425 Pull Requests aceitas, enquanto 19% dos projetos possuem pelo menos 10.000 PRs.
-
-Por esse motivo, a mediana representa melhor o comportamento típico da amostra do que a média. Ainda assim, a grande quantidade de repositórios com centenas ou milhares de Pull Requests aceitas fornece evidências de uma participação externa significativa.
+A mediana continua sendo a estatística mais representativa do comportamento típico da amostra. Ainda assim, a proporção de repositórios com centenas ou milhares de PRs aceitas (72,7%) sustenta a conclusão de que contribuição externa relevante é a regra, não a exceção, entre os populares.
 
 ## RQ03. Sistemas populares lançam releases com frequência?
 
@@ -94,21 +97,19 @@ Métrica: total de releases.
 
 | | valor |
 |---|---|
-| mediana | 15 |
-| média | 133,8 |
+| mediana | 39 |
+| média | 126,86 |
 | 1º quartil | 0 |
-| 3º quartil | 167,25 |
-| com zero releases | 41 de 100 |
+| 3º quartil | 147 |
+| com zero releases | 285 de 1.000 |
 
-Por faixa: 41 repositórios com 0 releases, 5 entre 1 e 9, 13 entre 10 e 49, 20 entre 50 e 199, e 21 com 200 ou mais.
+Por faixa: 285 repositórios com 0 releases, 70 entre 1 e 9, 181 entre 10 e 49, 273 entre 50 e 199, e 191 com 200 ou mais. 23 repositórios bateram no teto de 1.000 releases da API (`releases_no_teto`).
 
-**Discussão.** A hipótese caiu pela metade. Olhando só a mediana de 15 parece que ela se confirmou, mas esse número esconde o principal: a distribuição tem dois picos. O primeiro quartil é zero, ou seja, 41% da amostra nunca publicou uma release, enquanto 21% passam de 200. Quase não existe meio termo, só 5 repositórios estão na faixa de 1 a 9.
+**Discussão.** A hipótese caiu pela metade, na mesma direção observada na amostra piloto, mas com uma proporção de repositórios zerados menor: 28,5% da base completa nunca publicou uma release, contra 41% na piloto. O primeiro quartil continua zero, então pelo menos um quarto da amostra fica de fora do uso de releases, mas a maioria (71,5%) tem ao menos uma.
 
-Isso não é uma população com frequências diferentes de release. São dois grupos separados: quem usa release como parte do processo e quem simplesmente não usa o recurso.
+A leitura de "dois grupos" que apareceu na piloto se confirma: entre os 87 repositórios sem linguagem primária, 85,1% têm zero releases; entre os 913 com linguagem, esse número cai para 23,1%. A explicação é a mesma — repositório sem linguagem primária tende a ser lista curada, coletânea de links ou material de estudo, onde release não faz sentido. Segmentando só por software de fato (com linguagem), a proporção de zerados fica bem menor que a leitura ingênua da amostra inteira sugere.
 
-Cruzando com a linguagem primária dá pra ver o que separa os dois. Entre os 13 repositórios sem linguagem primária, 85% têm zero releases. Entre os 87 com linguagem, esse número cai pra 34%. Repositório sem linguagem no topo do ranking é lista curada, coletânea de links, material de estudo, coisa que não é software executável e onde release não faz sentido. Então a resposta da RQ03 muda dependendo de como a amostra é segmentada: se contar só software de verdade, a proporção de zerados cai pra um terço.
-
-Uma ressalva de medição. A API corta o `releases.totalCount` em 1000, e 4 repositórios da amostra bateram exatamente nesse valor, o que foi conferido na mão na aba Releases de cada um. Então a média de 133,8 é um piso e não uma estimativa, e o máximo não quer dizer nada. A mediana continua confiável porque está longe do teto. Os casos afetados estão marcados na coluna `releases_no_teto`.
+A ressalva de medição da piloto se confirma na base completa: a API trunca `releases.totalCount` em 1.000, e agora 23 repositórios bateram exatamente nesse valor (contra 4 na amostra de 100), incluindo casos como `langchain-ai/langchain`, `vercel/next.js` e `home-assistant/core`. A média de 126,86 é um piso, não uma estimativa, e o máximo (1.000) não representa o valor real desses repositórios. A mediana (39) é a estatística mais confiável aqui, por estar longe do teto.
 
 ## RQ04. Sistemas populares são atualizados com frequência?
 
@@ -122,23 +123,21 @@ Usamos o `pushedAt`, que é a data do último push de código. O `updatedAt` foi
 
 | | dias desde o último push | dias desde o último commit |
 |---|---|---|
-| mediana | 0 | 1 |
-| 3º quartil | 15 | 17 |
-| máximo | 779 | 1128 |
+| mediana | 1 | 3 |
+| 3º quartil | 48 | 67,5 |
+| máximo | 2.452 | 4.016 |
 
-Por janela de tempo: 57 repositórios receberam push no mesmo dia da coleta, 70 na última semana, 83 no último mês, 87 nos últimos três meses. Só 4 estão parados há mais de um ano. Nenhum repositório da amostra está arquivado.
+Por janela de tempo: 423 repositórios receberam push no mesmo dia da coleta, 617 na última semana, 729 no último mês, 791 nos últimos três meses. 115 estão parados há mais de um ano (11,5% da amostra). 27 repositórios da amostra estão arquivados.
 
-A mediana de commits é 4.871 e a mediana do período de desenvolvimento é de 8 anos.
+A mediana de commits é 2.960 e a mediana do período de desenvolvimento é de aproximadamente 7 anos e 3 meses (2.638,5 dias).
 
-**Discussão.** A hipótese se confirmou, e mais forte do que a gente imaginava. Mediana de zero dias significa que mais da metade da amostra recebeu código no próprio dia em que rodamos a coleta. Setenta por cento receberam na última semana.
+**Discussão.** A hipótese se confirmou, mas de forma mais moderada do que na amostra piloto e mais próxima do chute original. Na piloto, apenas 4% dos repositórios estavam parados há mais de um ano — bem abaixo da faixa de 20%–30% prevista. Na base completa de 1.000, esse número sobe para 11,5%, ainda abaixo da faixa prevista, mas bem mais alinhado a ela. Isso sugere que a amostra piloto (limitada aos repositórios com mais de 10.000 estrelas) capturou uma fatia especialmente ativa, e que, ao descer no ranking de popularidade, aparece mais espaço para projetos que ganharam estrelas no passado e hoje estão com atividade mais espaçada.
 
-A ressalva não se sustentou. Esperávamos de 20% a 30% de projetos parados e achamos 4%. O fato de nenhum repositório estar arquivado reforça isso.
+Mesmo assim, a maioria segue muito ativa: mediana de 1 dia desde o último push, e 72,9% dos repositórios tiveram push no último mês. A mediana de zero dias observada na piloto não se repete aqui (a mediana da base completa é 1 dia), mas a diferença é pequena e não muda a leitura geral: projeto popular tende a ser mantido com frequência alta.
 
-Dá pra ler que popularidade e manutenção ativa quase coincidem nessa amostra. Projeto popular não é só mantido, é mantido todo dia. Uma explicação possível, que dá pra testar na base completa, é que ficar no topo do ranking de estrelas exige atividade contínua: projeto abandonado vai perdendo posição pra projeto novo e acaba saindo da amostra.
+Juntando com a mediana de aproximadamente 7 anos e 3 meses de período de desenvolvimento (usando `created_at` como proxy do início, ver limitação abaixo), o retrato geral segue o mesmo da piloto: sistema velho e ativo ao mesmo tempo, o que conversa direto com a RQ01 e é retomado na RQ07 (correlação entre estrelas e `days_since_push` de -0,09, indicando leve tendência de repositórios mais populares terem push mais recente).
 
-Juntando com a mediana de 8 anos de desenvolvimento, o retrato é de sistema velho e ativo ao mesmo tempo, o que conversa direto com a RQ01 e vale retomar na RQ07.
-
-Uma limitação aqui: o início do período usa a data de criação do repositório e não a do primeiro commit, que a API não entrega numa requisição só. Em repositório que teve o histórico importado de outro sistema de controle de versão, esse período fica menor do que o real.
+Uma limitação aqui: o início do período usa a data de criação do repositório e não a do primeiro commit, que a API não entrega numa requisição só. Em repositório que teve o histórico importado de outro sistema de controle de versão, esse período fica menor do que o real. Há também 27 registros com data futura em relação a `collected_at` (`pushed_at`/`last_commit_date` levemente posteriores à referência da coleta), efeito esperado de `collected_at` fixo numa coleta paginada longa (ver `docs/methodology.md`, seções 5 e 13), sem impacto na conclusão.
 
 ## RQ05. Sistemas populares são escritos nas linguagens mais populares?
 
@@ -146,23 +145,25 @@ Métrica: linguagem primária de cada repositório.
 
 **Fonte e hipótese.** Foi usado o [GitHub Octoverse 2025](https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/). A fonte classifica como mais populares TypeScript, Python, JavaScript, Java, C#, PHP, Shell, C++, HCL e Go. A expectativa era que a maior parte dos repositórios mais estrelados usasse uma dessas linguagens, embora listas curadas e materiais de documentação pudessem não ter linguagem primária.
 
-**O que os dados mostram.** A configuração era para 100 repositórios, mas a API retornou erro 502 na quarta página; por isso esta análise usa os 75 repositórios válidos que foram persistidos nas três primeiras páginas. Desses 75, 50 (66,7%) têm uma linguagem do top 10 do Octoverse e 25 (33,3%) não têm.
+**O que os dados mostram.** Dos 1.000 repositórios, 702 (70,2%) têm uma linguagem do top 10 do Octoverse e 298 (29,8%) não têm (o que inclui os 87 sem linguagem identificada e 211 com linguagem fora dessa lista).
 
 | linguagem primária | repositórios | percentual |
 |---|---:|---:|
-| Python | 20 | 26,7% |
-| TypeScript | 14 | 18,7% |
-| Sem linguagem identificada | 11 | 14,7% |
-| JavaScript | 7 | 9,3% |
-| Shell | 4 | 5,3% |
-| Go | 3 | 4,0% |
-| C++ | 1 | 1,3% |
-| Java | 1 | 1,3% |
-| Outras linguagens | 14 | 18,7% |
+| Python | 227 | 22,7% |
+| TypeScript | 173 | 17,3% |
+| JavaScript | 111 | 11,1% |
+| Sem linguagem identificada | 87 | 8,7% |
+| Go | 77 | 7,7% |
+| Rust | 58 | 5,8% |
+| Java | 41 | 4,1% |
+| C++ | 41 | 4,1% |
+| Jupyter Notebook | 24 | 2,4% |
+| C | 21 | 2,1% |
+| Outras linguagens | 140 | 14,0% |
 
-As linguagens populares mais frequentes são Python, TypeScript e JavaScript: juntas, aparecem em 41 dos 75 repositórios (54,7%). A categoria `Sem linguagem identificada` não foi descartada; ela reúne repositórios para os quais a API não informou `primaryLanguage`.
+As linguagens populares mais frequentes são Python, TypeScript e JavaScript: juntas, aparecem em 511 dos 1.000 repositórios (51,1%). A categoria `Sem linguagem identificada` não foi descartada; ela reúne repositórios para os quais a API não informou `primaryLanguage`.
 
-**Discussão.** A hipótese se confirmou para a maior parte da amostra: aproximadamente dois terços dos repositórios usam linguagens populares conforme a mesma plataforma de onde a amostra foi coletada. Mas o resultado não significa que popularidade dependa apenas da linguagem. Os 11 repositórios sem linguagem e parte das 14 ocorrências de outras linguagens incluem projetos de documentação, listas e materiais que não são necessariamente aplicações com código executável. Na coleta de 1.000 repositórios, essa categoria deve continuar separada, porque removê-la artificialmente aumentaria o percentual de linguagens populares.
+**Discussão.** A hipótese se confirmou para a maior parte da amostra: 70,2% dos repositórios usam linguagens populares conforme a mesma plataforma de onde a amostra foi coletada — um percentual maior que o indício da piloto (66,7%, mas obtido sobre apenas 75 repositórios válidos, devido a uma falha 502 durante aquela coleta). O resultado não significa que popularidade dependa apenas da linguagem: os 87 repositórios sem linguagem e parte dos 140 de "outras linguagens" incluem projetos de documentação, listas e materiais que não são necessariamente aplicações com código executável, como já observado na RQ03 (85,1% desses repositórios sem linguagem também têm zero releases). Essa categoria continua separada na análise, porque removê-la artificialmente infla o percentual de linguagens populares.
 
 ## RQ06. Sistemas populares possuem um alto percentual de issues fechadas?
 
@@ -170,146 +171,131 @@ Métrica: razão entre issues fechadas e total de issues.
 
 **Hipótese.** Esperávamos um percentual alto de Issues fechadas. Projetos populares recebem muitos relatos e pedidos, mas também tendem a ter mais mantenedores e colaboradores para classificar, resolver ou encerrar Issues antigas.
 
-**O que os dados mostram.** Também nesta RQ foram usados os 75 repositórios persistidos antes da falha 502 na quarta página. Nove deles não possuem Issues abertas nem fechadas e, portanto, não entram no cálculo do percentual para evitar divisão por zero. Nos 66 repositórios com Issues, os resultados foram:
+**O que os dados mostram.** Dos 1.000 repositórios, 43 não possuem Issues abertas nem fechadas e, portanto, não entram no cálculo do percentual para evitar divisão por zero. Nos 957 repositórios com Issues, os resultados foram:
 
 | | percentual de Issues fechadas |
 |---|---:|
-| mediana | 92,6% |
-| média | 81,8% |
-| 1º quartil | 74,1% |
-| 3º quartil | 97,1% |
-| mínimo | 13,3% |
+| mediana | 87,5% |
+| média | 80,2% |
+| 1º quartil | 70,4% |
+| 3º quartil | 96,8% |
+| mínimo | 7,7% |
 | máximo | 100,0% |
 
-Por faixa: 1 repositório está entre 0% e 24,9%, 6 entre 25% e 49,9%, 10 entre 50% e 74,9%, 46 entre 75% e 99,9%, e 3 chegaram a 100%. Assim, 49 dos 66 repositórios com Issues (74,2%) têm pelo menos 75% de fechamento; 36 (54,5%) têm pelo menos 90%.
+Por faixa: 22 repositórios estão entre 0% e 24,9%, 86 entre 25% e 49,9%, 171 entre 50% e 74,9%, 642 entre 75% e 99,9%, e 36 chegaram a 100%. Assim, 677 dos 957 repositórios com Issues (70,7%) têm pelo menos 75% de fechamento; 429 (44,8%) têm pelo menos 90%.
 
-**Discussão.** A hipótese se confirmou com folga. A mediana de 92,6% mostra que o repositório típico da amostra fecha a maior parte das Issues que recebe. A média menor que a mediana (81,8%) revela alguns casos com percentuais baixos puxando o resultado para baixo, mas eles são minoria: apenas 7 dos 66 repositórios com Issues ficam abaixo de 50%. Os nove repositórios sem Issues devem continuar reportados separadamente; ausência de Issues não é evidência de 0% nem de 100% de fechamento.
+**Discussão.** A hipótese se confirmou, na mesma direção da amostra piloto, com uma mediana ligeiramente menor (87,5% contra 92,6% na piloto). A média de 80,2% também ficou perto da observada na piloto (81,8%). A mediana continua mostrando que o repositório típico da amostra fecha a maior parte das Issues que recebe.
+
+A cauda inferior é um pouco mais espessa na base completa: 108 repositórios (22 + 86, 11,3% dos 957 com Issues) ficam abaixo de 50% de fechamento, contra 7 dos 66 (10,6%) na piloto — proporção parecida, mas em números absolutos mostra que a base completa captura mais casos com baixo percentual de fechamento, plausivelmente por incluir repositórios menos maduros no ranking de estrelas do que os 100 mais estrelados da piloto. Os 43 repositórios sem Issues continuam reportados separadamente; ausência de Issues não é evidência de 0% nem de 100% de fechamento.
 
 ## RQ07. Sistemas escritos em linguagens mais populares recebem mais contribuição externa, lançam mais releases e são atualizados com mais frequência?
 
 Métrica: resultados das RQ02, RQ03 e RQ04 divididos por linguagem.
 
-> Esta seção usa a **amostra oficial de 1.000 repositórios**
-> (`repos_rq07_consolidated_2026-08-20T222207Z.csv`), diferente das seções acima,
-> que ainda estão na amostra piloto de 100. Ver a nota em Limitações.
+Os números desta seção vêm da coleta oficial de 1.000 repositórios
+(`data/raw/repos_raw_2026-08-20T222207Z.csv`), consolidada em
+`data/processed/repos_rq07_consolidated_2026-08-20T222207Z.csv` (S03-01) e
+analisada por `src/analysis/rq07_analysis.py` (S03-02), com saída em
+`reports/drafts/rq07_analysis_2026-08-20T222207Z.md` e
+`data/processed/rq07_statistics_2026-08-20T222207Z.csv`. A validação
+independente (`src/analysis/rq07_validation.py`, ver `docs/validation/rq07-validation.md`)
+reproduziu as mesmas estatísticas, correlações e outliers sem inconsistências.
 
-Os repositórios foram separados em três grupos: os que usam uma das dez linguagens
-do Octoverse 2025, os que usam outra linguagem, e os que não têm linguagem primária.
-O terceiro grupo é mantido separado de propósito, porque descartá-lo inflaria
-artificialmente o resultado dos outros dois.
+**Hipótese.** A expectativa era que sim: repositórios em linguagens populares
+(segundo o GitHub Octoverse 2025 — TypeScript, Python, JavaScript, Java, C#,
+PHP, Shell, C++, HCL, Go) deveriam atrair mais contribuidores externos, por
+estarem em ecossistemas com mais desenvolvedores disponíveis, e por isso
+também tenderiam a lançar mais releases e a ser atualizados com mais
+frequência. Uma observação que já havia aparecido na RQ03 servia de ponto de
+partida: a falta de linguagem primária tem forte relação com a falta de
+releases (85,1% contra 23,1% na base completa, ver RQ03), então "sem
+linguagem" precisa ser tratada como categoria própria na segmentação, e não
+descartada.
 
-**Hipótese.** A previsão do grupo era que sim, nas três frentes. A ideia era que
-linguagem popular significa comunidade grande, e comunidade grande significa mais
-gente abrindo pull request, mais pressão por versionamento e manutenção mais
-frequente.
+**O que os dados mostram.** Da amostra de 1.000, 87 repositórios não têm
+linguagem primária identificada e ficam fora da comparação por popularidade
+de linguagem (mas continuam nas correlações gerais). Dos 913 restantes, 702
+(76,9%) usam linguagem popular e 211 (23,1%) não.
 
-**O que os dados mostram.**
+| grupo | métrica | n | média | mediana | Q1 | Q3 |
+|---|---|---:|---:|---:|---:|---:|
+| Popular | Pull requests aceitas | 702 | 4.519,09 | 1.000,00 | 222,00 | 3.908,25 |
+| Popular | Releases | 702 | 153,00 | 62,00 | 6,00 | 186,00 |
+| Popular | Dias desde o último push | 702 | 90,61 | 1,00 | 0,00 | 20,75 |
+| Não popular | Pull requests aceitas | 211 | 4.424,78 | 670,00 | 181,00 | 3.216,50 |
+| Não popular | Releases | 211 | 89,91 | 30,00 | 0,00 | 114,00 |
+| Não popular | Dias desde o último push | 211 | 116,83 | 3,00 | 0,00 | 36,50 |
 
-| grupo | repositórios | PRs aceitas | releases | dias desde o push |
-|---|---|---|---|---|
-| linguagem popular | 702 | 1000 | 62 | 1 |
-| outra linguagem | 211 | 670 | 30 | 3 |
-| sem linguagem | 87 | 129 | 0 | 178 |
+Correlação entre estrelas (popularidade) e as métricas de RQ01–RQ06, na
+amostra completa:
 
-Comparando apenas os 913 repositórios que têm linguagem, com teste de Mann-Whitney e
-tamanho de efeito por correlação rank-biserial:
+| métrica | n | Pearson | Spearman |
+|---|---:|---:|---:|
+| Idade (anos) | 1.000 | 0,001 | -0,033 |
+| Pull requests aceitas | 1.000 | 0,083 | 0,107 |
+| Releases | 1.000 | -0,022 | -0,019 |
+| Dias desde o último push | 1.000 | -0,087 | -0,111 |
+| Issues totais | 1.000 | 0,168 | 0,086 |
+| % de issues fechadas | 957 | 0,033 | 0,041 |
 
-| métrica | p-valor | efeito | leitura |
-|---|---|---|---|
-| PRs aceitas | 0,045 | 0,091 | desprezível |
-| releases | < 0,0001 | 0,204 | pequeno |
-| dias desde o push | 0,144 | -0,063 | não significativo |
-| issues fechadas | 0,002 | 0,142 | pequeno |
+**Discussão.** A hipótese se confirmou parcialmente, com magnitude bem menor
+do que o esperado. Nas três métricas, o grupo de linguagens populares
+apresenta mediana melhor que o grupo não popular: mais Pull Requests aceitas
+(1.000 vs. 670), mais releases (62 vs. 30) e push mais recente (1 dia vs. 3
+dias de mediana). A direção da hipótese está correta nos três casos.
 
-Para efeito de contraste, popular contra sem linguagem em releases dá p = 4,8e-29 e
-efeito 0,727, que é um efeito grande.
+Mas a diferença é pequena diante da dispersão de cada métrica. As médias de
+Pull Requests aceitas são quase idênticas entre os grupos (4.519 vs. 4.425),
+o que mostra que a mediana capta melhor o efeito da linguagem do que a média,
+dominada por outliers presentes nos dois grupos. As correlações diretas entre
+estrelas e as métricas de RQ02/RQ03/RQ04 são todas fracas (|r| < 0,17 em
+Pearson e Spearman), inclusive com sinal contrário ao esperado para releases
+(-0,02) e dias desde o push (-0,09, mas na direção "mais popular, push mais
+recente", o que é consistente com a RQ04). Ou seja: dentro da amostra de
+repositórios já populares, ter mais estrelas não se traduz em mais
+contribuição externa ou mais releases de forma proporcional — o efeito de
+linguagem observado na comparação por grupo é mais sobre "que tipo de
+projeto é" do que sobre "quão popular é".
 
-Por linguagem, entre as que têm ao menos 20 repositórios:
+A análise de outliers (`reports/drafts/outliers_2026-08-20T222207Z.md`, S03-04)
+reforça essa leitura: os repositórios sinalizados simultaneamente em Pull
+Requests aceitas, releases e estrelas (`ggml-org/llama.cpp`,
+`kubernetes/kubernetes`, `vercel/next.js`, `n8n-io/n8n`,
+`langchain-ai/langchain`) são todos escritos em linguagens populares
+(C++, Go, JavaScript, TypeScript, Python), o que é consistente com a
+hipótese — mas são apenas 5 dos 1.000 repositórios, e não sustentam sozinhos
+uma relação forte na população inteira.
 
-| linguagem | n | PRs aceitas | releases | dias desde o push | no top 10 |
-|---|---|---|---|---|---|
-| Python | 227 | 560 | 20 | 2 | sim |
-| TypeScript | 173 | 1979 | 133 | 0 | sim |
-| JavaScript | 111 | 617 | 37 | 6 | sim |
-| Go | 77 | 1958 | 142 | 0 | sim |
-| Rust | 58 | 2354 | 96 | 0 | **não** |
-| C++ | 41 | 1159 | 46 | 0 | sim |
-| Java | 41 | 945 | 55 | 2 | sim |
-| Jupyter Notebook | 24 | 78 | 0 | 23 | não |
-| C | 21 | 294 | 46 | 0 | não |
-| Shell | 20 | 390 | 10 | 15 | sim |
+Um resultado inesperado: a correlação entre estrelas e `releases_count` é
+levemente negativa. Combinado com o teto de `releases.totalCount` em 1000 da
+API (23 repositórios truncados, ver `docs/dataset/raw-dataset.md`), isso sugere que
+parte dos repositórios mais estrelados tem o valor real de releases
+subestimado, o que pode estar atenuando ou até invertendo artificialmente
+essa correlação — uma limitação a considerar antes de qualquer conclusão
+causal.
 
-**Discussão.** A hipótese se confirma em parte, e a parte que não se confirma é a mais
-interessante.
-
-Releases é a única frente com diferença consistente: 62 contra 30, com p abaixo de
-0,0001. Mas o tamanho de efeito é 0,204, ou seja, pequeno. Existe diferença real,
-só que ela explica pouco da variação entre os repositórios.
-
-Pull requests aceitas fica no limite. O p-valor de 0,045 passaria por significativo
-num teste isolado, mas o efeito de 0,091 é desprezível. Com 913 repositórios,
-diferença pequena vira estatisticamente detectável sem ser praticamente relevante.
-Reportar só o p-valor aqui daria uma impressão errada de força.
-
-**Frequência de atualização não difere.** O p-valor de 0,144 não permite afirmar
-diferença entre os grupos. As medianas de 1 e 3 dias são praticamente o mesmo
-comportamento. Essa parte da hipótese foi refutada.
-
-O que realmente separa os grupos não é linguagem popular contra linguagem menos
-popular, é ter ou não ter linguagem. O grupo sem linguagem tem mediana de zero
-releases, 85% deles nunca publicaram nenhuma, e 32% estão parados há mais de um ano
-contra 9% do grupo popular. O efeito de 0,727 nessa comparação é várias vezes maior
-que o de 0,204 entre popular e não popular. Traduzindo: a diferença que a RQ07
-detecta é majoritariamente a diferença entre software e material que não é software,
-e não um efeito da linguagem escolhida.
-
-**Resultados inesperados.**
-
-Rust não está no top 10 do Octoverse e mesmo assim lidera em pull requests aceitas,
-com mediana de 2.354, acima de qualquer linguagem popular da tabela. Tem também 96
-releases e mediana de zero dias desde o último push. C fica fora do ranking e tem 46
-releases, mais que JavaScript e Python.
-
-Dentro do próprio grupo popular a dispersão é enorme: Go tem mediana de 142 releases
-e Shell tem 10, uma diferença de mais de 14 vezes. Python, a linguagem mais frequente
-da amostra com 227 repositórios, tem mediana de 20 releases, abaixo de Rust, C++ e
-Java.
-
-Isso indica que "linguagem popular" não é uma categoria homogênea para efeito de
-prática de engenharia. O ranking do Octoverse mede número de contribuidores na
-plataforma, que é uma medida de adoção, não de como os projetos daquela linguagem são
-mantidos.
-
-**Resposta.** Sistemas escritos em linguagens mais populares lançam mais releases, com
-diferença estatisticamente significativa mas de efeito pequeno, e recebem mais pull
-requests aceitas, com diferença no limite da significância e efeito desprezível. Não
-são atualizados com mais frequência: nessa métrica os grupos são equivalentes. A
-diferença observada entre os grupos é explicada principalmente pela presença de
-repositórios sem linguagem primária, que não são software, e não pela escolha da
-linguagem em si.
+**Limitações.** As correlações são de associação, não de causalidade.
+`releases_count` truncado em 1000 (23 casos na amostra completa) subestima
+o grupo com mais releases, que tende a coincidir com repositórios populares
+e ativos — isso é uma limitação conhecida também na RQ03. `days_since_push`
+usa `collected_at` fixo por execução (ver `docs/methodology.md`, seções 5 e
+13), então repositórios com atividade durante a janela de coleta paginada
+podem ter valores levemente distorcidos, sem impacto relevante na mediana.
+Os 87 repositórios sem linguagem primária (documentação, listas curadas)
+foram mantidos fora da comparação por grupo, mas continuam nas correlações
+gerais, o que é consistente com o tratamento dado a essa categoria nas
+RQ05/RQ06.
 
 ## Limitações
 
-As seções RQ01 a RQ06 ainda usam a amostra piloto de 100 repositórios, e a RQ05 usa
-75, porque a coleta daquela execução parou na quarta página. A seção RQ07 já usa a
-amostra oficial de 1.000. **Antes da entrega final, as seis primeiras precisam ser
-recalculadas sobre a base de 1.000**, senão o relatório mistura duas amostras
-diferentes.
+Todos os números deste documento (RQ01–RQ07) vêm da coleta oficial de 1.000
+repositórios, coletada em 2026-08-20T22:22:07Z e validada sem inconsistências
+críticas (`docs/validation/`).
 
-O ranking de linguagens do Octoverse mede número de contribuidores na plataforma, que
-é adoção, não prática de engenharia. Isso limita o quanto a RQ07 pode concluir: a
-divisão entre popular e não popular agrupa linguagens com comportamentos bem
-diferentes entre si.
+A API limita o `releases.totalCount` em 1.000, o que subestima média e máximo da RQ03 (23 repositórios no teto na base completa) e, possivelmente, a correlação entre estrelas e releases discutida na RQ07.
 
-A RQ07 mostra associação, não causa. Linguagem está confundida com tipo de projeto,
-já que certas linguagens concentram certos tipos de software, e não é possível separar
-os dois efeitos com os dados coletados.
+A data do primeiro commit não é obtida pela API numa requisição só, então o período de desenvolvimento (RQ04) usa a data de criação do repositório como aproximação, o que pode subestimar o período real de repositórios com histórico importado de outro sistema de controle de versão.
 
-A amostra são os 1.000 repositórios mais estrelados, o que não representa o GitHub em
-geral. As conclusões valem para o topo do ranking de popularidade.
-
-A API limita o `releases.totalCount` em 1000, o que subestima média e máximo da RQ03.
-
-A data do primeiro commit não é obtida pela API numa requisição só, então o período de desenvolvimento usa a data de criação do repositório como aproximação.
+`collected_at` é fixado no início da coleta paginada; 27 registros de RQ03/RQ04 apresentaram `pushed_at`/`last_commit_date` levemente posteriores a essa referência, efeito esperado de uma coleta longa contra uma API em produção (ver `docs/methodology.md`, seções 5 e 13), sem impacto relevante nas conclusões.
 
 Os dados são um retrato do momento da coleta. O número de estrelas muda o tempo todo e a composição da amostra pode ser diferente numa coleta futura.

@@ -26,7 +26,7 @@ Organizar, versionar e documentar os entregáveis do time, incluindo:
 ## Estrutura do repositório
 
 - `Lab01/` -> primeiro projeto do time;
-- `Lab01/docs/` -> enunciado, metodologia e tarefas;
+- `Lab01/docs/` -> enunciado, metodologia e tarefas (ver `Lab01/docs/README.md` para o índice completo);
 - `Lab01/src/` -> código-fonte de coleta, métricas e análise;
 - `Lab01/data/` -> dados brutos, processados e snapshots;
 - `Lab01/reports/` -> rascunhos, figuras e relatório final;
