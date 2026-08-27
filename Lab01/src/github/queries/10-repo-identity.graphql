@@ -1,0 +1,10 @@
+fragment RepoIdentity on Repository {
+  id
+  nameWithOwner
+  url
+  owner {
+    login
+  }
+  stargazerCount
+  isArchived
+}
