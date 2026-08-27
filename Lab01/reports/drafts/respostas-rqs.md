@@ -189,13 +189,124 @@ Por faixa: 1 repositório está entre 0% e 24,9%, 6 entre 25% e 49,9%, 10 entre 
 
 Métrica: resultados das RQ02, RQ03 e RQ04 divididos por linguagem.
 
-Uma coisa que já apareceu na RQ03 e serve de ponto de partida: a falta de linguagem primária tem forte relação com a falta de releases, 85% contra 34%. Então "sem linguagem" precisa ser tratada como categoria própria na hora de segmentar, e não descartada.
+> Esta seção usa a **amostra oficial de 1.000 repositórios**
+> (`repos_rq07_consolidated_2026-08-20T222207Z.csv`), diferente das seções acima,
+> que ainda estão na amostra piloto de 100. Ver a nota em Limitações.
 
-*A fazer, grupo, depois que as RQ02, RQ03 e RQ04 estiverem prontas.*
+Os repositórios foram separados em três grupos: os que usam uma das dez linguagens
+do Octoverse 2025, os que usam outra linguagem, e os que não têm linguagem primária.
+O terceiro grupo é mantido separado de propósito, porque descartá-lo inflaria
+artificialmente o resultado dos outros dois.
+
+**Hipótese.** A previsão do grupo era que sim, nas três frentes. A ideia era que
+linguagem popular significa comunidade grande, e comunidade grande significa mais
+gente abrindo pull request, mais pressão por versionamento e manutenção mais
+frequente.
+
+**O que os dados mostram.**
+
+| grupo | repositórios | PRs aceitas | releases | dias desde o push |
+|---|---|---|---|---|
+| linguagem popular | 702 | 1000 | 62 | 1 |
+| outra linguagem | 211 | 670 | 30 | 3 |
+| sem linguagem | 87 | 129 | 0 | 178 |
+
+Comparando apenas os 913 repositórios que têm linguagem, com teste de Mann-Whitney e
+tamanho de efeito por correlação rank-biserial:
+
+| métrica | p-valor | efeito | leitura |
+|---|---|---|---|
+| PRs aceitas | 0,045 | 0,091 | desprezível |
+| releases | < 0,0001 | 0,204 | pequeno |
+| dias desde o push | 0,144 | -0,063 | não significativo |
+| issues fechadas | 0,002 | 0,142 | pequeno |
+
+Para efeito de contraste, popular contra sem linguagem em releases dá p = 4,8e-29 e
+efeito 0,727, que é um efeito grande.
+
+Por linguagem, entre as que têm ao menos 20 repositórios:
+
+| linguagem | n | PRs aceitas | releases | dias desde o push | no top 10 |
+|---|---|---|---|---|---|
+| Python | 227 | 560 | 20 | 2 | sim |
+| TypeScript | 173 | 1979 | 133 | 0 | sim |
+| JavaScript | 111 | 617 | 37 | 6 | sim |
+| Go | 77 | 1958 | 142 | 0 | sim |
+| Rust | 58 | 2354 | 96 | 0 | **não** |
+| C++ | 41 | 1159 | 46 | 0 | sim |
+| Java | 41 | 945 | 55 | 2 | sim |
+| Jupyter Notebook | 24 | 78 | 0 | 23 | não |
+| C | 21 | 294 | 46 | 0 | não |
+| Shell | 20 | 390 | 10 | 15 | sim |
+
+**Discussão.** A hipótese se confirma em parte, e a parte que não se confirma é a mais
+interessante.
+
+Releases é a única frente com diferença consistente: 62 contra 30, com p abaixo de
+0,0001. Mas o tamanho de efeito é 0,204, ou seja, pequeno. Existe diferença real,
+só que ela explica pouco da variação entre os repositórios.
+
+Pull requests aceitas fica no limite. O p-valor de 0,045 passaria por significativo
+num teste isolado, mas o efeito de 0,091 é desprezível. Com 913 repositórios,
+diferença pequena vira estatisticamente detectável sem ser praticamente relevante.
+Reportar só o p-valor aqui daria uma impressão errada de força.
+
+**Frequência de atualização não difere.** O p-valor de 0,144 não permite afirmar
+diferença entre os grupos. As medianas de 1 e 3 dias são praticamente o mesmo
+comportamento. Essa parte da hipótese foi refutada.
+
+O que realmente separa os grupos não é linguagem popular contra linguagem menos
+popular, é ter ou não ter linguagem. O grupo sem linguagem tem mediana de zero
+releases, 85% deles nunca publicaram nenhuma, e 32% estão parados há mais de um ano
+contra 9% do grupo popular. O efeito de 0,727 nessa comparação é várias vezes maior
+que o de 0,204 entre popular e não popular. Traduzindo: a diferença que a RQ07
+detecta é majoritariamente a diferença entre software e material que não é software,
+e não um efeito da linguagem escolhida.
+
+**Resultados inesperados.**
+
+Rust não está no top 10 do Octoverse e mesmo assim lidera em pull requests aceitas,
+com mediana de 2.354, acima de qualquer linguagem popular da tabela. Tem também 96
+releases e mediana de zero dias desde o último push. C fica fora do ranking e tem 46
+releases, mais que JavaScript e Python.
+
+Dentro do próprio grupo popular a dispersão é enorme: Go tem mediana de 142 releases
+e Shell tem 10, uma diferença de mais de 14 vezes. Python, a linguagem mais frequente
+da amostra com 227 repositórios, tem mediana de 20 releases, abaixo de Rust, C++ e
+Java.
+
+Isso indica que "linguagem popular" não é uma categoria homogênea para efeito de
+prática de engenharia. O ranking do Octoverse mede número de contribuidores na
+plataforma, que é uma medida de adoção, não de como os projetos daquela linguagem são
+mantidos.
+
+**Resposta.** Sistemas escritos em linguagens mais populares lançam mais releases, com
+diferença estatisticamente significativa mas de efeito pequeno, e recebem mais pull
+requests aceitas, com diferença no limite da significância e efeito desprezível. Não
+são atualizados com mais frequência: nessa métrica os grupos são equivalentes. A
+diferença observada entre os grupos é explicada principalmente pela presença de
+repositórios sem linguagem primária, que não são software, e não pela escolha da
+linguagem em si.
 
 ## Limitações
 
-Os números são de uma amostra piloto de 100 repositórios. A coleta oficial de 1.000 vem na Sprint 2 e pode mudar as distribuições.
+As seções RQ01 a RQ06 ainda usam a amostra piloto de 100 repositórios, e a RQ05 usa
+75, porque a coleta daquela execução parou na quarta página. A seção RQ07 já usa a
+amostra oficial de 1.000. **Antes da entrega final, as seis primeiras precisam ser
+recalculadas sobre a base de 1.000**, senão o relatório mistura duas amostras
+diferentes.
+
+O ranking de linguagens do Octoverse mede número de contribuidores na plataforma, que
+é adoção, não prática de engenharia. Isso limita o quanto a RQ07 pode concluir: a
+divisão entre popular e não popular agrupa linguagens com comportamentos bem
+diferentes entre si.
+
+A RQ07 mostra associação, não causa. Linguagem está confundida com tipo de projeto,
+já que certas linguagens concentram certos tipos de software, e não é possível separar
+os dois efeitos com os dados coletados.
+
+A amostra são os 1.000 repositórios mais estrelados, o que não representa o GitHub em
+geral. As conclusões valem para o topo do ranking de popularidade.
 
 A API limita o `releases.totalCount` em 1000, o que subestima média e máximo da RQ03.
 
