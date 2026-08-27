@@ -20,7 +20,7 @@ python -m pip install -r requirements.txt
 ```
 
 * Um CSV bruto de coleta em `data/raw/`, no formato `repos_raw_<coleta>.csv`
-  (veja `docs/raw-dataset.md` para o schema).
+  (veja `docs/dataset/raw-dataset.md` para o schema).
 * O CSV processado correspondente em `data/processed/`, no formato
   `repos_processed_<coleta>.csv`. Se ainda não existir, gere com o pipeline:
 
@@ -139,6 +139,6 @@ python -m unittest discover -s tests
 ## 7. Referências
 
 * `docs/methodology.md` — seção 9 (fórmulas de RQ01 e RQ02).
-* `docs/processed-dataset.md` — schema da base processada.
-* `docs/raw-dataset.md` — schema do CSV bruto.
+* `docs/dataset/processed-dataset.md` — schema da base processada.
+* `docs/dataset/raw-dataset.md` — schema do CSV bruto.
 * `docs/tasks.md` — task S02-04, com o resultado da última execução completa.

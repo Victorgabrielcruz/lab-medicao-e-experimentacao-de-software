@@ -98,7 +98,7 @@ Erros fatais (token inválido, query malformada) interrompem a coleta com uma
 mensagem clara no log; erros transitórios (rede, timeout, 5xx, rate limit)
 são reenviados automaticamente, com backoff exponencial, até 4 tentativas.
 
-Referência: `docs/raw-dataset.md` (schema do CSV bruto), `docs/methodology.md`
+Referência: `docs/dataset/raw-dataset.md` (schema do CSV bruto), `docs/methodology.md`
 (seções 4 e 7).
 
 ---
@@ -123,7 +123,7 @@ data/processed/repos_processed_<coleta>.csv   # base integrada RQ01–RQ06
 data/processed/pilot_rq05_rq06.csv            # visão piloto de RQ05/RQ06
 ```
 
-Referência: `docs/processed-dataset.md` (schema completo das colunas
+Referência: `docs/dataset/processed-dataset.md` (schema completo das colunas
 derivadas).
 
 ---
@@ -159,8 +159,93 @@ Cada comando:
 * retorna código de saída `0` (sem inconsistências) ou `1` (há
   inconsistências a revisar).
 
-Guias detalhados: `docs/rq01-rq02-validation.md`, `docs/rq03-rq04-validation.md`
-e `docs/rq05-rq06-validation.md`.
+Guias detalhados: `docs/validation/rq01-rq02-validation.md`, `docs/validation/rq03-rq04-validation.md`
+e `docs/validation/rq05-rq06-validation.md`.
+
+---
+
+## 6b. Atalho: pipeline único (passos 5 e 6 em um só comando)
+
+Os passos 5 e 6, além da consolidação, análise e validação da RQ07, também
+podem ser executados de uma vez com `scripts/run_pipeline.py`, a partir de um
+CSV bruto **já coletado**:
+
+```bash
+cd Lab01
+python scripts/run_pipeline.py data/raw/repos_raw_<coleta>.csv
+```
+
+O script:
+
+* **não roda a coleta** — `dotnet run --project src/collector` continua
+  sendo um passo manual e prévio, executado conforme a seção 4 acima; o
+  pipeline único exige como entrada obrigatória o CSV bruto já gerado por
+  essa coleta;
+* recusa executar, com mensagem clara, se o CSV bruto informado não existir
+  ou estiver vazio/ilegível;
+* executa, em sequência, `build_processed_dataset.py`, as três validações
+  (`rq01_rq02`, `rq03_rq04`, `rq05_rq06`) e, por fim, a consolidação, a
+  análise e a validação da RQ07 (`consolidate_rq07_dataset.py`,
+  `rq07_analysis.py` e `rq07_validation.py`);
+* interrompe o pipeline assim que qualquer etapa falhar (CSV malformado,
+  inconsistência crítica de validação etc.), indicando claramente qual etapa
+  falhou e o motivo;
+* imprime, ao final, o caminho de cada artefato gerado.
+
+Nenhuma etapa nem métrica é reimplementada pelo orquestrador: ele só chama,
+na ordem certa, os mesmos scripts descritos nas seções 5 e 6 deste tutorial.
+A etapa de RQ07 roda incondicionalmente, no mesmo pé de igualdade das demais
+RQs: `rq07_validation.py` (ver `docs/validation/rq07-validation.md`) valida
+`rq07_analysis.py` do mesmo jeito que as outras três validações já validam
+suas respectivas RQs.
+
+---
+
+## 6c. Dashboard Streamlit com as métricas e resultados das RQs
+
+Interface visual, somente leitura, para explorar as métricas e os resultados
+das RQ01–RQ07 sem precisar abrir os CSVs/relatórios manualmente:
+
+```bash
+cd Lab01
+python -m streamlit run src/dashboard/app.py
+```
+
+(Use `python -m streamlit` em vez de `streamlit` se o executável não estiver
+no `PATH` do seu ambiente.)
+
+O dashboard:
+
+* **não recalcula nenhuma métrica** — lê diretamente
+  `data/processed/repos_processed_<coleta>.csv` (gerado pelos passos 5/6b) e,
+  quando disponíveis para a mesma coleta, os artefatos da RQ07
+  (`repos_rq07_consolidated_<coleta>.csv`, `rq07_statistics_<coleta>.csv`);
+* deixa escolher, na barra lateral, qual coleta processada exibir (quando há
+  mais de uma) e permite filtrar por linguagem primária e status de
+  arquivamento;
+* mostra uma visão geral da coleta (quantidade de repositórios, data de
+  referência, arquivados, sem linguagem identificada);
+* para cada uma das RQ01–RQ06, exibe a métrica utilizada (coerente com
+  `docs/methodology.md`), estatísticas descritivas (n, média, mediana,
+  mínimo, máximo) e um gráfico (histograma ou barras);
+* exibe a comparação da RQ07 (linguagens populares × não populares nas
+  métricas de RQ02/RQ03/RQ04) quando os artefatos da RQ07 já existirem para a
+  coleta selecionada; caso contrário, orienta a rodar
+  `consolidate_rq07_dataset.py` + `rq07_analysis.py` (ou o pipeline único,
+  seção 6b) antes;
+* exibe, em uma aba própria ("Outliers"), a análise extra de outliers
+  (tasks S03-04/S03-05: `rq07_outliers.py`, regra de Tukey/IQR) — gráfico de
+  sinalizações por métrica e tabela filtrável de repositórios sinalizados,
+  quando `outliers_<coleta>.csv` existir para a coleta selecionada;
+* permite baixar cada gráfico (PNG/SVG) e os dados subjacentes (CSV);
+* trata a ausência de qualquer CSV processado com mensagem clara, orientando
+  a rodar a coleta e o pipeline antes de abrir o dashboard.
+
+Para rodar somente os testes do dashboard:
+
+```bash
+python -m unittest tests.test_dashboard -v
+```
 
 ---
 
@@ -211,6 +296,8 @@ python -m unittest tests.test_rq01_rq02_validation -v
 | Validação RQ01/RQ02 | `data/processed/validation_rq01_rq02_<coleta>.csv`, `reports/drafts/validation_rq01_rq02_<coleta>.md` |
 | Validação RQ03/RQ04 | `data/processed/validation_rq03_rq04_<coleta>.csv`, `reports/drafts/validation_rq03_rq04_<coleta>.md` |
 | Validação RQ05/RQ06 | `data/processed/validation_rq05_rq06_<coleta>.csv`, `reports/drafts/validation_rq05_rq06_<coleta>.md` |
+| Pipeline único (`scripts/run_pipeline.py`) | Os mesmos artefatos das linhas acima, gerados em sequência, mais a consolidação, análise e validação da RQ07 |
+| Dashboard (`src/dashboard/app.py`) | Interface Streamlit somente leitura; nenhum arquivo é gerado, apenas lê os artefatos acima |
 | Qualidade dos dados | `reports/drafts/data_quality_<coleta>.md` |
 | Snapshot do board | `data/snapshots/snapshot_<sprint>_<carimbo>.csv` |
 
@@ -224,8 +311,9 @@ python -m unittest tests.test_rq01_rq02_validation -v
 | Timeout na coleta com `PAGE_SIZE` alto | Query aninhada demais para o servidor do GitHub | Voltar `PAGE_SIZE` para 10 |
 | Coleta reinicia do zero mesmo com `checkpoint.json` presente | Parâmetros do `.env` mudaram (`SEARCH_QUERY`, `PAGE_SIZE` ou `TARGET_REPOS`) desde o checkpoint | Esperado — a amostra mudaria; delete `data/raw/checkpoint.json` manualmente se quiser recomeçar de propósito |
 | `o token nao tem o escopo read:project` no snapshot | Está usando o token da coleta (sem escopos) no script de snapshot | Gerar um segundo token com `read:project` só para `snapshot_project.py` |
-| CSV abre errado no Excel (tudo em uma coluna) | Separador de listas do Windows em pt-BR é `;`, o CSV usa `,` | Usar Dados → Obter Dados → De Texto/CSV, escolhendo vírgula e UTF-8 (ver `docs/raw-dataset.md`) |
+| CSV abre errado no Excel (tudo em uma coluna) | Separador de listas do Windows em pt-BR é `;`, o CSV usa `,` | Usar Dados → Obter Dados → De Texto/CSV, escolhendo vírgula e UTF-8 (ver `docs/dataset/raw-dataset.md`) |
 | Validação aponta inconsistência de data futura em RQ03/RQ04 | `collected_at` é fixado no início da coleta paginada; repositórios muito ativos podem receber push durante a execução | Comportamento esperado e documentado em `docs/methodology.md` (seção 5); não é erro de coleta |
+| `streamlit` não é reconhecido como comando | O executável não foi adicionado ao `PATH` pelo `pip install` | Use `python -m streamlit run src/dashboard/app.py` no lugar de `streamlit run ...` |
 
 ---
 
@@ -233,7 +321,12 @@ python -m unittest tests.test_rq01_rq02_validation -v
 
 * `README.md` — visão geral do projeto e estrutura de pastas.
 * `docs/methodology.md` — metodologia completa de coleta e cálculo das RQs.
-* `docs/raw-dataset.md` / `docs/processed-dataset.md` — schemas dos CSVs.
-* `docs/rq01-rq02-validation.md`, `docs/rq03-rq04-validation.md`,
-  `docs/rq05-rq06-validation.md` — manuais de validação por par de RQs.
+* `docs/dataset/raw-dataset.md` / `docs/dataset/processed-dataset.md` — schemas dos CSVs.
+* `docs/validation/rq01-rq02-validation.md`, `docs/validation/rq03-rq04-validation.md`,
+  `docs/validation/rq05-rq06-validation.md`, `docs/validation/rq07-validation.md` — manuais de
+  validação por RQ (ou par de RQs).
+* `scripts/run_pipeline.py` / `tests/test_run_pipeline.py` — pipeline único
+  que orquestra os passos 5 e 6 e a análise/validação da RQ07 em um comando.
+* `src/dashboard/app.py` / `tests/test_dashboard.py` — dashboard Streamlit
+  com métricas e resultados das RQ01–RQ07 (somente leitura).
 * `docs/tasks.md` — plano de execução por sprint e critérios de aceitação.

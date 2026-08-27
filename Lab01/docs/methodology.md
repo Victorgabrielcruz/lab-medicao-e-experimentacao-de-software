@@ -94,7 +94,7 @@ A data de referência deverá ser registrada juntamente aos dados da execução 
 ### Limitação conhecida: `collected_at` fixo durante coleta paginada
 
 `collected_at` é definido uma única vez, no início da execução, e replicado em
-todas as linhas da mesma coleta (ver `docs/raw-dataset.md`). Como a coleta
+todas as linhas da mesma coleta (ver `docs/dataset/raw-dataset.md`). Como a coleta
 paginada de 1.000 repositórios leva minutos para percorrer todas as páginas,
 repositórios muito ativos podem receber um novo `push` ou commit durante essa
 janela de execução, resultando em `pushed_at` ou `last_commit_date` alguns

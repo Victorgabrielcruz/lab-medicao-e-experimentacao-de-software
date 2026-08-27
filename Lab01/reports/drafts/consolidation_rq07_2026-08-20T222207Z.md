@@ -16,6 +16,6 @@
 - `development_period_days`: 0
 - `closed_issues_percentage`: 43
 
-Os valores ausentes acima são esperados e documentados em `docs/raw-dataset.md` e `docs/methodology.md`: repositórios sem commit/push não têm métricas temporais de atividade e repositórios sem issues não têm `closed_issues_percentage`. Nenhum valor ausente foi convertido em zero.
+Os valores ausentes acima são esperados e documentados em `docs/dataset/raw-dataset.md` e `docs/methodology.md`: repositórios sem commit/push não têm métricas temporais de atividade e repositórios sem issues não têm `closed_issues_percentage`. Nenhum valor ausente foi convertido em zero.
 
-Este dataset reaproveita as métricas já validadas em `docs/rq01-rq02-validation.md`, `docs/rq03-rq04-validation.md` e `docs/rq05-rq06-validation.md`, sem recalcular nenhuma regra de métrica.
+Este dataset reaproveita as métricas já validadas em `docs/validation/rq01-rq02-validation.md`, `docs/validation/rq03-rq04-validation.md` e `docs/validation/rq05-rq06-validation.md`, sem recalcular nenhuma regra de métrica.

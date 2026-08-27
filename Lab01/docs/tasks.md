@@ -243,7 +243,7 @@ Consulta versionada em `src/github/queries/` (`00-popular-repos`,
 `10-repo-identity`, `20-rq01-rq02-age-pullrequests`,
 `30-rq03-rq04-releases-activity`, `40-rq05-rq06-language-issues`), consumida
 por `src/collector/Github/GitHubApi.cs`. Schema da resposta documentado em
-`docs/raw-dataset.md`. Confirmado em produção pela coleta completa dos 1.000
+`docs/dataset/raw-dataset.md`. Confirmado em produção pela coleta completa dos 1.000
 repositórios em `data/raw/repos_raw_2026-08-20T222207Z.csv`.
 
 ### Resultado esperado
@@ -438,8 +438,8 @@ CSV bruto gravado por `src/collector/Export/RawCsvWriter.cs`
 (`data/raw/repos_raw_<coleta>.csv`); CSV processado gerado por
 `src/analysis/build_processed_dataset.py`
 (`data/processed/repos_processed_<coleta>.csv`). Convenções de codificação,
-separador e tipos documentadas em `docs/raw-dataset.md` e
-`docs/processed-dataset.md`, e verificadas por `tests/test_csv_format.py`.
+separador e tipos documentadas em `docs/dataset/raw-dataset.md` e
+`docs/dataset/processed-dataset.md`, e verificadas por `tests/test_csv_format.py`.
 
 ### Resultado esperado
 
@@ -707,7 +707,7 @@ Validação executada contra a coleta completa
 
 Resultado: 1.000 repositórios validados, **0 inconsistências**, 87
 repositórios sem linguagem primária (consistente com o valor documentado em
-`docs/raw-dataset.md`) e 43 repositórios sem issues, todos com
+`docs/dataset/raw-dataset.md`) e 43 repositórios sem issues, todos com
 `closed_issues_percentage` corretamente ausente (sem divisão por zero).
 
 ### Resultado esperado
@@ -883,7 +883,7 @@ execução fim a fim com escrita dos dois artefatos e leitura do `id` como
 texto). Rodado contra a coleta completa (`repos_processed_2026-08-20T222207Z.csv`):
 1.000 repositórios, 0 IDs duplicados, 0 colunas ausentes, 87 sem linguagem
 primária e 43 sem issues — os mesmos números já documentados em
-`docs/rq05-rq06-validation.md` e `reports/drafts/data_quality_2026-08-20T222207Z.md`,
+`docs/validation/rq05-rq06-validation.md` e `reports/drafts/data_quality_2026-08-20T222207Z.md`,
 confirmando que nenhuma métrica foi alterada na consolidação.
 
 ### Resultado esperado
@@ -924,18 +924,28 @@ Implementar a análise integrada das características dos repositórios populare
 
 ### Critérios de aceitação
 
-* [ ] Dataset consolidado é carregado corretamente.
-* [ ] Métricas RQ01–RQ06 são utilizadas na análise.
-* [ ] Relações relevantes entre as métricas são calculadas.
-* [ ] Estatísticas necessárias para a RQ07 são produzidas.
-* [ ] Outliers relevantes são identificados.
-* [ ] Visualizações necessárias são geradas.
-* [ ] Análise executa sem erros.
+* [x] Dataset consolidado é carregado corretamente.
+* [x] Métricas RQ01–RQ06 são utilizadas na análise.
+* [x] Relações relevantes entre as métricas são calculadas.
+* [x] Estatísticas necessárias para a RQ07 são produzidas.
+* [x] Outliers relevantes são identificados.
+* [x] Visualizações necessárias são geradas.
+* [x] Análise executa sem erros.
 
 ### Resultado esperado
 
 Análise quantitativa da RQ07 implementada, com estatísticas, relações entre as métricas e evidências necessárias para responder à questão de pesquisa.
 
+### Observações
+
+`src/analysis/rq07_analysis.py` já está implementado e testado
+(`tests/test_rq07_analysis.py`) e agora conta com validação própria em
+`src/analysis/rq07_validation.py` (`tests/test_rq07_validation.py`, ver
+`docs/validation/rq07-validation.md`), que reproduz as estatísticas de grupo,
+correlações e outliers a partir do dataset consolidado e os compara aos
+artefatos gerados, sem inconsistências. Visualizações da RQ07 disponíveis em
+`reports/figures/rq07_median_differences_2026-08-20T222207Z.svg` e
+`reports/figures/rq07_star_correlations_2026-08-20T222207Z.svg`.
 
 ---
 
@@ -970,17 +980,28 @@ Interpretar os resultados obtidos na análise da RQ07 e produzir a resposta da q
 
 ### Critérios de aceitação
 
-* [ ] RQ07 possui uma resposta baseada nos dados coletados.
-* [ ] Hipótese da RQ07 é discutida.
-* [ ] Principais resultados são apresentados.
-* [ ] Relações relevantes entre as métricas são discutidas.
-* [ ] Resultados inesperados são registrados quando existentes.
-* [ ] Limitações da análise estão documentadas.
-* [ ] Texto final está pronto para integração ao relatório.
+* [x] RQ07 possui uma resposta baseada nos dados coletados.
+* [x] Hipótese da RQ07 é discutida.
+* [x] Principais resultados são apresentados.
+* [x] Relações relevantes entre as métricas são discutidas.
+* [x] Resultados inesperados são registrados quando existentes.
+* [x] Limitações da análise estão documentadas.
+* [x] Texto final está pronto para integração ao relatório.
 
 ### Resultado esperado
 
 Resposta final da RQ07 documentada e fundamentada nos resultados da análise das métricas RQ01–RQ06.
+
+### Observações
+
+Resposta redigida em `reports/drafts/respostas-rqs.md` (seção RQ07), a
+partir dos artefatos já gerados por `rq07_analysis.py` (S03-02) e
+`rq07_outliers.py` (S03-04/S03-05): comparação de medianas entre linguagens
+populares/não populares para PRs aceitas, releases e dias desde o último
+push, correlações de estrelas com as métricas de RQ01–RQ06, achados
+inesperados (correlação levemente negativa entre estrelas e releases,
+possivelmente atenuada pelo teto de `releases_count`) e limitações herdadas
+(truncamento da API, `collected_at` fixo, tratamento de "sem linguagem").
 
 ## S03-04 — Identificar outliers nos repositórios [S03] — EXTRA
 
@@ -1078,6 +1099,16 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 
 Análise interpretativa dos principais outliers encontrados, identificando comportamentos extremos e possíveis explicações para esses casos.
 
+### Observações
+
+Os outliers gerados por `src/analysis/rq07_outliers.py` (CSV `outliers_<coleta>.csv`
+e relatório `reports/drafts/outliers_<coleta>.md`) agora também têm
+visualização própria no dashboard Streamlit (task S03-07,
+`src/dashboard/app.py`, aba "Outliers"): gráfico de sinalizações por
+métrica, tabela filtrável por métrica com severidade/observações, e
+download dos dados. Nenhum cálculo é refeito no dashboard — ele só lê o CSV
+já gerado por este módulo.
+
 **EXTRA:** Esta task é "opcional" e somente deve ser executada caso as entregas obrigatórias da Sprint 3 estejam concluídas.
 
 ## S03-06 — Criar pipeline único de execução (pós-coleta) [S03] — EXTRA
@@ -1098,7 +1129,7 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 * Criar um script orquestrador (`scripts/run_pipeline.py`) que receba o caminho de um CSV bruto já coletado (obrigatório, via argumento) e execute, na ordem:
   1. `src/analysis/build_processed_dataset.py` sobre o CSV bruto informado;
   2. os três scripts de validação (`rq01_rq02`, `rq03_rq04`, `rq05_rq06`);
-  3. a análise da RQ07 (`src/analysis/rq07_analysis.py`), quando essa task (S03-02) já estiver concluída.
+  3. a consolidação, a análise e a validação da RQ07 (`consolidate_rq07_dataset.py`, `rq07_analysis.py` e `rq07_validation.py`).
 * Validar, antes de iniciar, que o CSV bruto informado existe e é legível; interromper com mensagem clara caso contrário (não é responsabilidade deste script rodar a coleta).
 * Interromper o pipeline e reportar claramente a etapa e o motivo em caso de falha em qualquer passo (ex.: CSV ausente/malformado, inconsistência crítica).
 * Registrar, ao final, o caminho de cada artefato gerado (processado, validações).
@@ -1116,16 +1147,34 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 * S02-05
 * S02-06
 * S02-07
-* S03-02 (a etapa de RQ07 do pipeline só roda quando esta task estiver concluída)
 
 ### Critérios de aceitação
 
-* [ ] Um único comando executa processamento e as três validações em sequência, a partir de um CSV bruto informado.
-* [ ] Script recusa executar (com mensagem clara) se o CSV bruto informado não existir ou for inválido, sem tentar rodar a coleta.
-* [ ] Falha em qualquer etapa interrompe o pipeline com mensagem clara indicando qual etapa falhou.
-* [ ] Caminhos dos artefatos gerados são exibidos ao final da execução.
-* [ ] Uso documentado em `docs/tutorial-execucao.md`, incluindo a observação de que a coleta C# é um passo manual prévio, fora do escopo deste script.
-* [ ] Script executa sem erros sobre um CSV bruto de amostra piloto (100 repositórios).
+* [x] Um único comando executa processamento e as três validações em sequência, a partir de um CSV bruto informado.
+* [x] Script recusa executar (com mensagem clara) se o CSV bruto informado não existir ou for inválido, sem tentar rodar a coleta.
+* [x] Falha em qualquer etapa interrompe o pipeline com mensagem clara indicando qual etapa falhou.
+* [x] Caminhos dos artefatos gerados são exibidos ao final da execução.
+* [x] Uso documentado em `docs/tutorial-execucao.md`, incluindo a observação de que a coleta C# é um passo manual prévio, fora do escopo deste script.
+* [x] Script executa sem erros sobre um CSV bruto de amostra piloto (100 repositórios).
+
+### Observações
+
+Implementado em `scripts/run_pipeline.py`, que orquestra via subprocesso, na
+ordem: `build_processed_dataset.py`, as três validações
+(`rq01_rq02`/`rq03_rq04`/`rq05_rq06`) e, por fim,
+`consolidate_rq07_dataset.py` + `rq07_analysis.py` + `rq07_validation.py`.
+Nenhuma métrica é recalculada aqui — o orquestrador só chama os scripts já
+existentes e lê os caminhos de saída impressos por eles. Testado em
+`tests/test_run_pipeline.py` (validação de entrada ausente/vazia, extração de
+caminhos, filtro de linhas de artefato e execução ponta a ponta sobre uma
+amostra piloto de 5 repositórios, com limpeza dos artefatos gerados ao final
+do teste).
+
+A etapa de RQ07 deixou de depender da conclusão formal da S03-02: com a
+criação de `src/analysis/rq07_validation.py` (validação da RQ07, no mesmo
+padrão das demais RQs — ver `docs/validation/rq07-validation.md`), a etapa de RQ07 do
+pipeline agora é validada da mesma forma que RQ01–RQ06, e roda
+incondicionalmente, sem gate de nenhuma outra task.
 
 ### Resultado esperado
 
@@ -1159,6 +1208,7 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 ### Arquivos/módulos envolvidos
 
 * `src/dashboard/app.py`
+* `tests/test_dashboard.py`
 * `requirements.txt`
 * `docs/tutorial-execucao.md`
 * `README.md`
@@ -1169,18 +1219,55 @@ Esta task é uma **atividade extra da Sprint 3** e não faz parte das entregas o
 * S02-05
 * S02-06
 * S02-07
-* S03-06 (o dashboard é a etapa final do pipeline único, quando esta também for implementada)
 
 ### Critérios de aceitação
 
-* [ ] Dashboard sobe com `streamlit run src/dashboard/app.py` sem erros.
-* [ ] Visão geral da coleta é exibida corretamente.
-* [ ] Métrica, estatísticas e ao menos um gráfico são exibidos para cada uma das RQ01–RQ06.
-* [ ] Comparação da RQ07 é exibida quando a análise correspondente estiver disponível.
-* [ ] Filtro por linguagem funciona sem quebrar os gráficos e estatísticas.
-* [ ] Todo gráfico exibido possui opção de exportação (download em imagem e/ou CSV dos dados).
-* [ ] Caso de ausência de CSV processado é tratado com mensagem clara, sem erro não tratado.
-* [ ] Uso documentado em `docs/tutorial-execucao.md` e no `README.md`.
+* [x] Dashboard sobe com `streamlit run src/dashboard/app.py` sem erros.
+* [x] Visão geral da coleta é exibida corretamente.
+* [x] Métrica, estatísticas e ao menos um gráfico são exibidos para cada uma das RQ01–RQ06.
+* [x] Comparação da RQ07 é exibida quando a análise correspondente estiver disponível.
+* [x] Filtro por linguagem funciona sem quebrar os gráficos e estatísticas.
+* [x] Todo gráfico exibido possui opção de exportação (download em imagem e/ou CSV dos dados).
+* [x] Caso de ausência de CSV processado é tratado com mensagem clara, sem erro não tratado.
+* [x] Uso documentado em `docs/tutorial-execucao.md` e no `README.md`.
+
+### Observações
+
+Implementado em `src/dashboard/app.py` (Streamlit + Matplotlib), somente
+leitura: não recalcula nenhuma métrica, apenas lê `data/processed/repos_processed_<coleta>.csv`
+(gerado por `build_processed_dataset.py`) e, quando disponíveis para a mesma
+coleta, os artefatos da RQ07 (`repos_rq07_consolidated_<coleta>.csv` e
+`rq07_statistics_<coleta>.csv`, gerados por `consolidate_rq07_dataset.py` e
+`rq07_analysis.py`/validados por `rq07_validation.py`) e da análise extra de
+outliers (`outliers_<coleta>.csv`, gerado por `rq07_outliers.py`, tasks
+S03-04/S03-05). A dependência de S03-06 foi removida da lista acima porque o
+dashboard lê diretamente os artefatos já existentes em `data/processed/`,
+sem precisar do orquestrador — ele funciona tanto rodando os scripts
+manualmente (seções 5/6 de `docs/tutorial-execucao.md`) quanto via
+`scripts/run_pipeline.py`.
+
+O dashboard tem 8 abas: RQ01 a RQ06, RQ07 e Outliers. A aba de Outliers
+mostra um gráfico de sinalizações por métrica e uma tabela filtrável por
+métrica (com valor, lado, severidade e observações), reaproveitando
+integralmente o CSV já produzido por `rq07_outliers.py` (regra de Tukey/IQR),
+sem recalcular nem remover nenhum repositório da base original.
+
+Cada gráfico (histograma para RQ01–RQ04/RQ06, barras para RQ05, para a
+comparação de grupos da RQ07 e para a contagem de outliers) tem botões de
+download em PNG, SVG e CSV dos dados subjacentes. Sidebar permite escolher a
+coleta (quando há mais de um CSV processado) e filtrar por linguagem
+primária e status de arquivamento (esses dois filtros não afetam as abas
+RQ07 e Outliers, que usam os grupos/sinalizações já consolidados nas
+respectivas análises). Ausência de CSV processado é tratada com mensagem
+orientando a rodar a coleta e o pipeline antes. Testado em
+`tests/test_dashboard.py` (seleção de coleta, derivação de caminhos dos
+artefatos da RQ07 e de outliers, checagem de que as colunas usadas pelo
+dashboard existem de fato nos artefatos reais, e um teste de integração via
+`streamlit.testing.v1.AppTest` que sobe o app inteiro contra a base
+processada oficial e garante zero exceções, inclusive ao interagir com o
+filtro de métrica da aba de Outliers). Subida manual verificada com
+`python -m streamlit run src/dashboard/app.py --server.headless true`
+contra a base processada oficial (1000 repositórios), sem erros.
 
 ### Resultado esperado
 
@@ -1256,13 +1343,13 @@ Coletas repetidas com os mesmos parâmetros, dentro da janela de 24h, deixam de 
 
 ### Objetivo
 
-Elaborar o documento do Relatório Final do Lab01, seguindo a estrutura definida em `docs/Template_Relatorio_Laboratorio.md`, consolidando hipóteses, metodologia, resultados por RQ (RQ01–RQ07), discussão e a seção "Configuração do processo" (colunas do board, política de WIP e print do quadro Kanban).
+Elaborar o documento do Relatório Final do Lab01, seguindo a estrutura definida em `docs/templates/Template_Relatorio_Laboratorio.md`, consolidando hipóteses, metodologia, resultados por RQ (RQ01–RQ07), discussão e a seção "Configuração do processo" (colunas do board, política de WIP e print do quadro Kanban).
 
 Esta task fica sob a responsabilidade de Víctor Gabriel Cruz Pereira por ele já ser o responsável pela criação do dashboard (S03-07): os gráficos exportados diretamente do dashboard (PNG/SVG e/ou CSV) são a fonte usada para ilustrar a seção 4.2 (Visualização Gráfica) do relatório, evitando divergência entre o que é mostrado no dashboard e o que é apresentado no relatório.
 
 ### O que deve ser feito
 
-* Preencher `docs/Template_Relatorio_Laboratorio.md` (convertido a partir de `docs/Template_Relatorio_Laboratorio.docx`) com o conteúdo real do grupo, removendo os parágrafos de "ORIENTAÇÃO".
+* Preencher `docs/templates/Template_Relatorio_Laboratorio.md` (convertido a partir de `docs/templates/Template_Relatorio_Laboratorio.docx`) com o conteúdo real do grupo, removendo os parágrafos de "ORIENTAÇÃO".
 * Redigir introdução, contexto, metodologia (desafios, decisões, etapas, ferramentas, tabela de métricas e inovações) e conclusão.
 * Exportar do dashboard Streamlit (S03-07) os gráficos referentes a cada RQ (RQ01–RQ07) e inseri-los na seção de resultados/visualização gráfica do relatório.
 * Redigir a discussão comparando hipótese informal vs. resultado obtido, por RQ.
@@ -1271,7 +1358,7 @@ Esta task fica sob a responsabilidade de Víctor Gabriel Cruz Pereira por ele j�
 
 ### Arquivos/módulos envolvidos
 
-* `docs/Template_Relatorio_Laboratorio.md`
+* `docs/templates/Template_Relatorio_Laboratorio.md`
 * `reports/final/`
 * `src/dashboard/app.py` (fonte dos gráficos exportados)
 
@@ -1283,10 +1370,22 @@ Esta task fica sob a responsabilidade de Víctor Gabriel Cruz Pereira por ele j�
 
 ### Critérios de aceitação
 
-* [ ] Relatório final segue a estrutura de `docs/Template_Relatorio_Laboratorio.md`, sem parágrafos de "ORIENTAÇÃO" remanescentes.
-* [ ] Todas as RQs (RQ01–RQ07) possuem resultado, gráfico exportado do dashboard e discussão hipótese vs. resultado.
-* [ ] Seção "Configuração do processo" presente, com print do board e política de WIP.
-* [ ] Relatório final salvo em `reports/final/`.
+* [x] Relatório final segue a estrutura de `docs/templates/Template_Relatorio_Laboratorio.md`, sem parágrafos de "ORIENTAÇÃO" remanescentes.
+* [x] Todas as RQs (RQ01–RQ07) possuem resultado, gráfico referenciado do dashboard e discussão hipótese vs. resultado.
+* [ ] Seção "Configuração do processo" presente, com print do board e política de WIP. Política de
+  WIP documentada (In progress = 3, In review = 5), falta apenas inserir o print do board.
+* [x] Relatório final salvo em `reports/final/`.
+
+### Observações
+
+Relatório escrito em `reports/final/relatorio-final.md`. Colunas do board e
+limites de WIP confirmados diretamente pelo responsável no
+GitHub Projects (<https://github.com/users/Victorgabrielcruz/projects/4/views/1>):
+Product Backlog → Sprint Backlog → Ready → In progress (WIP 3) → In review
+(WIP 5) → Done. Gráficos de RQ01–RQ07 e outliers já exportados do dashboard e
+salvos em `reports/final/figures/`. Falta apenas o print do board na seção
+"Configuração do processo" — pendência atribuída a Jonathan, com instruções
+deixadas diretamente no relatório final.
 
 ### Resultado esperado
 
