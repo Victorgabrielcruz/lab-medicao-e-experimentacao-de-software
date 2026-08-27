@@ -70,11 +70,7 @@ O processo completo de coleta, processamento, cálculo de métricas e validaçã
 
 O limite de WIP de 3 na coluna "In progress" foi definido para evitar que os três integrantes acumulassem tasks abertas simultaneamente sem concluí-las, forçando o fechamento de uma task antes de iniciar a próxima; o limite de 5 em "In review" é mais folgado, pois a revisão (conferência cruzada entre os integrantes) tende a ser mais rápida que a implementação.
 
-> **PENDENTE — @Jonathan:** falta inserir aqui o print do quadro Kanban. Siga estes passos:
-> 1. Abra <https://github.com/users/Victorgabrielcruz/projects/4/views/1> logado no GitHub.
-> 2. Tire uma captura de tela da view inteira do board (mostrando as 6 colunas: Product Backlog, Sprint Backlog, Ready, In progress, In review, Done).
-> 3. Salve o arquivo como `reports/final/figures/board-kanban.png`.
-> 4. Substitua este parágrafo de pendência pela linha: `![Quadro Kanban do projeto](figures/board-kanban.png)`.
+![Quadro Kanban do projeto](figures/board-kanban.png)
 
 ### 3.4 Ferramentas
 
