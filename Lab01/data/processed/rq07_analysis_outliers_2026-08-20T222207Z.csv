@@ -1,0 +1,414 @@
+id,name_with_owner,language_category,metrica,descricao,valor,limite_inferior,limite_superior
+MDEwOlJlcG9zaXRvcnkyODQ1NzgyMw==,freeCodeCamp/freeCodeCamp,Popular,accepted_pull_requests,Pull requests aceitas,29136,-4700.375,8300.625
+R_kgDOQb6kRw,openclaw/openclaw,Popular,accepted_pull_requests,Pull requests aceitas,26658,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMDI3MDI1MA==,react/react,Popular,accepted_pull_requests,Pull requests aceitas,13035,-4700.375,8300.625
+R_kgDOPRF1Gw,NousResearch/hermes-agent,Popular,accepted_pull_requests,Pull requests aceitas,11403,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxOTMyMTU1NTQ=,n8n-io/n8n,Popular,accepted_pull_requests,Pull requests aceitas,20277,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0NTcxNzI1MA==,tensorflow/tensorflow,Popular,accepted_pull_requests,Pull requests aceitas,48928,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MTg4MTkwMA==,microsoft/vscode,Popular,accepted_pull_requests,Pull requests aceitas,52239,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMTc5MjgyNA==,flutter/flutter,Não popular,accepted_pull_requests,Pull requests aceitas,49693,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMTI2MjQ0,twbs/bootstrap,Não popular,accepted_pull_requests,Pull requests aceitas,9487,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTUyMjA2NDE=,huggingface/transformers,Popular,accepted_pull_requests,Pull requests aceitas,20230,-4700.375,8300.625
+R_kgDOJVxJug,langgenius/dify,Popular,accepted_pull_requests,Pull requests aceitas,13476,-4700.375,8300.625
+R_kgDOIPDwlg,langchain-ai/langchain,Popular,accepted_pull_requests,Pull requests aceitas,17285,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MDEwNzc4Ng==,vercel/next.js,Popular,accepted_pull_requests,Pull requests aceitas,28257,-4700.375,8300.625
+R_kgDOJH_K4A,ggml-org/llama.cpp,Popular,accepted_pull_requests,Pull requests aceitas,9789,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMDU4MDQ5OA==,kubernetes/kubernetes,Popular,accepted_pull_requests,Pull requests aceitas,65651,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk5Mzg0MjY3,electron/electron,Popular,accepted_pull_requests,Pull requests aceitas,26700,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyNzE5Mzc3OQ==,nodejs/node,Popular,accepted_pull_requests,Pull requests aceitas,13234,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTYzNDk4MQ==,godotengine/godot,Popular,accepted_pull_requests,Pull requests aceitas,43417,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MjQ3MTI=,rust-lang/rust,Não popular,accepted_pull_requests,Pull requests aceitas,73628,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1NzYyMDE=,mrdoob/three.js,Popular,accepted_pull_requests,Pull requests aceitas,16008,-4700.375,8300.625
+R_kgDOGyI-8A,immich-app/immich,Popular,accepted_pull_requests,Pull requests aceitas,10044,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMDkyOTAyNQ==,microsoft/TypeScript,Popular,accepted_pull_requests,Pull requests aceitas,14898,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMzM0NDIzODQ=,denoland/deno,Não popular,accepted_pull_requests,Pull requests aceitas,16464,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMTQ1ODcxOTM=,supabase/supabase,Popular,accepted_pull_requests,Pull requests aceitas,18727,-4700.375,8300.625
+R_kgDOOYsS4Q,openai/codex,Não popular,accepted_pull_requests,Pull requests aceitas,9733,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNjQwODk5Mg==,neovim/neovim,Não popular,accepted_pull_requests,Pull requests aceitas,19671,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNDUyNjg4NA==,ant-design/ant-design,Popular,accepted_pull_requests,Pull requests aceitas,18246,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzA4MzE1Ng==,mui/material-ui,Popular,accepted_pull_requests,Pull requests aceitas,22184,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNTc3Mjg5Njk=,oven-sh/bun,Não popular,accepted_pull_requests,Pull requests aceitas,9801,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMjE5ODE4OTE=,microsoft/playwright,Popular,accepted_pull_requests,Pull requests aceitas,17730,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1NDE3MzU5Mw==,storybookjs/storybook,Popular,accepted_pull_requests,Pull requests aceitas,13144,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1MTA4MDUx,opencv/opencv,Popular,accepted_pull_requests,Pull requests aceitas,14064,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMjg4ODk5Mw==,home-assistant/core,Popular,accepted_pull_requests,Pull requests aceitas,90180,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMTgxOTI3,bitcoin/bitcoin,Popular,accepted_pull_requests,Pull requests aceitas,16837,-4700.375,8300.625
+R_kgDOI7xefg,vllm-project/vllm,Popular,accepted_pull_requests,Pull requests aceitas,20169,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNDA1NDc1MjA=,zed-industries/zed,Não popular,accepted_pull_requests,Pull requests aceitas,26479,-4700.375,8300.625
+R_kgDOK4sStA,infiniflow/ragflow,Popular,accepted_pull_requests,Pull requests aceitas,8550,-4700.375,8300.625
+R_kgDOKbIFZQ,astral-sh/uv,Não popular,accepted_pull_requests,Pull requests aceitas,10153,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MTY0NDgy,django/django,Popular,accepted_pull_requests,Pull requests aceitas,10691,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMDc0NDE4Mw==,netdata/netdata,Popular,accepted_pull_requests,Pull requests aceitas,12937,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1MDc3NzU=,elastic/elasticsearch,Popular,accepted_pull_requests,Pull requests aceitas,95655,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4MDk0NTQyOA==,nestjs/nest,Popular,accepted_pull_requests,Pull requests aceitas,8699,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTExMTgyMQ==,grafana/grafana,Popular,accepted_pull_requests,Pull requests aceitas,69561,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4MTU5ODk2MQ==,python/cpython,Popular,accepted_pull_requests,Pull requests aceitas,62701,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzOTQ2NDAxOA==,apache/superset,Popular,accepted_pull_requests,Pull requests aceitas,19720,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MzQ0MTQwMw==,strapi/strapi,Popular,accepted_pull_requests,Pull requests aceitas,10382,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NjkxNjMx,moby/moby,Popular,accepted_pull_requests,Pull requests aceitas,23052,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzM1NzU4OA==,protocolbuffers/protobuf,Popular,accepted_pull_requests,Pull requests aceitas,9765,-4700.375,8300.625
+R_kgDOHvxvHg,toeverything/AFFiNE,Popular,accepted_pull_requests,Pull requests aceitas,9352,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNjM4OTY0,ansible/ansible,Popular,accepted_pull_requests,Pull requests aceitas,40061,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0NDgzODk0OQ==,swiftlang/swift,Não popular,accepted_pull_requests,Pull requests aceitas,60720,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4NDMyMjI=,scikit-learn/scikit-learn,Popular,accepted_pull_requests,Pull requests aceitas,14719,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2ODM4OTIx,prometheus/prometheus,Popular,accepted_pull_requests,Pull requests aceitas,8845,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NDYyNzYxNw==,commaai/openpilot,Popular,accepted_pull_requests,Pull requests aceitas,13303,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTAxOTk2Mg==,tldr-pages/tldr,Não popular,accepted_pull_requests,Pull requests aceitas,19516,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNDgwNjAyMjc=,withastro/astro,Popular,accepted_pull_requests,Pull requests aceitas,9244,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyOTI2MTQ3Mw==,minio/minio,Popular,accepted_pull_requests,Pull requests aceitas,9882,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MTk5NTkzNw==,nuxt/nuxt,Popular,accepted_pull_requests,Pull requests aceitas,8314,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4NTE0,rails/rails,Não popular,accepted_pull_requests,Pull requests aceitas,26870,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MjQ5NTU3OQ==,go-gitea/gitea,Popular,accepted_pull_requests,Pull requests aceitas,19747,-4700.375,8300.625
+R_kgDOKALCgQ,BerriAI/litellm,Popular,accepted_pull_requests,Pull requests aceitas,14603,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNjA0MDg5NA==,gatsbyjs/gatsby,Popular,accepted_pull_requests,Pull requests aceitas,18304,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2ODcyMDg2Nw==,firstcontributions/first-contributions,,accepted_pull_requests,Pull requests aceitas,103403,-4700.375,8300.625
+R_kgDOIicM-w,twentyhq/twenty,Popular,accepted_pull_requests,Pull requests aceitas,14087,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0OTYwOTU4MQ==,PowerShell/PowerShell,Popular,accepted_pull_requests,Pull requests aceitas,8471,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk5ODUyOTE4,TryGhost/Ghost,Popular,accepted_pull_requests,Pull requests aceitas,18470,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNjYzNDY4,mozilla/pdf.js,Popular,accepted_pull_requests,Pull requests aceitas,9229,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NTEwNDEyMw==,prettier/prettier,Popular,accepted_pull_requests,Pull requests aceitas,10242,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMTIyNTAxNA==,etcd-io/etcd,Popular,accepted_pull_requests,Pull requests aceitas,10620,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2NTc1MDI0MQ==,expo/expo,Popular,accepted_pull_requests,Pull requests aceitas,23882,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2MDkzMzE2,DefinitelyTyped/DefinitelyTyped,Popular,accepted_pull_requests,Pull requests aceitas,53496,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTQ1MjkxOQ==,ethereum/go-ethereum,Popular,accepted_pull_requests,Pull requests aceitas,9279,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMTYyOTc1MQ==,cypress-io/cypress,Popular,accepted_pull_requests,Pull requests aceitas,8859,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1MjI4MTI4Mw==,mastodon/mastodon,Não popular,accepted_pull_requests,Pull requests aceitas,20655,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4NTgxMjc=,pandas-dev/pandas,Popular,accepted_pull_requests,Pull requests aceitas,29424,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNzcyODE2NA==,hashicorp/terraform,Popular,accepted_pull_requests,Pull requests aceitas,13651,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2MDI0NjM1OQ==,ClickHouse/ClickHouse,Popular,accepted_pull_requests,Pull requests aceitas,69267,-4700.375,8300.625
+R_kgDOHy0BzQ,astral-sh/ruff,Não popular,accepted_pull_requests,Pull requests aceitas,16058,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1MzIzODgxMw==,Homebrew/brew,Não popular,accepted_pull_requests,Pull requests aceitas,15257,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNjQ0MTk2,JuliaLang/julia,Não popular,accepted_pull_requests,Pull requests aceitas,27811,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMDIwMzkzNQ==,metabase/metabase,Não popular,accepted_pull_requests,Pull requests aceitas,46183,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNTAzNjAxODQ=,calcom/cal.diy,Popular,accepted_pull_requests,Pull requests aceitas,13099,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzQ3OTg2NzU=,bevyengine/bevy,Não popular,accepted_pull_requests,Pull requests aceitas,8645,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NTY5NTc4,discourse/discourse,Não popular,accepted_pull_requests,Pull requests aceitas,37258,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMzg4NDg5MQ==,apache/airflow,Popular,accepted_pull_requests,Pull requests aceitas,39752,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNTg2NjY5NA==,RocketChat/Rocket.Chat,Popular,accepted_pull_requests,Pull requests aceitas,16935,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMjc3NjkyMzE=,DIYgod/RSSHub,Popular,accepted_pull_requests,Pull requests aceitas,13177,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMDg3Mjg3NzI=,milvus-io/milvus,Popular,accepted_pull_requests,Pull requests aceitas,26968,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMDQwODY4NjI=,streamlit/streamlit,Popular,accepted_pull_requests,Pull requests aceitas,8380,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyNzcyOTg4MA==,grpc/grpc,Popular,accepted_pull_requests,Pull requests aceitas,20867,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk4NzMzMjg=,getsentry/sentry,Popular,accepted_pull_requests,Pull requests aceitas,91209,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk5MTI1MzY5OA==,ccxt/ccxt,Popular,accepted_pull_requests,Pull requests aceitas,15604,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MTkzMjM0OQ==,ray-project/ray,Popular,accepted_pull_requests,Pull requests aceitas,32181,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MDI3NjI3NA==,ziglang/zig,Não popular,accepted_pull_requests,Pull requests aceitas,9540,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyNzU5OTM4ODU=,appsmithorg/appsmith,Popular,accepted_pull_requests,Pull requests aceitas,14329,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNTI5MzMxNDA=,ToolJet/ToolJet,Popular,accepted_pull_requests,Pull requests aceitas,9089,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMzg3NTQ3OTA=,duckdb/duckdb,Popular,accepted_pull_requests,Pull requests aceitas,11685,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MTk4NjM2OQ==,pingcap/tidb,Popular,accepted_pull_requests,Pull requests aceitas,36068,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxODYwMjQyOTg=,nushell/nushell,Não popular,accepted_pull_requests,Pull requests aceitas,9115,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NTgyMTQzMg==,llvm/llvm-project,Não popular,accepted_pull_requests,Pull requests aceitas,97396,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk0MDAyMTU5NjQ=,novuhq/novu,Popular,accepted_pull_requests,Pull requests aceitas,8456,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyNjM3Mjc4NTU=,pola-rs/polars,Não popular,accepted_pull_requests,Pull requests aceitas,13694,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzNzQ0ODQ1MQ==,mattermost/mattermost,Popular,accepted_pull_requests,Pull requests aceitas,22335,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMjkzMTU4,rapid7/metasploit-framework,Não popular,accepted_pull_requests,Pull requests aceitas,12056,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNzYyMDM0Nw==,dotnet/aspnetcore,Popular,accepted_pull_requests,Pull requests aceitas,19852,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NDE3NTgwNQ==,istio/istio,Popular,accepted_pull_requests,Pull requests aceitas,30600,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxODY0MjMz,frappe/erpnext,Popular,accepted_pull_requests,Pull requests aceitas,32173,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzU5MDE4MTM=,PostHog/posthog,Popular,accepted_pull_requests,Pull requests aceitas,54903,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNjk2NzcyOTc=,vlang/v,Não popular,accepted_pull_requests,Pull requests aceitas,13799,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMzkwMjQz,servo/servo,Não popular,accepted_pull_requests,Pull requests aceitas,25776,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3MTIyNTk0,directus/directus,Popular,accepted_pull_requests,Pull requests aceitas,9183,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk5NzU0OTgz,eugenp/tutorials,Popular,accepted_pull_requests,Pull requests aceitas,13834,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk2MDI0MzE5Nw==,nextcloud/server,Popular,accepted_pull_requests,Pull requests aceitas,34206,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxMTEyNTU4OQ==,keycloak/keycloak,Popular,accepted_pull_requests,Pull requests aceitas,21069,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNTQ3Mzk1OTc=,jax-ml/jax,Popular,accepted_pull_requests,Pull requests aceitas,20725,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMTI4ODk1OA==,hashicorp/vault,Popular,accepted_pull_requests,Pull requests aceitas,21334,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzQ3Mzk5NzY=,medusajs/medusa,Popular,accepted_pull_requests,Pull requests aceitas,9320,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzc1MjM0NDI=,tailscale/tailscale,Popular,accepted_pull_requests,Pull requests aceitas,8716,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk3NTQ4OTg2,laravel/framework,Popular,accepted_pull_requests,Pull requests aceitas,18505,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMzYwOTU1NzY=,backstage/backstage,Popular,accepted_pull_requests,Pull requests aceitas,21594,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxNjAwODM3OTU=,SerenityOS/serenity,Popular,accepted_pull_requests,Pull requests aceitas,20158,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkyMjExMjQz,apache/kafka,Popular,accepted_pull_requests,Pull requests aceitas,13874,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkzMDUxNDQ3NDY=,tinygrad/tinygrad,Popular,accepted_pull_requests,Pull requests aceitas,12373,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnk1NzM2MDgw,FreeCAD/FreeCAD,Popular,accepted_pull_requests,Pull requests aceitas,14486,-4700.375,8300.625
+MDEwOlJlcG9zaXRvcnkxOTMyMTU1NTQ=,n8n-io/n8n,Popular,releases_count,Releases,770,-220.5,367.5
+R_kgDOOiiGLw,anomalyco/opencode,Popular,releases_count,Releases,861,-220.5,367.5
+R_kgDOIPDwlg,langchain-ai/langchain,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3MDEwNzc4Ng==,vercel/next.js,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyOTAyODc3NQ==,react/react-native,Popular,releases_count,Releases,471,-220.5,367.5
+R_kgDOJH_K4A,ggml-org/llama.cpp,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMDU4MDQ5OA==,kubernetes/kubernetes,Popular,releases_count,Releases,814,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk5Mzg0MjY3,electron/electron,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNzE5Mzc3OQ==,nodejs/node,Popular,releases_count,Releases,512,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMzM0NDIzODQ=,denoland/deno,Não popular,releases_count,Releases,388,-220.5,367.5
+R_kgDOOYsS4Q,openai/codex,Não popular,releases_count,Releases,1000,-220.5,367.5
+R_kgDOObWEYA,google-gemini/gemini-cli,Popular,releases_count,Releases,592,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNDE5NTMzOQ==,angular/angular,Popular,releases_count,Releases,693,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNDUyNjg4NA==,ant-design/ant-design,Popular,releases_count,Releases,759,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMzA4MzE1Ng==,mui/material-ui,Popular,releases_count,Releases,572,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk5MDc5NjY2Mw==,puppeteer/puppeteer,Popular,releases_count,Releases,701,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk1NDE3MzU5Mw==,storybookjs/storybook,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMjg4ODk5Mw==,home-assistant/core,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMTE4MDY4Nw==,gohugoio/hugo,Popular,releases_count,Releases,381,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNDA1NDc1MjA=,zed-industries/zed,Não popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3NDI5MzMyMQ==,sveltejs/svelte,Popular,releases_count,Releases,636,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNDcxMjg1MA==,syncthing/syncthing,Popular,releases_count,Releases,479,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNTc0ODU0MjI=,vitejs/vite,Popular,releases_count,Releases,714,-220.5,367.5
+R_kgDOJlox8w,lobehub/lobehub,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNTExMTgyMQ==,grafana/grafana,Popular,releases_count,Releases,640,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk0MzQ0MTQwMw==,strapi/strapi,Popular,releases_count,Releases,541,-220.5,367.5
+R_kgDOHvxvHg,toeverything/AFFiNE,Popular,releases_count,Releases,567,-220.5,367.5
+R_kgDOO07yiQ,ruvnet/ruflo,Popular,releases_count,Releases,1000,-220.5,367.5
+R_kgDOJQK9zA,xtekky/gpt4free,Popular,releases_count,Releases,504,-220.5,367.5
+R_kgDOMSqWwQ,cline/cline,Popular,releases_count,Releases,375,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNjc4NzMx,webpack/webpack,Popular,releases_count,Releases,462,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk2ODM4OTIx,prometheus/prometheus,Popular,releases_count,Releases,377,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk0MjQwODgwNA==,traefik/traefik,Popular,releases_count,Releases,553,-220.5,367.5
+R_kgDOJxtHSw,mem0ai/mem0,Popular,releases_count,Releases,381,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNDgwNjAyMjc=,withastro/astro,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyOTI2MTQ3Mw==,minio/minio,Popular,releases_count,Releases,521,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMzI4ODA2ODk=,coollabsio/coolify,Popular,releases_count,Releases,692,-220.5,367.5
+R_kgDOH-jzvQ,ultralytics/ultralytics,Popular,releases_count,Releases,452,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMjI4NTA1,atom/atom,Popular,releases_count,Releases,538,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNzQ0OTU0MjU=,remotion-dev/remotion,Popular,releases_count,Releases,673,-220.5,367.5
+R_kgDOKALCgQ,BerriAI/litellm,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3OTE2MjY4Mg==,laurent22/joplin,Popular,releases_count,Releases,418,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk5ODUyOTE4,TryGhost/Ghost,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMjI1NjM3Ng==,ionic-team/ionic-framework,Popular,releases_count,Releases,950,-220.5,367.5
+R_kgDOIWuq5w,run-llama/llama_index,Popular,releases_count,Releases,433,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMTYyOTc1MQ==,cypress-io/cypress,Popular,releases_count,Releases,402,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMDc2NDUwODM=,TanStack/query,Popular,releases_count,Releases,1000,-220.5,367.5
+R_kgDORpCz1g,stablyai/orca,Popular,releases_count,Releases,933,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNzcyODE2NA==,hashicorp/terraform,Popular,releases_count,Releases,437,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk2MDI0NjM1OQ==,ClickHouse/ClickHouse,Popular,releases_count,Releases,830,-220.5,367.5
+R_kgDOHy0BzQ,astral-sh/ruff,Não popular,releases_count,Releases,424,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk1MzIzODgxMw==,Homebrew/brew,Não popular,releases_count,Releases,509,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMDIwMzkzNQ==,metabase/metabase,Não popular,releases_count,Releases,822,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNjEwNDQwMzQ=,slidevjs/slidev,Popular,releases_count,Releases,430,-220.5,367.5
+R_kgDOPFM7Ew,router-for-me/CLIProxyAPI,Popular,releases_count,Releases,818,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNTAzNjAxODQ=,calcom/cal.diy,Popular,releases_count,Releases,611,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNDMwMjY5OA==,serverless/serverless,Popular,releases_count,Releases,494,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNTg2NjY5NA==,RocketChat/Rocket.Chat,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyOTE0Mzg1MjI=,siyuan-note/siyuan,Popular,releases_count,Releases,945,-220.5,367.5
+R_kgDOKr-Pwg,QuantumNous/new-api,Popular,releases_count,Releases,512,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNzQwMzgwMzE=,react-hook-form/react-hook-form,Popular,releases_count,Releases,618,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMjcwODk4NzA=,payloadcms/payload,Popular,releases_count,Releases,574,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNDU2MDMwNw==,babel/babel,Popular,releases_count,Releases,468,-220.5,367.5
+R_kgDOLAgryw,danielmiessler/Fabric,Popular,releases_count,Releases,423,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNjI0MDU5NjM=,gradio-app/gradio,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNzQ0Mjk2Nw==,fastlane/fastlane,Não popular,releases_count,Releases,568,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk2Nzk2MjY0OA==,vuetifyjs/vuetify,Popular,releases_count,Releases,675,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNTI5MzMxNDA=,ToolJet/ToolJet,Popular,releases_count,Releases,596,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMDI4OTA3Nzg=,chakra-ui/chakra-ui,Popular,releases_count,Releases,1000,-220.5,367.5
+R_kgDOKFU0lQ,langchain-ai/langgraph,Popular,releases_count,Releases,560,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk1Njg5OTI4NA==,Kong/insomnia,Popular,releases_count,Releases,562,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzNzQ0ODQ1MQ==,mattermost/mattermost,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3NDE3NTgwNQ==,istio/istio,Popular,releases_count,Releases,450,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxODY0MjMz,frappe/erpnext,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxNDU0NjQ0NDU=,ueberdosis/tiptap,Popular,releases_count,Releases,985,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxOTcwMTgxODk=,xyflow/xyflow,Popular,releases_count,Releases,384,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMzU5MDE4MTM=,PostHog/posthog,Popular,releases_count,Releases,914,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3MTIyNTk0,directus/directus,Popular,releases_count,Releases,372,-220.5,367.5
+R_kgDOHlge-A,SagerNet/sing-box,Popular,releases_count,Releases,584,-220.5,367.5
+R_kgDOJxJfAQ,CopilotKit/CopilotKit,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk2MDI0MzE5Nw==,nextcloud/server,Popular,releases_count,Releases,463,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk1MDU2NTQzMA==,pnpm/pnpm,Não popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3NDk2MjUxNQ==,gchq/CyberChef,Popular,releases_count,Releases,458,-220.5,367.5
+R_kgDOJm0kOQ,continuedev/continue,Popular,releases_count,Releases,827,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMzEyOTM2MjY=,refinedev/refine,Popular,releases_count,Releases,1000,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk3NTQ4OTg2,laravel/framework,Popular,releases_count,Releases,966,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyMzYwOTU1NzY=,backstage/backstage,Popular,releases_count,Releases,542,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMTUxMTAxODE=,swc-project/swc,Não popular,releases_count,Releases,818,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyNTk0NjM2ODU=,carbon-language/carbon-lang,Popular,releases_count,Releases,766,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkxMzU1MTYyNzA=,k3s-io/k3s,Popular,releases_count,Releases,1000,-220.5,367.5
+R_kgDOJku7Qg,langfuse/langfuse,Popular,releases_count,Releases,658,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkyOTI5MDQ3Mw==,XX-net/XX-Net,Popular,releases_count,Releases,390,-220.5,367.5
+MDEwOlJlcG9zaXRvcnkzMDc0ODkyODQ=,remix-run/remix,Popular,releases_count,Releases,639,-220.5,367.5
+MDEwOlJlcG9zaXRvcnk4MzIyMjQ0MQ==,donnemartin/system-design-primer,Popular,days_since_push,Dias desde o último push,153,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MDQ5MzEwMQ==,jwasham/coding-interview-university,,days_since_push,Dias desde o último push,357,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNzc3MzY1MzM=,996icu/996.ICU,,days_since_push,Dias desde o último push,363,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzgzOTMxMzk=,trimstray/the-book-of-secret-knowledge,,days_since_push,Dias desde o último push,639,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTczMDM0Mg==,vuejs/vue,Popular,days_since_push,Dias desde o último push,679,-72.0,120.0
+R_kgDORCCMkQ,multica-ai/andrej-karpathy-skills,,days_since_push,Dias desde o último push,122,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjEzOTU1MTA=,CyC2018/CS-Notes,,days_since_push,Dias desde o último push,729,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNDQ0MDI3MA==,getify/You-Dont-Know-JS,,days_since_push,Dias desde o último push,186,-72.0,120.0
+R_kgDOH3JoLw,AUTOMATIC1111/stable-diffusion-webui,Popular,days_since_push,Dias desde o último push,171,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzNTk1NTY2Ng==,jlevy/the-art-of-command-line,,days_since_push,Dias desde o último push,786,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2NDk4NDky,airbnb/javascript,Popular,days_since_push,Dias desde o último push,126,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDM5NTIw,ytdl-org/youtube-dl,Popular,days_since_push,Dias desde o último push,182,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNDE1NzYyNzA=,labuladong/fucking-algorithm,Não popular,days_since_push,Dias desde o último push,173,-72.0,120.0
+R_kgDONicYKA,deepseek-ai/DeepSeek-V3,Popular,days_since_push,Dias desde o último push,357,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MzUzNzI0OQ==,react/create-react-app,Popular,days_since_push,Dias desde o último push,551,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDEyOTY4ODE=,mtdvio/every-programmer-should-know,,days_since_push,Dias desde o último push,234,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMzYxNDMwNA==,nvbn/thefuck,Popular,days_since_push,Dias desde o último push,762,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNzI1NjI0NzU=,florinpop17/app-ideas,,days_since_push,Dias desde o último push,313,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3NDc5MTM2Ng==,ryanmcdermott/clean-code-javascript,Popular,days_since_push,Dias desde o último push,752,-72.0,120.0
+R_kgDORgZXsw,karpathy/autoresearch,Popular,days_since_push,Dias desde o último push,147,-72.0,120.0
+R_kgDONs2Wmg,deepseek-ai/DeepSeek-R1,,days_since_push,Dias desde o último push,419,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4ODQ2NDcwNA==,PanJiaChen/vue-element-admin,Não popular,days_since_push,Dias desde o último push,665,-72.0,120.0
+R_kgDOKVORZg,ByteByteGoHq/system-design-101,,days_since_push,Dias desde o último push,503,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMTI2MzkwNzE=,bregman-arie/devops-exercises,Popular,days_since_push,Dias desde o último push,236,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0NzAxODIzOQ==,DopplerHQ/awesome-interview-questions,,days_since_push,Dias desde o último push,752,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNTYxNTgy,animate-css/animate.css,Não popular,days_since_push,Dias desde o último push,752,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNDU1NTM2NzI=,fighting41love/funNLP,Popular,days_since_push,Dias desde o último push,832,-72.0,120.0
+R_kgDOJwwGvg,mlabonne/llm-course,,days_since_push,Dias desde o último push,196,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMzE4NjU3MDU=,TapXWorld/ChinaTextbook,Não popular,days_since_push,Dias desde o último push,306,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDExMzgzMTU=,d2l-ai/d2l-zh,Popular,days_since_push,Dias desde o último push,751,-72.0,120.0
+R_kgDOIoQaOg,dair-ai/Prompt-Engineering-Guide,Não popular,days_since_push,Dias desde o último push,162,-72.0,120.0
+R_kgDOJPPS-Q,nomic-ai/gpt4all,Popular,days_since_push,Dias desde o último push,450,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4Mzk5OTcwMA==,sdmg15/Best-websites-a-programmer-should-visit,,days_since_push,Dias desde o último push,338,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNDc0NzU5OA==,typicode/json-server,Popular,days_since_push,Dias desde o último push,150,-72.0,120.0
+R_kgDOJPJM2Q,twitter/the-algorithm,Não popular,days_since_push,Dias desde o último push,346,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTU0Nzg4MjA=,binhnguyennus/awesome-scalability,,days_since_push,Dias desde o último push,228,-72.0,120.0
+R_kgDOHzIiIA,CompVis/stable-diffusion,Não popular,days_since_push,Dias desde o último push,793,-72.0,120.0
+R_kgDOJL0ZtQ,binary-husky/gpt_academic,Popular,days_since_push,Dias desde o último push,207,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNjY4OTU5OA==,prakhar1989/awesome-courses,,days_since_push,Dias desde o último push,1204,-72.0,120.0
+R_kgDOJ182Uw,FoundationAgents/MetaGPT,Popular,days_since_push,Dias desde o último push,211,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyOTAwOTE5NDg=,labmlai/annotated_deep_learning_paper_implementations,Popular,days_since_push,Dias desde o último push,210,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjA1MzgzMDQ=,kelseyhightower/nocode,Não popular,days_since_push,Dias desde o último push,743,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxOTE1Mjk3MzI=,lydiahallie/javascript-questions,,days_since_push,Dias desde o último push,746,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4MTk3NTM3Mg==,kdn251/interviews,Popular,days_since_push,Dias desde o último push,465,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3MTk0ODQ5OA==,localstack/localstack,Popular,days_since_push,Dias desde o último push,150,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzM0MzY5,resume/resume.github.com,Popular,days_since_push,Dias desde o último push,1282,-72.0,120.0
+R_kgDOIr0o8Q,karpathy/nanoGPT,Popular,days_since_push,Dias desde o último push,281,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5MDUyODgzMA==,Solido/awesome-flutter,Não popular,days_since_push,Dias desde o último push,121,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjgzOTg2MzY=,xingshaocheng/architect-awesome,,days_since_push,Dias desde o último push,861,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMjI4NTA1,atom/atom,Popular,days_since_push,Dias desde o último push,1325,-72.0,120.0
+R_kgDOKInPBw,microsoft/autogen,Popular,days_since_push,Dias desde o último push,127,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0MzExNzk2,adam-p/markdown-here,Popular,days_since_push,Dias desde o último push,363,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxODg2NjA2NjM=,CorentinJ/Real-Time-Voice-Cloning,Popular,days_since_push,Dias desde o último push,164,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3NjAwNDA5,shadowsocks/shadowsocks-windows,Popular,days_since_push,Dias desde o último push,596,-72.0,120.0
+R_kgDOI9q_QQ,meta-llama/llama,Popular,days_since_push,Dias desde o último push,571,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzg1NDc3OTc=,FiloSottile/mkcert,Popular,days_since_push,Dias desde o último push,737,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxODcwODg2MA==,tiimgreen/github-cheat-sheet,,days_since_push,Dias desde o último push,857,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0NjAwNzg=,angular/angular.js,Popular,days_since_push,Dias desde o último push,860,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzg4Mzk5Nzk=,scutan90/DeepLearning-500-questions,Popular,days_since_push,Dias desde o último push,785,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjc0MDc5NTc=,azl397985856/leetcode,Popular,days_since_push,Dias desde o último push,400,-72.0,120.0
+R_kgDOJc1_Sg,AntonOsika/gpt-engineer,Popular,days_since_push,Dias desde o último push,463,-72.0,120.0
+R_kgDOJNbS5w,facebookresearch/segment-anything,Não popular,days_since_push,Dias desde o último push,701,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzMyNTExMDM=,wagoodman/dive,Popular,days_since_push,Dias desde o último push,248,-72.0,120.0
+R_kgDOIksATQ,lencx/ChatGPT,Não popular,days_since_push,Dias desde o último push,721,-72.0,120.0
+R_kgDOK_txHA,maybe-finance/maybe,Não popular,days_since_push,Dias desde o último push,392,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2NzI3NDczNg==,ElemeFE/element,Não popular,days_since_push,Dias desde o último push,730,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNzAwNjIx,necolas/normalize.css,Não popular,days_since_push,Dias desde o último push,799,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNjkzMzYxNDg=,sickcodes/Docker-OSX,Popular,days_since_push,Dias desde o último push,282,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxODczMzU4MTA=,jesseduffield/lazydocker,Popular,days_since_push,Dias desde o último push,123,-72.0,120.0
+R_kgDOKFVBpg,lllyasviel/Fooocus,Popular,days_since_push,Dias desde o último push,262,-72.0,120.0
+R_kgDOLhdsRA,xai-org/grok-1,Popular,days_since_push,Dias desde o último push,720,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzk4MjQ0MjM=,Avik-Jain/100-Days-Of-ML-Code,,days_since_push,Dias desde o último push,965,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5MzA5MDkz,Semantic-Org/Semantic-UI,Popular,days_since_push,Dias desde o último push,631,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk1MDI2NDI5Ng==,jgthms/bulma,Não popular,days_since_push,Dias desde o último push,172,-72.0,120.0
+R_kgDOLrbIZQ,Lordog/dive-into-llms,Não popular,days_since_push,Dias desde o último push,314,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0NjYyOTMwNQ==,NARKOZ/hacker-scripts,Popular,days_since_push,Dias desde o último push,1032,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2NTM4ODkxNw==,jakevdp/PythonDataScienceHandbook,Não popular,days_since_push,Dias desde o último push,785,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MjgxMjI2MQ==,kelseyhightower/kubernetes-the-hard-way,,days_since_push,Dias desde o último push,497,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNTYxNTcwNTU=,GokuMohandas/Made-With-ML,Não popular,days_since_push,Dias desde o último push,168,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk1ODgzNjUzNA==,algorithm-visualizer/algorithm-visualizer,Popular,days_since_push,Dias desde o último push,802,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzYwNjIyNDA=,DovAmir/awesome-design-patterns,,days_since_push,Dias desde o último push,664,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4MjIyNzU4NQ==,nilbuild/design-patterns-for-humans,,days_since_push,Dias desde o último push,626,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MTg5MzM5OQ==,brillout/awesome-react-components,,days_since_push,Dias desde o último push,206,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTE3NzkyOA==,karan/Projects,,days_since_push,Dias desde o último push,736,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0MDQxNjIzNg==,minimaxir/big-list-of-naughty-strings,Popular,days_since_push,Dias desde o último push,854,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNjM1OTEyNzg=,GitHubDaily/GitHubDaily,,days_since_push,Dias desde o último push,232,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNDI2ODEyNw==,coreybutler/nvm-windows,Popular,days_since_push,Dias desde o último push,125,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDg2NTQzNg==,dypsilon/frontend-dev-bookmarks,,days_since_push,Dias desde o último push,821,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk1MjM5MTg1,slab/quill,Popular,days_since_push,Dias desde o último push,391,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMjk3NjQ0NjU=,Asabeneh/30-Days-Of-JavaScript,Popular,days_since_push,Dias desde o último push,257,-72.0,120.0
+R_kgDOHE14iw,hiroi-sora/Umi-OCR,Popular,days_since_push,Dias desde o último push,273,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTAwNTg4NTY=,LeCoupa/awesome-cheatsheets,Popular,days_since_push,Dias desde o último push,130,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5ODAyOTU5Mg==,ziishaned/learn-regex,,days_since_push,Dias desde o último push,359,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNjU2MTI0NDA=,coqui-ai/TTS,Popular,days_since_push,Dias desde o último push,734,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4MDI3NjM5MQ==,GitSquared/edex-ui,Popular,days_since_push,Dias desde o último push,1765,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk1MjcxODgy,astaxie/build-web-application-with-golang,Popular,days_since_push,Dias desde o último push,830,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0NTk4NjE2Mg==,aymericdamien/TensorFlow-Examples,Não popular,days_since_push,Dias desde o último push,755,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0MDI3NjI3NA==,ziglang/zig,Não popular,days_since_push,Dias desde o último push,266,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNDE5NDE3NA==,alex/what-happens-when,,days_since_push,Dias desde o último push,731,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0MDI4NjAxNzU=,FuelLabs/fuels-ts,Popular,days_since_push,Dias desde o último push,146,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4MzExOTQzMQ==,apachecn/ailearning,Popular,days_since_push,Dias desde o último push,646,-72.0,120.0
+R_kgDOHoRNyA,imputnet/cobalt,Não popular,days_since_push,Dias desde o último push,136,-72.0,120.0
+R_kgDOIwXaJw,LC044/WeChatMsg,,days_since_push,Dias desde o último push,233,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNzAxNzE1Njc=,freefq/free,,days_since_push,Dias desde o último push,730,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzcxNDczODY=,dylanaraps/pure-bash-bible,Popular,days_since_push,Dias desde o último push,996,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5MDU2MzU4NQ==,chubin/cheat.sh,Popular,days_since_push,Dias desde o último push,240,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3NzE4OTA0Mw==,bailicangdu/vue2-elm,Não popular,days_since_push,Dias desde o último push,496,-72.0,120.0
+R_kgDOJI72qw,zai-org/ChatGLM-6B,Popular,days_since_push,Dias desde o último push,784,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNzAzMjY5Mjk=,goabstract/Awesome-Design-Tools,Popular,days_since_push,Dias desde o último push,753,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MjE1NjQwMw==,QSCTech/zju-icicles,Não popular,days_since_push,Dias desde o último push,212,-72.0,120.0
+R_kgDOKkt57w,ashishps1/awesome-system-design-resources,Popular,days_since_push,Dias desde o último push,185,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMTMzMzA5OTg=,bradtraversy/50projects50days,Não popular,days_since_push,Dias desde o último push,540,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzNzc0MzI4,wg/wrk,Não popular,days_since_push,Dias desde o último push,964,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNTQ3NDc1Nzc=,google-research/bert,Popular,days_since_push,Dias desde o último push,757,-72.0,120.0
+R_kgDOMBVqQg,2noise/ChatTTS,Popular,days_since_push,Dias desde o último push,132,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3MDkwNTQ3OA==,floodsung/Deep-Learning-Papers-Reading-Roadmap,Popular,days_since_push,Dias desde o último push,1362,-72.0,120.0
+R_kgDOJibVLQ,QuivrHQ/quivr,Popular,days_since_push,Dias desde o último push,407,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMzQwNTc1OA==,google/leveldb,Popular,days_since_push,Dias desde o último push,162,-72.0,120.0
+R_kgDOJUCpQQ,suno-ai/bark,Não popular,days_since_push,Dias desde o último push,731,-72.0,120.0
+R_kgDOLDYetA,deepseek-ai/awesome-deepseek-integration,,days_since_push,Dias desde o último push,178,-72.0,120.0
+R_kgDOJQ_nbA,chatchat-space/Langchain-Chatchat,Popular,days_since_push,Dias desde o último push,283,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzNzM4Mjg1OA==,kilimchoi/engineering-blogs,Não popular,days_since_push,Dias desde o último push,729,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzNTQ0NDI0,httpie/cli,Popular,days_since_push,Dias desde o último push,611,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxOTE0ODk0OQ==,PhilJay/MPAndroidChart,Popular,days_since_push,Dias desde o último push,441,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjA4ODc4MzU=,huihut/interview,Popular,days_since_push,Dias desde o último push,361,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2OTYyOTQzNA==,FreeCodeCampChina/freecodecamp.cn,Não popular,days_since_push,Dias desde o último push,1131,-72.0,120.0
+R_kgDOLo10PQ,anthropics/prompt-eng-interactive-tutorial,Não popular,days_since_push,Dias desde o último push,172,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzNDkzMjEyMjk=,TencentARC/GFPGAN,Popular,days_since_push,Dias desde o último push,755,-72.0,120.0
+R_kgDOPEtKuQ,shiyu-coder/Kronos,Popular,days_since_push,Dias desde o último push,129,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDk0ODQzNjU=,fengdu78/Coursera-ML-AndrewNg-Notes,Não popular,days_since_push,Dias desde o último push,360,-72.0,120.0
+R_kgDOMA9nfw,karpathy/LLM101n,,days_since_push,Dias desde o último push,749,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMTU1Mjk3MQ==,alebcay/awesome-shell,,days_since_push,Dias desde o último push,357,-72.0,120.0
+R_kgDOIm2Jlg,LAION-AI/Open-Assistant,Popular,days_since_push,Dias desde o último push,733,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3NTgzMDk2OA==,exacity/deeplearningbook-chinese,Não popular,days_since_push,Dias desde o último push,2452,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk1NzIyMjMwMg==,openai/gym,Popular,days_since_push,Dias desde o último push,146,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxOTExMTM3Mzk=,0voice/interview_internal_reference,Popular,days_since_push,Dias desde o último push,302,-72.0,120.0
+R_kgDOKzf7EQ,myshell-ai/OpenVoice,Popular,days_since_push,Dias desde o último push,488,-72.0,120.0
+R_kgDOGHarog,IceWhaleTech/CasaOS,Popular,days_since_push,Dias desde o último push,379,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDE2ODQzNzQ=,satwikkansal/wtfpython,Popular,days_since_push,Dias desde o último push,219,-72.0,120.0
+R_kgDOHw1bMQ,mouredev/Hello-Python,Popular,days_since_push,Dias desde o último push,374,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMjExMjk1MTk=,AobingJava/JavaFamily,,days_since_push,Dias desde o último push,290,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzOTM1NzE1OTk=,babysor/MockingBird,Popular,days_since_push,Dias desde o último push,170,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzODczMjY4OTA=,xinntao/Real-ESRGAN,Popular,days_since_push,Dias desde o último push,744,-72.0,120.0
+R_kgDOJaAslA,songquanpeng/one-api,Popular,days_since_push,Dias desde o último push,223,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNDk3Njc1NQ==,hankcs/HanLP,Popular,days_since_push,Dias desde o último push,277,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MzI2NjIxMw==,open-guides/og-aws,Popular,days_since_push,Dias desde o último push,734,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMjYxNzQ3NDE=,ashishpatel26/500-AI-Machine-learning-Deep-learning-Computer-vision-NLP-Projects-with-code,,days_since_push,Dias desde o último push,384,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMTc4MzYyNDg=,GorvGoyl/Clone-Wars,,days_since_push,Dias desde o último push,744,-72.0,120.0
+R_kgDONKVeSw,inkonchain/ink-kit,Popular,days_since_push,Dias desde o último push,304,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNzgwOTIxMzQ=,formulahendry/955.WLB,,days_since_push,Dias desde o último push,563,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2OTg4MDIw,SheetJS/sheetjs,,days_since_push,Dias desde o último push,854,-72.0,120.0
+R_kgDOJTvgag,reworkd/AgentGPT,Popular,days_since_push,Dias desde o último push,478,-72.0,120.0
+R_kgDOLr2o1g,ItzCrazyKns/Vane,Popular,days_since_push,Dias desde o último push,131,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5NDQ5ODYzNQ==,carbon-app/carbon,Popular,days_since_push,Dias desde o último push,191,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyNjc3NzU2Mjk=,geekxh/hello-algorithm,Popular,days_since_push,Dias desde o último push,1164,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjgyMDUzNw==,slatedocs/slate,,days_since_push,Dias desde o último push,200,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMzg4NjQ3Ng==,zsh-users/zsh-autosuggestions,Popular,days_since_push,Dias desde o último push,422,-72.0,120.0
+R_kgDOJkkUqA,XingangPan/DragGAN,Popular,days_since_push,Dias desde o último push,824,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3MDE5ODg3NQ==,airbnb/lottie-android,Popular,days_since_push,Dias desde o último push,186,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMjk0ODg2Mw==,jondot/awesome-react-native,Popular,days_since_push,Dias desde o último push,776,-72.0,120.0
+R_kgDOKGq6Fg,opentofu/manifesto,Não popular,days_since_push,Dias desde o último push,520,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMzA0MTcxMQ==,ryanhanwu/How-To-Ask-Questions-The-Smart-Way,Popular,days_since_push,Dias desde o último push,596,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjk3MjI2Mw==,alvarotrigo/fullPage.js,Popular,days_since_push,Dias desde o último push,156,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk3NjY3OTQ5Ng==,kuchin/awesome-cto,,days_since_push,Dias desde o último push,171,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzODU1ODU3OA==,nativefier/nativefier,Popular,days_since_push,Dias desde o último push,1056,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMTEyNTAyNA==,typicode/husky,Popular,days_since_push,Dias desde o último push,153,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MDA3Mjk1,fxsjy/jieba,Popular,days_since_push,Dias desde o último push,729,-72.0,120.0
+R_kgDOHL0RdA,geekan/HowToLiveLonger,,days_since_push,Dias desde o último push,458,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4OTg5ODQy,unknwon/the-way-to-go_ZH_CN,Popular,days_since_push,Dias desde o último push,736,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2MzQ3NzYxMg==,TheAlgorithms/C-Plus-Plus,Popular,days_since_push,Dias desde o último push,313,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjc5MTY0Mg==,BVLC/caffe,Popular,days_since_push,Dias desde o último push,749,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk4OTI0NzgxMQ==,CMU-Perceptual-Computing-Lab/openpose,Popular,days_since_push,Dias desde o último push,747,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0NTUxMjk4OQ==,xitu/gold-miner,,days_since_push,Dias desde o último push,855,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5NDM2NzY3Nw==,jaredpalmer/formik,Popular,days_since_push,Dias desde o último push,283,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMTE2NjY=,nodejs/node-v0.x-archive,,days_since_push,Dias desde o último push,735,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5NzA4NjU0Mw==,TheAlgorithms/JavaScript,Popular,days_since_push,Dias desde o último push,166,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMjE5NjA0NDc=,openai/CLIP,Não popular,days_since_push,Dias desde o último push,148,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNTYwODQ1MzA=,ehang-io/nps,Popular,days_since_push,Dias desde o último push,812,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0Mjc1MTAxNA==,zenorocha/clipboard.js,Popular,days_since_push,Dias desde o último push,189,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5MTU3MzUzOA==,testerSunshine/12306,Popular,days_since_push,Dias desde o último push,1236,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTAyMTExNDc=,xkcoding/spring-boot-demo,Popular,days_since_push,Dias desde o último push,757,-72.0,120.0
+R_kgDOI4SeyQ,lllyasviel/ControlNet,Popular,days_since_push,Dias desde o último push,907,-72.0,120.0
+R_kgDOJEXQ7A,chenfei-wu/TaskMatrix,Popular,days_since_push,Dias desde o último push,957,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk5OTc2MTkwNw==,atlassian/react-beautiful-dnd,Popular,days_since_push,Dias desde o último push,367,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxNTg3MDM5ODE=,lib-pku/libpku,Não popular,days_since_push,Dias desde o último push,1688,-72.0,120.0
+R_kgDOGQiQXg,mli/paper-reading,,days_since_push,Dias desde o último push,516,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMjAzOTUxNzY=,alibaba/easyexcel,Popular,days_since_push,Dias desde o último push,660,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk2NDU1ODE0Mw==,Blankj/AndroidUtilCode,Popular,days_since_push,Dias desde o último push,735,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyMTYwMDQ0MA==,bayandin/awesome-awesomeness,Não popular,days_since_push,Dias desde o último push,808,-72.0,120.0
+MDEwOlJlcG9zaXRvcnk0MDg2NjE2,shadowsocks/shadowsocks,Popular,days_since_push,Dias desde o último push,871,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxODI4Nzk1,AFNetworking/AFNetworking,Não popular,days_since_push,Dias desde o último push,1311,-72.0,120.0
+R_kgDOJIQnXA,mckaywrigley/chatbot-ui,Popular,days_since_push,Dias desde o último push,747,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMDQ0Njg5MA==,bilibili/ijkplayer,Não popular,days_since_push,Dias desde o último push,737,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkzMjg4MzEyNDQ=,ibraheemdev/modern-unix,,days_since_push,Dias desde o último push,709,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkyOTM1NzM1,adobe/brackets,Popular,days_since_push,Dias desde o último push,1530,-72.0,120.0
+MDEwOlJlcG9zaXRvcnkxMTE2NzczOA==,gulpjs/gulp,Popular,days_since_push,Dias desde o último push,192,-72.0,120.0
