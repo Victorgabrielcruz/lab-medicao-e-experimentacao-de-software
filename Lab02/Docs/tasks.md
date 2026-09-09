@@ -64,11 +64,11 @@ Preencher e congelar as decisões metodológicas que não foram determinadas dir
 
 ### Critérios de aceitação
 
-- [ ] Todos os campos pendentes da metodologia estão preenchidos.
-- [ ] Ferramentas e versões estão registradas.
-- [ ] Regras dos tratamentos IA e Manual estão inequívocas.
-- [ ] O protocolo possui data de congelamento.
-- [ ] Existe local definido para registrar desvios metodológicos.
+- [x] Todos os campos pendentes da metodologia estão preenchidos. (linguagem, assistente de IA, IDE, framework de testes e janela de execução fechados em `protocol-decisions.md`)
+- [ ] Ferramentas e versões estão registradas. (ferramentas escolhidas: radon, jscpd, pytest, Codex CLI; versões exatas ainda a travar na configuração do ambiente — S01-08)
+- [x] Regras dos tratamentos IA e Manual estão inequívocas.
+- [x] O protocolo possui data de congelamento. (09/09/2026 — `protocol-decisions.md`)
+- [x] Existe local definido para registrar desvios metodológicos. (`protocol-decisions.md`, Seção 3)
 
 ### Resultado esperado
 

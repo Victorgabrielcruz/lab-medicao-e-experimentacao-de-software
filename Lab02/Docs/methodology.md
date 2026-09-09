@@ -160,12 +160,14 @@ No tratamento IA, o participante poderá utilizar somente o assistente previamen
 
 | Parâmetro | Valor pré-registrado |
 |---|---|
-| Ferramenta | `<preencher antes dos trials>` |
-| Versão ou data de acesso | `<preencher antes dos trials>` |
-| Modelo, quando visível | `<preencher antes dos trials>` |
-| Plano/modalidade | `<preencher antes dos trials>` |
-| Forma de interação | `<chat, autocomplete ou ambos>` |
+| Ferramenta | Codex CLI (OpenAI) |
+| Versão ou data de acesso | `<registrar no início da janela de coleta — Seção 9>` |
+| Modelo, quando visível | `<registrar no início da janela de coleta — Seção 9>` |
+| Plano/modalidade | ChatGPT Pro |
+| Forma de interação | Chat/agente via terminal. Sem autocomplete inline no editor. |
 | Retenção de contexto | Uma conversa/contexto novo por trial |
+
+Codex CLI foi escolhido porque é a ferramenta que os três integrantes já possuem, com acesso via plano pago (ChatGPT Pro), o que garante uso equivalente para todo o grupo sem depender de cota gratuita. A versão exata e o modelo ativo no momento da coleta serão registrados junto com o restante do ambiente experimental (Seção 9), pois a CLI recebe atualizações frequentes.
 
 São permitidas solicitações de explicação, geração, correção e refatoração de código. Todo prompt digitado pelo participante e toda resposta relevante deverão ser exportados ou registrados, quando a ferramenta permitir, para auditoria do tratamento.
 
@@ -292,7 +294,7 @@ Antes dos trials, o grupo deverá registrar em arquivo versionado:
 - versões das ferramentas de métricas estáticas;
 - comandos exatos usados para testes e coleta.
 
-Recomenda-se utilizar **Python** para aproveitar uma cadeia única de análise com `radon cc` para complexidade, `radon raw` para LOC, `radon mi` para Índice de Manutenibilidade e `jscpd` para duplicação. Essa escolha somente se tornará definitiva quando registrada pelo grupo antes dos trials. Se Java for escolhido, deverão ser utilizados CK e PMD CPD, preservando as mesmas definições operacionais desta metodologia.
+O grupo definiu **Python** como linguagem das katas, o que permite uma cadeia única de análise com `radon cc` para complexidade, `radon raw` para LOC, `radon mi` para Índice de Manutenibilidade e `jscpd` para duplicação. A versão exata do interpretador e das ferramentas será registrada junto com o restante do ambiente experimental, conforme a lista no início desta seção.
 
 Cada kata deverá partir de um diretório limpo e idêntico para todos os participantes, contendo apenas:
 
