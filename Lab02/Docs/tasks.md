@@ -148,11 +148,11 @@ Organizar as seis katas em três blocos de dificuldade equivalente para permitir
 
 ### Critérios de aceitação
 
-- [ ] As seis katas estão distribuídas em três pares.
-- [ ] A equivalência foi avaliada com critérios objetivos.
-- [ ] Soluções de referência passam em todos os testes.
-- [ ] Soluções de referência não ficam acessíveis durante os trials.
-- [ ] Limitações do pareamento estão documentadas.
+- [x] As seis katas estão distribuídas em três pares. (`kata-equivalence.md` §5: B1={K01,K02}, B2={K03,K04}, B3={K05,K06}, confirmados por score real)
+- [x] A equivalência foi avaliada com critérios objetivos. (rubric de 7 tiers sobre os 7 fatores da metodologia, `kata-equivalence.md` §2–§4)
+- [x] Soluções de referência passam em todos os testes. (reconfirmado nesta task, 100% nas 6 katas — `kata-equivalence.md` §6)
+- [x] Soluções de referência não ficam acessíveis durante os trials. (mecanismo definido e em vigor: `.gitignore` + `reference-solutions/README.md`; confirmação de que nenhum vazamento ocorreu de fato só na auditoria da S02-06 — `kata-equivalence.md` §6)
+- [x] Limitações do pareamento estão documentadas. (`kata-equivalence.md` §7: sem piloto externo, P02 já viu as soluções, fator subjetivo do rubric, amostra pequena, delta residual de B1)
 
 ### Resultado esperado
 
