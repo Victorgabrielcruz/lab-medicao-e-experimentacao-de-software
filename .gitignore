@@ -32,8 +32,10 @@ venv/
 Lab02/.reports/
 
 # Solucoes de referencia: nao podem ficar acessiveis aos participantes antes
-# do fim dos trials (ver reference-solutions/README.md). Custodia definitiva
-# e responsabilidade da S01-03; ate la ficam so na maquina de quem preparou.
+# do fim dos trials (custodia definida na S01-03, ver
+# Lab02/reference-solutions/README.md e Lab02/Docs/kata-equivalence.md).
+# So voltam ao repositorio compartilhado depois que os 18 trials da S02
+# terminarem.
 Lab02/reference-solutions/**/*.py
 
 # Editores / SO
