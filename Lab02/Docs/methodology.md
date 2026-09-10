@@ -205,7 +205,8 @@ Serão utilizadas **6 katas**, agrupadas previamente em **3 pares de dificuldade
 
 As especificações, os critérios de seleção, a declaração de origem e a
 verificação de indexação estão em [`katas.md`](katas.md). A formação dos
-blocos acima é provisória até a avaliação objetiva prevista para a S01-03.
+blocos acima foi validada objetivamente na S01-03 — ver
+[`kata-equivalence.md`](kata-equivalence.md) — e é definitiva.
 
 Cada participante resolverá uma kata de cada par com IA e a outra sem IA. Assim, cada participante realizará seis trials — três por tratamento — e o experimento produzirá 18 trials no total.
 

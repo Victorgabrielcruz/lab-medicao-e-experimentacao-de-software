@@ -17,7 +17,7 @@ dados, algoritmos ou técnicas de implementação.
 
 ## 1. Conjunto selecionado
 
-| ID | Kata | Contrato resumido | Faixa estimada | Bloco provisório |
+| ID | Kata | Contrato resumido | Faixa estimada | Bloco |
 |---|---|---|---:|---|
 | K01 | [Conflitos no pátio de docas](../katas/K01/README.md) | Identificar agendamentos incompatíveis por doca e horário. | 20–30 min | B1 |
 | K02 | [Compartimentos de coleta](../katas/K02/README.md) | Processar entradas e saídas sujeitas a capacidade. | 15–25 min | B1 |
@@ -28,8 +28,8 @@ dados, algoritmos ou técnicas de implementação.
 
 As faixas são estimativas de triagem e permanecem abaixo do *time-box* fixo
 de 35 minutos. A equivalência objetiva dos blocos — solução de referência,
-LOC, complexidade, casos-limite e piloto — pertence à S01-03 e ainda não é
-alegada como concluída.
+LOC, complexidade e casos-limite — foi avaliada na S01-03 e confirmou este
+agrupamento; ver [`kata-equivalence.md`](kata-equivalence.md).
 
 ## 2. Triagem de candidatas
 
@@ -110,7 +110,7 @@ marcar este critério como atendido.
 | Exatamente seis katas | Diretórios `K01` a `K06` e tabela da seção 1. | Atendido |
 | Entrada, saída, restrições e exemplos | Um `README.md` completo em cada diretório da kata. | Atendido |
 | Sem rede ou serviço externo | Todos os contratos recebem dados em memória e não mencionam integração externa. | Atendido |
-| Compatibilidade com 35 minutos | Escopo limitado, até 200 eventos/registros e estimativa máxima de 30 minutos. | Atendido provisoriamente; validar no piloto da S01-03 |
+| Compatibilidade com 35 minutos | Escopo limitado, até 200 eventos/registros e estimativa máxima de 30 minutos. | Atendido; sem piloto externo disponível (só 3 participantes, todos sujeitos do experimento), avaliado por inspeção + solução de referência real na S01-03 — ver `kata-equivalence.md` §1 |
 | Baixa indexação ou autoria | Origem e seis consultas distintivas registradas na seção 3. | Atendido com rechecagem pendente antes dos trials |
 | Ausência de pistas de implementação | Revisão textual: nenhum enunciado indica algoritmo, estrutura de dados ou técnica. | Atendido |
 | Não conhecimento prévio | Matriz individual da seção 4. | Pendente de declaração dos participantes |
@@ -119,7 +119,9 @@ marcar este critério como atendido.
 
 1. Coletar e datar as declarações da seção 4 antes de qualquer trial.
 2. Repetir as seis buscas da seção 3.2 antes de congelar a amostra.
-3. Na S01-03, validar os pares B1, B2 e B3 com soluções de referência sob
-   custódia, testes-piloto e a matriz de equivalência.
+3. ~~Na S01-03, validar os pares B1, B2 e B3 com soluções de referência sob
+   custódia, testes-piloto e a matriz de equivalência.~~ Feito — sem piloto
+   externo disponível, validado por rubric objetivo + soluções de
+   referência reais; ver `kata-equivalence.md`.
 4. Na S01-04, criar testes automatizados sem alterar o sentido dos contratos
    publicados em cada kata.
