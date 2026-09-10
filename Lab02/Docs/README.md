@@ -7,6 +7,7 @@
 | [`Enunciado.md`](Enunciado.md) | Enunciado original do laboratório |
 | [`methodology.md`](methodology.md) | Metodologia completa do experimento |
 | [`tasks.md`](tasks.md) | Plano de execução por sprint |
+| [`katas.md`](katas.md) | Seleção, especificações, triagem e evidências de baixa indexação das seis katas |
 | `execution-guide.md` | Procedimento operacional dos trials — a desenvolver na S01 |
 | `protocol-decisions.md` | Decisões congeladas do protocolo — a preencher na S01 |
 

@@ -23,3 +23,7 @@ KXX/
 ```
 
 Os enunciados não devem revelar a solução de referência. Dependências de rede, serviços externos e arquivos particulares de um participante não são permitidos.
+
+As especificações selecionadas e a evidência de triagem estão em
+[`../Docs/katas.md`](../Docs/katas.md). Os diretórios contêm apenas o
+enunciado nesta etapa; os esqueletos e testes de aceitação pertencem à S01-04.
