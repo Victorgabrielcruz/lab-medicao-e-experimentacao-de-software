@@ -1,0 +1,24 @@
+{
+  "validated_at": "2026-09-10",
+  "collector_schema_version": 1,
+  "tool_versions": {
+    "python": "3.12.14",
+    "radon": "6.0.1",
+    "jscpd": "5.2.0"
+  },
+  "configuration": {
+    "loc": "Radon SLOC",
+    "jscpd_min_lines": 5,
+    "jscpd_min_tokens": 50,
+    "jscpd_mode": "mild"
+  },
+  "results": [
+    {"kata_id": "K01", "function_count": 2, "mean_cc": 5.0, "max_cc": 9, "loc": 24, "mi": 56.28, "duplicated_lines": 0, "duplication_percentage": 0.0},
+    {"kata_id": "K02", "function_count": 1, "mean_cc": 7.0, "max_cc": 7, "loc": 26, "mi": 57.67, "duplicated_lines": 0, "duplication_percentage": 0.0},
+    {"kata_id": "K03", "function_count": 1, "mean_cc": 7.0, "max_cc": 7, "loc": 22, "mi": 55.95, "duplicated_lines": 0, "duplication_percentage": 0.0},
+    {"kata_id": "K04", "function_count": 1, "mean_cc": 7.0, "max_cc": 7, "loc": 30, "mi": 59.16, "duplicated_lines": 0, "duplication_percentage": 0.0},
+    {"kata_id": "K05", "function_count": 1, "mean_cc": 8.0, "max_cc": 8, "loc": 22, "mi": 56.24, "duplicated_lines": 0, "duplication_percentage": 0.0},
+    {"kata_id": "K06", "function_count": 1, "mean_cc": 10.0, "max_cc": 10, "loc": 30, "mi": 55.95, "duplicated_lines": 0, "duplication_percentage": 0.0}
+  ],
+  "status": "passed"
+}

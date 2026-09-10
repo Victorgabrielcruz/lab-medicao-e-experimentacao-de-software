@@ -1,0 +1,7 @@
+{
+  "name": "lab02-static-metrics",
+  "private": true,
+  "devDependencies": {
+    "jscpd": "5.2.0"
+  }
+}

@@ -65,7 +65,7 @@ Preencher e congelar as decisões metodológicas que não foram determinadas dir
 ### Critérios de aceitação
 
 - [x] Todos os campos pendentes da metodologia estão preenchidos. (linguagem, assistente de IA, IDE, framework de testes e janela de execução fechados em `protocol-decisions.md`)
-- [ ] Ferramentas e versões estão registradas. (ferramentas escolhidas: radon, jscpd, pytest, Codex CLI; versões exatas ainda a travar na configuração do ambiente — S01-08)
+- [x] Ferramentas e versões estão registradas. (versões congeladas em `protocol-decisions.md`, `methodology.md` e `data/metadata/protocol.json`; a S01-08 deve reproduzir e verificar esse ambiente nas três máquinas)
 - [x] Regras dos tratamentos IA e Manual estão inequívocas.
 - [x] O protocolo possui data de congelamento. (09/09/2026 — `protocol-decisions.md`)
 - [x] Existe local definido para registrar desvios metodológicos. (`protocol-decisions.md`, Seção 3)
@@ -105,12 +105,12 @@ Selecionar seis exercícios autorais ou pouco indexados, adequados ao limite de 
 
 ### Critérios de aceitação
 
-- [ ] Exatamente seis katas foram selecionadas.
-- [ ] Nenhuma kata é previamente conhecida pelos participantes.
-- [ ] Todas podem ser executadas sem rede ou serviço externo.
-- [ ] Todas possuem escopo compatível com o time-box.
-- [ ] A baixa indexação ou autoria própria está documentada.
-- [ ] Os enunciados passaram por revisão de clareza.
+- [x] Exatamente seis katas foram selecionadas. (K01 a K06 documentadas em `Docs/katas.md` e em diretórios próprios)
+- [x] Nenhuma kata é previamente conhecida pelos participantes. (declarações negativas de P01, P02 e P03 registradas em `Docs/katas.md` em 10/09/2026)
+- [x] Todas podem ser executadas sem rede ou serviço externo. (contratos em memória e suítes locais)
+- [x] Todas possuem escopo compatível com o time-box. (inspeção independente de regras, testes, LOC e complexidade registrada em `Docs/katas.md`, Seção 7)
+- [x] A baixa indexação ou autoria própria está documentada. (buscas de trechos distintivos repetidas em 10/09/2026)
+- [x] Os enunciados passaram por revisão de clareza. (entrada, saída, restrições, exemplos e ausência de pistas revisados em `Docs/katas.md`, Seção 5)
 
 ### Resultado esperado
 
@@ -150,7 +150,7 @@ Organizar as seis katas em três blocos de dificuldade equivalente para permitir
 
 - [ ] As seis katas estão distribuídas em três pares.
 - [ ] A equivalência foi avaliada com critérios objetivos.
-- [ ] Soluções de referência passam em todos os testes.
+- [x] Soluções de referência passam em todos os testes. (33/33 testes passando em 10/09/2026; evidência em `data/metadata/reference-solutions-validation.json`)
 - [ ] Soluções de referência não ficam acessíveis durante os trials.
 - [ ] Limitações do pareamento estão documentadas.
 
@@ -284,13 +284,13 @@ Automatizar a medição uniforme de complexidade, duplicação, LOC e manutenibi
 
 ### Critérios de aceitação
 
-- [ ] Complexidade é coletada por função ou método.
-- [ ] Média, máximo e quantidade de funções são preservados.
-- [ ] Duplicação informa linhas e percentual duplicado.
-- [ ] LOC é coletada obrigatoriamente.
-- [ ] Arquivos fora do código de produção são excluídos.
-- [ ] A configuração é idêntica para todos os trials.
-- [ ] As soluções de referência foram usadas em um teste de sanidade.
+- [x] Complexidade é coletada por função ou método. (`radon cc --json`, com lista detalhada no consolidado)
+- [x] Média, máximo e quantidade de funções são preservados. (`complexity` em `metrics.json`)
+- [x] Duplicação informa linhas e percentual duplicado. (relatório JSON do JSCPD e seção `duplication` consolidada)
+- [x] LOC é coletada obrigatoriamente. (SLOC do `radon raw`, com linhas físicas, lógicas, comentários e brancas preservadas)
+- [x] Arquivos fora do código de produção são excluídos. (descoberta restrita a `.py` e exclusões testadas automaticamente)
+- [x] A configuração é idêntica para todos os trials. (versões, `.jscpd.json`, `radon.cfg` e hashes registrados)
+- [x] As soluções de referência foram usadas em um teste de sanidade. (K01–K06 coletadas em 10/09/2026; resumo em `data/metadata/static-metrics-sanity.json`)
 
 ### Resultado esperado
 

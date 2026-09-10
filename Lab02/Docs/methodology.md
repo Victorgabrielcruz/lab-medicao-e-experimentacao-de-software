@@ -161,13 +161,13 @@ No tratamento IA, o participante poderá utilizar somente o assistente previamen
 | Parâmetro | Valor pré-registrado |
 |---|---|
 | Ferramenta | Codex CLI (OpenAI) |
-| Versão ou data de acesso | `<registrar no início da janela de coleta — Seção 9>` |
-| Modelo, quando visível | `<registrar no início da janela de coleta — Seção 9>` |
+| Versão ou data de acesso | 0.154.0; verificada em 10/09/2026 |
+| Modelo, quando visível | `gpt-5.3-codex` |
 | Plano/modalidade | ChatGPT Pro |
 | Forma de interação | Chat/agente via terminal. Sem autocomplete inline no editor. |
 | Retenção de contexto | Uma conversa/contexto novo por trial |
 
-Codex CLI foi escolhido porque é a ferramenta que os três integrantes já possuem, com acesso via plano pago (ChatGPT Pro), o que garante uso equivalente para todo o grupo sem depender de cota gratuita. A versão exata e o modelo ativo no momento da coleta serão registrados junto com o restante do ambiente experimental (Seção 9), pois a CLI recebe atualizações frequentes.
+Codex CLI foi escolhido porque é a ferramenta que os três integrantes já possuem, com acesso via plano pago (ChatGPT Pro), o que garante uso equivalente para todo o grupo sem depender de cota gratuita. A versão e o modelo acima ficam congelados para todos os trials. Antes de cada sessão, a equipe deverá confirmar a versão da CLI e o modelo ativo; qualquer diferença deverá ser corrigida ou registrada como desvio do protocolo.
 
 São permitidas solicitações de explicação, geração, correção e refatoração de código. Todo prompt digitado pelo participante e toda resposta relevante deverão ser exportados ou registrados, quando a ferramenta permitir, para auditoria do tratamento.
 
@@ -298,7 +298,29 @@ Antes dos trials, o grupo deverá registrar em arquivo versionado:
 - versões das ferramentas de métricas estáticas;
 - comandos exatos usados para testes e coleta.
 
-O grupo definiu **Python** como linguagem das katas, o que permite uma cadeia única de análise com `radon cc` para complexidade, `radon raw` para LOC, `radon mi` para Índice de Manutenibilidade e `jscpd` para duplicação. A versão exata do interpretador e das ferramentas será registrada junto com o restante do ambiente experimental, conforme a lista no início desta seção.
+O grupo definiu **Python** como linguagem das katas e congelou a seguinte
+configuração em 10/09/2026, após verificar a disponibilidade das versões:
+
+| Componente | Versão |
+|---|---:|
+| Windows | NT 10.0.26200.0 |
+| Python | 3.12.14 |
+| uv | 0.12.10 |
+| pytest | 9.1.1 |
+| Radon | 6.0.1 |
+| JSCPD | 5.2.0 |
+| Node.js | 24.19.0 |
+| npm | 11.17.0 |
+| Visual Studio Code | 1.137.0 (x64) |
+| Codex CLI | 0.154.0 |
+| Modelo Codex | `gpt-5.3-codex` |
+
+O Radon será usado por meio de `radon cc` para complexidade, `radon raw`
+para LOC e `radon mi` para Índice de Manutenibilidade; o JSCPD será usado
+para duplicação. A versão do Windows identifica a máquina de preparação e
+deverá ser registrada separadamente para cada participante na S01-08. Os
+demais componentes são versões normativas e deverão ser idênticos em todos
+os trials.
 
 Cada kata deverá partir de um diretório limpo e idêntico para todos os participantes, contendo apenas:
 
