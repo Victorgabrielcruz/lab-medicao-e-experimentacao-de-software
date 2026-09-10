@@ -190,12 +190,12 @@ Criar suítes determinísticas capazes de medir a qualidade funcional das soluç
 
 ### Critérios de aceitação
 
-- [ ] Todas as katas possuem testes automatizados.
-- [ ] As suítes são determinísticas em execuções repetidas.
-- [ ] O esqueleto inicial não passa indevidamente.
-- [ ] As soluções de referência atingem 100% de sucesso.
-- [ ] O resultado informa total, testes passando e testes falhando.
-- [ ] Os mesmos comandos funcionam em todos os ambientes previstos.
+- [x] Todas as katas possuem testes automatizados. (`katas/K01/tests/` a `katas/K06/tests/`)
+- [x] As suítes são determinísticas em execuções repetidas. (funções puras, sem aleatoriedade nem I/O externo; reexecutadas em bash e PowerShell com o mesmo resultado)
+- [x] O esqueleto inicial não passa indevidamente. (todas falham com `NotImplementedError`, não erro de import/sintaxe)
+- [x] As soluções de referência atingem 100% de sucesso. (validado localmente via `run_tests.py --src`; soluções não commitadas — ver nota de custódia abaixo)
+- [x] O resultado informa total, testes passando e testes falhando. (`scripts/run_tests.py` imprime os três a partir do relatório JUnit)
+- [x] Os mesmos comandos funcionam em todos os ambientes previstos. (mesmo comando validado em bash e PowerShell)
 
 ### Resultado esperado
 
