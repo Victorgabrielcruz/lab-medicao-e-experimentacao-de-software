@@ -1,0 +1,45 @@
+{
+  "task": "S01-01",
+  "last_updated": "2026-09-09",
+  "stack": {
+    "language": "python",
+    "language_version": null,
+    "status": "linguagem fechada; versão do interpretador a registrar na configuração do ambiente (methodology.md, Seção 9)",
+    "static_analysis_tools": {
+      "complexity": "radon cc",
+      "loc": "radon raw",
+      "maintainability_index": "radon mi",
+      "duplication": "jscpd"
+    },
+    "tool_versions": null,
+    "test_framework": "pytest",
+    "test_framework_status": "confirmado; versão a registrar na configuração do ambiente",
+    "test_framework_version": null
+  },
+  "ide": {
+    "name": "Visual Studio Code",
+    "allowed_extensions": ["ms-python.python", "ms-python.vscode-pylance"],
+    "banned_extensions": ["GitHub Copilot", "GitHub Copilot Chat", "Tabnine", "Codeium", "Continue", "qualquer extensão de IA generativa equivalente"]
+  },
+  "ai_treatment": {
+    "tool": "Codex CLI",
+    "vendor": "OpenAI",
+    "plan": "ChatGPT Pro",
+    "interaction_mode": "chat/agente via terminal",
+    "inline_autocomplete": false,
+    "version_or_access_date": null,
+    "model": null,
+    "version_status": "a registrar no início da janela de coleta (methodology.md, Seção 6.1 e 9)",
+    "context_retention": "uma conversa/contexto novo por trial"
+  },
+  "execution_window": {
+    "s02_delivery": "2026-09-17",
+    "infra_deadline": "2026-09-11",
+    "training_kata": "2026-09-12",
+    "trials": "2026-09-13 a 2026-09-15",
+    "consolidation_and_audit": "2026-09-16",
+    "note": "prazo apertado; depende de S01-02 a S01-09 fechados até 11/09 e execução paralela entre os 3 integrantes"
+  },
+  "pending_decisions": [],
+  "protocol_deviations": []
+}
