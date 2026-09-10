@@ -26,6 +26,15 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
+.pytest_cache/
+
+# Relatorios locais de execucao das suites de aceitacao (regeneraveis)
+Lab02/.reports/
+
+# Solucoes de referencia: nao podem ficar acessiveis aos participantes antes
+# do fim dos trials (ver reference-solutions/README.md). Custodia definitiva
+# e responsabilidade da S01-03; ate la ficam so na maquina de quem preparou.
+Lab02/reference-solutions/**/*.py
 
 # Editores / SO
 .vscode/
