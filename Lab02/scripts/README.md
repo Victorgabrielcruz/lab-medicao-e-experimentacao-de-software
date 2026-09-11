@@ -33,6 +33,30 @@ sempre uma kata por vez, em processo isolado — não colete testes de várias
 katas no mesmo comando `pytest`, porque todas usam o nome de módulo
 `solution` e um processo só resolveria o primeiro que importar.
 
+## `run_trial.py` (S01-05)
+
+Cronometra e registra um trial de aceitação:
+
+```bash
+python scripts/run_trial.py P01 K01 ai
+```
+
+Por padrão cronometra `katas/K01/src/` contra `katas/K01/tests/`. `treatment`
+deve ser `ai` ou `manual`. O script roda a suíte em segundo plano a cada
+`--poll-interval-seconds` (default 5s) até todos os testes passarem ou até
+`--time-limit-seconds` (default 2.100s / 35 min) ser atingido — o que ocorrer
+primeiro — e grava o registro em
+`data/raw/trials/<participante>-<kata>-<tratamento>/`:
+
+- `final_junit.xml`: saída bruta da verificação final da suíte;
+- `trial.json`: horários de início/fim com fuso, duração em segundos,
+  `completed`/`censored`, totais de testes e o log de cada checagem.
+
+Um trial já coletado nunca é sobrescrito. Um encerramento inesperado (falha
+ao rodar a suíte ou interrupção manual) grava `incident.json` com uma
+mensagem clara em vez do registro do trial. Lógica cronometrada e testável
+em `src/collection/trial_collector.py`.
+
 ## `collect_static_metrics.py` (S01-06)
 
 Instale as dependências congeladas antes da primeira coleta:

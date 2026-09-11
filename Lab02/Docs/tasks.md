@@ -237,16 +237,16 @@ Automatizar o início, encerramento e registro dos trials, reduzindo erros de me
 
 ### Critérios de aceitação
 
-- [ ] O cronômetro utiliza segundos e respeita o limite de 35 minutos.
-- [ ] Sucesso encerra a medição na primeira execução completamente verde.
-- [ ] Falha no limite produz `duration_seconds = 2100` e `censored = true`.
-- [ ] O log contém horários, duração e resultado final dos testes.
-- [ ] Trials existentes não são sobrescritos.
-- [ ] Testes automatizados cobrem sucesso, censura e falha inesperada.
+- [x] O cronômetro utiliza segundos e respeita o limite de 35 minutos. (`TIME_LIMIT_SECONDS = 2100` em `src/collection/trial_collector.py`)
+- [x] Sucesso encerra a medição na primeira execução completamente verde. (`run_trial` para no primeiro `poll` sem falhas; `test_run_trial_encerra_no_sucesso_na_primeira_execucao_verde`)
+- [x] Falha no limite produz `duration_seconds = 2100` e `censored = true`. (`test_run_trial_censura_produz_exatamente_2100_segundos_por_padrao`)
+- [x] O log contém horários, duração e resultado final dos testes. (`trial.json`: `started_at`/`finished_at` com fuso, `duration_seconds`, `attempts` e totais de testes)
+- [x] Trials existentes não são sobrescritos. (`collect_trial` recusa diretório de trial já existente, inclusive após incidente; `test_collect_trial_grava_registro_de_sucesso_e_nao_sobrescreve`)
+- [x] Testes automatizados cobrem sucesso, censura e falha inesperada. (`tests/test_trial_collector.py`, 12 casos)
 
 ### Resultado esperado
 
-Comando padronizado para executar e registrar qualquer trial do experimento.
+Comando padronizado para executar e registrar qualquer trial do experimento. (`scripts/run_trial.py`)
 
 ---
 
