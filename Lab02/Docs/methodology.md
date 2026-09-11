@@ -206,8 +206,9 @@ Serão utilizadas **6 katas**, agrupadas previamente em **3 pares de dificuldade
 | B3 | K05 | K06 |
 
 As especificações, os critérios de seleção, a declaração de origem e a
-verificação de indexação estão em [`katas.md`](katas.md). A formação dos
-blocos acima é provisória até a avaliação objetiva prevista para a S01-03.
+verificação de indexação estão em [`katas.md`](katas.md). Os blocos foram
+validados e congelados em 10/09/2026 pela matriz objetiva documentada em
+[`kata-equivalence.md`](kata-equivalence.md).
 
 Cada participante resolverá uma kata de cada par com IA e a outra sem IA. Assim, cada participante realizará seis trials — três por tratamento — e o experimento produzirá 18 trials no total.
 
@@ -277,9 +278,29 @@ A associação entre K01–K06, as posições da sequência e os participantes s
 
 Como há três participantes, não é possível obter equilíbrio perfeito de exposição para cada kata entre os dois tratamentos. A alocação desigual inevitável — duas execuções em um tratamento e uma no outro — será invertida entre as katas do mesmo par e registrada como limitação.
 
+A alocação foi gerada e congelada em **10/09/2026**, antes dos trials, com a
+semente **`20260910`**. O plano completo está em
+`data/metadata/allocation.csv`, e seu hash canônico, versão do algoritmo e
+estado de congelamento estão em `data/metadata/allocation-metadata.json`.
+
+| Bloco | Kata com 2× IA / 1× Manual | Kata com 1× IA / 2× Manual |
+|---|---|---|
+| B1 | K01 | K02 |
+| B2 | K04 | K03 |
+| B3 | K06 | K05 |
+
+Assim, a desigualdade inevitável é invertida dentro de cada par. Cada kata
+aparece exatamente três vezes no grupo e pelo menos uma vez em cada
+tratamento.
+
 ### 8.3 Sigilo da alocação
 
 Cada participante receberá somente a próxima kata e o tratamento correspondente no momento do trial. O cronograma completo e as soluções de referência ficarão sob responsabilidade de outro integrante ou do responsável pela preparação.
+
+Embora o CSV seja versionado para auditoria, ele deve permanecer sob custódia
+do responsável pela preparação até o encerramento dos trials. Os participantes
+não devem consultar posições futuras; antes de cada trial, o responsável
+comunica somente a linha correspondente à próxima posição do participante.
 
 ---
 

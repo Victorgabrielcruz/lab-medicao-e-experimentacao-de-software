@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "algorithm_version": 1,
+  "seed": 20260910,
+  "frozen_at": "2026-09-10",
+  "python_version": "3.12.14",
+  "canonical_csv_sha256": "5061b79ce19eed8edcfdc3bc300c1603fef0542a59b1bb358c89751cae6b86aa",
+  "trial_count": 18,
+  "participants": [
+    "P01",
+    "P02",
+    "P03"
+  ],
+  "status": "frozen"
+}

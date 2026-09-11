@@ -3,13 +3,18 @@
   "python_version": "3.12.14",
   "pytest_version": "9.1.1",
   "command_template": "python scripts/run_tests.py <KATA> --src reference-solutions/<KATA>",
+  "custody": {
+    "reference_source_tracked_by_git": false,
+    "participant_access": "fresh clone without reference solution files",
+    "publication": "only after all 18 trials"
+  },
   "results": [
-    {"kata_id": "K01", "total": 6, "passed": 6, "failed": 0},
-    {"kata_id": "K02", "total": 5, "passed": 5, "failed": 0},
-    {"kata_id": "K03", "total": 6, "passed": 6, "failed": 0},
-    {"kata_id": "K04", "total": 6, "passed": 6, "failed": 0},
-    {"kata_id": "K05", "total": 5, "passed": 5, "failed": 0},
-    {"kata_id": "K06", "total": 5, "passed": 5, "failed": 0}
+    {"kata_id": "K01", "total": 6, "passed": 6, "failed": 0, "sha256": "95dd0c1e308aff9df547b00f33f80a190d2dd2b8a4ad659cf61442353b5ceb39"},
+    {"kata_id": "K02", "total": 5, "passed": 5, "failed": 0, "sha256": "272507ffb0fd1ac16d9ce605e9a1964a09e0238756163ad4efd940b1b89be5ac"},
+    {"kata_id": "K03", "total": 6, "passed": 6, "failed": 0, "sha256": "786017c3dedcbb5f26b886ee7ad3990acac01aa7da6195a9950d7d59a57cb12e"},
+    {"kata_id": "K04", "total": 6, "passed": 6, "failed": 0, "sha256": "65689a6d100a26f3b72aed08e9b5831d1499fc61de8ce69f4ff178b3e3c856f9"},
+    {"kata_id": "K05", "total": 5, "passed": 5, "failed": 0, "sha256": "aa79e6a6615b853013222495d80e72646096d92d934490ea6a416d7f2e4bec86"},
+    {"kata_id": "K06", "total": 5, "passed": 5, "failed": 0, "sha256": "c5833579d5f1eca8935e97aa424a74379063589aeb49547ef5ad8f4ebedeae4d"}
   ],
   "summary": {"total": 33, "passed": 33, "failed": 0}
 }

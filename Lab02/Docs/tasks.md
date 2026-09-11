@@ -148,11 +148,11 @@ Organizar as seis katas em três blocos de dificuldade equivalente para permitir
 
 ### Critérios de aceitação
 
-- [ ] As seis katas estão distribuídas em três pares.
-- [ ] A equivalência foi avaliada com critérios objetivos.
+- [x] As seis katas estão distribuídas em três pares. (B1 = K01/K02, B2 = K03/K04 e B3 = K05/K06)
+- [x] A equivalência foi avaliada com critérios objetivos. (matriz de regras, testes, SLOC, complexidade e tempo em `Docs/kata-equivalence.md`)
 - [x] Soluções de referência passam em todos os testes. (33/33 testes passando em 10/09/2026; evidência em `data/metadata/reference-solutions-validation.json`)
-- [ ] Soluções de referência não ficam acessíveis durante os trials.
-- [ ] Limitações do pareamento estão documentadas.
+- [x] Soluções de referência não ficam acessíveis durante os trials. (fontes ignoradas pelo Git; participantes usam clone limpo sem as referências)
+- [x] Limitações do pareamento estão documentadas. (`Docs/kata-equivalence.md`, Seção 4)
 
 ### Resultado esperado
 
@@ -329,11 +329,11 @@ Gerar a ordem das katas e tratamentos sem escolha manual influenciada por prefer
 
 ### Critérios de aceitação
 
-- [ ] A mesma semente reproduz a mesma alocação.
-- [ ] Cada participante possui seis posições e dois tratamentos.
-- [ ] Todas as restrições metodológicas são verificadas por teste.
-- [ ] A distribuição desigual inevitável entre tratamentos está documentada.
-- [ ] A alocação foi congelada antes da execução.
+- [x] A mesma semente reproduz a mesma alocação. (semente `20260910`, verificada automaticamente)
+- [x] Cada participante possui seis posições e dois tratamentos. (três trials `ai` e três `manual` por participante)
+- [x] Todas as restrições metodológicas são verificadas por teste. (`tests/test_allocation.py`)
+- [x] A distribuição desigual inevitável entre tratamentos está documentada. (`methodology.md`, Seção 8.2)
+- [x] A alocação foi congelada antes da execução. (`allocation-metadata.json`, estado `frozen` em 10/09/2026)
 
 ### Resultado esperado
 

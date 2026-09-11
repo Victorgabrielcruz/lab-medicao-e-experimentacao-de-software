@@ -17,7 +17,7 @@ dados, algoritmos ou técnicas de implementação.
 
 ## 1. Conjunto selecionado
 
-| ID | Kata | Contrato resumido | Faixa estimada | Bloco provisório |
+| ID | Kata | Contrato resumido | Faixa estimada | Bloco validado |
 |---|---|---|---:|---|
 | K01 | [Conflitos no pátio de docas](../katas/K01/README.md) | Identificar agendamentos incompatíveis por doca e horário. | 20–30 min | B1 |
 | K02 | [Compartimentos de coleta](../katas/K02/README.md) | Processar entradas e saídas sujeitas a capacidade. | 15–25 min | B1 |
@@ -27,9 +27,8 @@ dados, algoritmos ou técnicas de implementação.
 | K06 | [Roteiros de inspeção](../katas/K06/README.md) | Validar visitas intercaladas contra roteiros ordenados. | 15–25 min | B3 |
 
 As faixas são estimativas de triagem e permanecem abaixo do *time-box* fixo
-de 35 minutos. A equivalência objetiva dos blocos — solução de referência,
-LOC, complexidade, casos-limite e piloto — pertence à S01-03 e ainda não é
-alegada como concluída.
+de 35 minutos. A equivalência objetiva dos blocos foi concluída na S01-03 e
+está documentada em [`kata-equivalence.md`](kata-equivalence.md).
 
 ## 2. Triagem de candidatas
 
