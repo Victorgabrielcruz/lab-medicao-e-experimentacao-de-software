@@ -7,9 +7,10 @@
 | [`Enunciado.md`](Enunciado.md) | Enunciado original do laboratório |
 | [`methodology.md`](methodology.md) | Metodologia completa do experimento |
 | [`tasks.md`](tasks.md) | Plano de execução por sprint |
+| [`sprint-1-tutorial.md`](sprint-1-tutorial.md) | Tutorial técnico da Sprint 1: estrutura, arquivos, comandos, rastreabilidade e pendências |
 | [`katas.md`](katas.md) | Seleção, especificações, triagem e evidências de baixa indexação das seis katas |
-| `execution-guide.md` | Procedimento operacional dos trials — a desenvolver na S01 |
-| [`protocol-decisions.md`](protocol-decisions.md) | Decisões congeladas do protocolo — linguagem/stack e assistente de IA fechados; IDE, janela de execução e fontes de documentação do tratamento Manual ainda pendentes |
+| [`execution-guide.md`](execution-guide.md) | Instalação, treinamento, preparação, tratamentos e execução operacional dos trials |
+| [`protocol-decisions.md`](protocol-decisions.md) | Decisões congeladas do protocolo, versões, tratamentos e registro de desvios |
 
 ## Subpastas planejadas
 

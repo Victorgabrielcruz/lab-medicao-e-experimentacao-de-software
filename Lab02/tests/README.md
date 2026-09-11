@@ -3,6 +3,7 @@
 Esta pasta deve validar, no mínimo:
 
 - cronômetro, sucesso e censura;
+- inventário do ambiente, controle dos tratamentos e restauração limpa;
 - geração da alocação e suas restrições;
 - coleta e consolidação das métricas;
 - schema e regras de qualidade do dataset;

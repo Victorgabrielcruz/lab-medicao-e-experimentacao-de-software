@@ -378,11 +378,11 @@ Garantir que todos os participantes executem as tarefas com a mesma base técnic
 
 ### Critérios de aceitação
 
-- [ ] O ambiente pode ser instalado a partir do zero.
-- [ ] Todas as versões relevantes estão registradas.
-- [ ] O diretório de um trial pode ser restaurado sem resíduos.
-- [ ] A kata de treinamento não reutiliza problemas experimentais.
-- [ ] Testes e métricas executam por comandos documentados.
+- [ ] O ambiente pode ser instalado a partir do zero. (`scripts/setup.ps1` implementado e validado sintaticamente; falta executá-lo do zero nas máquinas de P01, P02 e P03)
+- [ ] Todas as versões relevantes estão registradas. (versões esperadas constam em `data/metadata/environment.json`, mas os inventários reais de P01, P02 e P03 continuam `null`)
+- [x] O diretório de um trial pode ser restaurado sem resíduos. (`scripts/prepare_trial.py` valida a alocação, exige `--restore`, bloqueia restauração após evidência bruta e possui testes automatizados)
+- [x] A kata de treinamento não reutiliza problemas experimentais. (`training-kata/` usa decodificação por repetição; esqueleto, suíte e referência de sanidade validados em `tests/test_training_kata.py`)
+- [x] Testes e métricas executam por comandos documentados. (`Docs/execution-guide.md` e `scripts/README.md`; suíte da infraestrutura com 41 testes aprovada em 10/09/2026)
 
 ### Resultado esperado
 

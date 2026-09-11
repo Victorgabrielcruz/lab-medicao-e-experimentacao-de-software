@@ -8,6 +8,7 @@ from .trial_collector import (
     collect_trial,
     run_trial,
 )
+from .trial_preparation import TrialPreparationError, find_allocation, prepare_trial
 
 __all__ = [
     "TIME_LIMIT_SECONDS",
@@ -16,4 +17,7 @@ __all__ = [
     "build_trial_id",
     "collect_trial",
     "run_trial",
+    "TrialPreparationError",
+    "find_allocation",
+    "prepare_trial",
 ]

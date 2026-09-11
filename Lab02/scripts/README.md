@@ -12,6 +12,33 @@ Pontos de entrada previstos:
 
 Os scripts devem apenas orquestrar regras implementadas e testadas em `src/` sempre que a lógica ultrapassar uma operação simples.
 
+## `setup.ps1` e `verify_environment.py` (S01-08)
+
+Preparam o ambiente congelado e registram SO, hardware, ferramentas e
+extensões de P01, P02 ou P03:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup.ps1 -Participant P01
+```
+
+Use `-InstallSystemTools` numa máquina nova e `-VerifyOnly` para auditar uma
+instalação existente. Os registros válidos são consolidados em
+`data/metadata/environment.json`.
+
+## `prepare_trial.py` e `verify_treatment.py` (S01-08)
+
+Preparam uma cópia limpa somente se ela corresponder à alocação congelada:
+
+```powershell
+.venv\Scripts\python.exe scripts\prepare_trial.py P01 K01 ai
+.venv\Scripts\python.exe scripts\verify_treatment.py ai --trial-dir trials\P01-K01-ai
+```
+
+Uma restauração exige `--restore` e é recusada depois que existir evidência
+bruta. No tratamento Manual, feche o Codex e use
+`--confirm-manual-no-ai`. O procedimento completo está em
+`Docs/execution-guide.md`.
+
 ## `generate_allocation.py` (S01-07)
 
 Gera e congela os 18 trials usando a semente pré-registrada `20260910`:

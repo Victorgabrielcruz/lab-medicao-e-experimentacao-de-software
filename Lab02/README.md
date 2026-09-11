@@ -9,6 +9,8 @@ Experimento controlado para comparar produtividade, qualidade funcional e qualid
 | [`Docs/Enunciado.md`](Docs/Enunciado.md) | Enunciado, questões de pesquisa, entregas e critérios de avaliação |
 | [`Docs/methodology.md`](Docs/methodology.md) | Desenho experimental, métricas, protocolo e plano de análise |
 | [`Docs/tasks.md`](Docs/tasks.md) | Divisão do trabalho por sprint, sem atribuição de responsáveis |
+| [`Docs/sprint-1-tutorial.md`](Docs/sprint-1-tutorial.md) | Tutorial da infraestrutura entregue na Sprint 1 e instruções de uso |
+| [`Docs/execution-guide.md`](Docs/execution-guide.md) | Procedimento operacional de preparação e execução dos trials |
 | [`Docs/README.md`](Docs/README.md) | Índice da documentação do laboratório |
 
 ## Estrutura do projeto
