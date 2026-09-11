@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "task": "S01-08",
+  "expected_versions": {
+    "python": "3.12.14",
+    "pytest": "9.1.1",
+    "radon": "6.0.1",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "jscpd": "5.2.0",
+    "uv": "0.12.10",
+    "vscode": "1.137.0",
+    "codex": "0.154.0"
+  },
+  "allowed_vscode_extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ],
+  "participants": {
+    "P01": null,
+    "P02": null,
+    "P03": null
+  },
+  "status": "pending_capture"
+}
