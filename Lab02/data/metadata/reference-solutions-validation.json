@@ -1,0 +1,15 @@
+{
+  "validated_at": "2026-09-10",
+  "python_version": "3.12.14",
+  "pytest_version": "9.1.1",
+  "command_template": "python scripts/run_tests.py <KATA> --src reference-solutions/<KATA>",
+  "results": [
+    {"kata_id": "K01", "total": 6, "passed": 6, "failed": 0},
+    {"kata_id": "K02", "total": 5, "passed": 5, "failed": 0},
+    {"kata_id": "K03", "total": 6, "passed": 6, "failed": 0},
+    {"kata_id": "K04", "total": 6, "passed": 6, "failed": 0},
+    {"kata_id": "K05", "total": 5, "passed": 5, "failed": 0},
+    {"kata_id": "K06", "total": 5, "passed": 5, "failed": 0}
+  ],
+  "summary": {"total": 33, "passed": 33, "failed": 0}
+}

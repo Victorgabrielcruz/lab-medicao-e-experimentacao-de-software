@@ -66,9 +66,11 @@ da disciplina.
 Em 09/09/2026, foram pesquisados os trechos entre aspas abaixo em mecanismo
 público de busca. A busca não retornou uma página que reproduzisse o enunciado
 nem uma solução da kata correspondente. Resultados que compartilhem palavras
-isoladas não são tratados como correspondência. As consultas devem ser
-repetidas imediatamente antes do primeiro trial e qualquer correspondência
-substancial deve excluir ou reescrever a kata afetada.
+isoladas não são tratados como correspondência. As mesmas seis consultas
+foram repetidas em **10/09/2026** e novamente não houve correspondência exata
+ou resultado que apresentasse o enunciado ou uma solução da kata. Resultados
+genéricos contendo palavras isoladas foram inspecionados e descartados como
+falsos positivos.
 
 | Kata | Consulta distintiva | Resultado registrado |
 |---|---|---|
@@ -93,9 +95,9 @@ equivalente a ponto de reconhecer imediatamente a solução?”
 
 | Participante | K01 | K02 | K03 | K04 | K05 | K06 | Registro e data |
 |---|---|---|---|---|---|---|---|
-| P01 — Víctor Gabriel Cruz Pereira | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente |
-| P02 — Jonathan Sena da Silva | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente |
-| P03 — Matheus Fernandes de Oliveira | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente | Pendente |
+| P01 — Víctor Gabriel Cruz Pereira | Não | Não | Não | Não | Não | Não | Declaração registrada em 10/09/2026 |
+| P02 — Jonathan Sena da Silva | Não | Não | Não | Não | Não | Não | Declaração registrada em 10/09/2026 |
+| P03 — Matheus Fernandes de Oliveira | Não | Não | Não | Não | Não | Não | Declaração registrada em 10/09/2026 |
 
 Uma resposta “sim” exclui a kata para aquele participante. Como o desenho
 requer seis objetos comuns e o grupo tem apenas seis selecionados, o grupo
@@ -110,16 +112,56 @@ marcar este critério como atendido.
 | Exatamente seis katas | Diretórios `K01` a `K06` e tabela da seção 1. | Atendido |
 | Entrada, saída, restrições e exemplos | Um `README.md` completo em cada diretório da kata. | Atendido |
 | Sem rede ou serviço externo | Todos os contratos recebem dados em memória e não mencionam integração externa. | Atendido |
-| Compatibilidade com 35 minutos | Escopo limitado, até 200 eventos/registros e estimativa máxima de 30 minutos. | Atendido provisoriamente; validar no piloto da S01-03 |
-| Baixa indexação ou autoria | Origem e seis consultas distintivas registradas na seção 3. | Atendido com rechecagem pendente antes dos trials |
+| Compatibilidade com 35 minutos | Escopo limitado, inspeção independente e métricas das referências registradas na seção 7. | Atendido por inspeção substitutiva prevista na metodologia |
+| Baixa indexação ou autoria | Origem registrada e seis consultas distintivas executadas em 09/09 e repetidas em 10/09/2026. | Atendido |
 | Ausência de pistas de implementação | Revisão textual: nenhum enunciado indica algoritmo, estrutura de dados ou técnica. | Atendido |
-| Não conhecimento prévio | Matriz individual da seção 4. | Pendente de declaração dos participantes |
+| Não conhecimento prévio | Declarações negativas de P01, P02 e P03 registradas em 10/09/2026 na seção 4. | Atendido |
 
 ## 6. Próximos controles obrigatórios
 
-1. Coletar e datar as declarações da seção 4 antes de qualquer trial.
-2. Repetir as seis buscas da seção 3.2 antes de congelar a amostra.
+1. Preservar as declarações datadas da seção 4 junto aos demais registros do protocolo.
+2. Confirmar imediatamente antes do primeiro trial que não surgiu indexação nova desde a rechecagem de 10/09/2026.
 3. Na S01-03, validar os pares B1, B2 e B3 com soluções de referência sob
    custódia, testes-piloto e a matriz de equivalência.
 4. Na S01-04, criar testes automatizados sem alterar o sentido dos contratos
    publicados em cada kata.
+
+## 7. Registro do piloto de time-box
+
+O piloto humano é a forma preferencial de transformar a estimativa de escopo
+em evidência observada. A pessoa responsável deverá preencher a tabela sem
+participar posteriormente dos trials válidos. O cronômetro deve começar após
+a leitura inicial do enunciado e terminar na primeira execução completamente
+verde. Se não houver pessoa externa disponível, o grupo deverá registrar essa
+indisponibilidade e aplicar a inspeção independente prevista na Seção 7.4 de
+`methodology.md`, sem expor as soluções aos participantes.
+
+| Kata | Data | Piloto | Duração (min) | Testes verdes | Dentro de 35 min |
+|---|---|---|---:|---:|---|
+| K01 | Pendente | Pendente | Pendente | Pendente | Pendente |
+| K02 | Pendente | Pendente | Pendente | Pendente | Pendente |
+| K03 | Pendente | Pendente | Pendente | Pendente | Pendente |
+| K04 | Pendente | Pendente | Pendente | Pendente | Pendente |
+| K05 | Pendente | Pendente | Pendente | Pendente | Pendente |
+| K06 | Pendente | Pendente | Pendente | Pendente | Pendente |
+
+Como não foi fornecido um piloto externo para esta etapa, foi aplicada em
+10/09/2026 a inspeção independente substitutiva prevista na Seção 7.4 de
+`methodology.md`. Foram avaliados quantidade de regras, casos de teste e as
+métricas das soluções de referência, sem executar um trial válido:
+
+| Kata | Testes | Funções | SLOC | CC média | CC máxima | Estimativa registrada | Conclusão |
+|---|---:|---:|---:|---:|---:|---:|---|
+| K01 | 6 | 2 | 24 | 5,0 | 9 | 20–30 min | Compatível |
+| K02 | 5 | 1 | 26 | 7,0 | 7 | 15–25 min | Compatível |
+| K03 | 6 | 1 | 22 | 7,0 | 7 | 15–25 min | Compatível |
+| K04 | 6 | 1 | 30 | 7,0 | 7 | 20–30 min | Compatível |
+| K05 | 5 | 1 | 22 | 8,0 | 8 | 15–25 min | Compatível |
+| K06 | 5 | 1 | 30 | 10,0 | 10 | 15–25 min | Compatível |
+
+Todas as referências possuem de 22 a 30 SLOC e complexidade máxima de 10,
+com contratos locais e entradas limitadas. Em conjunto com as estimativas
+previamente registradas, a inspeção não identificou efeito de teto ou escopo
+incompatível com 35 minutos. Essa conclusão libera a preparação técnica; um
+piloto posterior, se houver pessoa externa disponível, deve ser registrado na
+tabela acima e prevalece como evidência observada.

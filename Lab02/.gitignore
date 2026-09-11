@@ -1,0 +1,8 @@
+# Dependências e caches locais da S01-06
+node_modules/
+.tool-cache/
+.test-tmp/
+
+# Saídas brutas são preservadas localmente e resumidas em data/metadata/.
+data/raw/metrics/*
+!data/raw/metrics/.gitkeep

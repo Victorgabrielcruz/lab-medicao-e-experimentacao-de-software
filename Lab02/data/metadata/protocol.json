@@ -1,23 +1,31 @@
 {
   "task": "S01-01",
-  "last_updated": "2026-09-09",
+  "last_updated": "2026-09-10",
   "stack": {
     "language": "python",
-    "language_version": null,
-    "status": "linguagem fechada; versão do interpretador a registrar na configuração do ambiente (methodology.md, Seção 9)",
+    "language_version": "3.12.14",
+    "status": "linguagem e versões do ambiente congeladas; instalação idêntica nas três máquinas a verificar na S01-08",
     "static_analysis_tools": {
       "complexity": "radon cc",
       "loc": "radon raw",
       "maintainability_index": "radon mi",
       "duplication": "jscpd"
     },
-    "tool_versions": null,
+    "tool_versions": {
+      "radon": "6.0.1",
+      "jscpd": "5.2.0",
+      "node": "24.19.0",
+      "npm": "11.17.0",
+      "uv": "0.12.10"
+    },
     "test_framework": "pytest",
-    "test_framework_status": "confirmado; versão a registrar na configuração do ambiente",
-    "test_framework_version": null
+    "test_framework_status": "confirmado e versão congelada",
+    "test_framework_version": "9.1.1"
   },
   "ide": {
     "name": "Visual Studio Code",
+    "version": "1.137.0",
+    "architecture": "x64",
     "allowed_extensions": ["ms-python.python", "ms-python.vscode-pylance"],
     "banned_extensions": ["GitHub Copilot", "GitHub Copilot Chat", "Tabnine", "Codeium", "Continue", "qualquer extensão de IA generativa equivalente"]
   },
@@ -27,9 +35,10 @@
     "plan": "ChatGPT Pro",
     "interaction_mode": "chat/agente via terminal",
     "inline_autocomplete": false,
-    "version_or_access_date": null,
-    "model": null,
-    "version_status": "a registrar no início da janela de coleta (methodology.md, Seção 6.1 e 9)",
+    "version": "0.154.0",
+    "version_verified_at": "2026-09-10",
+    "model": "gpt-5.3-codex",
+    "version_status": "versão e modelo congelados; confirmar antes de cada sessão",
     "context_retention": "uma conversa/contexto novo por trial"
   },
   "execution_window": {

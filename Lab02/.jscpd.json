@@ -1,0 +1,27 @@
+{
+  "format": ["python"],
+  "reporters": ["json"],
+  "minLines": 5,
+  "minTokens": 50,
+  "maxLines": 1000,
+  "maxSize": "100kb",
+  "mode": "mild",
+  "absolute": false,
+  "gitignore": false,
+  "ignore": [
+    "**/tests/**",
+    "**/test/**",
+    "**/test_*.py",
+    "**/*_test.py",
+    "**/node_modules/**",
+    "**/.venv/**",
+    "**/venv/**",
+    "**/vendor/**",
+    "**/generated/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/__pycache__/**",
+    "**/conftest.py",
+    "**/setup.py"
+  ]
+}

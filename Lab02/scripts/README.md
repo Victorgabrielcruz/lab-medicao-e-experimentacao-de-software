@@ -32,3 +32,31 @@ git) e imprime total de testes, quantos passaram e quantos falharam. Roda
 sempre uma kata por vez, em processo isolado — não colete testes de várias
 katas no mesmo comando `pytest`, porque todas usam o nome de módulo
 `solution` e um processo só resolveria o primeiro que importar.
+
+## `collect_static_metrics.py` (S01-06)
+
+Instale as dependências congeladas antes da primeira coleta:
+
+```powershell
+uv venv --python 3.12.14
+uv pip install --python .venv\Scripts\python.exe -r requirements-metrics.txt
+npm install --ignore-scripts
+```
+
+Colete um trial cujo código final esteja em `trials/<trial_id>/src`:
+
+```powershell
+.venv\Scripts\python.exe scripts\collect_static_metrics.py P01-K01-ai
+```
+
+Para indicar explicitamente outro diretório de produção, como no teste de
+sanidade das referências:
+
+```powershell
+.venv\Scripts\python.exe scripts\collect_static_metrics.py sanity-K01 --source reference-solutions/K01
+```
+
+A configuração é fixa em `radon.cfg` e `.jscpd.json`: Radon 6.0.1, JSCPD
+5.2.0, duplicações com no mínimo 5 linhas e 50 tokens em modo `mild`. O script
+também exige Python 3.12.14 e recusa versões divergentes. Testes, dependências,
+código gerado e arquivos de configuração não entram na análise.
