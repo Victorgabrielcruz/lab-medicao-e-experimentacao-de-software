@@ -12,6 +12,30 @@ Pontos de entrada previstos:
 
 Os scripts devem apenas orquestrar regras implementadas e testadas em `src/` sempre que a lógica ultrapassar uma operação simples.
 
+## `generate_allocation.py` (S01-07)
+
+Gera e congela os 18 trials usando a semente pré-registrada `20260910`:
+
+```powershell
+python scripts/generate_allocation.py
+```
+
+O comando cria `data/metadata/allocation.csv` e
+`data/metadata/allocation-metadata.json`. Se o CSV já existir, somente uma
+alocação byte a byte idêntica e com os mesmos metadados será aceita; qualquer
+tentativa de substituição é recusada.
+
+Para auditar o arquivo congelado sem modificá-lo:
+
+```powershell
+python scripts/generate_allocation.py --check
+```
+
+O gerador preserva as sequências de tratamento da metodologia, três trials de
+cada tratamento por participante, os dois tratamentos em cada bloco, ordens
+diferentes, separação entre katas do mesmo par e exposição de todas as katas
+aos dois tratamentos no conjunto do grupo.
+
 ## `run_tests.py` (S01-04)
 
 Execução padronizada dos testes de aceitação de uma kata:

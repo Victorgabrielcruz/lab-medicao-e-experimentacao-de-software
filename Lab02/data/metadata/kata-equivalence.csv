@@ -1,0 +1,7 @@
+block,kata_id,rule_count,acceptance_tests,edge_case_tests,function_count,sloc,mean_cc,max_cc,estimated_minutes_min,estimated_minutes_max,pair_assessment
+B1,K01,6,6,5,2,24,5.0,9,20,30,compatible
+B1,K02,7,5,4,1,26,7.0,7,15,25,compatible
+B2,K03,7,6,5,1,22,7.0,7,15,25,compatible
+B2,K04,8,6,5,1,30,7.0,7,20,30,compatible
+B3,K05,8,5,4,1,22,8.0,8,15,25,compatible
+B3,K06,6,5,4,1,30,10.0,10,15,25,compatible
