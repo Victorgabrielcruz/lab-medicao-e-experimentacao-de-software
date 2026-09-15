@@ -26,6 +26,10 @@ EXPECTED_VERSIONS = {
     "codex": "0.154.0",
 }
 PARTICIPANTS = ("P01", "P02", "P03")
+# Extensões instaladas por padrão pelo setup.ps1. Desde 15/09/2026
+# (protocol-decisions.md, Seção 3) o grupo não exige mais que sejam as
+# ÚNICAS extensões habilitadas — qualquer extensão é permitida, exceto as
+# de IA generativa listadas em KNOWN_AI_EXTENSIONS.
 ALLOWED_EXTENSIONS = {
     "ms-python.python",
     "ms-python.vscode-pylance",
@@ -195,14 +199,10 @@ def validate_environment(record: dict) -> list[str]:
         item.get("id", "").lower() for item in record.get("vscode_extensions", [])
     }
     prohibited = extension_ids & KNOWN_AI_EXTENSIONS
-    unexpected = extension_ids - ALLOWED_EXTENSIONS
-    missing = ALLOWED_EXTENSIONS - extension_ids
     if prohibited:
         errors.append("extensões de IA proibidas: " + ", ".join(sorted(prohibited)))
-    if unexpected:
-        errors.append("extensões fora da lista permitida: " + ", ".join(sorted(unexpected)))
-    if missing:
-        errors.append("extensões obrigatórias ausentes: " + ", ".join(sorted(missing)))
+    # Qualquer outra extensão é permitida (decisão de 15/09/2026, ver
+    # protocol-decisions.md, Seção 3) — só a IA generativa é controlada.
 
     for field in ("processor", "logical_cpu_count", "memory_bytes"):
         if not record.get("hardware", {}).get(field):
@@ -215,7 +215,8 @@ def empty_registry() -> dict:
         "schema_version": 1,
         "task": "S01-08",
         "expected_versions": EXPECTED_VERSIONS,
-        "allowed_vscode_extensions": sorted(ALLOWED_EXTENSIONS),
+        "baseline_vscode_extensions": sorted(ALLOWED_EXTENSIONS),
+        "prohibited_vscode_extensions": sorted(KNOWN_AI_EXTENSIONS),
         "participants": {participant: None for participant in PARTICIPANTS},
         "status": "pending_capture",
     }
@@ -281,11 +282,11 @@ def validate_treatment(
     extension_ids = {item.lower().split("@", 1)[0] for item in extensions}
     process_names = {Path(item).stem.lower() for item in processes}
     errors: list[str] = []
-    unexpected = extension_ids - ALLOWED_EXTENSIONS
-    if unexpected:
-        errors.append("extensões não permitidas habilitadas: " + ", ".join(sorted(unexpected)))
-    if not ALLOWED_EXTENSIONS.issubset(extension_ids):
-        errors.append("extensões Python/Pylance obrigatórias não estão ambas habilitadas")
+    prohibited = extension_ids & KNOWN_AI_EXTENSIONS
+    if prohibited:
+        errors.append(
+            "extensões de IA proibidas habilitadas: " + ", ".join(sorted(prohibited))
+        )
     codex_running = any(name == "codex" or name.startswith("codex-") for name in process_names)
     if treatment == "ai" and codex_version != EXPECTED_VERSIONS["codex"]:
         errors.append(

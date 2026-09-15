@@ -65,6 +65,19 @@ def test_validador_aceita_registro_completo_e_rejeita_divergencias():
     assert any("github.copilot" in error for error in errors)
 
 
+def test_extensoes_neutras_sao_livres_so_ia_generativa_e_proibida():
+    # Decisão de 15/09/2026 (protocol-decisions.md, Seção 3): o grupo deixou
+    # de exigir que só as duas extensões de baseline estejam habilitadas.
+    record = _valid_record()
+    record["vscode_extensions"].append({"id": "esbenp.prettier-vscode", "version": "9.0.0"})
+    record["vscode_extensions"].append({"id": "ms-azuretools.vscode-docker", "version": "1.0.0"})
+    assert validate_environment(record) == []
+
+    record["vscode_extensions"].append({"id": "tabnine.tabnine-vscode", "version": "1.0.0"})
+    errors = validate_environment(record)
+    assert any("tabnine.tabnine-vscode" in error for error in errors)
+
+
 def test_registro_exige_tres_participantes_e_nao_sobrescreve(tmp_path: Path):
     path = tmp_path / "environment.json"
     registry = empty_registry()
@@ -88,7 +101,9 @@ def test_registro_recusa_ambiente_incompativel(tmp_path: Path):
 
 
 def test_controle_dos_tratamentos_ai_e_manual():
-    extensions = sorted(ALLOWED_EXTENSIONS)
+    # Inclui uma extensão neutra fora do baseline para confirmar que ela não
+    # é mais barrada (decisão de 15/09/2026, protocol-decisions.md Seção 3).
+    extensions = sorted(ALLOWED_EXTENSIONS) + ["esbenp.prettier-vscode"]
     assert validate_treatment(
         "ai",
         extensions=extensions,
@@ -115,6 +130,15 @@ def test_controle_dos_tratamentos_ai_e_manual():
     )
     assert any("processo do Codex" in error for error in manual_errors)
     assert any("confirmação explícita" in error for error in manual_errors)
+
+    ai_extension_errors = validate_treatment(
+        "manual",
+        extensions=extensions + ["tabnine.tabnine-vscode"],
+        processes=[],
+        codex_version="0.154.0",
+        manual_confirmation=True,
+    )
+    assert any("tabnine.tabnine-vscode" in error for error in ai_extension_errors)
 
 
 def test_versoes_do_codigo_correspondem_ao_protocolo_e_ao_registro():

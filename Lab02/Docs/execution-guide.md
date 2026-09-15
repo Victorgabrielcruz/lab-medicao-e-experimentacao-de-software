@@ -24,7 +24,7 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1 -Participant P01 -Ins
 ```
 
 O parâmetro `-InstallSystemTools` instala as versões congeladas de uv, Node.js,
-VS Code e Codex CLI, instala as extensões Python/Pylance, cria `.venv`, sincroniza
+VS Code e Codex CLI, instala as extensões Python/Pylance de baseline, cria `.venv`, sincroniza
 `requirements.lock` e executa a validação. Se as ferramentas de sistema já
 estiverem instaladas nas versões corretas, omita o parâmetro:
 
@@ -114,7 +114,9 @@ da coleta, nada pode ser restaurado ou sobrescrito.
 
 ## 6. Verificação do tratamento
 
-Feche extensões e ferramentas não permitidas antes de verificar.
+Desde 15/09/2026 (`protocol-decisions.md`, Seção 3), qualquer extensão do
+VS Code é permitida — só as de IA generativa continuam proibidas. Feche o
+Codex CLI e qualquer chatbot ou autocomplete generativo antes de verificar.
 
 Tratamento IA:
 
@@ -122,9 +124,9 @@ Tratamento IA:
 .venv\Scripts\python.exe scripts\verify_treatment.py ai --trial-dir trials\P01-K01-ai
 ```
 
-O Codex CLI 0.154.0 deve estar disponível. Somente Python e Pylance podem
-estar habilitados no VS Code; outras extensões, inclusive Copilot, Tabnine,
-Codeium e Continue, causam falha.
+O Codex CLI 0.154.0 deve estar disponível. Extensões de IA generativa
+(Copilot, Copilot Chat, Tabnine, Codeium, Continue ou equivalente) causam
+falha; qualquer outra extensão é aceita.
 
 Tratamento Manual:
 

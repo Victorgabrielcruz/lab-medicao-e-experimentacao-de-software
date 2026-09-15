@@ -26,7 +26,8 @@
     "name": "Visual Studio Code",
     "version": "1.137.0",
     "architecture": "x64",
-    "allowed_extensions": ["ms-python.python", "ms-python.vscode-pylance"],
+    "extension_policy": "qualquer extensão é permitida, exceto as listadas em banned_extensions (decisão de 15/09/2026, protocol-decisions.md Seção 3)",
+    "baseline_extensions": ["ms-python.python", "ms-python.vscode-pylance"],
     "banned_extensions": ["GitHub Copilot", "GitHub Copilot Chat", "Tabnine", "Codeium", "Continue", "qualquer extensão de IA generativa equivalente"]
   },
   "ai_treatment": {
@@ -50,5 +51,11 @@
     "note": "prazo apertado; depende de S01-02 a S01-09 fechados até 11/09 e execução paralela entre os 3 integrantes"
   },
   "pending_decisions": [],
-  "protocol_deviations": []
+  "protocol_deviations": [
+    {
+      "date": "2026-09-15",
+      "changed": "Restrição de extensões do VS Code a ms-python.python e ms-python.vscode-pylance",
+      "to": "Qualquer extensão permitida, exceto IA generativa (ver Docs/protocol-decisions.md, Seção 3)"
+    }
+  ]
 }

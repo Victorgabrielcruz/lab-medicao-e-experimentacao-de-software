@@ -61,19 +61,22 @@ O grupo vai usar **Visual Studio Code**, por ser a IDE que todos os três já
 usam no dia a dia — reduz a chance de o trial medir familiaridade com a
 ferramenta em vez do efeito da IA.
 
-Extensões permitidas: `ms-python.python` e `ms-python.vscode-pylance`
-(suporte oficial a Python — execução, depuração e navegação/checagem de
-tipo, que conta como "completação não generativa" permitida pela Seção 6.2).
-Nenhuma outra extensão fica habilitada.
+`ms-python.python` e `ms-python.vscode-pylance` (suporte oficial a Python —
+execução, depuração e navegação/checagem de tipo, que conta como
+"completação não generativa" permitida pela Seção 6.2) continuam instaladas
+por padrão pelo `scripts/setup.ps1`, mas **desde 15/09/2026 não são mais as
+únicas extensões permitidas** — ver atualização registrada na Seção 3.
+Qualquer outra extensão do editor (temas, linters, suporte a outras
+linguagens, Docker etc.) pode ficar habilitada.
 
 Ficam **proibidas** extensões de IA generativa no editor — GitHub Copilot,
 Copilot Chat, Tabnine, Codeium, Continue ou qualquer equivalente — mesmo no
 tratamento IA, porque o único assistente autorizado é o Codex CLI rodando no
 terminal integrado do VS Code (Seção 6.1). Ter uma extensão generativa
 instalada quebraria o controle do tratamento Manual e duplicaria o
-assistente no tratamento IA. Antes do primeiro trial, cada participante deve
-conferir a lista de extensões instaladas e remover qualquer uma fora dessa
-lista.
+assistente no tratamento IA. Antes de cada trial, `scripts/verify_treatment.py`
+confere automaticamente a ausência dessas extensões e de processos do Codex
+fora do tratamento IA.
 
 ### 1.4 Framework de testes
 
@@ -135,6 +138,6 @@ tabela antes de continuar os trials.
 
 | Data | O que estava definido | O que mudou | Motivo | Quem registrou |
 |---|---|---|---|---|
-| — | — | — | — | — |
+| 15/09/2026 | Extensões do VS Code restritas exclusivamente a `ms-python.python` e `ms-python.vscode-pylance` (Seção 1.3) | Qualquer extensão do VS Code passa a ser permitida, exceto extensões de IA generativa (GitHub Copilot, Copilot Chat, Tabnine, Codeium, Continue e equivalentes), que continuam proibidas nos dois tratamentos e seguem verificadas automaticamente por `scripts/verify_treatment.py` | Exigir apenas duas extensões habilitadas fazia cada participante desinstalar toda a configuração pessoal do editor a cada preparação de máquina; o grupo avaliou que o risco real para a validade está nas extensões de IA generativa (que duplicariam ou vazariam o tratamento), não em extensões neutras (temas, linters, outras linguagens), e decidiu não manter esse controle. Decisão tomada antes do primeiro trial (S02-01/S02-02 ainda não iniciados) | Jonathan, com acordo de P02 e P03 |
 
-Tabela vazia até o momento — nenhum desvio ocorreu.
+Nenhum outro desvio ocorreu até o momento.
