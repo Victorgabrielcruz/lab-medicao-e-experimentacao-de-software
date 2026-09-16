@@ -100,6 +100,14 @@ def run_trial(
     limitado ao tempo restante) até relatar zero falhas com ao menos um
     teste, ou até `time_limit_seconds` ser atingido. `monotonic`/`sleep` são
     injetáveis para permitir testar o cronômetro sem esperar tempo real.
+
+    Se um poll já reportou sucesso (zero falhas), o resultado final reaproveita
+    esse poll em vez de rodar a suíte de novo: uma nova execução, ainda que
+    milissegundos depois, cria uma janela de corrida entre o cronômetro e o
+    último salvamento do participante — foi o que invalidou o final_check de
+    `P01-K02-manual` (ver `Docs/protocol-decisions.md`, Seção 4). Só quando o
+    trial é censurado (limite de tempo atingido sem sucesso) a suíte é rodada
+    mais uma vez, para capturar o estado exato no corte.
     """
     if treatment not in VALID_TREATMENTS:
         raise TrialCollectionError(
@@ -138,13 +146,21 @@ def run_trial(
     finished_at = wall_clock()
     censored = not completed
 
-    final_runner = run_final_check or run_suite
-    try:
-        final_result = final_runner()
-    except Exception as error:  # noqa: BLE001 - idem, na verificação final
-        raise TrialCollectionError(
-            f"Falha inesperada na verificação final do trial {trial_id}: {error}"
-        ) from error
+    if completed:
+        last_poll = attempts[-1]
+        final_result = SuiteResult(
+            total=last_poll["total_tests"],
+            passed=last_poll["passed_tests"],
+            failed=last_poll["failed_tests"],
+        )
+    else:
+        final_runner = run_final_check or run_suite
+        try:
+            final_result = final_runner()
+        except Exception as error:  # noqa: BLE001 - idem, na verificação final
+            raise TrialCollectionError(
+                f"Falha inesperada na verificação final do trial {trial_id}: {error}"
+            ) from error
     attempts.append(_attempt_entry(wall_clock(), duration_seconds, final_result, "final_check"))
 
     total, passed, failed = final_result
@@ -297,6 +313,12 @@ def collect_trial(
     except TrialCollectionError as error:
         _write_incident(output_dir, trial_id, str(error))
         raise
+
+    if record["completed"] and not final_junit_path.exists() and poll_junit_path.exists():
+        # Sucesso: run_trial reaproveitou o último poll em vez de rodar a
+        # suíte de novo (ver docstring de run_trial), então o JUnit do
+        # final_check nunca foi gravado — persistimos o do poll vencedor.
+        final_junit_path.write_bytes(poll_junit_path.read_bytes())
 
     if poll_junit_path.exists():
         poll_junit_path.unlink()

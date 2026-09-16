@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "trial_id": "P01-K02-manual",
+  "participant_id": "P01",
+  "kata_id": "K02",
+  "difficulty_block": "B1",
+  "order_position": 4,
+  "treatment": "manual",
+  "prepared_at": "2026-09-15T23:26:51-03:00",
+  "source_sha256": "44672562ca1fa28a697c7bff6d6277eee0bf427eba5e1ddb5cec8b8fefda2028",
+  "source": "katas/K02/src",
+  "treatment_verification_required": true
+}

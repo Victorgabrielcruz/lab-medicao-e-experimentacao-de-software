@@ -11,7 +11,9 @@ sys.path.insert(0, str(ROOT))
 
 from src.environment import (
     ALLOWED_EXTENSIONS,
+    EXPECTED_CLAUDE_VERSION,
     EXPECTED_VERSIONS,
+    PARTICIPANT_AI_ASSISTANT,
     EnvironmentValidationError,
     empty_registry,
     extract_version,
@@ -23,6 +25,9 @@ from src.environment import (
 
 
 def _valid_record(participant: str = "P01") -> dict:
+    versions = dict(EXPECTED_VERSIONS)
+    if PARTICIPANT_AI_ASSISTANT.get(participant) == "claude":
+        versions["claude"] = EXPECTED_CLAUDE_VERSION
     return {
         "participant_id": participant,
         "captured_at": "2026-09-10T12:00:00-03:00",
@@ -37,7 +42,7 @@ def _valid_record(participant: str = "P01") -> dict:
             "logical_cpu_count": 8,
             "memory_bytes": 16 * 1024**3,
         },
-        "versions": dict(EXPECTED_VERSIONS),
+        "versions": versions,
         "vscode_extensions": [
             {"id": item, "version": "1.0.0"} for item in sorted(ALLOWED_EXTENSIONS)
         ],
@@ -139,6 +144,53 @@ def test_controle_dos_tratamentos_ai_e_manual():
         manual_confirmation=True,
     )
     assert any("tabnine.tabnine-vscode" in error for error in ai_extension_errors)
+
+
+def test_p01_usa_claude_e_nao_exige_codex():
+    # Desvio de 15/09/2026 (protocol-decisions.md, Seção 3): só P01 usa
+    # Claude Code no tratamento IA; P02 e P03 continuam no Codex CLI.
+    record = _valid_record("P01")
+    del record["versions"]["codex"]
+    assert validate_environment(record) == []
+
+    missing_claude = _valid_record("P01")
+    del missing_claude["versions"]["claude"]
+    errors = validate_environment(missing_claude)
+    assert any("claude: esperado" in error for error in errors)
+
+    # P02/P03 continuam exigindo o Codex normalmente.
+    p02_sem_codex = _valid_record("P02")
+    del p02_sem_codex["versions"]["codex"]
+    errors = validate_environment(p02_sem_codex)
+    assert any("codex: esperado" in error for error in errors)
+
+
+def test_controle_do_tratamento_ia_com_claude_para_p01():
+    extensions = sorted(ALLOWED_EXTENSIONS)
+    assert validate_treatment(
+        "ai",
+        extensions=extensions,
+        processes=[],
+        assistant="claude",
+        claude_version=EXPECTED_CLAUDE_VERSION,
+    ) == []
+
+    wrong_version = validate_treatment(
+        "ai",
+        extensions=extensions,
+        processes=[],
+        assistant="claude",
+        claude_version="1.0.0",
+    )
+    assert any("Claude Code deve estar na versão" in error for error in wrong_version)
+
+    manual_with_claude_running = validate_treatment(
+        "manual",
+        extensions=extensions,
+        processes=["claude.exe"],
+        manual_confirmation=True,
+    )
+    assert any("processo do Claude" in error for error in manual_with_claude_running)
 
 
 def test_versoes_do_codigo_correspondem_ao_protocolo_e_ao_registro():

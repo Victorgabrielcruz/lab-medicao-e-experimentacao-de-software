@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "trial_id": "P01-K01-ai",
+  "incident_flag": true,
+  "recorded_at": "2026-09-15T23:05:00-03:00",
+  "message": "Primeira tentativa oficial de P01-K01-ai invalidada: o cronômetro foi iniciado e o assistente de IA (Claude) implementou a solução completa sem nenhuma interação do participante (nenhum prompt, revisão ou decisão registrada de P01) antes da suíte fechar em 100% (ver attempts em trial.json, ~57s). Isso não corresponde ao tratamento IA descrito em methodology.md, Seção 6.1/384 (cronômetro deve capturar leitura, interação com o assistente e decisões do participante), e mede a capacidade do assistente isoladamente, não do participante usando o assistente. Erro operacional do procedimento de preparação, não um desvio de protocolo deliberado. Evidência bruta preservada aqui (não editada) só para fins de auditoria; não deve ser usada no dataset oficial da S02-05 nem contar como o trial de K01/ai de P01. Uma nova tentativa oficial de P01-K01-ai foi preparada em seguida, com interação real do participante.",
+  "recorded_by": "Jonathan (P01), com Claude Code"
+}
