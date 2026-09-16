@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="0.137" timestamp="2026-09-15T23:47:21.508510-03:00" hostname="DESKTOP-Q815713"><testcase classname="katas.K02.tests.test_k02" name="test_exemplo_do_enunciado" time="0.001"><failure message="NotImplementedError">katas\K02\tests\test_k02.py:18: in test_exemplo_do_enunciado
+    resultado = processar_movimentos(capacidades, movimentos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+trials\P01-K02-manual\src\solution.py:14: in processar_movimentos
+    raise NotImplementedError
+E   NotImplementedError</failure></testcase><testcase classname="katas.K02.tests.test_k02" name="test_entrada_que_atinge_exatamente_a_capacidade_e_aceita" time="0.001"><failure message="NotImplementedError">katas\K02\tests\test_k02.py:34: in test_entrada_que_atinge_exatamente_a_capacidade_e_aceita
+    resultado = processar_movimentos(capacidades, movimentos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+trials\P01-K02-manual\src\solution.py:14: in processar_movimentos
+    raise NotImplementedError
+E   NotImplementedError</failure></testcase><testcase classname="katas.K02.tests.test_k02" name="test_saida_que_zera_o_saldo_e_aceita" time="0.001"><failure message="NotImplementedError">katas\K02\tests\test_k02.py:48: in test_saida_que_zera_o_saldo_e_aceita
+    resultado = processar_movimentos(capacidades, movimentos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+trials\P01-K02-manual\src\solution.py:14: in processar_movimentos
+    raise NotImplementedError
+E   NotImplementedError</failure></testcase><testcase classname="katas.K02.tests.test_k02" name="test_movimento_recusado_nao_altera_o_saldo" time="0.001"><failure message="NotImplementedError">katas\K02\tests\test_k02.py:61: in test_movimento_recusado_nao_altera_o_saldo
+    resultado = processar_movimentos(capacidades, movimentos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+trials\P01-K02-manual\src\solution.py:14: in processar_movimentos
+    raise NotImplementedError
+E   NotImplementedError</failure></testcase><testcase classname="katas.K02.tests.test_k02" name="test_compartimentos_sao_independentes" time="0.002"><failure message="NotImplementedError">katas\K02\tests\test_k02.py:79: in test_compartimentos_sao_independentes
+    resultado = processar_movimentos(capacidades, movimentos)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+trials\P01-K02-manual\src\solution.py:14: in processar_movimentos
+    raise NotImplementedError
+E   NotImplementedError</failure></testcase></testsuite></testsuites>
