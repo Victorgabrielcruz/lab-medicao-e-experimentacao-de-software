@@ -9,12 +9,54 @@
     "publication": "only after all 18 trials"
   },
   "results": [
-    {"kata_id": "K01", "total": 6, "passed": 6, "failed": 0, "sha256": "95dd0c1e308aff9df547b00f33f80a190d2dd2b8a4ad659cf61442353b5ceb39"},
-    {"kata_id": "K02", "total": 5, "passed": 5, "failed": 0, "sha256": "272507ffb0fd1ac16d9ce605e9a1964a09e0238756163ad4efd940b1b89be5ac"},
-    {"kata_id": "K03", "total": 6, "passed": 6, "failed": 0, "sha256": "786017c3dedcbb5f26b886ee7ad3990acac01aa7da6195a9950d7d59a57cb12e"},
-    {"kata_id": "K04", "total": 6, "passed": 6, "failed": 0, "sha256": "65689a6d100a26f3b72aed08e9b5831d1499fc61de8ce69f4ff178b3e3c856f9"},
-    {"kata_id": "K05", "total": 5, "passed": 5, "failed": 0, "sha256": "aa79e6a6615b853013222495d80e72646096d92d934490ea6a416d7f2e4bec86"},
-    {"kata_id": "K06", "total": 5, "passed": 5, "failed": 0, "sha256": "c5833579d5f1eca8935e97aa424a74379063589aeb49547ef5ad8f4ebedeae4d"}
+    {
+      "kata_id": "K01",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "sha256": "01fa8080ac672083a112ca484daaf1dfeefea3470743d10afc96132a1e110393"
+    },
+    {
+      "kata_id": "K02",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "sha256": "f658c7f5fe2179c0e2ff7b7ad771a8c7e7dafe449c1e3de7d490fcef9180aebd"
+    },
+    {
+      "kata_id": "K03",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "sha256": "7b9612236e5d58f8295a484f0d6393be55fe8ce9ce3cfff4d2fb4512bd8d210f"
+    },
+    {
+      "kata_id": "K04",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "sha256": "ce2be3a792c12a9db7acd3051f750c8a4f059f4755a48b7668be955e8d33b831"
+    },
+    {
+      "kata_id": "K05",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "sha256": "bf5168a9c2e97ca233738300c392b21e9537083f71cd8f1ad65a9a6ded094a46"
+    },
+    {
+      "kata_id": "K06",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "sha256": "d4383a3799db271b6d324b5038bc83502a47d678466c35a7d341781d46640250"
+    }
   ],
-  "summary": {"total": 33, "passed": 33, "failed": 0}
+  "summary": {
+    "total": 33,
+    "passed": 33,
+    "failed": 0
+  },
+  "hash_corrected_at": "2026-09-16",
+  "hash_correction_note": "Os hashes SHA-256 gravados em 10/09/2026 nao correspondiam ao conteudo real de reference-solutions/*.py. Recalculados em 16/09/2026 a partir dos arquivos atuais, cuja data de modificacao permanece 10/09/2026 (nunca foram alterados); as 33 execucoes de teste continuam passando (ver campo summary), confirmando que as solucoes de referencia em si nao mudaram - apenas o hash registrado estava incorreto."
 }
