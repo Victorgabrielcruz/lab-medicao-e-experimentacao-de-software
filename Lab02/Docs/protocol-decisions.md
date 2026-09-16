@@ -139,5 +139,18 @@ tabela antes de continuar os trials.
 | Data | O que estava definido | O que mudou | Motivo | Quem registrou |
 |---|---|---|---|---|
 | 15/09/2026 | Extensões do VS Code restritas exclusivamente a `ms-python.python` e `ms-python.vscode-pylance` (Seção 1.3) | Qualquer extensão do VS Code passa a ser permitida, exceto extensões de IA generativa (GitHub Copilot, Copilot Chat, Tabnine, Codeium, Continue e equivalentes), que continuam proibidas nos dois tratamentos e seguem verificadas automaticamente por `scripts/verify_treatment.py` | Exigir apenas duas extensões habilitadas fazia cada participante desinstalar toda a configuração pessoal do editor a cada preparação de máquina; o grupo avaliou que o risco real para a validade está nas extensões de IA generativa (que duplicariam ou vazariam o tratamento), não em extensões neutras (temas, linters, outras linguagens), e decidiu não manter esse controle. Decisão tomada antes do primeiro trial (S02-01/S02-02 ainda não iniciados) | Jonathan, com acordo de P02 e P03 |
+| 15/09/2026 | Assistente de IA do tratamento IA fixado em Codex CLI 0.154.0 para todos os participantes (Seção 1.2), justamente para não misturar assistentes diferentes entre eles | Para P01 especificamente, o assistente do tratamento IA passa a ser Claude (Anthropic), em vez do Codex CLI; P02 e P03 continuam exclusivamente no Codex CLI | Jonathan relata não ter acesso ao Codex CLI e ter combinado com P02 e P03 usar Claude nos seus três trials de tratamento IA. Registrado aqui conforme a regra da Seção 3, mas o próprio grupo deve avaliar o impacto: a metodologia (Seção 6.1) lista misturar assistentes entre participantes como algo a evitar por ameaçar a comparabilidade do tratamento IA entre P01, P02 e P03; nenhum trial de P01 no tratamento IA foi executado antes deste registro | Jonathan, com acordo relatado de P02 e P03 (não verificado por terceiros) |
 
 Nenhum outro desvio ocorreu até o momento.
+
+## 4. Registro de incidentes de execução
+
+Diferente da Seção 3 (mudanças deliberadas no protocolo), esta seção registra
+falhas operacionais num trial específico — erros de procedimento, não
+decisões metodológicas.
+
+| Data | Trial | O que aconteceu | Encaminhamento | Quem registrou |
+|---|---|---|---|---|
+| 15/09/2026 | `P01-K01-ai` (1ª tentativa) | O cronômetro foi iniciado e o assistente de IA (Claude) implementou a solução completa de K01 sem nenhuma interação do participante (sem prompt, revisão ou decisão de P01) antes da suíte fechar 100% em ~57s. Isso não corresponde ao tratamento IA descrito em `methodology.md`, Seção 6.1/linha 384 (o cronômetro deve capturar leitura, interação com o assistente e decisões do participante) — mede a capacidade do assistente isolado, não do participante usando IA. | Trial invalidado. Evidência bruta preservada sem edição em `data/raw/trials/_invalidated/P01-K01-ai-attempt1/` (com `incident.json` explicando o motivo) e código/config em `trials/_invalidated/P01-K01-ai-attempt1/`. Uma nova tentativa oficial de `P01-K01-ai` foi preparada em seguida, desta vez com o participante lendo o enunciado e conduzindo a interação. Este trial invalidado não deve entrar no dataset oficial da S02-05. | Jonathan, com Claude Code |
+
+Nenhum outro incidente ocorreu até o momento.

@@ -40,7 +40,18 @@
     "version_verified_at": "2026-09-10",
     "model": "gpt-5.3-codex",
     "version_status": "versão e modelo congelados; confirmar antes de cada sessão",
-    "context_retention": "uma conversa/contexto novo por trial"
+    "context_retention": "uma conversa/contexto novo por trial",
+    "participant_overrides": {
+      "P01": {
+        "tool": "Claude Code",
+        "vendor": "Anthropic",
+        "interaction_mode": "chat/agente via terminal",
+        "inline_autocomplete": false,
+        "version": "2.1.273",
+        "model": "claude-sonnet-5",
+        "reason": "P01 não possui acesso ao Codex CLI; ver Docs/protocol-decisions.md, Seção 3 (registrado em 15/09/2026)"
+      }
+    }
   },
   "execution_window": {
     "s02_delivery": "2026-09-17",
@@ -56,6 +67,11 @@
       "date": "2026-09-15",
       "changed": "Restrição de extensões do VS Code a ms-python.python e ms-python.vscode-pylance",
       "to": "Qualquer extensão permitida, exceto IA generativa (ver Docs/protocol-decisions.md, Seção 3)"
+    },
+    {
+      "date": "2026-09-15",
+      "changed": "Assistente de IA do tratamento IA fixado em Codex CLI 0.154.0 para todos os participantes",
+      "to": "P01 usa Claude Code 2.1.273 (modelo claude-sonnet-5) no tratamento IA; P02 e P03 continuam no Codex CLI (ver Docs/protocol-decisions.md, Seção 3)"
     }
   ]
 }
