@@ -63,6 +63,9 @@ CommandRunner = Callable[[list[str]], str]
 def run_command(command: list[str]) -> str:
     """Executa um comando de inventário e devolve stdout normalizado."""
     executable = shutil.which(command[0])
+    if executable is None and os.name == "nt":
+        # Windows tools installed as command wrappers may expose only .cmd.
+        executable = shutil.which(f"{command[0]}.cmd")
     if executable is None:
         raise EnvironmentValidationError(f"Comando não encontrado: {command[0]}")
     resolved_command = [executable, *command[1:]]
