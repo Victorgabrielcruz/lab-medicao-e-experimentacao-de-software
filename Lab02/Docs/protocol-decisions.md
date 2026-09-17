@@ -140,4 +140,12 @@ tabela antes de continuar os trials.
 |---|---|---|---|---|
 | 15/09/2026 | Extensões do VS Code restritas exclusivamente a `ms-python.python` e `ms-python.vscode-pylance` (Seção 1.3) | Qualquer extensão do VS Code passa a ser permitida, exceto extensões de IA generativa (GitHub Copilot, Copilot Chat, Tabnine, Codeium, Continue e equivalentes), que continuam proibidas nos dois tratamentos e seguem verificadas automaticamente por `scripts/verify_treatment.py` | Exigir apenas duas extensões habilitadas fazia cada participante desinstalar toda a configuração pessoal do editor a cada preparação de máquina; o grupo avaliou que o risco real para a validade está nas extensões de IA generativa (que duplicariam ou vazariam o tratamento), não em extensões neutras (temas, linters, outras linguagens), e decidiu não manter esse controle. Decisão tomada antes do primeiro trial (S02-01/S02-02 ainda não iniciados) | Jonathan, com acordo de P02 e P03 |
 
-Nenhum outro desvio ocorreu até o momento.
+## 4. Incidentes de execução
+
+Incidentes de infraestrutura ou de disponibilidade não alteram o protocolo por
+si mesmos. Eles devem ser preservados aqui antes de qualquer decisão de
+retomar, substituir ou descartar um trial afetado.
+
+| Data | Trial | Incidente e evidência | Impacto e ação pendente | Quem registrou |
+|---|---|---|---|---|
+| 17/09/2026 | `P02-K04-ai` | Ao iniciar `codex.cmd -m gpt-5.3-codex --no-alt-screen` com autenticação por conta ChatGPT, o Codex CLI 0.154.0 retornou HTTP 400: `The 'gpt-5.3-codex' model is not supported when using Codex with a ChatGPT account.` Nenhum modelo alternativo foi selecionado. | O tratamento IA congelado não pôde ser iniciado nessa máquina. O trial não deve ser contabilizado nem reiniciado sem decisão do grupo. Antes de continuar, o grupo deve validar uma forma de autenticação que suporte o modelo congelado ou pré-registrar uma alternativa única para todos os trials de IA ainda pendentes, registrando o respectivo desvio. | P02; registrado por Codex |
