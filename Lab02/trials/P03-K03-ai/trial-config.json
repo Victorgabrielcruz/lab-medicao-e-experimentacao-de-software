@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "trial_id": "P03-K03-ai",
+  "participant_id": "P03",
+  "kata_id": "K03",
+  "difficulty_block": "B2",
+  "order_position": 1,
+  "treatment": "ai",
+  "prepared_at": "2026-09-17T14:43:46-03:00",
+  "source_sha256": "1cadc788cf1e2fa460e4ceb734b3419f73d7b50984a1dab350686ac5d8ca11c3",
+  "source": "katas/K03/src",
+  "treatment_verification_required": true
+}

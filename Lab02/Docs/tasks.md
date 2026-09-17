@@ -478,45 +478,55 @@ Participantes preparados para aplicar o protocolo de forma uniforme.
 
 ---
 
-## S02-02 — Executar os trials do bloco B1 [S02]
+## S02-02 — Executar trial P03-K02-ai (bloco B1) [S02]
+
 
 **Tipo:** Obrigatória
 
 ### Objetivo
 
-Executar todas as combinações previstas para o primeiro par de dificuldade.
+Executar o trial `P03-K02-ai`: kata K02 — Compartimentos de coleta, tratamento **IA**, participante P03, bloco de dificuldade B1.
+
+### Contexto
+
+- Este trial faz parte da alocação contrabalanceada congelada em `data/metadata/allocation.csv` (18 trials no total, dos quais este é um dos que ainda faltam).
+- Posição deste trial na sequência de P03: 5ª de 6 (ver `allocation.csv`, coluna `order_position`).
+- Kata: [K02 — Compartimentos de coleta](../katas/K02/README.md). Tempo de referência da kata: 15–25 min.
+- Tratamento: **IA**. Execução com apoio do assistente de IA (**Codex CLI (OpenAI)**), conforme `Docs/protocol-decisions.md` (Seção 1.2, e Seção 3 no caso de P01).
+- Bloco de dificuldade: B1 (issue do bloco: #70).
 
 ### O que deve ser feito
 
-- Consultar a alocação congelada.
-- Executar K01 e K02 para os três participantes nos tratamentos indicados.
-- Respeitar ordem, pausas e limite de tempo.
-- Preservar código, testes finais, métricas e incidentes.
-- Registrar prompts quando aplicável.
-- Commitar cada trial mencionando sua Issue individual.
+- Consultar a alocação congelada (`data/metadata/allocation.csv`) antes de iniciar.
+- Executar o trial `P03-K02-ai` respeitando o tratamento indicado (com apoio de IA).
+- Respeitar ordem, pausas e limite de tempo do protocolo.
+- Preservar código, testes finais, métricas e incidentes sem edição manual dos dados brutos.
+- Registrar os prompts trocados com o assistente de IA (obrigatório neste trial).
+- Commitar o trial mencionando esta Issue (ex.: `#<numero-desta-issue> feat: executa trial P03-K02-ai`).
 
 ### Artefatos envolvidos
 
-- `trials/`
-- `data/raw/trials/`
-- `data/raw/metrics/`
+- `trials/P03-K02-ai/`
+- `data/raw/trials/P03-K02-ai/`
+- `data/raw/metrics/P03-K02-ai/`
 - GitHub Projects
 
 ### Dependências
 
-- S02-01.
+- S02-01 — treinamento e validação da operação (#69).
+- Issue do bloco correspondente: #70.
 
 ### Critérios de aceitação
 
-- [ ] Os seis trials de B1 foram executados.
-- [ ] Cada trial possui código final e dados brutos.
-- [ ] Trials censurados foram mantidos em 2.100 segundos.
-- [ ] Incidentes e desvios foram registrados.
-- [ ] Cada commit referencia a Issue correta.
+- [ ] O trial `P03-K02-ai` foi executado.
+- [ ] O trial possui código final e dados brutos (`trials/P03-K02-ai/`, `data/raw/trials/P03-K02-ai/`, `data/raw/metrics/P03-K02-ai/`).
+- [ ] Caso o trial seja censurado, ele foi mantido no limite de tempo definido pelo protocolo, sem edição do dado bruto.
+- [ ] Incidentes e desvios foram registrados em `Docs/protocol-decisions.md`, quando aplicável.
+- [ ] O commit referencia esta Issue.
 
 ### Resultado esperado
 
-Bloco B1 completo, rastreável e pronto para validação.
+Trial `P03-K02-ai` completo, rastreável e pronto para consolidação no dataset (S02-05, #73).
 
 ---
 

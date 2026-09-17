@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "trial_id": "P03-K03-ai",
+  "participant_id": "P03",
+  "kata_id": "K03",
+  "treatment": "ai",
+  "started_at": "2026-09-17T14:51:46-03:00",
+  "finished_at": "2026-09-17T14:52:13-03:00",
+  "duration_seconds": 27,
+  "completed": true,
+  "censored": false,
+  "total_tests": 6,
+  "passed_tests": 6,
+  "failed_tests": 0,
+  "success_rate": 100.0,
+  "time_limit_seconds": 2100,
+  "poll_interval_seconds": 5.0,
+  "incident_flag": false,
+  "attempts": [
+    {
+      "checked_at": "2026-09-17T14:51:46-03:00",
+      "elapsed_seconds": 0.391,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:51:52-03:00",
+      "elapsed_seconds": 5.813,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:51:57-03:00",
+      "elapsed_seconds": 11.125,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:52:02-03:00",
+      "elapsed_seconds": 16.454,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:52:08-03:00",
+      "elapsed_seconds": 21.797,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:52:13-03:00",
+      "elapsed_seconds": 27.11,
+      "total_tests": 6,
+      "passed_tests": 6,
+      "failed_tests": 0,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T14:52:13-03:00",
+      "elapsed_seconds": 27,
+      "total_tests": 6,
+      "passed_tests": 6,
+      "failed_tests": 0,
+      "note": "final_check"
+    }
+  ]
+}
