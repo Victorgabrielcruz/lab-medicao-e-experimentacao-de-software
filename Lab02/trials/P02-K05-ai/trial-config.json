@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "trial_id": "P02-K05-ai",
+  "participant_id": "P02",
+  "kata_id": "K05",
+  "difficulty_block": "B3",
+  "order_position": 4,
+  "treatment": "ai",
+  "prepared_at": "2026-09-17T16:42:31-07:00",
+  "source_sha256": "ad30d8a5898dd717ed32040ad19322c21b3415c8911c535870272ec65781ddb2",
+  "source": "katas/K05/src",
+  "treatment_verification_required": true
+}
