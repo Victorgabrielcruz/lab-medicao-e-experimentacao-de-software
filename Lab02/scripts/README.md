@@ -135,3 +135,20 @@ A configuração é fixa em `radon.cfg` e `.jscpd.json`: Radon 6.0.1, JSCPD
 5.2.0, duplicações com no mínimo 5 linhas e 50 tokens em modo `mild`. O script
 também exige Python 3.12.14 e recusa versões divergentes. Testes, dependências,
 código gerado e arquivos de configuração não entram na análise.
+
+## `build_dataset.py` (S02-05)
+
+Consolida a alocação congelada, os registros brutos de testes e as métricas
+estáticas em uma linha por trial:
+
+```bash
+python scripts/build_dataset.py
+```
+
+O comando gera `data/processed/trials.csv` e
+`data/processed/consolidation-errors.csv`. A alocação é a fonte das 18 linhas:
+portanto, ausência de `trial.json`, métricas, Issue, commit ou feedback não
+remove o trial nem é convertida em zero — fica vazia no CSV e é descrita no
+relatório. Os caminhos das evidências originais permanecem em colunas de
+rastreabilidade. É seguro reexecutar o processamento: apenas os dois
+artefatos derivados são substituídos.
