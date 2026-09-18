@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "trial_id": "P03-K06-ai",
+  "participant_id": "P03",
+  "kata_id": "K06",
+  "treatment": "ai",
+  "started_at": "2026-09-17T22:42:01-03:00",
+  "finished_at": "2026-09-17T22:44:49-03:00",
+  "duration_seconds": 167,
+  "completed": true,
+  "censored": false,
+  "total_tests": 5,
+  "passed_tests": 5,
+  "failed_tests": 0,
+  "success_rate": 100.0,
+  "time_limit_seconds": 2100,
+  "poll_interval_seconds": 5.0,
+  "incident_flag": false,
+  "attempts": [
+    {
+      "checked_at": "2026-09-17T22:42:02-03:00",
+      "elapsed_seconds": 0.39,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:07-03:00",
+      "elapsed_seconds": 5.765,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:13-03:00",
+      "elapsed_seconds": 11.312,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:18-03:00",
+      "elapsed_seconds": 16.812,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:24-03:00",
+      "elapsed_seconds": 22.25,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:29-03:00",
+      "elapsed_seconds": 27.625,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:34-03:00",
+      "elapsed_seconds": 32.984,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:40-03:00",
+      "elapsed_seconds": 38.359,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:45-03:00",
+      "elapsed_seconds": 43.734,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:50-03:00",
+      "elapsed_seconds": 49.125,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:42:56-03:00",
+      "elapsed_seconds": 54.515,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:01-03:00",
+      "elapsed_seconds": 59.828,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:07-03:00",
+      "elapsed_seconds": 65.25,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:12-03:00",
+      "elapsed_seconds": 70.578,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:17-03:00",
+      "elapsed_seconds": 75.921,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:23-03:00",
+      "elapsed_seconds": 81.234,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:28-03:00",
+      "elapsed_seconds": 86.656,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:33-03:00",
+      "elapsed_seconds": 92.031,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:39-03:00",
+      "elapsed_seconds": 97.421,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:44-03:00",
+      "elapsed_seconds": 102.812,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:50-03:00",
+      "elapsed_seconds": 108.171,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:43:55-03:00",
+      "elapsed_seconds": 113.578,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:00-03:00",
+      "elapsed_seconds": 118.968,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:06-03:00",
+      "elapsed_seconds": 124.328,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:11-03:00",
+      "elapsed_seconds": 129.75,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:16-03:00",
+      "elapsed_seconds": 135.062,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:22-03:00",
+      "elapsed_seconds": 140.406,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:27-03:00",
+      "elapsed_seconds": 145.734,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:32-03:00",
+      "elapsed_seconds": 151.125,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:38-03:00",
+      "elapsed_seconds": 156.515,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:43-03:00",
+      "elapsed_seconds": 161.875,
+      "total_tests": 5,
+      "passed_tests": 0,
+      "failed_tests": 5,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:49-03:00",
+      "elapsed_seconds": 167.171,
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T22:44:49-03:00",
+      "elapsed_seconds": 167,
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "note": "final_check"
+    }
+  ]
+}
