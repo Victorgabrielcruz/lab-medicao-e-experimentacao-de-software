@@ -1,0 +1,2 @@
+[32mJSON report saved to C:\temp\Projetos\lab01-github-popular-repositories-analysis\Lab02\data\raw\metrics\P02-K01-ai\jscpd\jscpd-report.json[39m
+[90mtime: 30.552ms[39m

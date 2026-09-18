@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "trial_id": "P02-K01-ai",
+  "source_path": "C:\\temp\\Projetos\\lab01-github-popular-repositories-analysis\\Lab02\\trials\\P02-K01-ai\\src",
+  "collected_at": "2026-09-18T00:11:15-03:00",
+  "tool_versions": {
+    "python": "3.12.14",
+    "radon": "6.0.1",
+    "jscpd": "5.2.0"
+  },
+  "configuration": {
+    "radon_config_sha256": "b568fa492daf8ce8d411753be3cd8173a9d76650f08e65ea4b29973297a32439",
+    "jscpd_config_sha256": "523854017bdeadb15c7e559e3504eeb0c7a3eb72893ab91e97a7ebe073047bef",
+    "loc_definition": "Radon SLOC (source lines of code)",
+    "maintainability_aggregation": "arithmetic mean of per-file Radon MI",
+    "jscpd_min_lines": 5,
+    "jscpd_min_tokens": 50,
+    "jscpd_mode": "mild",
+    "excluded_directories": [
+      ".venv",
+      "__pycache__",
+      "build",
+      "dist",
+      "generated",
+      "node_modules",
+      "test",
+      "tests",
+      "vendor",
+      "venv"
+    ],
+    "excluded_files": [
+      "conftest.py",
+      "setup.py"
+    ]
+  },
+  "analyzed_files": [
+    "solution.py"
+  ],
+  "complexity": {
+    "function_count": 2,
+    "mean_cyclomatic_complexity": 5.0,
+    "max_cyclomatic_complexity": 9,
+    "functions": [
+      {
+        "file": "solution.py",
+        "name": "_para_minutos",
+        "kind": "function",
+        "line": 10,
+        "end_line": 12,
+        "complexity": 1,
+        "rank": "A"
+      },
+      {
+        "file": "solution.py",
+        "name": "conflitos_no_patio",
+        "kind": "function",
+        "line": 15,
+        "end_line": 37,
+        "complexity": 9,
+        "rank": "B"
+      }
+    ],
+    "missing": false
+  },
+  "loc": {
+    "loc": 21,
+    "logical_loc": 26,
+    "physical_lines": 37,
+    "blank_lines": 8,
+    "comment_lines": 0,
+    "single_comment_lines": 0,
+    "multiline_string_lines": 8,
+    "files": {
+      "C:\\temp\\Projetos\\lab01-github-popular-repositories-analysis\\Lab02\\trials\\P02-K01-ai\\src\\solution.py": {
+        "loc": 37,
+        "lloc": 26,
+        "sloc": 21,
+        "comments": 0,
+        "multi": 8,
+        "blank": 8,
+        "single_comments": 0
+      }
+    }
+  },
+  "maintainability": {
+    "maintainability_index": 81.35764907164405,
+    "files": [
+      {
+        "file": "solution.py",
+        "maintainability_index": 81.35764907164405,
+        "rank": "A"
+      }
+    ],
+    "missing": false
+  },
+  "duplication": {
+    "analyzed_lines": 37,
+    "duplicated_lines": 0,
+    "duplication_percentage": 0.0,
+    "duplicated_blocks": 0
+  }
+}
