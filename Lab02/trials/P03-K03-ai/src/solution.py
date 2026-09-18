@@ -1,8 +1,16 @@
-"""Implementação cronometrada de K03 — Cadeia de custódia de remessas."""
+"""Esqueleto de K03 — Cadeia de custódia de remessas.
+
+Implemente a função abaixo seguindo o contrato descrito em ../README.md.
+Não altere a assinatura nem o nome da função — a suíte de testes depende
+dela.
+"""
 from __future__ import annotations
 
 
 def avaliar_cadeia_de_custodia(eventos: list[dict]) -> dict:
+    """Retorna os eventos aceitos, os recusados e as remessas pendentes,
+    conforme as regras descritas em ../README.md.
+    """
     etapas = ("COLETA", "LACRE", "DESPACHO", "RECEBIMENTO")
     progresso: dict[str, int] = {}
     ordem_remessas: list[str] = []
@@ -11,11 +19,12 @@ def avaliar_cadeia_de_custodia(eventos: list[dict]) -> dict:
 
     for evento in eventos:
         remessa = evento["remessa"]
-        etapa = evento["etapa"]
-        indice_atual = progresso.get(remessa, -1)
-        indice_esperado = indice_atual + 1
+        indice_esperado = progresso.get(remessa, -1) + 1
 
-        if indice_esperado < len(etapas) and etapa == etapas[indice_esperado]:
+        if (
+            indice_esperado < len(etapas)
+            and evento["etapa"] == etapas[indice_esperado]
+        ):
             if remessa not in progresso:
                 ordem_remessas.append(remessa)
             progresso[remessa] = indice_esperado
