@@ -25,6 +25,16 @@ EXPECTED_VERSIONS = {
     "vscode": "1.137.0",
     "codex": "0.154.0",
 }
+# Desvio registrado em 15/09/2026 (protocol-decisions.md, Seção 3): P01 usa
+# Claude Code em vez do Codex CLI no tratamento IA; P02 e P03 permanecem no
+# assistente congelado originalmente. Não faz parte de EXPECTED_VERSIONS
+# porque só se aplica a quem usa esse assistente, não aos três participantes.
+EXPECTED_CLAUDE_VERSION = "2.1.273"
+PARTICIPANT_AI_ASSISTANT = {
+    "P01": "claude",
+    "P02": "codex",
+    "P03": "codex",
+}
 PARTICIPANTS = ("P01", "P02", "P03")
 # Extensões instaladas por padrão pelo setup.ps1. Desde 15/09/2026
 # (protocol-decisions.md, Seção 3) o grupo não exige mais que sejam as
@@ -53,6 +63,9 @@ CommandRunner = Callable[[list[str]], str]
 def run_command(command: list[str]) -> str:
     """Executa um comando de inventário e devolve stdout normalizado."""
     executable = shutil.which(command[0])
+    if executable is None and os.name == "nt":
+        # Windows tools installed as command wrappers may expose only .cmd.
+        executable = shutil.which(f"{command[0]}.cmd")
     if executable is None:
         raise EnvironmentValidationError(f"Comando não encontrado: {command[0]}")
     resolved_command = [executable, *command[1:]]
@@ -142,6 +155,7 @@ def collect_environment(
         "jscpd": ["npx", "--no-install", "jscpd", "--version"],
         "vscode": ["code", "--version"],
         "codex": ["codex", "--version"],
+        "claude": ["claude", "--version"],
     }
     versions = {
         "python": ".".join(map(str, sys.version_info[:3])),
@@ -190,10 +204,20 @@ def validate_environment(record: dict) -> list[str]:
     """Compara um inventário com o protocolo congelado."""
     errors: list[str] = []
     versions = record.get("versions", {})
+    assistant = PARTICIPANT_AI_ASSISTANT.get(record.get("participant_id"), "codex")
     for tool, expected in EXPECTED_VERSIONS.items():
+        if tool == "codex" and assistant != "codex":
+            continue
         actual = versions.get(tool)
         if actual != expected:
             errors.append(f"{tool}: esperado {expected}, encontrado {actual or 'ausente'}")
+
+    if assistant == "claude":
+        actual_claude = versions.get("claude")
+        if actual_claude != EXPECTED_CLAUDE_VERSION:
+            errors.append(
+                f"claude: esperado {EXPECTED_CLAUDE_VERSION}, encontrado {actual_claude or 'ausente'}"
+            )
 
     extension_ids = {
         item.get("id", "").lower() for item in record.get("vscode_extensions", [])
@@ -273,12 +297,22 @@ def validate_treatment(
     *,
     extensions: Iterable[str],
     processes: Iterable[str],
-    codex_version: str | None,
+    codex_version: str | None = None,
+    claude_version: str | None = None,
+    assistant: str = "codex",
     manual_confirmation: bool = False,
 ) -> list[str]:
-    """Verifica controles observáveis dos tratamentos IA e Manual."""
+    """Verifica controles observáveis dos tratamentos IA e Manual.
+
+    ``assistant`` identifica o assistente congelado para o participante do
+    trial (ver ``PARTICIPANT_AI_ASSISTANT``). O padrão é ``codex`` para não
+    quebrar chamadas existentes; o desvio de 15/09/2026 (protocol-decisions.md,
+    Seção 3) introduziu ``claude`` como opção válida só para P01.
+    """
     if treatment not in {"ai", "manual"}:
         return [f"tratamento inválido: {treatment}"]
+    if assistant not in {"codex", "claude"}:
+        return [f"assistente de IA desconhecido: {assistant}"]
     extension_ids = {item.lower().split("@", 1)[0] for item in extensions}
     process_names = {Path(item).stem.lower() for item in processes}
     errors: list[str] = []
@@ -288,13 +322,22 @@ def validate_treatment(
             "extensões de IA proibidas habilitadas: " + ", ".join(sorted(prohibited))
         )
     codex_running = any(name == "codex" or name.startswith("codex-") for name in process_names)
-    if treatment == "ai" and codex_version != EXPECTED_VERSIONS["codex"]:
-        errors.append(
-            f"Codex CLI deve estar na versão {EXPECTED_VERSIONS['codex']} no tratamento IA"
-        )
+    claude_running = any(name == "claude" or name.startswith("claude-") for name in process_names)
+    if treatment == "ai":
+        if assistant == "codex" and codex_version != EXPECTED_VERSIONS["codex"]:
+            errors.append(
+                f"Codex CLI deve estar na versão {EXPECTED_VERSIONS['codex']} no tratamento IA"
+            )
+        if assistant == "claude" and claude_version != EXPECTED_CLAUDE_VERSION:
+            errors.append(
+                f"Claude Code deve estar na versão {EXPECTED_CLAUDE_VERSION} no tratamento IA "
+                "(assistente de P01, ver protocol-decisions.md, Seção 3)"
+            )
     if treatment == "manual":
         if codex_running:
             errors.append("processo do Codex está ativo no tratamento Manual")
+        if claude_running:
+            errors.append("processo do Claude está ativo no tratamento Manual")
         if not manual_confirmation:
             errors.append("falta a confirmação explícita de ausência de IA no tratamento Manual")
     return errors

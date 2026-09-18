@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "trial_id": "P02-K06-manual",
+  "participant_id": "P02",
+  "treatment": "manual",
+  "ai_assistant": null,
+  "verified_at": "2026-09-16T18:48:56-07:00",
+  "vscode_extensions": [
+    {
+      "id": "ms-python.debugpy",
+      "version": "2026.6.0"
+    },
+    {
+      "id": "ms-python.python",
+      "version": "2026.4.0"
+    },
+    {
+      "id": "ms-python.vscode-pylance",
+      "version": "2026.3.1"
+    },
+    {
+      "id": "ms-python.vscode-python-envs",
+      "version": "1.36.0"
+    }
+  ],
+  "codex_expected_version": "0.154.0",
+  "codex_detected_version": "0.154.0",
+  "codex_process_running": false,
+  "claude_expected_version": "2.1.273",
+  "claude_detected_version": null,
+  "claude_process_running": false,
+  "manual_confirmation": true,
+  "errors": [],
+  "status": "passed"
+}

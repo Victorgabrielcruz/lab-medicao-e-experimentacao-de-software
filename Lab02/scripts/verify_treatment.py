@@ -13,7 +13,9 @@ sys.path.insert(0, str(ROOT))
 
 from src.environment import (
     EnvironmentValidationError,
+    EXPECTED_CLAUDE_VERSION,
     EXPECTED_VERSIONS,
+    PARTICIPANT_AI_ASSISTANT,
     extract_version,
     parse_extensions,
     run_command,
@@ -45,6 +47,7 @@ def main(argv: list[str]) -> int:
     if evidence_path.exists():
         print(f"Erro: evidência existente não será sobrescrita: {evidence_path}", file=sys.stderr)
         return 2
+    assistant = PARTICIPANT_AI_ASSISTANT.get(config.get("participant_id"), "codex")
     try:
         extension_records = parse_extensions(
             run_command(["code", "--list-extensions", "--show-versions"])
@@ -56,6 +59,11 @@ def main(argv: list[str]) -> int:
             codex_version = extract_version(codex_output)
         except EnvironmentValidationError:
             codex_version = None
+        try:
+            claude_output = run_command(["claude", "--version"])
+            claude_version = extract_version(claude_output)
+        except EnvironmentValidationError:
+            claude_version = None
     except EnvironmentValidationError as error:
         print(f"Erro: {error}", file=sys.stderr)
         return 2
@@ -65,17 +73,24 @@ def main(argv: list[str]) -> int:
         extensions=extensions,
         processes=processes,
         codex_version=codex_version,
+        claude_version=claude_version,
+        assistant=assistant,
         manual_confirmation=args.confirm_manual_no_ai,
     )
     evidence = {
-        "schema_version": 1,
+        "schema_version": 2,
         "trial_id": config["trial_id"],
+        "participant_id": config.get("participant_id"),
         "treatment": args.treatment,
+        "ai_assistant": assistant if args.treatment == "ai" else None,
         "verified_at": datetime.now().astimezone().isoformat(timespec="seconds"),
         "vscode_extensions": extension_records,
         "codex_expected_version": EXPECTED_VERSIONS["codex"],
         "codex_detected_version": codex_version,
         "codex_process_running": any(name.startswith("codex") for name in processes),
+        "claude_expected_version": EXPECTED_CLAUDE_VERSION,
+        "claude_detected_version": claude_version,
+        "claude_process_running": any(name.startswith("claude") for name in processes),
         "manual_confirmation": args.confirm_manual_no_ai,
         "errors": errors,
         "status": "passed" if not errors else "failed",
