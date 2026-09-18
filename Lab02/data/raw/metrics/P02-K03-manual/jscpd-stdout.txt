@@ -1,0 +1,2 @@
+[32mJSON report saved to C:\Users\Fernandes\Documents\lab-medicao-e-experimentacao-de-software\Lab02\data\raw\metrics\P02-K03-manual\jscpd\jscpd-report.json[39m
+[90mtime: 8.582ms[39m
