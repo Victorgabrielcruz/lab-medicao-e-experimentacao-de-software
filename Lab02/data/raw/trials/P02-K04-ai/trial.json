@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "trial_id": "P02-K04-ai",
+  "participant_id": "P02",
+  "kata_id": "K04",
+  "treatment": "ai",
+  "started_at": "2026-09-17T23:58:04-03:00",
+  "finished_at": "2026-09-17T23:59:01-03:00",
+  "duration_seconds": 57,
+  "completed": true,
+  "censored": false,
+  "total_tests": 6,
+  "passed_tests": 6,
+  "failed_tests": 0,
+  "success_rate": 100.0,
+  "time_limit_seconds": 2100,
+  "poll_interval_seconds": 5.0,
+  "incident_flag": false,
+  "attempts": [
+    {
+      "checked_at": "2026-09-17T23:58:05-03:00",
+      "elapsed_seconds": 1.407,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:11-03:00",
+      "elapsed_seconds": 7.578,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:17-03:00",
+      "elapsed_seconds": 13.782,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:24-03:00",
+      "elapsed_seconds": 19.953,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:30-03:00",
+      "elapsed_seconds": 26.203,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:36-03:00",
+      "elapsed_seconds": 32.328,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:42-03:00",
+      "elapsed_seconds": 38.625,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:48-03:00",
+      "elapsed_seconds": 44.813,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:58:55-03:00",
+      "elapsed_seconds": 51.047,
+      "total_tests": 6,
+      "passed_tests": 0,
+      "failed_tests": 6,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:59:01-03:00",
+      "elapsed_seconds": 57.11,
+      "total_tests": 6,
+      "passed_tests": 6,
+      "failed_tests": 0,
+      "note": "poll"
+    },
+    {
+      "checked_at": "2026-09-17T23:59:01-03:00",
+      "elapsed_seconds": 57,
+      "total_tests": 6,
+      "passed_tests": 6,
+      "failed_tests": 0,
+      "note": "final_check"
+    }
+  ]
+}

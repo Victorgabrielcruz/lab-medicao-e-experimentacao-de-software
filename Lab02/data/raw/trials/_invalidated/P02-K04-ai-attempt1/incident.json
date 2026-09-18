@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "trial_id": "P02-K04-ai",
+  "incident_flag": true,
+  "recorded_at": "2026-09-17T23:56:00-03:00",
+  "message": "Primeira tentativa oficial de P02-K04-ai (executada por Jonathan em substituição a P02, ver protocol-decisions.md quando registrado) invalidada: o cronômetro foi iniciado e o assistente de IA (Claude) implementou a solução completa sem nenhuma interação real do participante (nenhum prompt, revisão ou decisão registrada) antes da suíte fechar em 100% em ~89s. Isso não corresponde ao tratamento IA descrito em methodology.md, Seção 6.1/384 (cronômetro deve capturar leitura, interação com o assistente e decisões do participante), e mede a capacidade do assistente isoladamente, não do participante usando o assistente. Mesmo padrão já registrado para P01-K01-ai (~57s) e para a tentativa não oficializada de P03-K03-ai (~22s). Erro operacional do procedimento de preparação, não um desvio de protocolo deliberado. Evidência bruta preservada aqui sem edição, apenas para fins de auditoria; não deve ser usada no dataset oficial da S02-05 nem contar como o trial de K04/ai de P02. Uma nova tentativa oficial foi preparada em seguida, com interação real.",
+  "recorded_by": "Jonathan, com Claude Code"
+}
