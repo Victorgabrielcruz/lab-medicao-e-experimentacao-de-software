@@ -168,3 +168,30 @@ fontes brutas (reconstrução independente via `build_dataset`), imutabilidade
 dos testes de aceitação e outliers por IQR (reportados, nunca removidos). Sai
 com código 2 quando há erro crítico — nesse caso o dataset não deve seguir
 para as análises de RQ1-RQ3.
+
+## `analyze_rq1.py`, `analyze_rq2.py` e `analyze_rq3.py` (S03-02 a S03-04)
+
+Instale as dependências de análise estatística e gráficos antes da primeira
+execução:
+
+```bash
+uv pip install --python .venv/Scripts/python.exe -r requirements-analysis.txt
+```
+
+Cada script recarrega e revalida o dataset oficial (Seção 13) antes de
+analisar — recusa-se a rodar se houver erro crítico — e escreve um relatório
+em `reports/drafts/rqN-analysis.md` e as figuras preliminares em
+`reports/figures/rqN/`:
+
+```bash
+python scripts/analyze_rq1.py   # tempo e conclusão, Wilcoxon unilateral
+python scripts/analyze_rq2.py   # taxa de sucesso e defeitos, Wilcoxon unilateral
+python scripts/analyze_rq3.py   # complexidade e duplicação, Wilcoxon bilateral + Holm
+```
+
+Os pares são formados por `participant_id` e `difficulty_block` (Seção 8.1).
+Um par com qualquer lado ausente é excluído do teste e listado à parte —
+nunca convertido em zero. A lógica estatística compartilhada (formação de
+pares, estatística descritiva, teste de postos sinalizados, correlação
+bisserial de postos, IC por bootstrap e correção de Holm) fica em
+`src/analysis/paired_stats.py`.
