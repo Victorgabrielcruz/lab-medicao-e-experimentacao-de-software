@@ -152,3 +152,19 @@ remove o trial nem é convertida em zero — fica vazia no CSV e é descrita no
 relatório. Os caminhos das evidências originais permanecem em colunas de
 rastreabilidade. É seguro reexecutar o processamento: apenas os dois
 artefatos derivados são substituídos.
+
+## `validate_dataset.py` (S03-01)
+
+Executa as regras da Seção 13 sobre o dataset oficial:
+
+```bash
+python scripts/validate_dataset.py
+```
+
+Gera `reports/drafts/data-validation.md` com cardinalidade, consistência com
+a alocação congelada, regras de duração/censura/conclusão, métricas
+estruturais não negativas, vínculo de Issue/commit, correspondência com as
+fontes brutas (reconstrução independente via `build_dataset`), imutabilidade
+dos testes de aceitação e outliers por IQR (reportados, nunca removidos). Sai
+com código 2 quando há erro crítico — nesse caso o dataset não deve seguir
+para as análises de RQ1-RQ3.

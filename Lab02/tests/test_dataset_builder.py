@@ -186,14 +186,16 @@ def test_dataset_real_tem_dezoito_trials_unicos_e_csv_reexecutavel(tmp_path: Pat
     assert all(set(DATASET_COLUMNS) == set(row) for row in result.rows)
     p01_k02 = next(row for row in result.rows if row["trial_id"] == "P01-K02-manual")
     assert (p01_k02["passed_tests"], p01_k02["failed_tests"], p01_k02["success_rate"]) == (5, 0, 100.0)
-    p02_k01 = next(row for row in result.rows if row["trial_id"] == "P02-K01-ai")
-    assert p02_k01["duration_seconds"] is None
-    assert p02_k01["loc"] is None
+    # P02-K02-manual nunca teve métricas estáticas coletadas (trial antigo, sem
+    # metrics.json bruto); a ausência deve permanecer vazia, nunca virar zero.
+    p02_k02 = next(row for row in result.rows if row["trial_id"] == "P02-K02-manual")
+    assert p02_k02["duration_seconds"] == 1191
+    assert p02_k02["loc"] is None
 
     with dataset_path.open(encoding="utf-8", newline="") as file:
         csv_rows = list(csv.DictReader(file))
     assert len(csv_rows) == 18
     assert csv_rows[0]["trial_id"] == "P01-K01-ai"
     assert csv_rows[6]["trial_id"] == "P02-K06-manual"
-    assert csv_rows[11]["duration_seconds"] == ""
+    assert next(row for row in csv_rows if row["trial_id"] == "P02-K02-manual")["loc"] == ""
     assert errors_path.is_file()
