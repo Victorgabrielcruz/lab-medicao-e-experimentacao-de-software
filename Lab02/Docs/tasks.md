@@ -1003,11 +1003,11 @@ Interpretar os resultados considerando limitações reais observadas durante o e
 
 ### Critérios de aceitação
 
-- [ ] Todos os desvios possuem impacto discutido.
-- [ ] Ameaças não são apresentadas apenas de forma genérica.
-- [ ] A interpretação considera a direção potencial de cada viés.
-- [ ] Limitações de generalização estão explícitas.
-- [ ] Nenhuma limitação é usada para ocultar resultado desfavorável.
+- [x] Todos os desvios possuem impacto discutido.
+- [x] Ameaças não são apresentadas apenas de forma genérica.
+- [x] A interpretação considera a direção potencial de cada viés.
+- [x] Limitações de generalização estão explícitas.
+- [x] Nenhuma limitação é usada para ocultar resultado desfavorável.
 
 ### Resultado esperado
 

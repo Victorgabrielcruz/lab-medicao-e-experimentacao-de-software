@@ -248,7 +248,7 @@ def load_trials(root: Path) -> tuple[list[dict], list[str]]:
             corrected_counts = tuple(trial[field] for field in
                                      ("total_tests", "passed_tests", "failed_tests"))
             if corrected_counts != junit:
-                warnings.append(f"{trial_id}: JUnit final registra {junit[1]}/{junit[0]} "
+                warnings.append(f"{trial_id}: relatório final de testes registra {junit[1]}/{junit[0]} "
                                 f"passando; análise usa {corrected_counts[1]}/{corrected_counts[0]} "
                                 "do poll documentado")
         metrics = read_json(root / "data/raw/metrics" / trial_id / "metrics.json")

@@ -772,3 +772,12 @@ Os itens abaixo não estão definidos no enunciado e precisam ser registrados pe
 - responsável por custodiar soluções de referência e cronograma.
 
 Essas decisões deverão constar também no Relatório Final para permitir reprodução e replicação.
+
+## Nota pós-execução — interpretação de validade (23/09/2026)
+
+As Seções 1–20 acima permanecem como protocolo planejado. A discussão dos
+resultados efetivamente observados, incluindo ordem cronológica divergente,
+assistentes utilizados, tentativas invalidadas, dados estruturais ausentes e
+incerteza dos três participantes, está em
+[`reports/drafts/validity-threats.md`](../reports/drafts/validity-threats.md).
+Essa nota não altera retroativamente a alocação ou as hipóteses pré-registradas.

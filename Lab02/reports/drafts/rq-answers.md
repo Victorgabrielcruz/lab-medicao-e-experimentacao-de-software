@@ -15,7 +15,7 @@ Gerado por `python scripts/run_analysis.py` a partir da alocação e dos dados b
 - P01-K03-manual: métricas estáticas ausentes
 - P01-K06-ai: métricas estáticas ausentes
 - P01-K02-manual: correção auditada por data-quality-note.json e poll registrado; bruto preservado
-- P01-K02-manual: JUnit final registra 0/5 passando; análise usa 5/5 do poll documentado
+- P01-K02-manual: relatório final de testes registra 0/5 passando; análise usa 5/5 do poll documentado
 - P01-K02-manual: métricas estáticas ausentes
 - P01-K04-ai: métricas estáticas ausentes
 - P01-K05-manual: métricas estáticas ausentes
