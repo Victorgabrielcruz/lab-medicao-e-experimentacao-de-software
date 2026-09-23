@@ -104,7 +104,7 @@ def test_correcao_documentada_e_reexecucao_deterministica(tmp_path: Path):
     assert len(trials) == 2
     assert trials[0]["values"]["success_rate"] == 100.0
     assert any("correção auditada" in warning for warning in warnings)
-    assert any("JUnit final registra 0/5" in warning for warning in warnings)
+    assert any("relatório final de testes registra 0/5" in warning for warning in warnings)
     rows, comparisons = analyze(trials)
     assert comparisons["duration_seconds"]["n_pairs"] == 1
     assert comparisons["duration_seconds"]["difference"] == 100

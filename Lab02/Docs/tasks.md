@@ -1,6 +1,6 @@
 # Tasks do Projeto — Lab02
 
-Este documento organiza o trabalho do Lab02 em tarefas que deverão ser convertidas em **Issues reais** no GitHub Projects. A atribuição dos responsáveis será feita posteriormente pelo grupo diretamente no board; por isso, este planejamento não associa tarefas a integrantes específicos.
+Este documento organiza o trabalho do Lab02 em tarefas vinculadas a **Issues reais** no GitHub Projects. As atribuições oficiais dos responsáveis são mantidas no board; a etapa final da S03 registra Matheus nas Issues do Relatório Final.
 
 ---
 
@@ -24,7 +24,7 @@ Este documento organiza o trabalho do Lab02 em tarefas que deverão ser converti
 | Lab02S01 | Desenho do experimento e preparação | 5 |
 | Lab02S02 | Execução do experimento e coleta de dados | 5 |
 | Lab02S03 | Análise das RQ1–RQ3 e dashboard | 5 |
-| Relatório Final | Documento final reproduzível | 5 |
+| Relatório Final (etapa final da S03) | Documento final reproduzível | 5 |
 | **Total** |  | **20** |
 
 ---
@@ -910,12 +910,12 @@ Produzir uma saída única, reproduzível e coerente para todas as RQs.
 
 ### Critérios de aceitação
 
-- [ ] Um único comando reproduz todas as análises.
-- [ ] Resultados não dependem de edição manual.
-- [ ] Estatísticas descritivas e inferenciais são coerentes.
-- [ ] Resultados por participante estão disponíveis.
-- [ ] As três RQs possuem resposta preliminar sustentada pelos dados.
-- [ ] Conclusões respeitam o tamanho reduzido da amostra.
+- [x] Um único comando reproduz todas as análises.
+- [x] Resultados não dependem de edição manual.
+- [x] Estatísticas descritivas e inferenciais são coerentes.
+- [x] Resultados por participante estão disponíveis.
+- [x] As três RQs possuem resposta preliminar sustentada pelos dados.
+- [x] Conclusões respeitam o tamanho reduzido da amostra.
 
 ### Resultado esperado
 
@@ -957,13 +957,13 @@ Criar gráficos reproduzíveis para comparar tempo, sucesso e métricas estátic
 
 ### Critérios de aceitação
 
-- [ ] RQ1, RQ2 e RQ3 possuem visualizações identificadas.
-- [ ] Trials censurados são distinguíveis.
-- [ ] Comparações pareadas são visualmente verificáveis.
-- [ ] LOC acompanha a leitura das métricas estruturais.
-- [ ] Os 18 pontos não são ocultados por agregações indevidas.
-- [ ] Gráficos podem ser reproduzidos a partir do dataset oficial.
-- [ ] Arquivos possuem título, eixos, unidade, legenda e fonte.
+- [x] RQ1, RQ2 e RQ3 possuem visualizações identificadas.
+- [x] Trials censurados são distinguíveis.
+- [x] Comparações pareadas são visualmente verificáveis.
+- [x] LOC acompanha a leitura das métricas estruturais.
+- [x] Os 18 pontos não são ocultados por agregações indevidas.
+- [x] Gráficos podem ser reproduzidos a partir do dataset oficial.
+- [x] Arquivos possuem título, eixos, unidade, legenda e fonte.
 
 ### Resultado esperado
 
@@ -1015,7 +1015,7 @@ Discussão de validade específica para o experimento executado.
 
 ---
 
-## S03-08 — Encerrar a sprint e preparar os resultados para o relatório [S03]
+## S03-08 — Concluir a análise e preparar os resultados para o relatório [S03]
 
 **Tipo:** Obrigatória
 
@@ -1046,22 +1046,26 @@ Revisar a cobertura das entregas, organizar os artefatos finais da análise e at
 
 ### Critérios de aceitação
 
-- [ ] As três RQs possuem análise, gráfico e discussão preliminar.
-- [ ] Todos os scripts necessários estão versionados.
-- [ ] O dashboard foi testado com os dados oficiais.
-- [ ] O requisito de contribuição individual foi verificado.
-- [ ] O board representa o estado real da sprint.
-- [ ] Os insumos do relatório estão identificados.
+- [x] As três RQs possuem análise, gráfico e discussão preliminar.
+- [x] Todos os scripts necessários estão versionados.
+- [x] O dashboard foi testado com os dados oficiais.
+- [x] O requisito de contribuição individual foi verificado (a verificação identificou a pendência de Matheus).
+- [x] O board representa o estado real da sprint.
+- [x] Os insumos do relatório estão identificados.
 
 ### Resultado esperado
 
-Sprint 3 encerrada com resultados validados e organizados para redação final.
+Análise da S03 concluída, com resultados validados e organizados para a redação do Relatório Final na mesma sprint.
+
+> Verificação S03-08 em 23/09/2026: os critérios de conferência da análise foram executados. O fechamento da S03 ocorre em RF-03, após o Relatório Final; a contribuição de código de Matheus na S03 ainda depende de commit verificável. Ver `Docs/s03-checklist.md` e as Issues #82–#85.
 
 ---
 
-# Relatório Final
+# Relatório Final — etapa final da Sprint 3
 
-## RF-01 — Elaborar o Relatório Final do Lab02
+O Relatório Final integra o cronograma da S03, embora permaneça uma entrega separada de 5 pontos no enunciado. Matheus é o responsável pelas Issues RF-01 a RF-03 no Projects. A participação dele só atende à exigência de código da S03 quando uma dessas Issues gerar um artefato de código commitado, vinculado à Issue.
+
+## RF-01 — Elaborar o Relatório Final do Lab02 [S03]
 
 **Tipo:** Obrigatória
 
@@ -1079,6 +1083,7 @@ Consolidar desenho, execução, resultados e discussão em um documento reproduz
 - Apresentar métodos de coleta e análise.
 - Responder separadamente RQ1, RQ2 e RQ3.
 - Inserir tabelas e gráficos do dashboard.
+- Criar ou ajustar um script/notebook reproduzível para ao menos uma tabela ou figura do relatório, com commit de Matheus vinculado à Issue RF-01 (#83).
 - Discutir tamanhos de efeito, incerteza e ameaças à validade.
 - Incluir o link do repositório e do GitHub Projects.
 - Referenciar scripts, dataset e demais artefatos necessários à replicação.
@@ -1087,6 +1092,7 @@ Consolidar desenho, execução, resultados e discussão em um documento reproduz
 
 - `reports/final/relatorio-final.md`
 - `reports/final/figures/`
+- script/notebook de geração da tabela ou figura final
 - `Docs/methodology.md`
 
 ### Dependências
@@ -1101,6 +1107,7 @@ Consolidar desenho, execução, resultados e discussão em um documento reproduz
 - [ ] Trials censurados e desvios estão explícitos.
 - [ ] Ferramentas e versões permitem replicação.
 - [ ] Tabelas e gráficos são legíveis e rastreáveis.
+- [ ] Um script/notebook de apoio ao relatório foi commitado por Matheus com referência à Issue #83.
 - [ ] O link do repositório/GitHub Projects está preenchido.
 
 ### Resultado esperado
@@ -1109,7 +1116,7 @@ Primeira versão completa do documento final.
 
 ---
 
-## RF-02 — Revisar consistência e reprodutibilidade da entrega
+## RF-02 — Revisar consistência e reprodutibilidade da entrega [S03]
 
 **Tipo:** Obrigatória
 
@@ -1153,7 +1160,7 @@ Relatório revisado e entrega tecnicamente reproduzível.
 
 ---
 
-## RF-03 — Fechar o GitHub Projects e preparar a entrega
+## RF-03 — Fechar o GitHub Projects e preparar a entrega [S03]
 
 **Tipo:** Obrigatória
 
@@ -1201,5 +1208,5 @@ Lab02 finalizado, rastreável e pronto para avaliação.
 
 1. **S01:** congelar protocolo → selecionar e parear katas → implementar testes → implementar coleta e métricas → gerar alocação → preparar ambiente → revisar prontidão.
 2. **S02:** realizar treinamento → executar B1, B2 e B3 → consolidar dataset → auditar coleta.
-3. **S03:** validar dataset → analisar RQ1, RQ2 e RQ3 → consolidar estatística → gerar dashboard → revisar validade → fechar sprint.
-4. **Relatório Final:** redigir → revisar e reproduzir → fechar board e entrega.
+3. **S03, análise e dashboard (Lab02S03):** validar dataset → analisar RQ1, RQ2 e RQ3 → consolidar estatística → gerar dashboard → revisar validade → preparar insumos.
+4. **S03, Relatório Final (entrega separada):** redigir → revisar e reproduzir → fechar board e sprint.

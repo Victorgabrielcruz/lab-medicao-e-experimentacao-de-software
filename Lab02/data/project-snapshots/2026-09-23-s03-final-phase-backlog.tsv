@@ -1,0 +1,46 @@
+Title	URL	Assignees	Status	Linked pull requests	Sub-issues progress	Priority	Estimate	Size
+RF-01 — Elaborar o Relatório Final do Lab02 [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/83	matheus-0063	Ready					
+RF-02 — Revisar consistência e reprodutibilidade da entrega [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/84	matheus-0063	Ready					
+RF-03 — Fechar o GitHub Projects e preparar a entrega [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/85	matheus-0063	Ready					
+S03-08 — Concluir a análise e preparar os resultados para o relatório [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/82	Victorgabrielcruz	Done					
+S03-05 — Consolidar a análise estatística [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/79	Victorgabrielcruz	Done					
+S03-06 — Construir o dashboard de visualização [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/80	Victorgabrielcruz	Done					
+S03-07 — Revisar ameaças à validade e desvios [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/81	Victorgabrielcruz	Done					
+S03-01 — Implementar e executar a validação do dataset [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/75	JonathaDaSilva	Done	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/pull/126				
+S02-03 — Executar trial P01-K03-manual (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/97	JonathaDaSilva	Done	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/pull/117				
+S02-03 — Executar trial P02-K04-ai (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/104	matheus-0063	Done					
+S02-03 — Executar trial P03-K03-ai (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/109	Victorgabrielcruz	Done					
+S02-02 — Executar trial P03-K01-manual (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/107	Victorgabrielcruz	Done					
+S02-03 — Executar trial P03-K04-manual (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/110	Victorgabrielcruz	Done					
+S02-02 — Executar trial P03-K02-ai (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/108	Victorgabrielcruz	Done					
+S02-04 — Executar trial P03-K06-ai (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/112	Victorgabrielcruz	Done					
+S02-04 — Executar trial P03-K05-manual (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/111	Victorgabrielcruz	Done					
+S02-02 — Executar trial P01-K02-manual (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/116	JonathaDaSilva	Done					
+S02-04 — Executar trial P02-K06-manual (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/106	matheus-0063	Done					
+S02-03 — Executar trial P02-K03-manual (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/103	matheus-0063	Done					
+S02-04 — Executar trial P02-K05-ai (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/105	matheus-0063	Done					
+S02-02 — Executar trial P02-K02-manual (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/102	matheus-0063	Done					
+S02-04 — Executar trial P01-K05-manual (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/99	JonathaDaSilva	Done	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/pull/118				
+S01-07 — Implementar a alocação contrabalanceada [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/66	Victorgabrielcruz	Done					
+S01-S02 - Teste manual	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/94	JonathaDaSilva, matheus-0063, Victorgabrielcruz	Done					
+S02-01 — Realizar treinamento e validar a operação [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/69	JonathaDaSilva, matheus-0063, Victorgabrielcruz	Done					
+S02-04 — Executar os trials do bloco B3 [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/72	JonathaDaSilva, matheus-0063, Victorgabrielcruz	Done					
+S02-05 — Consolidar o dataset dos trials [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/73	matheus-0063	Done					
+S02-02 — Executar os trials do bloco B1 [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/70	JonathaDaSilva, matheus-0063, Victorgabrielcruz	Done					
+S02-06 — Auditar a execução e encerrar a sprint [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/74	JonathaDaSilva	Done					
+S02-03 — Executar trial P01-K04-ai (bloco B2) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/98	JonathaDaSilva	Done					
+S02-04 — Executar trial P01-K06-ai (bloco B3) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/100	JonathaDaSilva	Done					
+S02-02 — Executar trial P02-K01-ai (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/101	matheus-0063	Done					
+S02-02 — Executar trial P01-K01-ai (bloco B1) [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/115	JonathaDaSilva	Done					
+S01-09 — Configurar o Kanban e revisar a prontidão [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/68	Victorgabrielcruz	Done					
+S01-06 — Implementar a coleta das métricas estáticas [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/65	Victorgabrielcruz	Done					
+S01-05 — Implementar o cronômetro e o coletor de trials [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/64	JonathaDaSilva	Done					
+S01-01 — Pré-registrar as decisões do experimento [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/60	JonathaDaSilva, matheus-0063	Done					
+S02-03 — Executar os trials do bloco B2 [S02]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/71	JonathaDaSilva, matheus-0063, Victorgabrielcruz	Done					
+S01-03 — Formar e validar os pares de dificuldade [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/62	JonathaDaSilva	Done					
+S01-04 — Implementar os testes automatizados de aceitação [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/63	JonathaDaSilva	Done					
+S01-02 — Selecionar e documentar as seis katas [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/61	matheus-0063	Done					
+S01-08 — Preparar o ambiente reproduzível [S01]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/67	Victorgabrielcruz	Done					
+S03-02 — Analisar tempo e conclusão da RQ1 [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/76	JonathaDaSilva	Done					
+S03-03 — Analisar defeitos e taxa de sucesso da RQ2 [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/77	JonathaDaSilva	Done					
+S03-04 — Analisar qualidade estrutural da RQ3 [S03]	https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/78	JonathaDaSilva	Done					
