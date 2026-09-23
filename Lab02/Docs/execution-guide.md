@@ -1,4 +1,4 @@
-# Guia operacional do ambiente e dos trials
+﻿# Guia operacional do ambiente e dos trials
 
 Este é o procedimento obrigatório da S01-08. Execute os comandos no PowerShell,
 a partir da raiz do repositório. Não inicie um trial oficial enquanto o
@@ -196,3 +196,61 @@ Antes de liberar a próxima linha da alocação, confirme:
 Erros de código são resultados experimentais. Falta de ferramenta, versão
 divergente, restauração indevida ou tratamento incorreto são incidentes de
 infraestrutura e devem interromper o início do trial.
+
+## 10. Dashboard e figuras das RQs
+
+Depois de gerar `data/processed/trials.csv` e a análise consolidada, execute da
+pasta `Lab02`:
+
+```powershell
+.venv\Scripts\python.exe scripts\validate_dataset.py
+.venv\Scripts\python.exe scripts\run_analysis.py
+.venv\Scripts\python.exe scripts\generate_dashboard.py
+```
+
+Instale previamente `requirements-analysis.txt` na `.venv` (Matplotlib). O
+comando do dashboard recarrega `trials.csv` e executa novamente a validação da
+Seção 13. Se houver erro crítico, interrompe antes de criar as figuras. Use
+`--dataset` e `--output` para outros caminhos; o dataset informado também será
+validado contra as fontes oficiais. A ordem e os deslocamentos dos pontos são
+fixos, portanto a geração é reproduzível.
+
+Abra `reports/figures/dashboard/index.html` no navegador. A página reúne:
+
+- visão geral com os 18 trials identificados;
+- RQ1: tempo individual e nove comparações pareadas por participante/bloco;
+- RQ2: taxa de sucesso dos testes e conclusão de cada trial;
+- RQ3: complexidade ciclomática média, duplicação e LOC, incluindo pares com
+  medições disponíveis.
+
+Cada figura possui título, eixos, unidade, legenda e fonte, e pode ser baixada
+como PNG ou SVG. `trial-points.csv` contém os 18 registros usados nos gráficos;
+`paired-points.csv` contém valores de IA e Manual por participante, bloco e
+métrica. O marcador X indica censura. Medições estruturais ausentes não são
+convertidas em zero; o gráfico informa quantas faltam em cada tratamento.
+Pontos com o mesmo valor recebem deslocamentos horizontais fixos. Os pares de
+três participantes são descritivos e não devem ser lidos como nove participantes
+independentes.
+
+## 11. Visualização web com Streamlit
+
+Na pasta `Lab02`, instale as dependências e inicie o servidor local:
+
+```powershell
+uv pip install --python .venv/Scripts/python.exe -r requirements-analysis.txt
+.venv\Scripts\python.exe -m streamlit run src/dashboard/app.py --server.address 127.0.0.1
+```
+
+Abra o endereço local mostrado pelo Streamlit (`http://127.0.0.1:8501`).
+O aplicativo lê e revalida `data/processed/trials.csv` antes de exibir dados;
+se a validação encontrar erro crítico, nenhuma visualização é apresentada.
+Os filtros de participante e bloco mantêm IA e Manual lado a lado. As abas
+mostram visão geral, tempo individual e pareado, taxa de sucesso e conclusão,
+e complexidade, duplicação e LOC. Cada ponto tem detalhes ao passar o cursor;
+censura usa marcador distinto, e métricas ausentes permanecem ausentes.
+
+Na aba **Dados e exportação**, baixe os CSVs filtrados ou gere um ZIP com as
+figuras PNG/SVG e os dados do filtro atual. Esse pacote é recriado a partir do
+dataset validado, sem reutilizar figuras antigas. O comando
+`scripts/generate_dashboard.py` permanece disponível para produzir os arquivos
+estáticos em `reports/figures/dashboard/` sem iniciar o servidor.

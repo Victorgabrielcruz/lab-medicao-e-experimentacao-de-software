@@ -1,0 +1,55 @@
+participant_id,difficulty_block,metric,unit,ai_trial_id,manual_trial_id,ai_value,manual_value,ai_censored,manual_censored
+P01,B1,duration_seconds,Tempo (s),P01-K01-ai,P01-K02-manual,363.0,885.0,False,False
+P01,B1,success_rate,Testes aprovados (%),P01-K01-ai,P01-K02-manual,100.0,100.0,False,False
+P01,B1,completed,Concluído (0/1),P01-K01-ai,P01-K02-manual,1.0,1.0,False,False
+P01,B1,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P01-K01-ai,P01-K02-manual,,,False,False
+P01,B1,duplication_percentage,Linhas duplicadas (%),P01-K01-ai,P01-K02-manual,,,False,False
+P01,B1,loc,LOC (linhas de código),P01-K01-ai,P01-K02-manual,,,False,False
+P01,B2,duration_seconds,Tempo (s),P01-K04-ai,P01-K03-manual,384.0,686.0,False,False
+P01,B2,success_rate,Testes aprovados (%),P01-K04-ai,P01-K03-manual,100.0,100.0,False,False
+P01,B2,completed,Concluído (0/1),P01-K04-ai,P01-K03-manual,1.0,1.0,False,False
+P01,B2,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P01-K04-ai,P01-K03-manual,,,False,False
+P01,B2,duplication_percentage,Linhas duplicadas (%),P01-K04-ai,P01-K03-manual,,,False,False
+P01,B2,loc,LOC (linhas de código),P01-K04-ai,P01-K03-manual,,,False,False
+P01,B3,duration_seconds,Tempo (s),P01-K06-ai,P01-K05-manual,281.0,485.0,False,False
+P01,B3,success_rate,Testes aprovados (%),P01-K06-ai,P01-K05-manual,100.0,100.0,False,False
+P01,B3,completed,Concluído (0/1),P01-K06-ai,P01-K05-manual,1.0,1.0,False,False
+P01,B3,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P01-K06-ai,P01-K05-manual,,,False,False
+P01,B3,duplication_percentage,Linhas duplicadas (%),P01-K06-ai,P01-K05-manual,,,False,False
+P01,B3,loc,LOC (linhas de código),P01-K06-ai,P01-K05-manual,,,False,False
+P02,B1,duration_seconds,Tempo (s),P02-K01-ai,P02-K02-manual,316.0,1191.0,False,False
+P02,B1,success_rate,Testes aprovados (%),P02-K01-ai,P02-K02-manual,100.0,100.0,False,False
+P02,B1,completed,Concluído (0/1),P02-K01-ai,P02-K02-manual,1.0,1.0,False,False
+P02,B1,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P02-K01-ai,P02-K02-manual,5.0,,False,False
+P02,B1,duplication_percentage,Linhas duplicadas (%),P02-K01-ai,P02-K02-manual,0.0,,False,False
+P02,B1,loc,LOC (linhas de código),P02-K01-ai,P02-K02-manual,21.0,,False,False
+P02,B2,duration_seconds,Tempo (s),P02-K04-ai,P02-K03-manual,57.0,606.0,False,False
+P02,B2,success_rate,Testes aprovados (%),P02-K04-ai,P02-K03-manual,100.0,100.0,False,False
+P02,B2,completed,Concluído (0/1),P02-K04-ai,P02-K03-manual,1.0,1.0,False,False
+P02,B2,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P02-K04-ai,P02-K03-manual,12.0,8.0,False,False
+P02,B2,duplication_percentage,Linhas duplicadas (%),P02-K04-ai,P02-K03-manual,0.0,0.0,False,False
+P02,B2,loc,LOC (linhas de código),P02-K04-ai,P02-K03-manual,33.0,38.0,False,False
+P02,B3,duration_seconds,Tempo (s),P02-K05-ai,P02-K06-manual,261.0,695.0,False,False
+P02,B3,success_rate,Testes aprovados (%),P02-K05-ai,P02-K06-manual,100.0,100.0,False,False
+P02,B3,completed,Concluído (0/1),P02-K05-ai,P02-K06-manual,1.0,1.0,False,False
+P02,B3,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P02-K05-ai,P02-K06-manual,7.0,,False,False
+P02,B3,duplication_percentage,Linhas duplicadas (%),P02-K05-ai,P02-K06-manual,0.0,,False,False
+P02,B3,loc,LOC (linhas de código),P02-K05-ai,P02-K06-manual,34.0,,False,False
+P03,B1,duration_seconds,Tempo (s),P03-K02-ai,P03-K01-manual,178.0,488.0,False,False
+P03,B1,success_rate,Testes aprovados (%),P03-K02-ai,P03-K01-manual,100.0,100.0,False,False
+P03,B1,completed,Concluído (0/1),P03-K02-ai,P03-K01-manual,1.0,1.0,False,False
+P03,B1,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P03-K02-ai,P03-K01-manual,7.0,5.0,False,False
+P03,B1,duplication_percentage,Linhas duplicadas (%),P03-K02-ai,P03-K01-manual,0.0,0.0,False,False
+P03,B1,loc,LOC (linhas de código),P03-K02-ai,P03-K01-manual,36.0,27.0,False,False
+P03,B2,duration_seconds,Tempo (s),P03-K03-ai,P03-K04-manual,251.0,107.0,False,False
+P03,B2,success_rate,Testes aprovados (%),P03-K03-ai,P03-K04-manual,100.0,100.0,False,False
+P03,B2,completed,Concluído (0/1),P03-K03-ai,P03-K04-manual,1.0,1.0,False,False
+P03,B2,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P03-K03-ai,P03-K04-manual,7.0,12.0,False,False
+P03,B2,duplication_percentage,Linhas duplicadas (%),P03-K03-ai,P03-K04-manual,0.0,0.0,False,False
+P03,B2,loc,LOC (linhas de código),P03-K03-ai,P03-K04-manual,29.0,33.0,False,False
+P03,B3,duration_seconds,Tempo (s),P03-K06-ai,P03-K05-manual,167.0,75.0,False,False
+P03,B3,success_rate,Testes aprovados (%),P03-K06-ai,P03-K05-manual,100.0,100.0,False,False
+P03,B3,completed,Concluído (0/1),P03-K06-ai,P03-K05-manual,1.0,1.0,False,False
+P03,B3,mean_cyclomatic_complexity,Complexidade ciclomática média (pontos),P03-K06-ai,P03-K05-manual,10.0,8.0,False,False
+P03,B3,duplication_percentage,Linhas duplicadas (%),P03-K06-ai,P03-K05-manual,0.0,0.0,False,False
+P03,B3,loc,LOC (linhas de código),P03-K06-ai,P03-K05-manual,37.0,30.0,False,False
