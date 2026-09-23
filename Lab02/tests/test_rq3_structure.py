@@ -61,6 +61,18 @@ def test_teste_bilateral_e_holm_aplicado_as_duas_metricas():
     # com diferença perfeita e consistente em ambas as métricas, Holm não deve subir acima de 1
     assert result.complexity_p_holm <= 1.0
     assert result.duplication_p_holm <= 1.0
+    assert result.complexity_wilcoxon.median_diff == -6.0
+    assert result.complexity_wilcoxon.effect_size_r == -1.0
+
+
+def test_holm_preserva_familia_quando_duplicacao_tem_apenas_empates():
+    rows = _synthetic_rows()
+    for row in rows:
+        row["duplication_percentage"] = 0.0
+    result = analyze(rows)
+    assert result.duplication_wilcoxon.p_value is None
+    assert result.duplication_p_holm is None
+    assert result.complexity_p_holm == min(1.0, 2 * result.complexity_wilcoxon.p_value)
 
 
 def test_loc_e_reportado_mas_nao_testado():
@@ -81,6 +93,7 @@ def test_relatorio_markdown_contem_secoes_esperadas():
     report = render_report_markdown(result)
     assert "# RQ3" in report
     assert "Holm" in report
+    assert "ai - manual" in report
     assert "## 4. Índice de Manutenibilidade" in report
     assert "## 7. Limitações" in report
 

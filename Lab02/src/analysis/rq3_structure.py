@@ -50,13 +50,18 @@ def analyze(rows: list[dict[str, Any]]) -> RQ3Result:
     duplication_pairs = build_pairs(rows, DUPLICATION_METRIC)
     loc_pairs = build_pairs(rows, LOC_METRIC)
 
-    complexity_wilcoxon = wilcoxon_signed_rank(complexity_pairs, alternative=ALTERNATIVE)
-    duplication_wilcoxon = wilcoxon_signed_rank(duplication_pairs, alternative=ALTERNATIVE)
+    complexity_wilcoxon = wilcoxon_signed_rank(
+        complexity_pairs, alternative=ALTERNATIVE, difference_direction="ai-manual"
+    )
+    duplication_wilcoxon = wilcoxon_signed_rank(
+        duplication_pairs, alternative=ALTERNATIVE, difference_direction="ai-manual"
+    )
 
     raw_p_values = [complexity_wilcoxon.p_value, duplication_wilcoxon.p_value]
-    testable = [index for index, value in enumerate(raw_p_values) if value is not None]
-    holm_adjusted = holm_correction([raw_p_values[index] for index in testable]) if testable else []
-    adjusted_by_index = dict(zip(testable, holm_adjusted))
+    # A família foi pré-registrada com dois testes. Um desfecho todo empatado
+    # não fornece p calculável; p=1 apenas no ajuste mantém a família de dois.
+    holm_adjusted = holm_correction([value if value is not None else 1.0
+                                     for value in raw_p_values])
 
     return RQ3Result(
         complexity_descriptive={t: describe_treatment(rows, COMPLEXITY_METRIC, t) for t in ("ai", "manual")},
@@ -68,13 +73,13 @@ def analyze(rows: list[dict[str, Any]]) -> RQ3Result:
         loc_pairs=loc_pairs,
         complexity_wilcoxon=complexity_wilcoxon,
         duplication_wilcoxon=duplication_wilcoxon,
-        complexity_p_holm=adjusted_by_index.get(0),
-        duplication_p_holm=adjusted_by_index.get(1),
+        complexity_p_holm=holm_adjusted[0] if raw_p_values[0] is not None else None,
+        duplication_p_holm=holm_adjusted[1] if raw_p_values[1] is not None else None,
     )
 
 
 def _format(value: float | None, digits: int = 2) -> str:
-    return "—" if value is None else f"{value:.{digits}f}"
+    return "—" if value is None else f"{0.0 if value == 0 else value:.{digits}f}"
 
 
 def _descriptive_table(descriptive: dict[str, DescriptiveStats], *, unit: str) -> str:
@@ -98,7 +103,7 @@ def _wilcoxon_block(result: WilcoxonResult, adjusted_p: float | None, *, title: 
             "",
             f"- Pares válidos: {result.n_pairs} (ausentes: {result.n_missing_pairs}, "
             f"empates/diferença zero: {result.n_zero_diffs})",
-            f"- Mediana das diferenças (manual - ai): {_format(result.median_diff)} {unit}",
+            f"- Mediana das diferenças (ai - manual): {_format(result.median_diff)} {unit}",
             f"- Estatística W: {_format(result.statistic, 3)}",
             f"- p-valor (bilateral, bruto): {_format(result.p_value, 4)}",
             f"- p-valor ajustado (Holm, 2 comparações): {_format(adjusted_p, 4)}",
@@ -134,7 +139,7 @@ def render_report_markdown(result: RQ3Result) -> str:
     sections = [
         "# RQ3 — Qualidade estrutural (complexidade e duplicação)",
         "",
-        "**Pergunta:** o tratamento com IA produz código menos complexo e com menos duplicação, "
+        "**Pergunta:** o tratamento com IA altera a complexidade e a duplicação do código, "
         "controlando o tamanho (LOC)?",
         "",
         f"**Resumo:** apenas {valid_complexity} de {total_pairs} pares têm métricas estruturais nos "
@@ -154,6 +159,10 @@ def render_report_markdown(result: RQ3Result) -> str:
         "",
         _descriptive_table(result.maintainability_descriptive, unit="MI"),
         "## 5. Comparação inferencial (bilateral, ajustada por Holm)",
+        "",
+        "A família pré-registrada contém dois testes. Quando todos os pares de um "
+        "desfecho empatam, seu p bruto permanece indefinido; apenas para o ajuste "
+        "de Holm ele é tratado como 1, preservando a família de dois testes.",
         "",
         _wilcoxon_block(
             result.complexity_wilcoxon, result.complexity_p_holm, title="Complexidade ciclomática média", unit="pts"

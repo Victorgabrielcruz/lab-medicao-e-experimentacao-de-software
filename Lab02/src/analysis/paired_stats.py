@@ -15,6 +15,7 @@ from typing import Any, Literal
 from scipy import stats as scipy_stats
 
 Alternative = Literal["two-sided", "less", "greater"]
+DifferenceDirection = Literal["manual-ai", "ai-manual"]
 
 DEFAULT_BOOTSTRAP_RESAMPLES = 10_000
 DEFAULT_BOOTSTRAP_SEED = 20260910
@@ -168,12 +169,14 @@ def wilcoxon_signed_rank(
     pairs: list[Pair],
     *,
     alternative: Alternative,
+    difference_direction: DifferenceDirection = "manual-ai",
     bootstrap_resamples: int = DEFAULT_BOOTSTRAP_RESAMPLES,
     bootstrap_seed: int = DEFAULT_BOOTSTRAP_SEED,
 ) -> WilcoxonResult:
     """Teste de postos sinalizados de Wilcoxon para amostras pareadas (Seção 14.3)."""
     valid_pairs = [pair for pair in pairs if pair.valid]
-    differences = [pair.difference for pair in valid_pairs]
+    differences = [pair.difference if difference_direction == "manual-ai" else -pair.difference
+                   for pair in valid_pairs]
     non_zero = [value for value in differences if value != 0]
 
     statistic = p_value = effect_size = None

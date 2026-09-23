@@ -1,13 +1,13 @@
 # Relatório de validação do dataset — S03-01
 
-Gerado em 2026-09-19T21:29:13-03:00 a partir de `data\processed\trials.csv`.
+Gerado em 2026-09-23T00:04:34-03:00 a partir de `data\processed\trials.csv`.
 
 ## Veredito: AUTORIZADO para as análises de RQ1-RQ3
 
 - Linhas no dataset: 18
 - Pares participante × bloco válidos: 9/9
 - Achados críticos: 0
-- Avisos (lacunas conhecidas e toleradas): 28
+- Avisos (lacunas conhecidas e toleradas): 31
 - Observações (outliers preservados): 1
 
 ## 1. Erros críticos
@@ -22,14 +22,17 @@ Lacunas previstas e toleradas pela metodologia (Seção 12): campos não aplicá
 
 | Regra | Trial | Mensagem |
 |---|---|---|
+| `missing_structural_metrics` | P01-K01-ai | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
 | `missing_perceived_difficulty` | P01-K01-ai | Dificuldade percebida não registrada. |
 | `missing_prompt_count` | P01-K01-ai | Log de prompts não exportável para o tratamento IA. |
 | `missing_structural_metrics` | P01-K03-manual | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
 | `missing_perceived_difficulty` | P01-K03-manual | Dificuldade percebida não registrada. |
+| `missing_structural_metrics` | P01-K06-ai | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
 | `missing_perceived_difficulty` | P01-K06-ai | Dificuldade percebida não registrada. |
 | `missing_prompt_count` | P01-K06-ai | Log de prompts não exportável para o tratamento IA. |
 | `missing_structural_metrics` | P01-K02-manual | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
 | `missing_perceived_difficulty` | P01-K02-manual | Dificuldade percebida não registrada. |
+| `missing_structural_metrics` | P01-K04-ai | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
 | `missing_perceived_difficulty` | P01-K04-ai | Dificuldade percebida não registrada. |
 | `missing_prompt_count` | P01-K04-ai | Log de prompts não exportável para o tratamento IA. |
 | `missing_structural_metrics` | P01-K05-manual | Métricas estruturais (LOC/complexidade/duplicação) ausentes. |
