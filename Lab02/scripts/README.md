@@ -195,3 +195,19 @@ nunca convertido em zero. A lógica estatística compartilhada (formação de
 pares, estatística descritiva, teste de postos sinalizados, correlação
 bisserial de postos, IC por bootstrap e correção de Holm) fica em
 `src/analysis/paired_stats.py`.
+## `run_analysis.py` (S03-05)
+
+Da pasta `Lab02`, execute:
+
+```powershell
+.venv\Scripts\python.exe scripts\run_analysis.py
+```
+
+O comando lê `data/metadata/allocation.csv`, os `trial.json` válidos e os
+`metrics.json` disponíveis. Produz `data/processed/statistical-results.csv`
+para o dashboard e `reports/drafts/rq-answers.md` para o relatório. Usa as dependências de `requirements-analysis.txt`, instaladas conforme a seção
+anterior. Os valores de p vêm do Wilcoxon exato por
+enumeração de sinais; os intervalos exploratórios reamostram participantes.
+Dados ausentes ficam vazios e são contabilizados. A correção documentada de
+`P01-K02-manual/data-quality-note.json` é aplicada somente após conferir a
+medição registrada no log de tentativas; os dados brutos não são alterados.

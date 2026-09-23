@@ -1,13 +1,16 @@
 severity,trial_id,source,field,code,message
+warning,P01-K01-ai,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K01-ai/metrics.json
 warning,P01-K01-ai,prompts.md,prompt_count,missing_prompt_log,Não há log de prompts exportável para o tratamento IA.
 warning,P01-K01-ai,participant_feedback,perceived_difficulty,missing_participant_feedback,A dificuldade percebida não foi registrada; o valor permanece ausente.
 warning,P01-K03-manual,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K03-manual/metrics.json
 warning,P01-K03-manual,participant_feedback,perceived_difficulty,missing_participant_feedback,A dificuldade percebida não foi registrada; o valor permanece ausente.
+warning,P01-K06-ai,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K06-ai/metrics.json
 warning,P01-K06-ai,prompts.md,prompt_count,missing_prompt_log,Não há log de prompts exportável para o tratamento IA.
 warning,P01-K06-ai,participant_feedback,perceived_difficulty,missing_participant_feedback,A dificuldade percebida não foi registrada; o valor permanece ausente.
 info,P01-K02-manual,data-quality-note.json,"completed,passed_tests,failed_tests,success_rate",quality_note_applied,A interpretação corrigida e rastreável da nota de qualidade foi aplicada.
 warning,P01-K02-manual,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K02-manual/metrics.json
 warning,P01-K02-manual,participant_feedback,perceived_difficulty,missing_participant_feedback,A dificuldade percebida não foi registrada; o valor permanece ausente.
+warning,P01-K04-ai,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K04-ai/metrics.json
 warning,P01-K04-ai,prompts.md,prompt_count,missing_prompt_log,Não há log de prompts exportável para o tratamento IA.
 warning,P01-K04-ai,participant_feedback,perceived_difficulty,missing_participant_feedback,A dificuldade percebida não foi registrada; o valor permanece ausente.
 warning,P01-K05-manual,metrics.json,,missing_static_metrics,Métricas estáticas ausentes: data/raw/metrics/P01-K05-manual/metrics.json
