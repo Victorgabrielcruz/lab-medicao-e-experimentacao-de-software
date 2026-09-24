@@ -1,0 +1,6 @@
+RQ,Métrica,Manual,IA,Comparação pareada / ressalva
+RQ1,Tempo até todos os testes verdes,606 [485; 695] (n=9) s,261 [178; 316] (n=9) s,"Δ Manual−IA=+310 s; p=0,0098; r=0,87; IC expl. [-92; 549] s; 9/9 pares, 0 ausente(s)."
+RQ2,Taxa de sucesso dos testes,100 [100; 100] (n=9) %,100 [100; 100] (n=9) %,Δ IA−Manual=0 p.p.; 9/9 empates; p e r indefinidos por empates totais; IC expl. [0; 0] p.p.; 0 ausente(s).
+RQ3,Complexidade ciclomática média,"8,00 [7,25; 9,00] (n=4) pontos","7,00 [7,00; 9,25] (n=6) pontos","Δ IA−Manual=+2,00 pontos; 4/9 pares; 5 ausente(s); p=0,7500; Holm=1,0000; r=0,20; IC expl. [-5; 4]."
+RQ3,Duplicação,"0,00 [0,00; 0,00] (n=4) %","0,00 [0,00; 0,00] (n=6) %","Δ IA−Manual=0,00 p.p.; 4/4 empates; 5 ausente(s); p e r indefinidos por empates totais."
+RQ3,LOC / manutenibilidade (exploratórias),"LOC 31,50; MI 63,60 (n=4)","LOC 33,50; MI 78,98 (n=6)",Métricas de controle/exploratórias; 4/9 pares estruturais completos; sem teste confirmatório pré-registrado.
