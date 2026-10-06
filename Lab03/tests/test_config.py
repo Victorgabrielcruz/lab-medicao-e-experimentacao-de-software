@@ -96,8 +96,16 @@ def test_token_ausente(env):
 
 def test_entry_point_executa(monkeypatch, capsys):
     monkeypatch.setenv(TOKEN_ENV, "token-falso")
+    chamadas = []
+
+    def executar_falso(config, client):
+        chamadas.append(client)
+        return Path("candidatos.json"), [{"truncada": False}], [{"id": 1}]
+
+    monkeypatch.setattr("pipeline.candidatos.executar", executar_falso)
     assert main(["--config", str(CONFIG)]) == 0
-    assert "Configuração carregada" in capsys.readouterr().out
+    assert len(chamadas) == 1
+    assert "Candidatos: 1 repositórios em 1 fatias (0 truncadas)" in capsys.readouterr().out
 
 
 def test_entry_point_sem_token(monkeypatch, capsys):

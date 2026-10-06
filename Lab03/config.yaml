@@ -24,6 +24,16 @@ runs:
   conclusoes_sucesso: [success]
   conclusoes_falha: [failure, timed_out, startup_failure]
 
+# Seleção de candidatos pela Search API. O qualificador pushed:>=<janela.inicio>
+# é acrescentado automaticamente. A faixa de estrelas é dividida até cada
+# consulta ter no máximo 1000 resultados.
+busca:
+  estrelas_min: 1000
+  estrelas_max: 1000000
+  qualificadores: ["fork:false", "archived:false", "is:public"]
+  linguagens: []      # vazio = sem filtro de linguagem
+  intervalo_s: 2.1    # Search API autenticada: 30 requisições por minuto
+
 caminhos:
   cache: data/cache
   raw: data/raw

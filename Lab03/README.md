@@ -24,6 +24,14 @@ python -m pipeline --config config.yaml
 
 O token é lido apenas da variável de ambiente `GITHUB_TOKEN` e nunca deve ser versionado.
 
+Para executar só algumas etapas: `python -m pipeline --config config.yaml --etapas candidatos`.
+
+### Etapas
+
+| Etapa | Saída | Descrição |
+|---|---|---|
+| `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
+
 Testes:
 
 ```bash
