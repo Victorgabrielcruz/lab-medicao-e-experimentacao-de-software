@@ -2,6 +2,12 @@
 
 Cálculo das quatro métricas DORA (deployment frequency, lead time, change failure rate e tempo de recuperação) a partir de dados públicos de repositórios open-source que usam GitHub Actions. A coleta é feita por script próprio sobre as APIs REST/GraphQL do GitHub, sem PyGithub.
 
+## Documentação
+
+| Documento | Conteúdo |
+|---|---|
+| [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs e critério de inclusão |
+
 ## Como executar
 
 Requer Python 3.11 ou superior.
@@ -28,7 +34,8 @@ pytest
 
 ```text
 Lab03/
-├── config.yaml        # Parâmetros do pipeline
+├── config.yaml        # Parâmetros do pipeline (janela, critérios, caminhos)
+├── docs/              # Definições operacionais e documentação
 ├── pipeline/          # Código do pipeline (entry point: python -m pipeline)
 ├── tests/             # Testes automatizados
 └── data/              # Cache, dados brutos e processados (gerados pelo pipeline)
