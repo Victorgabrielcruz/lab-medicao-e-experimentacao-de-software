@@ -1,5 +1,7 @@
 # Lab03 — Mineração de métricas DORA
 
+[![Lab03 CI](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/actions/workflows/lab03-ci.yml/badge.svg?branch=main)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/actions/workflows/lab03-ci.yml)
+
 Cálculo das quatro métricas DORA (deployment frequency, lead time, change failure rate e tempo de recuperação) a partir de dados públicos de repositórios open-source que usam GitHub Actions. A coleta é feita por script próprio sobre as APIs REST/GraphQL do GitHub, sem PyGithub.
 
 ## Documentação
@@ -37,8 +39,10 @@ Para executar só algumas etapas: `python -m pipeline --config config.yaml --eta
 Testes:
 
 ```bash
-pytest
+pytest --cov=pipeline --cov-fail-under=80
 ```
+
+O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo comando a cada push e pull request, em Python 3.11 e 3.13. O build falha se algum teste falhar ou se a cobertura ficar abaixo de 80%.
 
 ## Estrutura
 
