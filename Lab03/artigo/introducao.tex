@@ -1,0 +1,79 @@
+% Seção 1 do artigo do Lab03 (template SBC).
+% Hipóteses escritas antes da coleta dos dados: a data do commit que criou este
+% arquivo no repositório registra esse momento.
+
+\section{Introdução}
+\label{sec:introducao}
+
+A adoção de práticas DevOps tornou a entrega contínua de software um objetivo
+comum em equipes de desenvolvimento. Para medir o desempenho dessa entrega, o
+programa de pesquisa DORA (\textit{DevOps Research and Assessment}) propôs quatro
+métricas: frequência de implantação (\textit{deployment frequency}), tempo de
+espera para mudanças (\textit{lead time for changes}), taxa de falha de mudanças
+(\textit{change failure rate}) e tempo de recuperação de serviço
+\cite{forsgren2018accelerate}. A partir delas, os relatórios anuais do DORA
+classificam as organizações em quatro grupos de desempenho: Elite, High, Medium
+e Low \cite{dora2021}.
+
+Essas classificações, porém, vêm de questionários respondidos por profissionais,
+e não de dados medidos diretamente. Em projetos de código aberto, boa parte das
+informações necessárias para calcular as métricas é pública: as releases marcam
+as entregas, os commits mostram quando cada mudança foi feita, e as execuções de
+integração contínua registram falhas e correções. O GitHub Actions, serviço de
+automação de fluxos de trabalho integrado ao GitHub, tornou-se amplamente usado
+nesses projetos \cite{kinsman2021actions, decan2022actions}, e o histórico de
+suas execuções pode ser consultado pela API da plataforma.
+
+Calcular as métricas DORA a partir desses dados exige decisões que os relatórios
+não detalham. Em um projeto de código aberto não há implantação em produção
+controlada pela equipe, então é preciso escolher o que conta como entrega, como
+o lead time é medido e o que caracteriza uma falha. Cada escolha pode levar a
+valores e classificações diferentes para o mesmo repositório.
+
+O objetivo deste trabalho é calcular as quatro métricas DORA para repositórios
+populares de código aberto que usam GitHub Actions, a partir de dados públicos
+coletados pela API do GitHub, em uma janela de observação de 12 meses. Neste
+estudo, uma implantação corresponde a uma release publicada, e as falhas são
+observadas nas execuções de workflows do branch principal. Além de descrever a
+distribuição das métricas e a classificação resultante, o estudo investiga a
+relação entre as métricas, a influência de características dos repositórios e o
+quanto a classificação depende das definições operacionais escolhidas.
+
+\subsection{Questões de pesquisa e hipóteses}
+\label{sec:hipoteses}
+
+As quatro primeiras questões de pesquisa descrevem cada métrica na amostra. As
+hipóteses abaixo são informais e foram registradas antes da coleta dos dados.
+Elas servem como ponto de comparação na discussão dos resultados.
+
+\textbf{RQ01 -- Qual é a frequência de implantação dos repositórios?}
+Esperamos que a maioria dos repositórios fique na classe High, com mediana entre
+uma e três releases por mês, e que pouquíssimos atinjam a classe Elite. Projetos
+de código aberto agrupam mudanças em versões, e mesmo projetos muito ativos
+raramente publicam uma release por dia. Também esperamos uma distribuição
+assimétrica, com uma cauda longa de repositórios que publicam com muito mais
+frequência do que a mediana.
+
+\textbf{RQ02 -- Qual é o lead time das mudanças?}
+Esperamos que a mediana do lead time por commit fique entre uma e três semanas,
+o que coloca a maior parte dos repositórios na classe Medium. Se as releases
+saem aproximadamente uma vez por mês, um commit espera, em média, metade desse
+intervalo até ser publicado. Esperamos ainda que a variante calculada por release
+produza valores maiores que a calculada por commit, porque ela é influenciada
+pelos commits mais antigos de cada release.
+
+\textbf{RQ03 -- Qual é a taxa de falha das mudanças?}
+Pela variante baseada nas execuções de workflows, esperamos uma mediana entre
+10\% e 20\%. Falhas de integração contínua são frequentes em projetos ativos e
+nem sempre indicam um problema que chegaria ao usuário, como testes instáveis ou
+erros de configuração. Esperamos que a variante baseada em releases corretivas
+produza valores diferentes, e que as duas variantes classifiquem o mesmo
+repositório de forma diferente em uma parcela relevante dos casos.
+
+\textbf{RQ04 -- Qual é o tempo de recuperação após uma falha?}
+Esperamos uma mediana de algumas horas, abaixo de um dia, o que coloca a maior
+parte dos repositórios na classe High. Em projetos ativos, uma execução com falha
+costuma ser seguida por uma correção em pouco tempo, já que ela bloqueia o
+trabalho dos demais contribuidores. Esperamos também uma cauda longa, formada
+por episódios que só se resolvem dias depois, e alguns episódios ainda abertos
+no fim da janela.

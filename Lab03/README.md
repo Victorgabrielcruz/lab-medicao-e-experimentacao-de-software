@@ -48,6 +48,7 @@ O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo c
 
 ```text
 Lab03/
+├── artigo/            # Seções do artigo em LaTeX (template SBC) e referências
 ├── config.yaml        # Parâmetros do pipeline (janela, critérios, caminhos)
 ├── docs/              # Definições operacionais e documentação
 ├── pipeline/          # Código do pipeline (entry point: python -m pipeline)
