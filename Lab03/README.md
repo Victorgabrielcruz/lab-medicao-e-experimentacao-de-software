@@ -1,12 +1,14 @@
 # Lab03 — Mineração de métricas DORA
 
+[![Lab03 CI](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/actions/workflows/lab03-ci.yml/badge.svg?branch=main)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/actions/workflows/lab03-ci.yml)
+
 Cálculo das quatro métricas DORA (deployment frequency, lead time, change failure rate e tempo de recuperação) a partir de dados públicos de repositórios open-source que usam GitHub Actions. A coleta é feita por script próprio sobre as APIs REST/GraphQL do GitHub, sem PyGithub.
 
 ## Documentação
 
 | Documento | Conteúdo |
 |---|---|
-| [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs e critério de inclusão |
+| [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs, critério de inclusão, filtro de Actions, metadados e tabela de classificação DORA (C1) |
 
 ## Como executar
 
@@ -24,16 +26,29 @@ python -m pipeline --config config.yaml
 
 O token é lido apenas da variável de ambiente `GITHUB_TOKEN` e nunca deve ser versionado.
 
+Para executar só algumas etapas: `python -m pipeline --config config.yaml --etapas metadados`.
+
+### Etapas
+
+| Etapa | Saída | Descrição |
+|---|---|---|
+| `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
+| `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
+| `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
+
 Testes:
 
 ```bash
-pytest
+pytest --cov=pipeline --cov-fail-under=80
 ```
+
+O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo comando a cada push e pull request, em Python 3.11 e 3.13. O build falha se algum teste falhar ou se a cobertura ficar abaixo de 80%.
 
 ## Estrutura
 
 ```text
 Lab03/
+├── artigo/            # Seções do artigo em LaTeX (template SBC) e referências
 ├── config.yaml        # Parâmetros do pipeline (janela, critérios, caminhos)
 ├── docs/              # Definições operacionais e documentação
 ├── pipeline/          # Código do pipeline (entry point: python -m pipeline)
