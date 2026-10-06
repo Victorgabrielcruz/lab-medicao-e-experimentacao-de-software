@@ -1,0 +1,22 @@
+# Segredos
+.env
+.env.local
+*.token
+
+# Ambiente virtual e caches do Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Cache da API e dados brutos (regeneráveis pelo pipeline)
+data/cache/
+data/raw/
+
+# Logs
+logs/
+*.log

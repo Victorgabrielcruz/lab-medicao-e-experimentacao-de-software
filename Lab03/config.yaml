@@ -1,0 +1,12 @@
+# Configuração do pipeline do Lab03 — Mineração de métricas DORA.
+# O token do GitHub NUNCA deve ser colocado aqui: use a variável de ambiente GITHUB_TOKEN.
+
+api:
+  base_url: https://api.github.com
+  per_page: 100
+  timeout_s: 30
+
+caminhos:
+  cache: data/cache
+  raw: data/raw
+  processed: data/processed
