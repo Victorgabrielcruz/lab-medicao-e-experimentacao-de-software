@@ -1,0 +1,30 @@
+# Configuração do pipeline do Lab03 — Mineração de métricas DORA.
+# O token do GitHub NUNCA deve ser colocado aqui: use a variável de ambiente GITHUB_TOKEN.
+
+api:
+  base_url: https://api.github.com
+  per_page: 100
+  timeout_s: 30
+
+# Janela de observação de 12 meses (datas inclusivas, UTC).
+# Ver docs/definicoes-operacionais.md.
+janela:
+  inicio: 2025-10-01
+  fim: 2026-09-30
+
+# Critério mínimo de inclusão, contado dentro da janela.
+inclusao:
+  min_releases: 5
+  min_runs_validos: 50
+
+# Workflow runs considerados no cálculo.
+runs:
+  evento: push
+  somente_default_branch: true
+  conclusoes_sucesso: [success]
+  conclusoes_falha: [failure, timed_out, startup_failure]
+
+caminhos:
+  cache: data/cache
+  raw: data/raw
+  processed: data/processed
