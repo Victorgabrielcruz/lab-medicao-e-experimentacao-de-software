@@ -103,9 +103,27 @@ def test_entry_point_executa(monkeypatch, capsys):
         return Path("candidatos.json"), [{"truncada": False}], [{"id": 1}]
 
     monkeypatch.setattr("pipeline.candidatos.executar", executar_falso)
-    assert main(["--config", str(CONFIG)]) == 0
+    assert main(["--config", str(CONFIG), "--etapas", "candidatos"]) == 0
     assert len(chamadas) == 1
     assert "Candidatos: 1 repositórios em 1 fatias (0 truncadas)" in capsys.readouterr().out
+
+
+def test_entry_point_etapa_actions(monkeypatch, capsys):
+    monkeypatch.setenv(TOKEN_ENV, "token-falso")
+    monkeypatch.setattr("pipeline.candidatos.executar", lambda config, client: pytest.fail("não deveria rodar"))
+    monkeypatch.setattr("pipeline.actions.executar",
+                        lambda config, client: (Path("actions.json"), [{"id": 1}], [{"id": 2}, {"id": 3}]))
+    assert main(["--config", str(CONFIG), "--etapas", "actions"]) == 0
+    assert "Actions: 1 com GitHub Actions, 2 descartados" in capsys.readouterr().out
+
+
+def test_entry_point_actions_sem_candidatos(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv(TOKEN_ENV, "token-falso")
+    config = tmp_path / "config.yaml"
+    config.write_text(CONFIG.read_text(encoding="utf-8").replace("raw: data/raw", f"raw: {tmp_path.as_posix()}/raw"),
+                      encoding="utf-8")
+    assert main(["--config", str(config), "--etapas", "actions"]) == 2
+    assert "execute antes a etapa candidatos" in capsys.readouterr().err
 
 
 def test_entry_point_sem_token(monkeypatch, capsys):

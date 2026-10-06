@@ -46,7 +46,11 @@ Um repositório entra na amostra somente se, dentro da janela, tiver:
 - **pelo menos 5 releases publicadas**; e
 - **pelo menos 50 runs válidos**.
 
-Repositórios sem GitHub Actions (`total_count = 0` no endpoint de workflows) são descartados antes. Cada descarte é registrado com o motivo na tabela do funil de seleção.
+Antes disso, são descartados os repositórios **sem GitHub Actions**: os que não têm nenhum workflow com path em `.github/workflows/` no endpoint `GET /repos/{owner}/{repo}/actions/workflows`. O `total_count` do endpoint sozinho não serve, porque inclui workflows dinâmicos criados pelo próprio GitHub (path `dynamic/...`, como Dependabot Updates, Dependency Graph, CodeQL e Pages). Eles aparecem até em repositórios que nunca configuraram Actions; por exemplo, `torvalds/linux` tem `total_count = 2` e nenhum workflow próprio.
+
+Repositórios que respondem 404 ou 451 nessa consulta (removidos, tornados privados ou bloqueados depois da busca) também são descartados.
+
+Cada descarte é registrado com o motivo (`sem_github_actions` ou `repositorio_inacessivel`) na tabela do funil de seleção.
 
 ## 5. Métricas
 
