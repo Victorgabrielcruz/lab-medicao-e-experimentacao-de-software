@@ -117,6 +117,14 @@ def test_entry_point_etapa_actions(monkeypatch, capsys):
     assert "Actions: 1 com GitHub Actions, 2 descartados" in capsys.readouterr().out
 
 
+def test_entry_point_etapa_metadados(monkeypatch, capsys):
+    monkeypatch.setenv(TOKEN_ENV, "token-falso")
+    lista = [{"contribuidores": 10}, {"contribuidores": None}]
+    monkeypatch.setattr("pipeline.metadados.executar", lambda config, client: (Path("metadados.json"), lista, []))
+    assert main(["--config", str(CONFIG), "--etapas", "metadados"]) == 0
+    assert "Metadados: 2 repositórios (1 sem contagem de contribuidores, 0 inacessíveis)" in capsys.readouterr().out
+
+
 def test_entry_point_actions_sem_candidatos(monkeypatch, tmp_path, capsys):
     monkeypatch.setenv(TOKEN_ENV, "token-falso")
     config = tmp_path / "config.yaml"

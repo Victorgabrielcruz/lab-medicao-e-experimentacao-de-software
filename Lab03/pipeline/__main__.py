@@ -4,11 +4,11 @@ import argparse
 import logging
 import sys
 
-from pipeline import actions, candidatos
+from pipeline import actions, candidatos, metadados
 from pipeline.config import ConfigError, load_config, read_token
 from pipeline.github_api import GitHubClient
 
-ETAPAS = ("candidatos", "actions")
+ETAPAS = ("candidatos", "actions", "metadados")
 
 
 def parse_args(argv=None):
@@ -37,6 +37,12 @@ def main(argv=None):
         if "actions" in args.etapas:
             saida, aprovados, descartes = actions.executar(config, client)
             print(f"Actions: {len(aprovados)} com GitHub Actions, {len(descartes)} descartados -> {saida}")
+
+        if "metadados" in args.etapas:
+            saida, lista, descartes = metadados.executar(config, client)
+            sem = sum(m["contribuidores"] is None for m in lista)
+            print(f"Metadados: {len(lista)} repositórios ({sem} sem contagem de contribuidores, "
+                  f"{len(descartes)} inacessíveis) -> {saida}")
     except (ConfigError, FileNotFoundError) as exc:
         print(f"erro: {exc}", file=sys.stderr)
         return 2

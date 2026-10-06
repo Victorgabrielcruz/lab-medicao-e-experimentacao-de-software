@@ -19,7 +19,11 @@ class GitHubClient:
             "X-GitHub-Api-Version": API_VERSION,
         })
 
-    def get(self, path, params=None):
+    def get_resposta(self, path, params=None):
+        """Faz o GET e devolve a resposta inteira (para quem precisa dos headers)."""
         response = self.session.get(f"{self.base_url}{path}", params=params, timeout=self.timeout_s)
         response.raise_for_status()
-        return response.json()
+        return response
+
+    def get(self, path, params=None):
+        return self.get_resposta(path, params).json()

@@ -24,7 +24,7 @@ python -m pipeline --config config.yaml
 
 O token é lido apenas da variável de ambiente `GITHUB_TOKEN` e nunca deve ser versionado.
 
-Para executar só algumas etapas: `python -m pipeline --config config.yaml --etapas actions`.
+Para executar só algumas etapas: `python -m pipeline --config config.yaml --etapas metadados`.
 
 ### Etapas
 
@@ -32,6 +32,7 @@ Para executar só algumas etapas: `python -m pipeline --config config.yaml --eta
 |---|---|---|
 | `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
 | `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
+| `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
 
 Testes:
 

@@ -62,3 +62,20 @@ Cada descarte é registrado com o motivo (`sem_github_actions` ou `repositorio_i
 | Tempo de recuperação | RQ04 | episódios de falha por workflow, com censura no fim da janela |
 
 Os resultados são reportados por **mediana e IQR**. O detalhamento de cada variante é feito nas issues de implementação correspondentes.
+
+## 6. Metadados dos repositórios
+
+Fatores usados nas análises, coletados para cada repositório aprovado no filtro de Actions:
+
+| Fator | Origem | Observação |
+|---|---|---|
+| Estrelas | `stargazers_count` de `GET /repos/{owner}/{repo}` | valor no momento da coleta |
+| Linguagem principal | `language` | pode ser nula |
+| Idade | `created_at` | dias completos até o fim da janela (`2026-10-01T00:00Z`), não até a data da coleta, para o valor não depender de quando o pipeline roda |
+| Default branch | `default_branch` | usada também na coleta de workflow runs |
+| Contribuidores | Link header de `GET /repos/{owner}/{repo}/contributors?per_page=1&anon=1` | o número da página `rel="last"` é o total |
+
+Sobre os contribuidores:
+
+- **`anon=1`:** sem esse parâmetro, o GitHub só associa a usuários os primeiros 500 e-mails de autor, e a contagem de repositórios grandes fica presa perto de 400 (`pallets/flask` dá 400 sem e 864 com). Com ele, autores sem conta vinculada também contam; um autor com vários e-mails não vinculados pode ser contado mais de uma vez.
+- **Repositórios grandes demais:** para alguns, a API responde 403 ("contributor list is too large"), como em `torvalds/linux`. Nesses casos o valor fica nulo, com o motivo em `contribuidores_obs`, e o repositório não é descartado.
