@@ -9,10 +9,11 @@ API_VERSION = "2022-11-28"
 
 
 class GitHubClient:
-    def __init__(self, token, base_url="https://api.github.com", timeout_s=30, session=None):
+    def __init__(self, token, base_url="https://api.github.com", timeout_s=30, session=None, cache=None):
         self.base_url = base_url.rstrip("/")
         self.timeout_s = timeout_s
         self.session = session or requests.Session()
+        self.cache = cache
         self.session.headers.update({
             "Authorization": f"Bearer {token}",
             "Accept": "application/vnd.github+json",
@@ -21,8 +22,15 @@ class GitHubClient:
 
     def get_resposta(self, path, params=None):
         """Faz o GET e devolve a resposta inteira (para quem precisa dos headers)."""
+        url = requests.Request("GET", f"{self.base_url}{path}", params=params).prepare().url
+        if self.cache is not None:
+            salva = self.cache.ler(url)
+            if salva is not None:
+                return salva
         response = self.session.get(f"{self.base_url}{path}", params=params, timeout=self.timeout_s)
         response.raise_for_status()
+        if self.cache is not None:
+            self.cache.gravar(url, response)
         return response
 
     def get(self, path, params=None):
