@@ -13,6 +13,8 @@ logs/
 
 # Cache local da coleta (regenerável automaticamente)
 Lab01/data/cache/
+Lab03/data/cache/
+Lab03/.coverage
 
 # .NET
 bin/

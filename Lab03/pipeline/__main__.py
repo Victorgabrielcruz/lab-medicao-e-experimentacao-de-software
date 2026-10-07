@@ -5,6 +5,7 @@ import logging
 import sys
 
 from pipeline import actions, candidatos, metadados
+from pipeline.cache import CacheDisco
 from pipeline.config import ConfigError, load_config, read_token
 from pipeline.github_api import GitHubClient
 
@@ -16,6 +17,8 @@ def parse_args(argv=None):
     parser.add_argument("--config", default="config.yaml", help="caminho do arquivo de configuração")
     parser.add_argument("--etapas", nargs="+", choices=ETAPAS, default=list(ETAPAS),
                         help="etapas a executar (padrão: todas)")
+    parser.add_argument("--limpar-cache", action="store_true",
+                        help="remove o cache configurado e encerra, sem executar a coleta")
     return parser.parse_args(argv)
 
 
@@ -24,9 +27,14 @@ def main(argv=None):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = load_config(args.config)
+        cache = CacheDisco(config["caminhos"]["cache"])
+        if args.limpar_cache:
+            removidos = cache.limpar()
+            print(f"Cache limpo: {removidos} arquivos removidos de {cache.diretorio}")
+            return 0
         token = read_token()
         api = config["api"]
-        client = GitHubClient(token, api["base_url"], api.get("timeout_s", 30))
+        client = GitHubClient(token, api["base_url"], api.get("timeout_s", 30), cache=cache)
 
         if "candidatos" in args.etapas:
             saida, fatias, lista = candidatos.executar(config, client)

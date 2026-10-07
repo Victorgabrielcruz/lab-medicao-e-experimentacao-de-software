@@ -23,6 +23,7 @@ import requests
 
 from pipeline.actions import ARQUIVO_SAIDA as ARQUIVO_ACTIONS
 from pipeline.actions import MOTIVO_INACESSIVEL, STATUS_INACESSIVEL
+from pipeline.cache import gravar_json
 from pipeline.config import janela_utc
 
 ARQUIVO_SAIDA = "metadados.json"
@@ -111,8 +112,7 @@ def coletar(repositorios, buscar, cache_dir):
             descartes.append({"id": repo["id"], "full_name": repo["full_name"],
                               "motivo": MOTIVO_INACESSIVEL, "detalhe": f"HTTP {status}"})
             continue
-        caminho.parent.mkdir(parents=True, exist_ok=True)
-        caminho.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
+        gravar_json(caminho, dados)
         metadados.append(dados)
         if consultados % LOG_A_CADA == 0:
             log.info("Metadados: %d/%d repositórios", i, len(repositorios))

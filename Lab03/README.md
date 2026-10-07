@@ -28,6 +28,33 @@ O token é lido apenas da variável de ambiente `GITHUB_TOKEN` e nunca deve ser 
 
 Para executar só algumas etapas: `python -m pipeline --config config.yaml --etapas metadados`.
 
+### Cache e retomada (S01-16)
+
+As respostas GET da API são salvas em JSON em `caminhos.cache` (padrão:
+`data/cache`), separadas por API e repositório. Cada endpoint, combinação de
+parâmetros e página tem sua própria entrada, inclusive na Search API. Os headers
+necessários à paginação (`Link`) são preservados; o token e os headers de
+autenticação não são gravados.
+
+Se a coleta falhar, execute novamente o mesmo comando: as consultas já
+concluídas são lidas do disco e as demais voltam à API. A gravação usa um arquivo
+temporário e substituição atômica para evitar JSON parcial. Erros HTTP e buscas
+com `incomplete_results` não são armazenados; entradas de resposta corrompidas
+geram aviso e são consultadas novamente. O cache de metadados já existente é
+mantido e também usa gravação atômica.
+
+O cache não expira automaticamente. Para atualizar dados ou alterar a janela de
+observação, limpe-o antes de iniciar uma nova coleta:
+
+```bash
+python -m pipeline --config config.yaml --limpar-cache
+python -m pipeline --config config.yaml
+```
+
+O primeiro comando remove apenas os JSON das áreas `respostas/` e `metadados/`
+do cache configurado e encerra, sem exigir token nem acessar a API. Os dados
+brutos e processados são preservados. O cache local não é versionado no Git.
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
