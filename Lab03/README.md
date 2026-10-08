@@ -211,6 +211,59 @@ A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
 final de inclusão por releases/runs e sem calcular uma CFR global. A integração
 das métricas e da seleção em um único comando pertence à S01-21 (#149).
 
+### Funil de seleção e critério mínimo de inclusão (S01-06)
+
+O módulo `pipeline.funil` aplica o critério mínimo de inclusão de
+`config.yaml` (`inclusao`) e gera a tabela do funil de seleção, com a
+quantidade de repositórios em cada etapa e os motivos de descarte. É um
+cálculo local: não exige `GITHUB_TOKEN` nem acessa a API.
+
+```bash
+python -m pipeline.funil --config config.yaml
+```
+
+O comando lê de `caminhos.raw` as saídas `candidatos.json`, `actions.json`,
+`metadados.json`, `workflow_runs.json` e `releases.json`, e grava
+`funil.json` e `funil.md` em `caminhos.processed`. A tabela também é exibida
+no terminal. Para um piloto:
+
+```bash
+python -m pipeline.funil --config config.yaml --raw data/raw/piloto-100 --saida data/processed/piloto-100
+```
+
+Etapas da tabela:
+
+| Etapa | Descartes possíveis |
+|---|---|
+| Busca na Search API | — (candidatos deduplicados pelo id) |
+| Usa GitHub Actions | `sem_github_actions`, `repositorio_inacessivel` |
+| Metadados coletados | `repositorio_inacessivel` |
+| Workflow runs coletados | `repositorio_inacessivel` |
+| Releases coletadas | `repositorio_inacessivel` |
+| Critério mínimo de inclusão | `releases_insuficientes`, `runs_validos_insuficientes`, `releases_e_runs_insuficientes` |
+
+No critério mínimo, cada repositório recebe um único motivo, para que a soma
+dos descartes por motivo feche com o total da etapa. São contadas como
+**releases publicadas** as que têm `draft = false` e `published_at` em
+`[início, fim)`, deduplicadas por `id` (ou `tag_name`); pre-releases contam.
+Os **runs válidos** seguem as mesmas regras da CFR (S01-19). Um repositório
+com coleta de runs incompleta continua na amostra, com
+`coleta_runs_incompleta=true` e um alerta no log.
+
+`funil.json` traz as etapas, a amostra final (com releases publicadas e runs
+válidos de cada repositório) e a lista de descartes com etapa, motivo e
+detalhe. O comando recusa saídas inconsistentes: um repositório que chegou a
+uma etapa e não aparece no arquivo dela, que aparece como aprovado e
+descartado ao mesmo tempo, ou janelas de runs/releases diferentes da
+configurada.
+
+A coleta de releases é a S01-10 (#138). O funil espera em `releases.json` o
+mesmo formato das demais etapas: `janela` (`inicio` e `fim_exclusivo`, como
+em `workflow_runs.json`), `repositorios` com `id`, `full_name` e a lista
+`releases` (`id`, `tag_name`, `draft`, `prerelease`, `published_at`) e
+`descartes` com `id`, `full_name`, `motivo` e `detalhe`. Drafts e releases
+fora da janela podem estar no arquivo: o funil os filtra de novo.
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
