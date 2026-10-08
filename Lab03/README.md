@@ -82,6 +82,53 @@ sendo propagados pelo cliente.
 
 Referência: [rate limits da REST API do GitHub](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
 
+### CFR variante (a) — S01-19
+
+O módulo `pipeline.cfr` calcula, para cada repositório, a fração
+`falhas / (falhas + sucessos)` usando o JSON produzido pela coleta de workflow
+runs da S01-18. `success` conta como sucesso; `failure`, `timed_out` e
+`startup_failure` contam como falha. `cancelled`, `skipped`, `neutral`,
+`action_required`, `stale`, conclusões desconhecidas, nulas ou ausentes são
+ignoradas no numerador e no denominador.
+
+Execute depois de concluir a coleta, na pasta `Lab03`:
+
+```bash
+python -m pipeline.cfr --config config.yaml
+```
+
+O comando lê `data/raw/workflow_runs.json` e grava `data/processed/cfr.json`.
+É um cálculo local: não exige `GITHUB_TOKEN` nem acessa a API. Para usar os
+resultados de um piloto, indique os arquivos explicitamente:
+
+```bash
+python -m pipeline.cfr --config config.yaml --entrada data/raw/piloto-100/workflow_runs.json --saida data/processed/piloto-100/cfr.json
+```
+
+No Windows, também é possível executar com `.\.venv\Scripts\python.exe`
+em lugar de `python`. Em um worktree separado, informe `--entrada` com o
+caminho absoluto do arquivo na pasta em que a coleta foi executada. A entrada
+precisa ser o consolidado concluído; as páginas isoladas do cache não bastam.
+
+A saída inclui falhas, sucessos, conclusions ignoradas, runs válidos e
+`change_failure_rate` como fração entre 0 e 1, sem arredondamento (por exemplo,
+1 falha em 4 runs válidos resulta em `0.25`, isto é, 25%). Sem runs válidos, a
+CFR e sua classe ficam `null`, pois não há denominador; zero indica que houve
+runs válidos e nenhuma falha. `classe_cfr` usa a classificação C1 já documentada.
+
+O cálculo confere novamente default branch, evento `push` e `created_at` na
+janela `[início, fim)`, deduplica IDs e informa quantos registros ficaram fora
+do recorte ou eram duplicados. Também exige que a janela declarada na entrada
+corresponda à configuração. Conclusões ignoradas contam apenas entre os runs
+retidos após esses filtros. Cada repositório mantém `coleta_incompleta` e gera
+um alerta quando o valor é baseado em coleta parcial; ele não representa a
+CFR de todos os runs nesse caso. A gravação da saída é atômica e não pode
+sobrescrever o arquivo de entrada.
+
+A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
+final de inclusão por releases/runs e sem calcular uma CFR global. A integração
+das métricas e da seleção em um único comando pertence à S01-21 (#149).
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
