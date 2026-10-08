@@ -14,7 +14,7 @@ No código, a janela é tratada como o intervalo semiaberto `[2025-10-01T00:00Z,
 
 Justificativa da escolha:
 
-- **Período fechado e anterior à coleta.** A janela termina antes do início do trabalho (08/10/2026), então releases e runs dentro dela não mudam mais. Isso deixa os resultados reprodutíveis por quem executar o pipeline depois, inclusive o grupo replicador.
+- **Período fechado e anterior à coleta.** A janela termina antes do início do trabalho (08/10/2026), evitando meses ainda em curso. Isso não torna os registros imutáveis: retenção/remoção de runs e edição/publicação posterior de releases podem alterar uma nova consulta. A reprodução exige identificar o snapshot coletado, a configuração e os diagnósticos de incompletude.
 - **Meses civis completos.** A coleta de workflow runs é subdividida por mês para respeitar o limite de 1000 resultados por consulta. Com meses completos, não há fatias parciais nas pontas.
 
 O pipeline recusa executar se a janela configurada não cobrir exatamente 12 meses.

@@ -360,3 +360,45 @@ Lab03/
 | Entrega Final | 29/10 a 04/11 |
 
 O acompanhamento das tarefas é feito no [GitHub Project](https://github.com/users/Victorgabrielcruz/projects/7). Todo commit deve referenciar o número da issue correspondente (ex.: `feat: ... (#N)`).
+
+
+### Pipeline integrado — S01-21 (#149)
+
+Um único comando amplia gradualmente a busca até obter 100 repositórios com
+pelo menos cinco releases e cinquenta runs válidos na janela, ou esgotar o
+limite explícito de candidatos:
+
+```text
+python -m pipeline.integrado --config config.yaml --alvo 100 --max-candidatos 1000
+```
+
+`--candidatos CAMINHO` reutiliza uma busca consolidada existente.
+`--reutilizar-runs CAMINHO` reutiliza os meses completos de uma coleta mensal
+com a mesma janela, identidade e default branch. Use caminhos próprios em
+`caminhos.raw` e `caminhos.processed` para preservar o piloto; o cache pode ser
+compartilhado depois que a coleta original terminar.
+
+A ordem é candidatos → Actions → metadados → releases → workflow runs →
+critério mínimo → frequência de releases/CFR (a)/tempo de recuperação. O
+prefiltro de releases evita coletar runs de quem já não satisfaz a inclusão.
+O funil registra `prefiltro_releases_insuficientes` nessa passagem; ele não
+infere quantos runs esses repositórios teriam. Meses com mais de 1000 resultados
+são subdivididos recursivamente até caber na API. Saturação dentro de um único
+segundo, contagem inconsistente ou páginas ausentes mantêm `coleta_incompleta`;
+repositórios parciais não contam para os 100 da execução completa.
+
+Checkpoints atômicos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
+inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
+repositórios concluídos e páginas do cache; um erro temporário não apaga o
+progresso anterior. `raw/progresso.json` permite acompanhar a execução.
+
+Saídas: consolidados por etapa em raw; `amostra_workflow_runs.json` restrito aos
+elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,
+`cfr.json`, `tempo_recuperacao.json` e `execucao.json` em processed. O exit code
+é 0 quando o alvo é atingido, 3 quando faltam elegíveis e 2 em erro. A presença
+de arquivos não comprova sucesso: confira `execucao_completa` e contagens.
+
+O comando integra as métricas disponíveis. Compare/lead time (#140/#141/#142)
+ainda são dependências explícitas em `execucao.json`; isso não comprova o
+cálculo das quatro métricas DORA. A validação real dos 100 repositórios continua
+pendente até haver evidência registrada no relatório.

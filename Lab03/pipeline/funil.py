@@ -127,7 +127,7 @@ def _ler(raw_dir, arquivo, etapa):
     return json.loads(caminho.read_text(encoding="utf-8"))
 
 
-def montar_funil(dados, config):
+def montar_funil(dados, config, etapas_coleta=ETAPAS):
     """Monta as etapas, os descartes e a amostra a partir das saídas carregadas.
 
     `dados` mapeia o nome de cada etapa em ETAPAS para o JSON da sua saída.
@@ -140,7 +140,7 @@ def montar_funil(dados, config):
 
     etapas, descartes = [], []
     anteriores = None
-    for nome, descricao, _, chave in ETAPAS:
+    for nome, descricao, _, chave in etapas_coleta:
         aprovados = dados[nome][chave]
         if anteriores is None:
             seguem, descartados = list(dict.fromkeys(r["id"] for r in aprovados)), []
