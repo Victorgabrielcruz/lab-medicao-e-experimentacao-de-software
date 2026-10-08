@@ -118,7 +118,7 @@ python -m pipeline --config config.yaml --piloto 100
 ```
 
 Esse comando não repete a Search API. Usa os primeiros **até 100 candidatos**
-da busca existente e executa Actions, metadados, releases e workflow runs. Os filtros
+da busca existente e executa Actions, metadados, releases, tags e workflow runs. Os filtros
 podem reduzir a quantidade final de repositórios. Os resultados ficam em
 `data/raw/piloto-100/`, sem sobrescrever a busca nem as saídas completas. O
 cache continua em `data/cache` e as respostas anteriores são reutilizadas.
@@ -126,7 +126,7 @@ Use `--piloto` sem `--etapas`; ele não pode ser combinado com `--limpar-cache`.
 Se a cota da API ainda estiver esgotada, o piloto também aguardará o reset.
 Uma interrupção pode ser retomada repetindo o mesmo comando.
 
-O piloto verifica as coletas da S01-10 e S01-18. Ele não equivale à conclusão da S01-21,
+O piloto verifica as coletas da S01-10, S01-11 e S01-18. Ele não equivale à conclusão da S01-21,
 que exige seleção, coleta **e cálculo** integrados para 100 repositórios.
 
 A etapa `workflow_runs` lê `data/raw/metadados.json` e usa a `default_branch`
@@ -201,6 +201,50 @@ integração posterior do pipeline.
 
 Referência: [releases na REST API do GitHub](https://docs.github.com/en/rest/releases/releases#list-releases).
 
+### Coleta de tags com data do commit (S01-11 — #139)
+
+A etapa `tags` lê `data/raw/metadados.json` e consulta
+`GET /repos/{owner}/{repo}/tags` com páginas de 100 registros, seguindo o
+cabeçalho `Link` (`rel="next"`) até o fim. Para cada SHA informado pela lista,
+consulta `GET /repos/{owner}/{repo}/commits/{sha}` e obtém `commit.author.date`.
+Essa é a data usada no filtro, inclusive quando difere de `commit.committer.date`;
+a data de criação de uma tag anotada não substitui a data do autor do commit.
+As consultas usam o SHA, permitindo nomes de tags com barras ou outros caracteres.
+
+```bash
+python -m pipeline --config config.yaml --etapas tags
+```
+
+Sem `--etapas`, a coleta roda após as releases. Também participa do
+`--piloto 100`, com saída em `data/raw/piloto-100/tags.json`. Páginas e respostas
+de commits são salvas pelo cache compartilhado, com o mesmo controle de rate
+limit/backoff. Uma reexecução reutiliza ambas, inclusive após interrupção no
+meio de uma página. Tags distintas no mesmo SHA são mantidas, com uma única
+consulta ao commit; duplicatas por nome são removidas.
+
+O consolidado `data/raw/tags.json` é gravado atomicamente e contém as tags cuja
+data do autor está na janela UTC `[início, fim)`, incluindo todo o último dia
+configurado. A paginação percorre todas as páginas mesmo após encontrar uma tag
+antiga, pois a ordem das tags não garante ordem cronológica. Os registros são
+ordenados por data/nome e preservam `name`, `commit_sha`, `commit_author_date`,
+`commit_url`, `node_id`, `zipball_url` e `tarball_url`. Os totais são registrados
+por repositório e no consolidado, junto da janela e de
+`data_referencia="commit.author.date"`. Repositórios sem tags são mantidos com
+lista vazia e total zero. A coleta inclui tags com ou sem release associada,
+como alternativa de unidade de deploy para a RQ07.
+
+HTTP 404/451 ao listar tags gera descarte `repositorio_inacessivel`. Quando
+apenas a consulta do commit responde 404/451, ou `commit.author.date` está
+ausente, inválida ou sem fuso, somente as tags desse commit são ignoradas.
+Esses casos geram aviso, entram em `tags_ignoradas` com nome/SHA/motivo e marcam
+`coleta_incompleta=true`, preservando as demais tags do repositório. Tags fora
+da janela são filtradas normalmente e não indicam coleta incompleta.
+Outros erros são propagados e preservam o consolidado anterior para retomada.
+
+Referências: [lista de tags](https://docs.github.com/en/rest/repos/repos#list-repository-tags)
+e [consulta de commit](https://docs.github.com/en/rest/commits/commits#get-a-commit)
+na REST API do GitHub.
+
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
@@ -256,6 +300,7 @@ das métricas e da seleção em um único comando pertence à S01-21 (#149).
 | `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
 | `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
 | `releases` | `data/raw/releases.json` | Lê `metadados.json`, pagina pelo Link header com cache e retém publicações na janela sem drafts; preserva pré-releases e contabiliza as estáveis separadamente. |
+| `tags` | `data/raw/tags.json` | Lê `metadados.json`, pagina as tags e consulta a data do autor de cada commit por SHA, filtrando pela janela e reutilizando o cache de páginas/commits para a variante da RQ07. |
 | `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
 
 Testes:
