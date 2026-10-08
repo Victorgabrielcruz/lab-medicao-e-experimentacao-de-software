@@ -40,6 +40,10 @@ class Api:
         n = int(path.split("/")[3].removeprefix("repo"))
         if self.falhar == n:
             raise requests.ConnectionError("interrupção simulada")
+        if "/compare/" in path:
+            return resposta({"status": "ahead", "total_commits": 1,
+                             "commits": [{"sha": f"sha-{path.rsplit('/', 1)[-1]}",
+                                          "commit": {"author": {"date": "2025-10-01T00:00:00Z"}}}]})
         if path.endswith("/releases"):
             return resposta([{"id": i, "draft": False, "prerelease": i == 0,
                                "published_at": "2025-10-10T00:00:00Z", "tag_name": f"v{i}"}
@@ -80,6 +84,14 @@ def test_100_elegiveis_nao_100_candidatos_e_retomada_sem_api(tmp_path):
     assert result["execucao_completa"]
     assert result["candidatos_avaliados"] == 120
     assert result["total_amostra_completa"] == 100
+    assert result["total_comparacoes"] == 400
+    assert result["releases_compare_ignoradas"] == 100
+    assert result["coletas_compare_incompletas"] == 0
+    assert result["dependencias_pendentes"] == ["lead time #141/#142"]
+    compares = json.loads((tmp_path / "raw/compare.json").read_text())
+    assert compares["total_repositorios"] == 100
+    assert compares["total_comparacoes"] == 400
+    assert not any("repo1/compare/" in p for p, _ in api.chamadas)
     assert fonte.read_bytes() == original
     assert not any("repo1/actions/runs" in p for p, _ in api.chamadas)
     cfr = json.loads((tmp_path / "processed/cfr.json").read_text())
@@ -103,10 +115,11 @@ def test_interrupcao_preserva_checkpoint_e_retomada(tmp_path):
     cfg, fonte = configurar(tmp_path, 3)
     with pytest.raises(requests.ConnectionError):
         integrado.executar(cfg, Api(falhar=2), 3, 3, fonte)
-    assert len(list((tmp_path / "raw/checkpoints").rglob("*.json"))) == 1
+    assert len(list((tmp_path / "raw/checkpoints").glob("*/*.json"))) == 1
     api = Api()
     assert integrado.executar(cfg, api, 3, 3, fonte)["execucao_completa"]
-    assert not any("repo1/" in p for p, _ in api.chamadas)
+    assert all(p.endswith("/releases") or "/compare/" in p
+               for p, _ in api.chamadas if "repo1/" in p)
 
 
 def test_subdivide_mes_saturado_sem_perder_runs_nas_fronteiras():
@@ -325,3 +338,44 @@ def test_regra_estavel_explicita_alinha_inclusao_e_frequencia(tmp_path):
     assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
     df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text())
     assert df["repositorios"][0]["releases_ano"] == 5
+
+
+def test_interrupcao_compare_retoma_sem_recoletar_repo_ou_recalcular_metricas(tmp_path, monkeypatch):
+    cfg, fonte = configurar(tmp_path, 2)
+    class Interrompida(Api):
+        def get_resposta(self, path, params=None):
+            if "repo2/compare/" in path:
+                raise requests.ConnectionError("interrupção no compare")
+            return super().get_resposta(path, params)
+    with pytest.raises(requests.ConnectionError, match="compare"):
+        integrado.executar(cfg, Interrompida(), 2, 2, fonte)
+    assert len(list((tmp_path / "raw/checkpoints/compare").glob("*/*.json"))) == 1
+    taxas = (tmp_path / "processed/cfr.json").read_bytes()
+    tempos = (tmp_path / "processed/tempo_recuperacao.json").read_bytes()
+    def proibido(*args, **kwargs):
+        raise AssertionError("métricas auditadas não devem ser recalculadas")
+    monkeypatch.setattr(integrado.cfr, "executar", proibido)
+    monkeypatch.setattr(integrado.tempo_recuperacao, "executar", proibido)
+    api = Api()
+    assert integrado.executar(cfg, api, 2, 2, fonte)["execucao_completa"]
+    assert not any("repo1/" in p for p, _ in api.chamadas)
+    assert (tmp_path / "processed/cfr.json").read_bytes() == taxas
+    assert (tmp_path / "processed/tempo_recuperacao.json").read_bytes() == tempos
+
+
+def test_compare_404_mantem_amostra_e_incompletude_explicita(tmp_path):
+    cfg, fonte = configurar(tmp_path, 1)
+    class Inacessivel(Api):
+        def get_resposta(self, path, params=None):
+            if path.endswith("/compare/v1...v2"):
+                r = requests.Response()
+                r.status_code = 404
+                raise requests.HTTPError(response=r)
+            return super().get_resposta(path, params)
+    resultado = integrado.executar(cfg, Inacessivel(), 1, 1, fonte)
+    assert resultado["total_amostra_completa"] == 1
+    assert resultado["coletas_compare_incompletas"] == 1
+    assert resultado["releases_compare_ignoradas"] == 2
+    compare = json.loads((tmp_path / "raw/compare.json").read_text())
+    assert compare["total_releases_ignoradas_404"] == 1
+    assert compare["total_comparacoes"] == 3

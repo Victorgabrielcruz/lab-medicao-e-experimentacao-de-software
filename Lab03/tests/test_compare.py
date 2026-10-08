@@ -327,7 +327,7 @@ def test_cli_executa_apenas_compare_com_cache_e_mostra_totais(tmp_path, monkeypa
     monkeypatch.setenv("GITHUB_TOKEN", "token-falso")
     monkeypatch.setattr("pipeline.__main__.GitHubClient", lambda token, base, timeout, cache:
                         GitHubClient(token, base, timeout, cache=cache, session=sessao))
-    for nome in ("candidatos", "actions", "metadados", "releases", "tags", "workflow_runs"):
+    for nome in ("candidatos", "actions", "metadados", "releases", "workflow_runs"):
         monkeypatch.setattr(f"pipeline.{nome}.executar", lambda *args: pytest.fail("etapa não solicitada"))
     assert main(["--config", str(cfg_path), "--etapas", "compare"]) == 0
     assert "Compare: 1 repositórios, 1 comparações completas, 0 releases ignoradas" in capsys.readouterr().out

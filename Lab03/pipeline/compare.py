@@ -151,7 +151,12 @@ def executar(config, client, repositorios=None):
         lista.append(coletar_repositorio(client, repo, inicio, fim))
         if i % LOG_A_CADA == 0:
             log.info("Compare: %d/%d repositórios avaliados", i, len(repositorios))
-    saida = raw_dir / ARQUIVO_SAIDA
+    return gravar_consolidado(config, lista, inicio, fim)
+
+
+def gravar_consolidado(config, lista, inicio, fim):
+    """Consolida também registros retomados sem repetir a coleta por repositório."""
+    saida = Path(config["caminhos"]["raw"]) / ARQUIVO_SAIDA
     contagens = ("total_releases", "total_comparacoes", "total_releases_ignoradas", "total_releases_ignoradas_404", "comparacoes_acima_250")
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),

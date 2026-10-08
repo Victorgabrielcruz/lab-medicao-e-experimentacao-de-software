@@ -6,7 +6,7 @@ import logging
 import sys
 from pathlib import Path
 import requests
-from pipeline import actions, auditoria, candidatos, cfr, funil, metadados, releases, tempo_recuperacao
+from pipeline import actions, auditoria, candidatos, cfr, compare, funil, metadados, releases, tempo_recuperacao
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import classificar_metrica
@@ -24,6 +24,29 @@ def _ler(caminho):
 
 def _identidade(a, b):
     return a["id"] == b["id"] and a["full_name"].lower() == b["full_name"].lower()
+
+
+def _coletar_compares(config, client, rels, inicio, fim):
+    """Coleta somente a amostra elegível e retoma cada repositório separadamente."""
+    raw = Path(config["caminhos"]["raw"])
+    lista = []
+    for repo in rels:
+        contexto = {"releases": repo, "janela": {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)},
+                    "api": config["api"]["base_url"], "versao_compare": 1}
+        digest = hashlib.sha256(json.dumps(contexto, sort_keys=True).encode()).hexdigest()
+        caminho = raw / "checkpoints" / "compare" / digest / f"{repo['id']}.json"
+        if caminho.is_file():
+            registro = _ler(caminho)
+        else:
+            registro = compare.coletar_repositorio(client, repo, inicio, fim)
+            gravar_json(caminho, registro)
+        if not _identidade(registro, repo):
+            raise ConfigError("Identidade divergente no checkpoint de compare")
+        lista.append(registro)
+        log.info("Compare integrado: %d/%d repositórios; %d releases ignoradas",
+                 len(lista), len(rels), registro["total_releases_ignoradas"])
+    compare.gravar_consolidado(config, lista, inicio, fim)
+    return lista
 
 
 def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutilizar_runs=None):
@@ -154,6 +177,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     validacao = auditoria.validar(config, entrada, processed / "cfr.json", processed / "tempo_recuperacao.json")
     gravar_json(processed / "auditoria.json", validacao)
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
+    comparacoes = _coletar_compares(config, client, [rels[r["id"]] for r in selecionados], inicio, fim)
     frequencias = []
     for r in selecionados:
         quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,
@@ -168,7 +192,10 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                  "execucao_completa": len(amostra) == alvo,
                  "coletas_incompletas": sum(r["coleta_incompleta"] for r in dados["workflow_runs"]["repositorios"]),
                  "metricas": ["deployment_frequency", "cfr_a", "tempo_recuperacao"],
-                 "dependencias_pendentes": ["compare #140", "lead time #141/#142"],
+                 "dependencias_pendentes": ["lead time #141/#142"],
+                 "total_comparacoes": sum(r["total_comparacoes"] for r in comparacoes),
+                 "releases_compare_ignoradas": sum(r["total_releases_ignoradas"] for r in comparacoes),
+                 "coletas_compare_incompletas": sum(r["coleta_incompleta"] for r in comparacoes),
                  "raw": str(raw.resolve()), "processed": str(processed.resolve())}
     gravar_json(processed / "execucao.json", resultado)
     return resultado

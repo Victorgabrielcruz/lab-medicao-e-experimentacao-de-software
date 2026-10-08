@@ -118,7 +118,7 @@ python -m pipeline --config config.yaml --piloto 100
 ```
 
 Esse comando não repete a Search API. Usa os primeiros **até 100 candidatos**
-da busca existente e executa Actions, metadados, releases e workflow runs. Os filtros
+da busca existente e executa Actions, metadados, releases, compare e workflow runs. Os filtros
 podem reduzir a quantidade final de repositórios. Os resultados ficam em
 `data/raw/piloto-100/`, sem sobrescrever a busca nem as saídas completas. O
 cache continua em `data/cache` e as respostas anteriores são reutilizadas.
@@ -126,7 +126,7 @@ Use `--piloto` sem `--etapas`; ele não pode ser combinado com `--limpar-cache`.
 Se a cota da API ainda estiver esgotada, o piloto também aguardará o reset.
 Uma interrupção pode ser retomada repetindo o mesmo comando.
 
-O piloto verifica as coletas da S01-10 e S01-18. Ele não equivale à conclusão da S01-21,
+O piloto verifica as coletas da S01-10, S01-12 e S01-18. Ele não equivale à conclusão da S01-21,
 que exige seleção, coleta **e cálculo** integrados para 100 repositórios.
 
 A etapa `workflow_runs` lê `data/raw/metadados.json` e usa a `default_branch`
@@ -507,7 +507,14 @@ elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,
 é 0 quando o alvo é atingido, 3 quando faltam elegíveis e 2 em erro. A presença
 de arquivos não comprova sucesso: confira `execucao_completa` e contagens.
 
-O comando integra as métricas disponíveis. Compare/lead time (#140/#141/#142)
-ainda são dependências explícitas em `execucao.json`; isso não comprova o
+O compare (#140) é coletado apenas para a amostra elegível, com checkpoints
+próprios em `raw/checkpoints/compare/<hash>/`. Seu contexto inclui as releases,
+a janela e a API. `raw/compare.json` e `execucao.json` registram comparações
+completas, releases ignoradas e repositórios com compare incompleto. Um 404
+nessa etapa mantém a amostra e sua incompletude explícita; não comprova lead time.
+A retomada de compare não repete os cálculos de CFR/recuperação já auditados.
+
+O comando integra as métricas disponíveis. Lead time (#141/#142)
+ainda é dependência explícita em `execucao.json`; isso não comprova o
 cálculo das quatro métricas DORA. A validação real dos 100 repositórios continua
 pendente até haver evidência registrada no relatório.
