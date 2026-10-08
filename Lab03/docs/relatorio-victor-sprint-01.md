@@ -1,6 +1,6 @@
 # Relatório técnico — Victor, Lab03 Sprint 01
 
-Atualizado em 08/10/2026 às 20:19 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
+Atualizado em 08/10/2026 às 20:29 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
 As entregas de código foram publicadas exclusivamente em
 `feat/tasks-victor-sprint-01`. Este relatório não dá aceite, fecha issues nem
 altera o GitHub Projects. A validação empírica ainda não permite encerrar o escopo.
@@ -14,7 +14,7 @@ altera o GitHub Projects. A validação empírica ainda não permite encerrar o 
 | [#146 — workflow runs](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/146) | Coletor mensal integrado; 37 testes e 100% de cobertura. O piloto real tem 100 candidatos, 82 após Actions/metadados e 18 descartes de Actions. | **Validação real pendente:** `workflow_runs.json` ainda não existe. Não usar páginas do cache como consolidado. Auditoria automática preparada para identidades, default branch/push, janela, cobertura mensal, deduplicação e incompletude. |
 | [#147 — CFR (a)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/147) | Fórmula falhas/(falhas+sucessos), três conclusions de falha, restantes ignoradas; 47 testes e 100% de cobertura. Auditoria independente dos contadores, fração, null e diagnósticos. | **Cálculo e validação reais pendentes** do consolidado da #146. A integração usa CFR sobre a amostra elegível completa. |
 | [#148 — recuperação](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/148) | Implementação publicada em `8cc3c30`; episódios por workflow, primeira falha ao próximo sucesso, censura no fim; fixture de 1h20, mediana/IQR apenas dos recuperados. 66 testes e 100% de cobertura. | Implementação validada com fixtures; **validação real pendente** do piloto. O enunciado completo não está versionado; não se afirma confrontação com seu exemplo original. |
-| [#149 — pipeline/100 repos](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/149) | Comando integrado, releases paginadas, funil, subdivisão de meses, checkpoints e auditoria; fixture obtém 100 elegíveis a partir de 120 candidatos. | **Execução real com 100 elegíveis pendente.** Executor iniciará após o piloto, com limite inicial de 1000 candidatos e saídas próprias. Compare #140 foi integrado; lead time #141/#142 permanece dependência explícita; não há alegação de quatro métricas DORA completas. |
+| [#149 — pipeline/100 repos](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/149) | Comando integrado, releases paginadas, funil, subdivisão de meses, checkpoints e auditoria; fixture obtém 100 elegíveis a partir de 120 candidatos. | **Execução real com 100 elegíveis pendente.** Executor iniciará após o piloto, com limite inicial de 1000 candidatos e saídas próprias. Compare #140 e lead time por release #141 foram integrados; a variante por commit #142 permanece dependência explícita; não há alegação de quatro métricas DORA completas. |
 | [#150 — artigo SBC](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/150) | Pacote local com arquivo principal, cinco seções, abstract/resumo, quatro referências preservadas e links repo/Projects. Template SBC, licença e proveniência registrados. | **Projeto Overleaf e compilação pendentes.** `/project` abriu tela de login; nenhum projeto criado. O compilador nativo falhou por infraestrutura, sem comprovar compilação do pacote. |
 
 As #146/#147 permanecem abertas e com validação pendente, embora os PRs
@@ -34,8 +34,10 @@ ao suporte provisório local. Tags (#139) foram revisadas como dependência
 potencial, mas não incorporadas: não são necessárias à definição principal
 atual. Compare #140 tornou-se disponível em `feat/s01-12-compare-140`, commit
 `7dfab9f` de Matheus, incorporado seletivamente como `bbf7053` com autoria
-preservada e protocolo público. Lead time #141/#142 segue indisponível nas
-branches consultadas.
+preservada e protocolo público. A #141 apareceu em
+`feat/s01-13-lead-time-release-141`, commit `bff0827` de Matheus, incorporado por
+cherry-pick como `adc125d`, preservando autoria. A #142 permanece indisponível
+nas branches consultadas.
 
 A #138 atualizou a documentação do protocolo para deploy e inclusão por
 releases **estáveis**. A adaptação `e2a03de` torna isso explícito em
@@ -50,7 +52,7 @@ A auditoria de retomada agora exige hash e caminho de origem, evitando reutiliza
 metadados de uma entrada de outra pasta mesmo com conteúdo idêntico.
 
 `pipeline.integrado` executa seleção → Actions → metadados → releases → runs →
-inclusão → CFR (a)/recuperação → auditoria → compare/frequência, em um comando.
+inclusão → CFR (a)/recuperação → auditoria → compare/lead time por release/frequência, em um comando.
 O prefiltro de releases evita coletar runs de projetos que já não atingem o
 mínimo; seus descartes não inferem contagens de runs. O alvo conta somente
 repositórios com >=5 releases estáveis e >=50 runs válidos e coleta completa. Não reduzimos
@@ -64,8 +66,19 @@ Pagina com Link, registra o limite sem paginação de 250 commits e preserva os
 motivos de descarte por 404/451 ou incompletude. Checkpoints próprios por
 repositório permitem retomar a etapa sem repetir a coleta concluída nem os
 cálculos auditados de CFR/recuperação. Um compare incompleto mantém diagnóstico
-explícito; atingir a amostra de cem não comprova lead time nem quatro métricas.
+explícito; atingir a amostra de cem não comprova lead time observado nem todas
+as variantes exigidas.
 `compare.json` e as contagens de `execucao.json` ainda aguardam execução real.
+
+O cálculo público da #141 define RQ02a como `published_at - min(commit.author.date)`
+por release estável, em horas, seguido de mediana sem ponderação por commits.
+Primeira release histórica sem anterior, compare incompleto/ignorado, ausência
+de commits, datas inválidas e intervalos negativos mantêm valor nulo/motivo;
+zero real é válido. `b1be141` integra a métrica e uma auditoria independente contra
+commits, identidades, janela, mediana, classe, contagens e incompletude. O hash
+de retomada inclui conteúdo/diagnósticos e origem; ignora somente o instante de
+gravar o compare, para não repetir um cálculo já auditado com os mesmos dados.
+Resultados corrompidos são recusados sem sobrescrita. Validação real pendente.
 
 A coleta adicional está em módulo próprio, sem alterar o coletor do checkout
 original. Meses com >1000 resultados são subdivididos recursivamente; páginas,
@@ -94,9 +107,9 @@ preservados como na fonte; código/documentação autorais passaram por diff che
 
 ## Evidências, testes e publicação
 
-Última suíte: **457 testes passaram, cobertura global 98,77%**. CFR, recuperação,
-workflow runs, releases, compare, rate limit e funil permanecem com 100% de cobertura. Auditoria:
-98%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
+Última suíte: **518 testes passaram, cobertura global 98,63%**. CFR, recuperação,
+workflow runs, releases, compare, lead time por release, rate limit e funil permanecem com 100% de cobertura. Auditoria:
+96%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
 retomada e o comando próprio da etapa.
 Não confundimos cobertura com validação empírica.
 
@@ -108,7 +121,11 @@ ampliação e cálculos auditados não repetidos. Os testes usam respostas simul
 sem dados reais nem rede. A #140 acrescenta 34 testes públicos de paginação,
 limites 249/250/251/301, histórico, deduplicação, erros/cache e CLI. Dois testes
 adicionais verificam retomada do compare sem repetir métricas auditadas e 404
-com amostra preservada e incompletude explícita.
+com amostra preservada e incompletude explícita. A #141 acrescenta 56 testes,
+incluindo exemplo de 13 dias, autor/committer, fusos, nulos/zero, negativos,
+mediana por release, classes e CLI local. Cinco casos adicionais recusam
+corrupções de lead time na retomada; outro verifica que nova data de gravação
+não repete o cálculo. A fixture de regravação explicita UTF-8 no Windows.
 
 Comando de teste, no Lab03 do worktree autorizado:
 
@@ -131,6 +148,10 @@ C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/.venv/Sc
 | `bbf7053` | Compare e protocolo público #140, preservando autoria de Matheus. |
 | `004791c` | Compare apenas da amostra, checkpoints e diagnósticos no comando integrado (#149). |
 | `c5c13ff` | Metodologia do artigo alinhada ao protocolo público de compare (#150). |
+| `ed58485` | Relatório após integração de compare. |
+| `adc125d` | Lead time por release #141, preservando autoria de Matheus. |
+| `b1be141` | Lead time por release no integrado, auditoria e retomada (#149). |
+| `db65477` | Metodologia com definição pública de lead time por release (#150). |
 
 Publicação: somente `git push origin feat/tasks-victor-sprint-01`, sem force.
 A branch do checkout original foi conferida e continua
@@ -176,7 +197,8 @@ python -m pipeline.integrado --config .pytest_cache/sprint01-agente/config-integ
 A configuração local usa cache absoluto do checkout original e raw/processed
 próprios no worktree: `data/raw/victor-sprint01-100` e
 `data/processed/victor-sprint01-100`. Saídas esperadas: funil JSON/Markdown,
-frequência, CFR, recuperação, compare bruto, auditoria e `execucao.json`. Se não atingir cem
+frequência, CFR, recuperação, compare bruto, lead time por release, auditorias
+e `execucao.json`. Se não atingir cem
 após o limite inicial, auditar o funil e ampliar gradualmente com os checkpoints;
 não coletar indiscriminadamente todos os candidatos.
 
@@ -208,9 +230,9 @@ pela revisão automática por ausência de autorização explícita para essa co
 Foi solicitada autorização específica para ler somente o enunciado do Lab03;
 nenhum conteúdo privado foi acessado e nenhum acesso alternativo foi tentado.
 Enquanto não houver autorização, usar somente repositório/issues e dependências
-públicas. Compare foi integrado com protocolo público; os cálculos de lead time
-#141/#142 ainda dependem de implementação/definições verificáveis. Não inventar
-sua fórmula para declarar o pipeline completo.
+públicas. Compare e lead time por release foram integrados com protocolo público;
+a variante por commit #142 ainda depende de implementação/definição verificável.
+Não inventar sua fórmula para declarar o pipeline completo.
 
 O relatório será atualizado quando o consolidado e a execução dos cem elegíveis
 forem auditados. O acompanhamento só será encerrado ao cumprir o escopo ou,

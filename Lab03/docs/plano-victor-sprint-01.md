@@ -175,3 +175,14 @@ O protocolo público define a data do autor do commit e a base estável anterior
 Suíte atual: 457 testes aprovados, cobertura global 98,77%, compare 100%.
 O piloto original e o executor continuam ativos, aguardando o consolidado;
 nenhum processo ou cálculo real adicional foi iniciado pelo acompanhamento.
+
+
+## Integração da #141 — 08/10/2026
+
+Lead time por release `bff0827` de Matheus foi incorporado como `adc125d`, com
+autoria preservada. `b1be141` integra RQ02a à #149 e confere valores contra os
+commits de origem, sem repetir resultados auditados na retomada. A definição
+pública é publicação menos data do autor mais antiga, seguida de mediana por
+release. Lead time por commit #142 continua pendente. Suíte: 518 testes,
+98,63% de cobertura global e 100% no módulo da #141. A coleta real original
+continua ativa e nenhuma saída real nova foi assumida como concluída.
