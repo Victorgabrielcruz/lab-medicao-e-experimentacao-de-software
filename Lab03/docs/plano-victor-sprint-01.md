@@ -186,3 +186,16 @@ pública é publicação menos data do autor mais antiga, seguida de mediana por
 release. Lead time por commit #142 continua pendente. Suíte: 518 testes,
 98,63% de cobertura global e 100% no módulo da #141. A coleta real original
 continua ativa e nenhuma saída real nova foi assumida como concluída.
+
+
+## Piloto real auditado — 08/10/2026 às 20:30
+
+Consolidado original: 82 repos, 238.629 runs deduplicados; 18 coletas incompletas
+preservadas. CFR: 217.412 runs válidos, 22.893 falhas e 194.519 sucessos, métrica
+observada em 70 repos. Recuperação: 6.206 episódios recuperados e 66 censurados,
+mediana disponível em 57 repos. O hash e os totais foram auditados; as métricas
+estavam ausentes e foram calculadas uma vez, sem repetir saídas auditadas.
+Os processos originais encerraram. O executor iniciou o pipeline integrado para
+100 elegíveis com limite 1000 e saídas próprias. Monitorar os PIDs e o log; não
+iniciar outro coletor enquanto o atual estiver vivo. A amostra final e a #142
+continuam pendentes; os agregados do piloto não substituem os critérios finais.

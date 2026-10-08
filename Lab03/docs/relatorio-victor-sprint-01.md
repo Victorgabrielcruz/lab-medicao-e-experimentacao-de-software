@@ -1,6 +1,6 @@
 # Relatório técnico — Victor, Lab03 Sprint 01
 
-Atualizado em 08/10/2026 às 20:29 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
+Atualizado em 08/10/2026 às 20:32 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
 As entregas de código foram publicadas exclusivamente em
 `feat/tasks-victor-sprint-01`. Este relatório não dá aceite, fecha issues nem
 altera o GitHub Projects. A validação empírica ainda não permite encerrar o escopo.
@@ -11,10 +11,10 @@ altera o GitHub Projects. A validação empírica ainda não permite encerrar o 
 |---|---|---|
 | [#144 — cache/retomada](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/144) | Auditoria de `CacheDisco`, gravação atômica, chave por URL/página sem autenticação persistida; 19 testes do cache passam. | Dependência integrada e preservada; não reaberta. Retomada do novo pipeline validada com fixtures, sem novas chamadas para checkpoints concluídos. |
 | [#145 — rate limit/backoff](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/145) | `X-RateLimit-Remaining`/`Reset` lidos por recurso; espera até reset + 1s; 5xx com 1, 2, 4 e 8s. 42 testes simulados e 100% de cobertura do módulo. | Critérios de implementação/testes auditados. Não foi provocado um 5xx ou esgotamento real para simular evidência; estado remoto preservado. |
-| [#146 — workflow runs](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/146) | Coletor mensal integrado; 37 testes e 100% de cobertura. O piloto real tem 100 candidatos, 82 após Actions/metadados e 18 descartes de Actions. | **Validação real pendente:** `workflow_runs.json` ainda não existe. Não usar páginas do cache como consolidado. Auditoria automática preparada para identidades, default branch/push, janela, cobertura mensal, deduplicação e incompletude. |
-| [#147 — CFR (a)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/147) | Fórmula falhas/(falhas+sucessos), três conclusions de falha, restantes ignoradas; 47 testes e 100% de cobertura. Auditoria independente dos contadores, fração, null e diagnósticos. | **Cálculo e validação reais pendentes** do consolidado da #146. A integração usa CFR sobre a amostra elegível completa. |
-| [#148 — recuperação](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/148) | Implementação publicada em `8cc3c30`; episódios por workflow, primeira falha ao próximo sucesso, censura no fim; fixture de 1h20, mediana/IQR apenas dos recuperados. 66 testes e 100% de cobertura. | Implementação validada com fixtures; **validação real pendente** do piloto. O enunciado completo não está versionado; não se afirma confrontação com seu exemplo original. |
-| [#149 — pipeline/100 repos](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/149) | Comando integrado, releases paginadas, funil, subdivisão de meses, checkpoints e auditoria; fixture obtém 100 elegíveis a partir de 120 candidatos. | **Execução real com 100 elegíveis pendente.** Executor iniciará após o piloto, com limite inicial de 1000 candidatos e saídas próprias. Compare #140 e lead time por release #141 foram integrados; a variante por commit #142 permanece dependência explícita; não há alegação de quatro métricas DORA completas. |
+| [#146 — workflow runs](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/146) | Coletor mensal integrado; 37 testes e 100% de cobertura. O piloto real tem 100 candidatos, 82 após Actions/metadados e 18 descartes de Actions. | **Piloto consolidado e auditado:** 82 repos, 238.629 runs deduplicados, 18 coletas incompletas explicitadas. Identidades, branch/push, janela, cobertura mensal e totais conferidos. Isso ainda não comprova os 100 elegíveis da #149. |
+| [#147 — CFR (a)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/147) | Fórmula falhas/(falhas+sucessos), três conclusions de falha, restantes ignoradas; 47 testes e 100% de cobertura. Auditoria independente dos contadores, fração, null e diagnósticos. | **Cálculo real auditado no piloto:** 70 repos com CFR e 12 sem runs válidos; 22.893 falhas e 194.519 sucessos. As 18 coletas incompletas permanecem sinalizadas. A amostra final de 100 ainda está em execução. |
+| [#148 — recuperação](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/148) | Implementação publicada em `8cc3c30`; episódios por workflow, primeira falha ao próximo sucesso, censura no fim; fixture de 1h20, mediana/IQR apenas dos recuperados. 66 testes e 100% de cobertura. | **Piloto real auditado:** 57 repos com recuperação observada, 6.206 episódios recuperados e 66 censurados; 18 coletas incompletas sinalizadas. O enunciado completo não está versionado; não se afirma confrontação com seu exemplo original. |
+| [#149 — pipeline/100 repos](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/149) | Comando integrado, releases paginadas, funil, subdivisão de meses, checkpoints e auditoria; fixture obtém 100 elegíveis a partir de 120 candidatos. | **Execução real em andamento desde 20:30.** Executor confirmou o fim dos processos originais e iniciou o comando com alvo 100, limite inicial de 1000 candidatos e saídas próprias; alvo ainda não alcançado. Compare #140 e lead time por release #141 foram integrados; a variante por commit #142 permanece dependência explícita; não há alegação de quatro métricas DORA completas. |
 | [#150 — artigo SBC](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/150) | Pacote local com arquivo principal, cinco seções, abstract/resumo, quatro referências preservadas e links repo/Projects. Template SBC, licença e proveniência registrados. | **Projeto Overleaf e compilação pendentes.** `/project` abriu tela de login; nenhum projeto criado. O compilador nativo falhou por infraestrutura, sem comprovar compilação do pacote. |
 
 As #146/#147 permanecem abertas e com validação pendente, embora os PRs
@@ -160,9 +160,35 @@ A branch do checkout original foi conferida e continua
 ## Coleta real e execução persistente
 
 Fonte real de seleção conferida: **37.383 candidatos**. Piloto: **100 candidatos,
-82 repositórios com Actions/metadados, 18 descartes**. Ainda não há quantidade
-validada de runs, CFR ou episódios; não apresentamos estimativas inventadas.
-Os processos originais permanecem ativos. Espera de rate limit não é falha.
+82 repositórios com Actions/metadados, 18 descartes**. O consolidado foi gravado
+atomicamente e auditado às 20:30, depois de preservada a execução original.
+Os processos originais encerraram; o executor próprio lançou o pipeline integrado.
+Uma espera futura por rate limit não deve ser confundida com falha.
+
+| Evidência real do piloto | Quantidade |
+|---|---:|
+| Repositórios auditados | 82 |
+| Runs no recorte, deduplicados | 238.629 |
+| Runs válidos para CFR | 217.412 |
+| Falhas / sucessos | 22.893 / 194.519 |
+| Conclusions ignoradas | 21.217 |
+| Repositórios com CFR / sem runs válidos | 70 / 12 |
+| Repositórios com recuperação observada | 57 |
+| Episódios recuperados / censurados | 6.206 / 66 |
+| Total de episódios | 6.272 |
+| Coletas incompletas / completas | 18 / 64 |
+
+**Incompletude preservada:** o piloto não é a amostra final de cem elegíveis e
+os resultados dos 18 repositórios parciais podem ter contagens/episódios afetados.
+A auditoria comprova correspondência com o snapshot disponível, não completude
+de todos os históricos. Não foram produzidas estimativas de RQs/hipóteses para
+a amostra final. As duas saídas reais estavam ausentes, foram calculadas uma vez
+e auditadas; não foram recalculadas pelo acompanhamento.
+
+SHA-256 do consolidado conferido novamente sem recalcular métricas:
+`02acec9ceb3285d53a14a44ea2fcbb9330b5bb47b5215a6fd486a732e3fd32f1`.
+Arquivo de origem: 150.200.426 bytes. Evidência local pequena:
+`.pytest_cache/sprint01-agente/validacao-piloto.json`.
 
 Um executor próprio, iniciado oculto no Windows, possui trava de arquivo contra
 duplicação. Estado local sem segredos:
@@ -173,14 +199,14 @@ ou automações; continua ativo a cada dez minutos, silencioso em espera normal.
 A automação antiga de CFR continua pausada. A máquina e o app precisam continuar
 ligados para esse acompanhamento.
 
-O executor aguarda JSON consolidado válido, verifica identidades contra os
-metadados e calcula somente as saídas ausentes. Saídas presentes são auditadas
-sem sobrescrita silenciosa. Grava hash e agregados em
-`.pytest_cache/sprint01-agente/validacao-piloto.json`; depois chama o comando
-integrado público com a credencial Git existente somente em memória. A leitura
+O executor verificou o JSON consolidado e as identidades contra os metadados,
+calculou somente as saídas ausentes e gravou hash/agregados em
+`.pytest_cache/sprint01-agente/validacao-piloto.json`. Aguardou a saída dos
+processos originais e chamou o comando integrado público às 20:30, com a
+credencial Git existente somente em memória. A leitura
 da API com essa credencial foi verificada (HTTP 200), sem exibir/gravar o token.
 
-Entrada aguardada e saídas esperadas (ainda não comprovadas neste relatório):
+Entrada e saídas reais do piloto, existentes e auditadas:
 
 ```text
 C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/data/raw/piloto-100/workflow_runs.json
@@ -188,7 +214,7 @@ C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/data/pro
 C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/data/processed/piloto-100/tempo_recuperacao.json
 ```
 
-Comando real preparado pelo executor, com cwd no Lab03 do worktree:
+Comando real iniciado pelo executor, com cwd no Lab03 do worktree:
 
 ```text
 python -m pipeline.integrado --config .pytest_cache/sprint01-agente/config-integrado.yaml --alvo 100 --max-candidatos 1000 --candidatos C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/data/raw/candidatos.json --reutilizar-runs C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/data/raw/piloto-100/workflow_runs.json
@@ -198,8 +224,8 @@ A configuração local usa cache absoluto do checkout original e raw/processed
 próprios no worktree: `data/raw/victor-sprint01-100` e
 `data/processed/victor-sprint01-100`. Saídas esperadas: funil JSON/Markdown,
 frequência, CFR, recuperação, compare bruto, lead time por release, auditorias
-e `execucao.json`. Se não atingir cem
-após o limite inicial, auditar o funil e ampliar gradualmente com os checkpoints;
+e `execucao.json`. O processo está ativo e ainda não há consolidação da
+amostra final. Se não atingir cem após o limite inicial, auditar o funil e ampliar gradualmente com os checkpoints;
 não coletar indiscriminadamente todos os candidatos.
 
 ## Artigo, bloqueios e próximos critérios
@@ -234,6 +260,6 @@ públicas. Compare e lead time por release foram integrados com protocolo públi
 a variante por commit #142 ainda depende de implementação/definição verificável.
 Não inventar sua fórmula para declarar o pipeline completo.
 
-O relatório será atualizado quando o consolidado e a execução dos cem elegíveis
-forem auditados. O acompanhamento só será encerrado ao cumprir o escopo ou,
+O piloto foi auditado; o relatório será atualizado quando a execução dos cem
+elegíveis for consolidada e auditada. O acompanhamento só será encerrado ao cumprir o escopo ou,
 terminado todo trabalho independente, quando restar exclusivamente ação humana.
