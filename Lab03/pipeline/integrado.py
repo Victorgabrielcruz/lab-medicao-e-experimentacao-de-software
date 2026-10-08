@@ -54,7 +54,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     contexto = {"janela": janela, "inclusao": config["inclusao"], "runs": config["runs"],
                 "api": config["api"]["base_url"],
-                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 1}
+                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 2}
     digest = hashlib.sha256(json.dumps(contexto, sort_keys=True).encode()).hexdigest()
     pasta = raw / "checkpoints" / digest
     anteriores = {}
@@ -98,9 +98,11 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                         rel = releases.coletar_repositorio(client, meta, inicio, fim)
                         registro["aprovados"][etapa] = rel
                         etapa = "workflow_runs"
-                        if len(rel["releases"]) < config["inclusao"]["min_releases"]:
+                        n_releases = funil.contar_releases(rel, inicio, fim,
+                            config["inclusao"].get("incluir_prereleases", True))["releases_publicadas"]
+                        if n_releases < config["inclusao"]["min_releases"]:
                             registro["descartes"][etapa] = actions._descarte(repo,
-                                "prefiltro_releases_insuficientes", f"{len(rel['releases'])} releases")
+                                "prefiltro_releases_insuficientes", f"{n_releases} releases que atendem à definição configurada")
                         else:
                             antigo = anteriores.get(repo["id"])
                             if antigo and (not _identidade(meta, antigo)
@@ -143,18 +145,24 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     entrada = raw / "amostra_workflow_runs.json"
     gravar_json(entrada, {"janela": janela, "repositorios": selecionados})
     audit_path = processed / "auditoria.json"
-    mesma_entrada = (audit_path.is_file() and _ler(audit_path).get("entrada_sha256")
-                     == hashlib.sha256(entrada.read_bytes()).hexdigest())
+    audit_anterior = _ler(audit_path) if audit_path.is_file() else {}
+    mesma_entrada = (audit_anterior.get("origem") == str(entrada.resolve())
+                     and audit_anterior.get("entrada_sha256") == hashlib.sha256(entrada.read_bytes()).hexdigest())
     if not mesma_entrada:
         cfr.executar(config, entrada)
         tempo_recuperacao.executar(config, entrada)
     validacao = auditoria.validar(config, entrada, processed / "cfr.json", processed / "tempo_recuperacao.json")
     gravar_json(processed / "auditoria.json", validacao)
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
-    gravar_json(processed / "deployment_frequency.json", {"janela": janela, "repositorios": [
-        {"id": r["id"], "full_name": r["full_name"], "releases_ano": len(rels[r["id"]]["releases"]),
-         "classe": classificar_metrica("deployment_frequency", len(rels[r["id"]]["releases"]))}
-        for r in selecionados]})
+    frequencias = []
+    for r in selecionados:
+        quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,
+            config["inclusao"].get("incluir_prereleases", True))["releases_publicadas"]
+        frequencias.append({"id": r["id"], "full_name": r["full_name"], "releases_ano": quantidade,
+                            "classe": classificar_metrica("deployment_frequency", quantidade)})
+    gravar_json(processed / "deployment_frequency.json", {"janela": janela,
+               "incluir_prereleases": config["inclusao"].get("incluir_prereleases", True),
+               "repositorios": frequencias})
     resultado = {"contexto": contexto, "alvo": alvo, "total_amostra_completa": len(amostra),
                  "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
                  "execucao_completa": len(amostra) == alvo,

@@ -5,8 +5,9 @@ A população de candidatos é obtida pela Search API do GitHub, com pelo menos
 mil estrelas, sem forks nem repositórios arquivados e com atividade desde o
 início da janela. A janela é o intervalo UTC de 1 de outubro de 2025 (inclusivo)
 a 1 de outubro de 2026 (exclusivo). Incluímos projetos com workflows próprios
-em \texttt{.github/workflows/}, pelo menos cinco releases publicadas e cinquenta
-runs válidos dentro da janela. Pre-releases são incluídas; drafts são excluídos.
+em \texttt{.github/workflows/}, pelo menos cinco releases estáveis publicadas e cinquenta
+runs válidos dentro da janela. Pré-releases são preservadas para variantes, mas ficam fora da definição
+principal de deploy e inclusão; drafts são excluídos.
 
 A coleta registra metadados, releases e workflow runs do default branch,
 com evento \texttt{push}. As consultas de runs são mensais; a integração

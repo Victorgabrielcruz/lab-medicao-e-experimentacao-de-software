@@ -126,7 +126,7 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
             "total de recuperações calculadas divergente")
     _exigir(tempos["total_episodios"] == recuperados + censurados
             and tempos["episodios_censurados"] == censurados, "totais globais de episódios divergentes")
-    return {"validado": True, "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),
+    return {"validado": True, "origem": str(entrada.resolve()), "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),
             "total_repositorios": len(identidades), "runs_no_recorte_deduplicados": total_runs,
             "falhas": falhas, "sucessos": sucessos, "runs_validos": falhas + sucessos,
             "repositorios_com_cfr": sum(r["change_failure_rate"] is not None for r in taxas["repositorios"]),

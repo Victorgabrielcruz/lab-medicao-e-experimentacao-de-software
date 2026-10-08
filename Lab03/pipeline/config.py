@@ -55,6 +55,8 @@ def validate_inclusao(inclusao):
         value = inclusao.get(key)
         if not isinstance(value, int) or isinstance(value, bool) or value < 1:
             raise ConfigError(f"inclusao.{key} deve ser um inteiro positivo.")
+    if "incluir_prereleases" in inclusao and not isinstance(inclusao["incluir_prereleases"], bool):
+        raise ConfigError("inclusao.incluir_prereleases deve ser booleano.")
 
 
 def janela_utc(config):

@@ -43,7 +43,7 @@ class Api:
         if path.endswith("/releases"):
             return resposta([{"id": i, "draft": False, "prerelease": i == 0,
                                "published_at": "2025-10-10T00:00:00Z", "tag_name": f"v{i}"}
-                              for i in range(3 if n <= self.excluidos else 5)])
+                              for i in range(3 if n <= self.excluidos else 6)])
         if path.endswith("/contributors"):
             return resposta([])
         return resposta({"id": n, "full_name": f"org/repo{n}", "default_branch": "main",
@@ -130,13 +130,17 @@ def test_releases_pagina_filtra_drafts_janela_e_deduplica():
     r = {"id": 1, "draft": False, "prerelease": True, "tag_name": "v1",
          "published_at": "2025-10-01T00:00:00Z"}
     class Paginada:
+        def __init__(self):
+            self.paginas = []
         def get_resposta(self, path, params):
+            self.paginas.append(params["page"])
             if params["page"] == 1:
                 return resposta([r, {**r, "id": 2, "draft": True},
-                                  {**r, "id": 3, "published_at": "2025-09-30T23:59:59Z"}], "https://api.github.com/next")
+                                  {**r, "id": 3, "published_at": "2025-09-30T23:59:59Z"}], "https://api.github.com/next?page=2")
             return resposta([r, {**r, "id": 4, "published_at": "2025-10-31T23:59:59Z"}])
-    repo = releases.coletar_repositorio(Paginada(), {"id": 1, "full_name": "org/r"}, INICIO, FIM)
-    assert repo["paginas"] == 2
+    client = Paginada()
+    repo = releases.coletar_repositorio(client, {"id": 1, "full_name": "org/r"}, INICIO, FIM)
+    assert client.paginas == [1, 2]
     assert [r["id"] for r in repo["releases"]] == [1, 4]
     assert repo["releases"][0]["prerelease"]
 
@@ -301,3 +305,23 @@ def test_fonte_explicita_sobre_saida_e_recusada(tmp_path):
     gravar_json(destino, json.loads(fonte.read_text()))
     with pytest.raises(ConfigError, match="Fonte explícita"):
         integrado.executar(cfg, Api(), 1, 1, destino)
+
+
+def test_regra_estavel_explicita_alinha_inclusao_e_frequencia(tmp_path):
+    cfg, fonte = configurar(tmp_path, 1)
+    cfg["inclusao"]["incluir_prereleases"] = False
+    class QuatroEstaveis(Api):
+        def get_resposta(self, path, params=None):
+            r = super().get_resposta(path, params)
+            return resposta(r.json()[:5]) if path.endswith("/releases") else r
+    assert not integrado.executar(cfg, QuatroEstaveis(), 1, 1, fonte)["execucao_completa"]
+    cfg["inclusao"]["incluir_prereleases"] = True
+    assert integrado.executar(cfg, QuatroEstaveis(), 1, 1, fonte)["execucao_completa"]
+    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text())
+    assert df["repositorios"][0]["releases_ano"] == 5
+    cfg["inclusao"]["incluir_prereleases"] = False
+    # Novo contexto/raw para coletor atualizado, sem reutilizar fixture com 4 estáveis.
+    cfg["caminhos"]["raw"] = str(tmp_path / "raw2")
+    assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
+    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text())
+    assert df["repositorios"][0]["releases_ano"] == 5

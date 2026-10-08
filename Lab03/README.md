@@ -403,7 +403,7 @@ O acompanhamento das tarefas é feito no [GitHub Project](https://github.com/use
 ### Pipeline integrado — S01-21 (#149)
 
 Um único comando amplia gradualmente a busca até obter 100 repositórios com
-pelo menos cinco releases e cinquenta runs válidos na janela, ou esgotar o
+pelo menos cinco releases estáveis e cinquenta runs válidos na janela, ou esgotar o
 limite explícito de candidatos:
 
 ```text
@@ -417,6 +417,13 @@ padrão, `raw/candidatos_busca.json` preserva a busca completa, enquanto
 com a mesma janela, identidade e default branch. Use caminhos próprios em
 `caminhos.raw` e `caminhos.processed` para preservar o piloto; o cache pode ser
 compartilhado depois que a coleta original terminar.
+
+A política principal atual usa `inclusao.incluir_prereleases=false`, conforme
+as definições de deploy/inclusão atualizadas na #138. Pré-releases continuam
+nos dados brutos para variantes. Configurações antigas sem a chave preservam
+a inclusão anterior; `true` conta todas as releases publicadas. O mesmo filtro
+é aplicado no prefiltro, funil e frequência de implantação. O hash do contexto
+invalida checkpoints se essa política mudar.
 
 A ordem é candidatos → Actions → metadados → releases → workflow runs →
 critério mínimo → frequência de releases/CFR (a)/tempo de recuperação. O
