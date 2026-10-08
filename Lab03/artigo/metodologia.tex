@@ -37,10 +37,13 @@ por interpolação linear inclusiva. Não são estimativas que incorporem censur
 A coleta de commits compara releases estáveis consecutivas, recuperando a
 release anterior à janela quando existir. O protocolo usa a data do autor do
 commit. A consulta é paginada e registra comparações inacessíveis ou incompletas;
-a primeira release histórica sem anterior é ignorada. As variantes de lead time
-por release e por commit ainda devem ser integradas e validadas antes da análise
-das quatro métricas e da classificação conjunta. A coleta integrada também
-aguarda validação com dados reais.
+a primeira release histórica sem anterior é ignorada. O lead time por release
+é a publicação menos a data do autor mais antiga entre os commits da comparação.
+O valor do repositório é a mediana por release, sem ponderação por número de
+commits. Ausência de commits, datas inválidas, comparações incompletas e tempos
+negativos não produzem valor; zero observado é válido. Essa variante está
+implementada e aguarda validação real. A variante por commit ainda depende de
+integração e validação antes da análise conjunta do protocolo.
 A classificação individual segue a tabela operacional versionada, com adaptações
 explícitas da referência DORA de 2021; as adaptações são uma ameaça de validade.
 
