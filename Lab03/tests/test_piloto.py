@@ -95,7 +95,11 @@ def test_piloto_integra_coleta_limitada_sem_busca_reutilizando_cache(tmp_path, m
             if url.endswith("/actions/runs"):
                 return resposta({"total_count": 0, "workflow_runs": []})
             if url.endswith("/releases"):
-                return resposta([])
+                return resposta([{"id": i, "tag_name": f"v{i}", "draft": False, "prerelease": False,
+                                  "published_at": f"2025-10-{i:02d}T00:00:00Z"} for i in (2, 1)])
+            if url.endswith("/compare/v1...v2"):
+                return resposta({"status": "ahead", "total_commits": 1,
+                                 "commits": [{"sha": "abc", "commit": {"author": {"date": "2025-10-01T12:00:00Z"}}}]})
             if url.endswith("/tags"):
                 return resposta([{"name": "v1.0", "commit": {"sha": "abc"}}])
             if url.endswith("/commits/abc"):
@@ -115,14 +119,17 @@ def test_piloto_integra_coleta_limitada_sem_busca_reutilizando_cache(tmp_path, m
     runs = json.loads((pasta / "workflow_runs.json").read_text())
     releases = json.loads((pasta / "releases.json").read_text())
     tags = json.loads((pasta / "tags.json").read_text())
+    compare = json.loads((pasta / "compare.json").read_text())
     assert actions["total_avaliados"] == 2
     assert actions["total_aprovados"] == runs["total_repositorios"] == releases["total_repositorios"] == 1
     assert tags["total_repositorios"] == tags["total_tags"] == 1
-    assert len(sessao.chamadas) == 17  # Metadados, releases, tags/commit e 12 meses; Actions no cache.
+    assert compare["total_repositorios"] == compare["total_comparacoes"] == compare["total_releases_ignoradas"] == 1
+    assert len(sessao.chamadas) == 18  # Inclui compare; o histórico usa a página de releases no cache.
     assert "cache compartilhado" in capsys.readouterr().out
     assert not (tmp_path / "raw" / "workflow_runs.json").exists()
     assert not (tmp_path / "raw" / "releases.json").exists()
     assert not (tmp_path / "raw" / "tags.json").exists()
+    assert not (tmp_path / "raw" / "compare.json").exists()
 
     sessao.chamadas.clear()
     assert main(["--config", str(cfg_path), "--piloto", "2"]) == 0

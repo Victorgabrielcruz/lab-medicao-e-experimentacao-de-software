@@ -118,7 +118,7 @@ python -m pipeline --config config.yaml --piloto 100
 ```
 
 Esse comando não repete a Search API. Usa os primeiros **até 100 candidatos**
-da busca existente e executa Actions, metadados, releases, tags e workflow runs. Os filtros
+da busca existente e executa Actions, metadados, releases, compare, tags e workflow runs. Os filtros
 podem reduzir a quantidade final de repositórios. Os resultados ficam em
 `data/raw/piloto-100/`, sem sobrescrever a busca nem as saídas completas. O
 cache continua em `data/cache` e as respostas anteriores são reutilizadas.
@@ -126,7 +126,7 @@ Use `--piloto` sem `--etapas`; ele não pode ser combinado com `--limpar-cache`.
 Se a cota da API ainda estiver esgotada, o piloto também aguardará o reset.
 Uma interrupção pode ser retomada repetindo o mesmo comando.
 
-O piloto verifica as coletas da S01-10, S01-11 e S01-18. Ele não equivale à conclusão da S01-21,
+O piloto verifica as coletas da S01-10, S01-11, S01-12 e S01-18. Ele não equivale à conclusão da S01-21,
 que exige seleção, coleta **e cálculo** integrados para 100 repositórios.
 
 A etapa `workflow_runs` lê `data/raw/metadados.json` e usa a `default_branch`
@@ -245,6 +245,68 @@ Referências: [lista de tags](https://docs.github.com/en/rest/repos/repos#list-r
 e [consulta de commit](https://docs.github.com/en/rest/commits/commits#get-a-commit)
 na REST API do GitHub.
 
+### Commits entre releases consecutivas (S01-12 — #140)
+
+A etapa `compare` lê `data/raw/releases.json`, confere se a janela corresponde
+à configuração e usa as releases estáveis (`draft=false`, `prerelease=false`)
+publicadas dentro dela, em ordem de `published_at`/ID. Para cada par consecutivo,
+consulta `GET /repos/{owner}/{repo}/compare/{anterior}...{atual}`. As tags são
+codificadas na URL, incluindo nomes com barras e caracteres especiais.
+
+```bash
+python -m pipeline --config config.yaml --etapas compare
+```
+
+Sem `--etapas`, roda após `releases`; `--piloto 100` também inclui a coleta,
+com saída em `data/raw/piloto-100/compare.json`. A primeira release da janela
+usa como base a última release estável anterior à janela. Essa referência é
+recuperada percorrendo o endpoint de releases com o cache compartilhado da
+S01-10. Se não existir release anterior, a primeira é registrada como ignorada
+com motivo `sem_release_anterior`, e a seguinte é comparada normalmente.
+Pré-releases permanecem nos dados da S01-10 para variantes posteriores; não
+interrompem a sequência estável usada nesta etapa.
+
+Todas as consultas de compare usam `per_page=100` e `page`, seguindo
+`Link` (`rel="next"`) até o fim. O limite de **250 commits** é da consulta
+**sem paginação**: esta etapa não trunca nesse número. Cada comparação registra
+`limite_sem_paginacao=250`, `limite_250_superado`, o total da API, o total de
+SHAs únicos recuperados e as páginas coletadas. Valores acima de 250 também
+são registrados no log e no contador `comparacoes_acima_250` por repositório
+e no consolidado. Commits são deduplicados por SHA dentro de cada comparação;
+o commit base não é incluído na lista.
+
+O consolidado `data/raw/compare.json` é gravado atomicamente. Cada registro
+identifica a release, a anterior, o status do compare e os commits, preservando
+SHA, URL, `commit.author`, `commit.committer`, mensagem e SHAs dos pais. A data
+para o cálculo posterior de lead time é `commit.author.date`. Commits anteriores
+à janela são preservados, pois podem ter sido entregues numa release da janela.
+Comparações sem commits novos são mantidas como completas com lista vazia.
+Esta etapa fornece os dados; não calcula o lead time.
+
+HTTP **404** no compare registra a release como ignorada, com as duas tags e
+o motivo `compare_inacessivel`, sem interromper os próximos pares ou repositórios.
+O par seguinte continua usando a release cronologicamente anterior, inclusive
+se o compare dela falhou; não se salta essa base. HTTP 451 recebe o mesmo
+tratamento. Se o histórico de releases estiver inacessível, as releases desse
+repositório são registradas com motivo `historico_releases_inacessivel`.
+
+Se a paginação entregar uma quantidade de SHAs diferente de `total_commits`,
+ou se esse total mudar entre páginas, a comparação fica
+`coleta_incompleta=true` e a release é ignorada com motivo `compare_incompleto`.
+Os commits parciais ficam no registro para auditoria. A saída informa
+`total_comparacoes` completas, `total_releases_ignoradas`, os motivos por
+repositório e `total_releases_ignoradas_404`, por repositório e no consolidado.
+A primeira release histórica sem anterior é ignorada, mas não representa
+coleta incompleta.
+
+Páginas de releases e compare ficam no cache da S01-16 e usam o controle de
+rate limit/backoff da S01-17. Após interrupção, repetir o comando reutiliza as
+páginas concluídas. Erros HTTP não são cacheados; um compare que respondeu 404
+é consultado novamente numa reexecução. Outros erros são propagados, preservando
+o consolidado anterior.
+
+Referência: [compare na REST API do GitHub](https://docs.github.com/en/rest/commits/commits#compare-two-commits).
+
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
@@ -300,6 +362,7 @@ das métricas e da seleção em um único comando pertence à S01-21 (#149).
 | `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
 | `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
 | `releases` | `data/raw/releases.json` | Lê `metadados.json`, pagina pelo Link header com cache e retém publicações na janela sem drafts; preserva pré-releases e contabiliza as estáveis separadamente. |
+| `compare` | `data/raw/compare.json` | Lê `releases.json`, compara releases estáveis consecutivas com paginação/cache, recupera a base anterior à janela e registra o limite de 250 commits e releases ignoradas por 404 ou coleta incompleta. |
 | `tags` | `data/raw/tags.json` | Lê `metadados.json`, pagina as tags e consulta a data do autor de cada commit por SHA, filtrando pela janela e reutilizando o cache de páginas/commits para a variante da RQ07. |
 | `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
 

@@ -238,7 +238,7 @@ def test_cli_executa_apenas_tags_com_cache_e_mostra_totais(tmp_path, monkeypatch
     monkeypatch.setenv("GITHUB_TOKEN", "token-falso")
     monkeypatch.setattr("pipeline.__main__.GitHubClient", lambda token, base, timeout, cache:
                         GitHubClient(token, base, timeout, cache=cache, session=sessao))
-    for nome in ("candidatos", "actions", "metadados", "releases", "workflow_runs"):
+    for nome in ("candidatos", "actions", "metadados", "releases", "compare", "workflow_runs"):
         monkeypatch.setattr(f"pipeline.{nome}.executar", lambda *args: pytest.fail("etapa não solicitada"))
     assert main(["--config", str(cfg_path), "--etapas", "tags"]) == 0
     assert "Tags: 1 repositórios, 1 tags na janela, 0 coletas incompletas" in capsys.readouterr().out
