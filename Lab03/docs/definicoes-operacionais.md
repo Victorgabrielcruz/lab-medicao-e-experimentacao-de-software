@@ -21,9 +21,9 @@ O pipeline recusa executar se a janela configurada não cobrir exatamente 12 mes
 
 ## 2. Deploy
 
-- **Deploy = release publicada** no GitHub: `draft = false` e `published_at` dentro da janela.
+- **Deploy = release publicada estável** no GitHub: `draft = false`, `prerelease = false` e `published_at` dentro da janela.
 - A data do deploy é o `published_at` da release.
-- Pre-releases fazem parte da definição principal. O campo `prerelease` é armazenado para permitir variantes na RQ07.
+- Pré-releases ficam fora da definição principal e são usadas como variantes na RQ07. A coleta S01-10 (#138) as preserva com `prerelease = true`; `total_releases_estaveis` contabiliza apenas a definição principal, enquanto `total_releases` inclui também as pré-releases publicadas na janela.
 - Tags sem release (com a data do commit da tag) são coletadas apenas como definição alternativa de deploy na RQ07.
 
 ## 3. Workflow runs
@@ -43,7 +43,7 @@ Um **run válido** é um run do default branch, com `event = push`, criado dentr
 
 Um repositório entra na amostra somente se, dentro da janela, tiver:
 
-- **pelo menos 5 releases publicadas**; e
+- **pelo menos 5 releases publicadas estáveis**; e
 - **pelo menos 50 runs válidos**.
 
 Antes disso, são descartados os repositórios **sem GitHub Actions**: os que não têm nenhum workflow com path em `.github/workflows/` no endpoint `GET /repos/{owner}/{repo}/actions/workflows`. O `total_count` do endpoint sozinho não serve, porque inclui workflows dinâmicos criados pelo próprio GitHub (path `dynamic/...`, como Dependabot Updates, Dependency Graph, CodeQL e Pages). Eles aparecem até em repositórios que nunca configuraram Actions; por exemplo, `torvalds/linux` tem `total_count = 2` e nenhum workflow próprio.

@@ -94,6 +94,8 @@ def test_piloto_integra_coleta_limitada_sem_busca_reutilizando_cache(tmp_path, m
                 return resposta([{"login": "autor"}])
             if url.endswith("/actions/runs"):
                 return resposta({"total_count": 0, "workflow_runs": []})
+            if url.endswith("/releases"):
+                return resposta([])
             assert url.endswith("/repos/org/repo1")
             return resposta({"id": 1, "full_name": "org/repo1", "stargazers_count": 999,
                              "created_at": "2020-01-01T00:00:00Z", "default_branch": "main"})
@@ -107,11 +109,13 @@ def test_piloto_integra_coleta_limitada_sem_busca_reutilizando_cache(tmp_path, m
     pasta = tmp_path / "raw" / "piloto-2"
     actions = json.loads((pasta / "actions.json").read_text())
     runs = json.loads((pasta / "workflow_runs.json").read_text())
+    releases = json.loads((pasta / "releases.json").read_text())
     assert actions["total_avaliados"] == 2
-    assert actions["total_aprovados"] == runs["total_repositorios"] == 1
-    assert len(sessao.chamadas) == 14  # Metadados/contribuidores e 12 meses; Actions vieram do cache.
+    assert actions["total_aprovados"] == runs["total_repositorios"] == releases["total_repositorios"] == 1
+    assert len(sessao.chamadas) == 15  # Metadados/contribuidores, releases e 12 meses; Actions no cache.
     assert "cache compartilhado" in capsys.readouterr().out
     assert not (tmp_path / "raw" / "workflow_runs.json").exists()
+    assert not (tmp_path / "raw" / "releases.json").exists()
 
     sessao.chamadas.clear()
     assert main(["--config", str(cfg_path), "--piloto", "2"]) == 0
