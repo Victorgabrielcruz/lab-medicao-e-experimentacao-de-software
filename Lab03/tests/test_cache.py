@@ -35,7 +35,8 @@ class Sessao:
 
 def cliente(tmp_path, respostas=()):
     sessao = Sessao(respostas)
-    return GitHubClient("token-secreto-de-teste", session=sessao, cache=CacheDisco(tmp_path)), sessao
+    return GitHubClient("token-secreto-de-teste", session=sessao, cache=CacheDisco(tmp_path),
+                        sleep=lambda segundos: None), sessao
 
 
 def test_reexecucao_le_do_disco_sem_rede_e_sem_persistir_token(tmp_path):
@@ -80,7 +81,8 @@ def test_endpoint_parametros_pagina_repositorio_e_api_nao_colidem(tmp_path):
 def test_retomada_da_paginacao_apos_falha(tmp_path):
     primeira = {"total_count": 101, "workflows": [{"path": ".github/workflows/test.yml"}] * 100}
     segunda = {"total_count": 101, "workflows": [{"path": ".github/workflows/deploy.yml"}]}
-    interrompido, _ = cliente(tmp_path, [resposta(primeira), resposta({"message": "erro"}, status=500)])
+    interrompido, _ = cliente(tmp_path, [resposta(primeira)] +
+                              [resposta({"message": "erro"}, status=500) for _ in range(5)])
     with pytest.raises(requests.HTTPError):
         actions.contar_workflows(interrompido, "org/projeto")
 
@@ -109,12 +111,14 @@ def test_cache_preserva_resposta_204(tmp_path):
 
 @pytest.mark.parametrize("status", [403, 404, 429, 500])
 def test_erros_http_nao_sao_cacheados(tmp_path, status):
-    c, sessao = cliente(tmp_path, [resposta({"message": "erro"}, status), resposta({"ok": True})])
+    tentativas = 5 if status in (429, 500) else 1
+    c, sessao = cliente(tmp_path, [resposta({"message": "erro"}, status) for _ in range(tentativas)] +
+                        [resposta({"ok": True})])
     with pytest.raises(requests.HTTPError):
         c.get("/repos/org/projeto")
     assert not list(tmp_path.rglob("*.json"))
     assert c.get("/repos/org/projeto") == {"ok": True}
-    assert len(sessao.chamadas) == 2
+    assert len(sessao.chamadas) == tentativas + 1
 
 
 def test_resposta_incompleta_volta_a_api(tmp_path):
