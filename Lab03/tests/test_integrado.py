@@ -241,3 +241,63 @@ def test_cli_relata_amostra_insuficiente_e_erros(tmp_path, monkeypatch, capsys):
     monkeypatch.delenv("GITHUB_TOKEN")
     assert integrado.main(["--config", str(caminho)]) == 2
     assert "GITHUB_TOKEN" in capsys.readouterr().err
+
+
+def test_auditoria_confere_censura_e_rejeita_run_duplicado(tmp_path):
+    from pipeline import auditoria
+    cfg, fonte = configurar(tmp_path, 1)
+    class Censura(Api):
+        def get(self, path, params=None):
+            r = super().get(path, params)
+            if path.endswith("/actions/runs"):
+                for run in r["workflow_runs"]:
+                    if run["id"] == 50:
+                        run["workflow_id"] = 8
+                        run["conclusion"] = "failure"
+            return r
+    integrado.executar(cfg, Censura(), 1, 1, fonte)
+    entrada = tmp_path / "raw/amostra_workflow_runs.json"
+    taxas = tmp_path / "processed/cfr.json"
+    tempos = tmp_path / "processed/tempo_recuperacao.json"
+    assert auditoria.validar(cfg, entrada, taxas, tempos)["episodios_censurados"] == 1
+    dados = json.loads(entrada.read_text())
+    dados["repositorios"][0]["workflow_runs"].append(dados["repositorios"][0]["workflow_runs"][0])
+    gravar_json(entrada, dados)
+    with pytest.raises(ConfigError, match="duplicados"):
+        auditoria.validar(cfg, entrada, taxas, tempos)
+
+
+def test_busca_padrao_preservada_para_ampliacao_sem_busca_nova(tmp_path):
+    cfg, fonte = configurar(tmp_path, 3)
+    gravar_json(tmp_path / "raw/candidatos.json", json.loads(fonte.read_text()))
+    primeira = integrado.executar(cfg, Api(excluidos=1), 1, 3)
+    assert primeira["candidatos_avaliados"] == 2
+    busca = json.loads((tmp_path / "raw/candidatos_busca.json").read_text())
+    assert len(busca["candidatos"]) == 3
+    segunda = integrado.executar(cfg, Api(excluidos=1), 2, 3)
+    assert segunda["execucao_completa"] and segunda["candidatos_avaliados"] == 3
+    assert json.loads((tmp_path / "raw/candidatos_busca.json").read_text()) == busca
+
+
+def test_fonte_explicita_ausente_nao_dispara_busca(tmp_path):
+    cfg, fonte = configurar(tmp_path)
+    with pytest.raises(FileNotFoundError, match="Fonte"):
+        integrado.executar(cfg, Api(), 1, 1, fonte.with_name("ausente.json"))
+
+
+def test_retomada_mesma_entrada_audita_sem_recalcular_metricas(tmp_path, monkeypatch):
+    cfg, fonte = configurar(tmp_path, 1)
+    integrado.executar(cfg, Api(), 1, 1, fonte)
+    def proibido(*args, **kwargs):
+        raise AssertionError("não deveria repetir cálculo")
+    monkeypatch.setattr(integrado.cfr, "executar", proibido)
+    monkeypatch.setattr(integrado.tempo_recuperacao, "executar", proibido)
+    assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
+
+
+def test_fonte_explicita_sobre_saida_e_recusada(tmp_path):
+    cfg, fonte = configurar(tmp_path, 1)
+    destino = tmp_path / "raw/candidatos.json"
+    gravar_json(destino, json.loads(fonte.read_text()))
+    with pytest.raises(ConfigError, match="Fonte explícita"):
+        integrado.executar(cfg, Api(), 1, 1, destino)

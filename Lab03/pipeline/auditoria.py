@@ -56,6 +56,8 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
             else:
                 ids.add(run["id"])
                 runs.append(run)
+        _exigir(fora == 0 and duplicados == 0, "consolidado contém runs fora do recorte ou duplicados")
+        _exigir(repo.get("total_runs", len(runs)) == len(runs), "total de runs divergente")
         total_runs += len(runs)
         c = Counter(r.get("conclusion") for r in runs)
         n_f = sum(c[x] for x in ("failure", "timed_out", "startup_failure"))
@@ -114,6 +116,14 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
         if "meses" in repo:
             _exigir([(m["inicio"], m["fim_exclusivo"]) for m in repo["meses"]]
                     == [(_iso(a), _iso(b)) for a, b in fatias_mensais(inicio, fim)], "cobertura mensal divergente")
+    incompletas = sum(r["coleta_incompleta"] for r in taxas["repositorios"])
+    for documento in (taxas, tempos):
+        _exigir(documento["repositorios_com_coleta_incompleta"] == incompletas, "total de incompletude divergente")
+    _exigir(taxas["repositorios_com_cfr"] == sum(r["change_failure_rate"] is not None for r in taxas["repositorios"]),
+            "total de CFR calculadas divergente")
+    _exigir(tempos["repositorios_com_tempo_recuperacao"] == sum(r["tempo_recuperacao"] is not None
+                                                              for r in tempos["repositorios"]),
+            "total de recuperações calculadas divergente")
     _exigir(tempos["total_episodios"] == recuperados + censurados
             and tempos["episodios_censurados"] == censurados, "totais globais de episódios divergentes")
     return {"validado": True, "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),

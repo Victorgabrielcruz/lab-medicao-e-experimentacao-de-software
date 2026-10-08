@@ -372,7 +372,9 @@ limite explícito de candidatos:
 python -m pipeline.integrado --config config.yaml --alvo 100 --max-candidatos 1000
 ```
 
-`--candidatos CAMINHO` reutiliza uma busca consolidada existente.
+`--candidatos CAMINHO` reutiliza uma busca consolidada existente. No modo
+padrão, `raw/candidatos_busca.json` preserva a busca completa, enquanto
+`raw/candidatos.json` contém somente os candidatos avaliados no funil.
 `--reutilizar-runs CAMINHO` reutiliza os meses completos de uma coleta mensal
 com a mesma janela, identidade e default branch. Use caminhos próprios em
 `caminhos.raw` e `caminhos.processed` para preservar o piloto; o cache pode ser

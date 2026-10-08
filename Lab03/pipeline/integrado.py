@@ -34,9 +34,19 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     raw, processed = (Path(config["caminhos"][k]) for k in ("raw", "processed"))
     if raw.resolve() == processed.resolve():
         raise ConfigError("raw e processed devem ser diferentes")
-    fonte = Path(fonte) if fonte else raw / candidatos.ARQUIVO_SAIDA
-    if not fonte.is_file():
-        fonte, _, _ = candidatos.executar(config, client)
+    destino_candidatos = raw / candidatos.ARQUIVO_SAIDA
+    if fonte is not None:
+        fonte = Path(fonte)
+        if not fonte.is_file():
+            raise FileNotFoundError(f"Fonte de candidatos não encontrada: {fonte}")
+        if fonte.resolve() == destino_candidatos.resolve():
+            raise ConfigError("Fonte explícita não pode ser candidatos.json de saída; use candidatos_busca.json")
+    else:
+        fonte = raw / "candidatos_busca.json"
+        if not fonte.is_file():
+            if not destino_candidatos.is_file():
+                candidatos.executar(config, client)
+            gravar_json(fonte, _ler(destino_candidatos))
     todos = _ler(fonte)["candidatos"]
     if len({r["id"] for r in todos}) != len(todos):
         raise ConfigError("IDs duplicados na fonte de candidatos")
@@ -132,8 +142,12 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     selecionados = [r for r in dados["workflow_runs"]["repositorios"] if r["id"] in amostra]
     entrada = raw / "amostra_workflow_runs.json"
     gravar_json(entrada, {"janela": janela, "repositorios": selecionados})
-    cfr.executar(config, entrada)
-    tempo_recuperacao.executar(config, entrada)
+    audit_path = processed / "auditoria.json"
+    mesma_entrada = (audit_path.is_file() and _ler(audit_path).get("entrada_sha256")
+                     == hashlib.sha256(entrada.read_bytes()).hexdigest())
+    if not mesma_entrada:
+        cfr.executar(config, entrada)
+        tempo_recuperacao.executar(config, entrada)
     validacao = auditoria.validar(config, entrada, processed / "cfr.json", processed / "tempo_recuperacao.json")
     gravar_json(processed / "auditoria.json", validacao)
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
