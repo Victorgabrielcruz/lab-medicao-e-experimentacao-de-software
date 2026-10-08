@@ -5,12 +5,12 @@ import logging
 import sys
 from pathlib import Path
 
-from pipeline import actions, candidatos, metadados, releases, tags, workflow_runs
+from pipeline import actions, candidatos, compare, metadados, releases, tags, workflow_runs
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.config import ConfigError, load_config, read_token
 from pipeline.github_api import GitHubClient
 
-ETAPAS = ("candidatos", "actions", "metadados", "releases", "tags", "workflow_runs")
+ETAPAS = ("candidatos", "actions", "metadados", "releases", "compare", "tags", "workflow_runs")
 
 
 def _limite_positivo(valor):
@@ -52,7 +52,7 @@ def parse_args(argv=None):
                        help="usa até N candidatos da busca existente e salva a coleta em raw/piloto-N")
     args = parser.parse_args(argv)
     if args.piloto is not None and args.etapas != list(ETAPAS):
-        parser.error("use --piloto sem --etapas; o piloto executa actions, metadados, releases, tags e workflow_runs")
+        parser.error("use --piloto sem --etapas; o piloto executa actions, metadados, releases, compare, tags e workflow_runs")
     return args
 
 
@@ -69,7 +69,7 @@ def main(argv=None):
         token = read_token()
         if args.piloto is not None:
             config = preparar_piloto(config, args.piloto)
-            args.etapas = ["actions", "metadados", "releases", "tags", "workflow_runs"]
+            args.etapas = ["actions", "metadados", "releases", "compare", "tags", "workflow_runs"]
             print(f"Piloto: até {args.piloto} candidatos da busca existente, "
                   f"cache compartilhado, saída em {config['caminhos']['raw']}")
         api = config["api"]
@@ -97,6 +97,13 @@ def main(argv=None):
             estaveis = sum(r["total_releases_estaveis"] for r in lista)
             print(f"Releases: {len(lista)} repositórios, {total} releases publicadas "
                   f"({estaveis} estáveis), {len(descartes)} inacessíveis -> {saida}")
+
+        if "compare" in args.etapas:
+            saida, lista = compare.executar(config, client)
+            total = sum(r["total_comparacoes"] for r in lista)
+            ignoradas = sum(r["total_releases_ignoradas"] for r in lista)
+            print(f"Compare: {len(lista)} repositórios, {total} comparações completas, "
+                  f"{ignoradas} releases ignoradas -> {saida}")
 
         if "tags" in args.etapas:
             saida, lista, descartes = tags.executar(config, client)

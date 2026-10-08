@@ -197,7 +197,7 @@ def test_cli_executa_apenas_releases_com_cache_e_mostra_totais(tmp_path, monkeyp
     monkeypatch.setenv("GITHUB_TOKEN", "token-falso")
     monkeypatch.setattr("pipeline.__main__.GitHubClient", lambda token, base, timeout, cache:
                         GitHubClient(token, base, timeout, cache=cache, session=sessao))
-    for nome in ("candidatos", "actions", "metadados", "tags", "workflow_runs"):
+    for nome in ("candidatos", "actions", "metadados", "compare", "tags", "workflow_runs"):
         monkeypatch.setattr(f"pipeline.{nome}.executar", lambda *args: pytest.fail("etapa não solicitada"))
     assert main(["--config", str(cfg_path), "--etapas", "releases"]) == 0
     assert "Releases: 1 repositórios, 1 releases publicadas (1 estáveis)" in capsys.readouterr().out
