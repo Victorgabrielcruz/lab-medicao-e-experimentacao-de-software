@@ -55,6 +55,33 @@ O primeiro comando remove apenas os JSON das áreas `respostas/` e `metadados/`
 do cache configurado e encerra, sem exigir token nem acessar a API. Os dados
 brutos e processados são preservados. O cache local não é versionado no Git.
 
+### Rate limit e backoff (S01-17)
+
+O cliente HTTP trata as falhas temporárias automaticamente em todas as etapas:
+
+- Lê `X-RateLimit-Remaining` e `X-RateLimit-Reset` das respostas da API. Quando
+  a cota chega a zero, aguarda até o reset (timestamp Unix em UTC), mais 1 segundo
+  de margem, antes da próxima consulta ao mesmo recurso. As cotas `core` e
+  `search` são acompanhadas separadamente. Uma resposta bem-sucedida é devolvida
+  imediatamente; leituras do cache continuam disponíveis durante esse período.
+- Em respostas `403`/`429` de rate limit, repete a mesma consulta após a espera.
+  `Retry-After`, quando válido, é respeitado junto com o reset da cota, usando
+  o maior prazo quando ambos estiverem presentes. Para
+  limite secundário sem prazo, aguarda 60, 120, 240 e 480 segundos. Um `403` de
+  permissão, sem indicação de rate limit, é propagado imediatamente.
+- Para respostas `5xx`, faz até quatro novas tentativas com esperas de **1, 2,
+  4 e 8 segundos**: são no máximo cinco requisições se apenas esse erro ocorrer.
+- As repetições por rate limit também são limitadas a quatro por consulta. Os
+  contadores de rate limit e `5xx` são independentes. Se as falhas persistirem,
+  o erro HTTP final é propagado e o cache concluído fica disponível para retomada.
+
+As esperas e repetições são registradas no log. Não é necessário configurar
+flags adicionais. Os testes simulam respostas, relógio e espera, sem acessar a
+rede nem aguardar os intervalos reais. Erros de conexão e timeout continuam
+sendo propagados pelo cliente.
+
+Referência: [rate limits da REST API do GitHub](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
+
 ### Etapas
 
 | Etapa | Saída | Descrição |

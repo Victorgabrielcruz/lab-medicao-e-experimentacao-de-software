@@ -151,6 +151,9 @@ def test_executar_grava_arquivo(tmp_path):
 
 def test_github_client_monta_requisicao():
     class Resposta:
+        status_code = 200
+        headers = {}
+
         def raise_for_status(self):
             pass
 
