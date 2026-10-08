@@ -84,6 +84,22 @@ estatística é condicionada à recuperação observada; não é uma estimativa 
 sobrevivência que inclua as censuras. Uma coleta incompleta mantém o alerta,
 pois páginas ausentes podem alterar episódios e a identificação de censura.
 
+### Commits entre releases (S01-12 — #140)
+
+Os dados para lead time vêm de `compare/{release anterior}...{release atual}`,
+entre releases estáveis em ordem de publicação. A release atual deve estar na
+janela, mas sua anterior pode estar fora dela. A primeira release histórica,
+sem anterior, é ignorada e contabilizada. Commits usam `commit.author.date` e
+podem ter sido escritos antes da janela.
+
+A coleta sempre pagina, evitando o limite de 250 commits das consultas sem
+paginação. Esse limite e a quantidade recuperada ficam registrados. Um compare
+com HTTP 404 (tag apagada ou inacessível) ignora somente a release atual, registra
+o motivo e continua os próximos pares. Comparações incompletas também são
+ignoradas, preservando os dados parciais para auditoria. A quantidade de releases
+ignoradas e a parcela com HTTP 404 são informadas por repositório e no consolidado.
+O cálculo das duas variantes de lead time é uma etapa posterior.
+
 ## 6. Metadados dos repositórios
 
 Fatores usados nas análises, coletados para cada repositório aprovado no filtro de Actions:

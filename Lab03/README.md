@@ -201,6 +201,68 @@ integração posterior do pipeline.
 
 Referência: [releases na REST API do GitHub](https://docs.github.com/en/rest/releases/releases#list-releases).
 
+### Commits entre releases consecutivas (S01-12 — #140)
+
+A etapa `compare` lê `data/raw/releases.json`, confere se a janela corresponde
+à configuração e usa as releases estáveis (`draft=false`, `prerelease=false`)
+publicadas dentro dela, em ordem de `published_at`/ID. Para cada par consecutivo,
+consulta `GET /repos/{owner}/{repo}/compare/{anterior}...{atual}`. As tags são
+codificadas na URL, incluindo nomes com barras e caracteres especiais.
+
+```bash
+python -m pipeline --config config.yaml --etapas compare
+```
+
+Sem `--etapas`, roda após `releases`; `--piloto 100` também inclui a coleta,
+com saída em `data/raw/piloto-100/compare.json`. A primeira release da janela
+usa como base a última release estável anterior à janela. Essa referência é
+recuperada percorrendo o endpoint de releases com o cache compartilhado da
+S01-10. Se não existir release anterior, a primeira é registrada como ignorada
+com motivo `sem_release_anterior`, e a seguinte é comparada normalmente.
+Pré-releases permanecem nos dados da S01-10 para variantes posteriores; não
+interrompem a sequência estável usada nesta etapa.
+
+Todas as consultas de compare usam `per_page=100` e `page`, seguindo
+`Link` (`rel="next"`) até o fim. O limite de **250 commits** é da consulta
+**sem paginação**: esta etapa não trunca nesse número. Cada comparação registra
+`limite_sem_paginacao=250`, `limite_250_superado`, o total da API, o total de
+SHAs únicos recuperados e as páginas coletadas. Valores acima de 250 também
+são registrados no log e no contador `comparacoes_acima_250` por repositório
+e no consolidado. Commits são deduplicados por SHA dentro de cada comparação;
+o commit base não é incluído na lista.
+
+O consolidado `data/raw/compare.json` é gravado atomicamente. Cada registro
+identifica a release, a anterior, o status do compare e os commits, preservando
+SHA, URL, `commit.author`, `commit.committer`, mensagem e SHAs dos pais. A data
+para o cálculo posterior de lead time é `commit.author.date`. Commits anteriores
+à janela são preservados, pois podem ter sido entregues numa release da janela.
+Comparações sem commits novos são mantidas como completas com lista vazia.
+Esta etapa fornece os dados; não calcula o lead time.
+
+HTTP **404** no compare registra a release como ignorada, com as duas tags e
+o motivo `compare_inacessivel`, sem interromper os próximos pares ou repositórios.
+O par seguinte continua usando a release cronologicamente anterior, inclusive
+se o compare dela falhou; não se salta essa base. HTTP 451 recebe o mesmo
+tratamento. Se o histórico de releases estiver inacessível, as releases desse
+repositório são registradas com motivo `historico_releases_inacessivel`.
+
+Se a paginação entregar uma quantidade de SHAs diferente de `total_commits`,
+ou se esse total mudar entre páginas, a comparação fica
+`coleta_incompleta=true` e a release é ignorada com motivo `compare_incompleto`.
+Os commits parciais ficam no registro para auditoria. A saída informa
+`total_comparacoes` completas, `total_releases_ignoradas`, os motivos por
+repositório e `total_releases_ignoradas_404`, por repositório e no consolidado.
+A primeira release histórica sem anterior é ignorada, mas não representa
+coleta incompleta.
+
+Páginas de releases e compare ficam no cache da S01-16 e usam o controle de
+rate limit/backoff da S01-17. Após interrupção, repetir o comando reutiliza as
+páginas concluídas. Erros HTTP não são cacheados; um compare que respondeu 404
+é consultado novamente numa reexecução. Outros erros são propagados, preservando
+o consolidado anterior.
+
+Referência: [compare na REST API do GitHub](https://docs.github.com/en/rest/commits/commits#compare-two-commits).
+
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
