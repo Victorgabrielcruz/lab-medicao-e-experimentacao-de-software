@@ -63,6 +63,27 @@ Cada descarte é registrado com o motivo (`sem_github_actions` ou `repositorio_i
 
 Os resultados são reportados por **mediana e IQR**. O detalhamento de cada variante é feito nas issues de implementação correspondentes.
 
+### 5.1 Tempo de recuperação (RQ04)
+
+Cada `workflow_id` tem sua própria sequência, ordenada por `created_at` e ID.
+A primeira falha abre um episódio, as falhas seguintes mantêm esse início e o
+próximo `success` do mesmo workflow registra a recuperação. Conclusions
+ignoradas não alteram o episódio. Os filtros de default branch, evento `push`
+e janela são os da seção 3.
+
+A duração usa os `created_at` da primeira falha e do sucesso. Um episódio sem
+sucesso antes do fim exclusivo da janela é censurado nesse limite: a duração
+observada é um limite inferior e não significa que houve recuperação. Sucessos
+na fronteira final ou depois dela não recuperam um episódio dentro da janela.
+
+Por repositório, reportamos a mediana e o IQR, em horas, somente dos episódios
+recuperados, junto dos totais recuperados/censurados. Os quartis usam
+interpolação linear inclusiva; uma única recuperação tem IQR zero. Sem
+recuperações, mediana, quartis, IQR e classe ficam ausentes (`null`). Essa
+estatística é condicionada à recuperação observada; não é uma estimativa de
+sobrevivência que inclua as censuras. Uma coleta incompleta mantém o alerta,
+pois páginas ausentes podem alterar episódios e a identificação de censura.
+
 ## 6. Metadados dos repositórios
 
 Fatores usados nas análises, coletados para cada repositório aprovado no filtro de Actions:

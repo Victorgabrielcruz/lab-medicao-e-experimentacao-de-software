@@ -211,6 +211,64 @@ A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
 final de inclusão por releases/runs e sem calcular uma CFR global. A integração
 das métricas e da seleção em um único comando pertence à S01-21 (#149).
 
+### Tempo de recuperação por workflow — S01-20
+
+O módulo `pipeline.tempo_recuperacao` identifica episódios independentes para
+cada `workflow_id`: a primeira falha abre o episódio e o próximo sucesso do
+mesmo workflow o encerra. Falhas seguintes não reiniciam o relógio. São usadas
+as mesmas conclusions da CFR: `failure`, `timed_out` e `startup_failure` para
+falhas, e `success` para recuperação. Conclusions ignoradas não abrem nem
+encerram episódios; o sucesso de outro workflow também não encerra o episódio.
+
+As datas são `created_at`, conforme as definições operacionais. Os runs são
+ordenados por data e ID e deduplicados por ID. O cálculo confere novamente
+default branch, `push` e a janela `[início, fim)`. Sucessos no instante final
+ou depois da janela não são recuperações observadas nesse período. Episódios
+abertos no fim da janela têm `censurado=true`, `run_sucesso_id=null` e a duração
+observada até o limite final; essa duração é um **limite inferior**, não um
+tempo conhecido de recuperação.
+
+Execute após concluir a coleta, na pasta `Lab03`:
+
+```bash
+python -m pipeline.tempo_recuperacao --config config.yaml
+```
+
+O comando lê `data/raw/workflow_runs.json` e grava atomicamente
+`data/processed/tempo_recuperacao.json`, sem token nem acesso à API. Para o piloto:
+
+```bash
+python -m pipeline.tempo_recuperacao --config config.yaml --entrada data/raw/piloto-100/workflow_runs.json --saida data/processed/piloto-100/tempo_recuperacao.json
+```
+
+Em outro worktree, indique o caminho absoluto da entrada na pasta da coleta.
+Use o Python do ambiente virtual com as dependências instaladas; no Windows,
+`.\.venv\Scripts\python.exe` também funciona sem ativação. O consolidado de
+runs deve estar concluído e declarar a mesma janela da configuração. A saída
+não pode sobrescrever a entrada.
+
+A saída preserva os episódios, IDs, datas, quantidade de falhas e censura.
+`tempo_recuperacao` é a **mediana em horas dos episódios recuperados**;
+`q1_horas`, `q3_horas` e `iqr_horas` usam quartis inclusivos com interpolação
+linear (`statistics.quantiles`, método `inclusive`). Com uma recuperação,
+Q1 = Q3 = mediana e IQR = 0. Sem recuperações, essas estatísticas e a classe C1
+ficam `null`. As quantidades de episódios recuperados e censurados são
+reportadas separadamente; censurados não entram na mediana/IQR. Essas
+estatísticas descrevem os episódios observados com recuperação, sem estimar
+uma distribuição que inclua episódios censurados.
+
+O teste de 1h20 exigido na #148 usa a primeira falha às 10:00, outra falha às
+10:30 e o sucesso às 11:20: a duração é 80 minutos (`4/3` hora). É um cenário
+numérico equivalente; o enunciado completo não está versionado neste
+repositório. A suíte também cobre workflows intercalados, repetição de
+falhas, conclusões ignoradas, fronteiras da janela e censura.
+
+Coletas incompletas mantêm `coleta_incompleta=true` e geram alerta. Ausência de
+páginas pode esconder a primeira falha ou uma recuperação, então os episódios
+calculados também ficam sujeitos a essa limitação. O cálculo não aplica o
+filtro final de inclusão nem integra as etapas em um único comando; isso fica
+para a S01-21 (#149). A validação real e o aceite da task permanecem pendentes.
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
