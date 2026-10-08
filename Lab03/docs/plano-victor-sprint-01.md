@@ -145,3 +145,21 @@ testes/cobertura, commits publicados, quantidades reais, coleta incompleta,
 links locais das saídas, template/projeto Overleaf e limitações de dependências.
 Não substituir evidência ausente por uma declaração de conclusão. O relatório
 final será entregue ao usuário; estados no GitHub/Projects ficam preservados.
+
+
+## Atualização de dependências — 08/10/2026
+
+A coleta de releases #138 surgiu em `origin/feat/s01-10-releases-138`, commit
+`9e27e1d` de Matheus, e foi incorporada na branch de trabalho como `245d69b`,
+preservando autoria. A documentação da #138 na main passou a definir deploy e
+inclusão por releases estáveis. `e2a03de` alinha prefiltro, funil e frequência,
+com `inclusao.incluir_prereleases=false` explícito e mínimos 5/50 preservados.
+Pré-releases continuam no bruto para variantes; configurações antigas sem a
+chave mantêm sua regra anterior. Checkpoints incluem a política no contexto.
+A coleta original permanece na branch/processo existentes, sem modificações.
+
+Tags #139 também estão disponíveis (`888978f`), mas não foram integradas por
+não serem necessárias à definição principal desta execução. Compare/lead time
+#140–#142 seguem pendências. A suíte conjunta atual tem 421 testes aprovados e
+98,73% de cobertura. O estado persistido e o executor próprio continuam
+aguardando o consolidado do piloto; não iniciar outro executor vivo.

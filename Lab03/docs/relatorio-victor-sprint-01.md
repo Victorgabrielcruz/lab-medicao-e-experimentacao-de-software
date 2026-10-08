@@ -1,6 +1,6 @@
 # Relatório técnico — Victor, Lab03 Sprint 01
 
-Atualizado em 08/10/2026 às 19:53 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
+Atualizado em 08/10/2026 às 20:01 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
 As entregas de código foram publicadas exclusivamente em
 `feat/tasks-victor-sprint-01`. Este relatório não dá aceite, fecha issues nem
 altera o GitHub Projects. A validação empírica ainda não permite encerrar o escopo.
@@ -25,14 +25,32 @@ As #146/#147 permanecem abertas e com validação pendente, embora os PRs
 O commit da #134 (`caad3e1`, Jonathan Sena da Silva) foi revisado e incorporado
 por cherry-pick como `2bf7947`, preservando autoria. O conflito no README foi
 resolvido mantendo as seções de recuperação e funil. O PR #198 continuou aberto;
-não foi mesclado na main. Na consulta às branches/PRs públicos, não havia suporte
-de releases/compare/lead time integrável nas branches consultadas.
+não foi mesclado na main pelo agente. Na consulta inicial não havia suporte
+de releases/compare/lead time integrável nas branches consultadas. No heartbeat
+seguinte surgiu a #138, já integrada pelo colega via PR #199, e a #139 via
+PR #200. A coleta paginada de releases de Matheus (`9e27e1d`) foi revisada e
+incorporada por cherry-pick como `245d69b`, preservando autoria, em substituição
+ao suporte provisório local. Tags (#139) foram revisadas como dependência
+potencial, mas não incorporadas: não são necessárias à definição principal
+atual. Compare/lead time permanecem indisponíveis nas branches consultadas.
+
+A #138 atualizou a documentação do protocolo para deploy e inclusão por
+releases **estáveis**. A adaptação `e2a03de` torna isso explícito em
+`inclusao.incluir_prereleases=false`, mantém os mínimos 5/50, aplica a mesma
+política no prefiltro/funil/frequência e preserva as pré-releases no bruto para
+variantes. Configurações antigas sem a chave mantêm a regra anterior; `true`
+permite a variante com todas as publicadas. Testes de 4 estáveis + 1 prévia
+comprovam que só a variante é incluída. O contexto de checkpoints foi versionado
+para evitar misturar políticas ou contratos de coleta. Introdução/hipóteses
+seguem preservadas; a metodologia e o ZIP refletem a definição atual do protocolo.
+A auditoria de retomada agora exige hash e caminho de origem, evitando reutilizar
+metadados de uma entrada de outra pasta mesmo com conteúdo idêntico.
 
 `pipeline.integrado` executa seleção → Actions → metadados → releases → runs →
 inclusão → frequência de releases/CFR (a)/recuperação → auditoria, em um comando.
 O prefiltro de releases evita coletar runs de projetos que já não atingem o
 mínimo; seus descartes não inferem contagens de runs. O alvo conta somente
-repositórios com >=5 releases e >=50 runs válidos e coleta completa. Não reduzimos
+repositórios com >=5 releases estáveis e >=50 runs válidos e coleta completa. Não reduzimos
 critérios para produzir cem incluídos. Saídas parciais e dependências ausentes
 são registradas em `execucao.json`; ausência de observações vira null.
 
@@ -63,10 +81,10 @@ preservados como na fonte; código/documentação autorais passaram por diff che
 
 ## Evidências, testes e publicação
 
-Última suíte: **400 testes passaram, cobertura global 97,65%**. CFR, recuperação,
-workflow runs, rate limit e funil permanecem com 100% de cobertura. Auditoria:
-98%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 63% no
-módulo, com coleta/paginação/filtros e erros de acesso cobertos na integração.
+Última suíte: **421 testes passaram, cobertura global 98,73%**. CFR, recuperação,
+workflow runs, releases, rate limit e funil permanecem com 100% de cobertura. Auditoria:
+98%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
+retomada e o comando próprio da etapa.
 Não confundimos cobertura com validação empírica.
 
 Casos de integração: 120 candidatos → 100 incluídos; exclusão por releases,
@@ -90,6 +108,9 @@ C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/.venv/Sc
 | `50ecb8d` | Comando integrado, releases, subdivisão e auditoria (#149, #146–#148). |
 | `45c524c` | Estrutura completa local SBC e proveniência (#150). |
 | `752da84` | Fonte preservada, auditoria estrita e cálculos não repetidos na retomada (#149, #146–#148). |
+| `73047ee` | Relatório parcial com evidências e acompanhamento (#145–#150). |
+| `245d69b` | Coleta de releases #138, preservando autoria de Matheus. |
+| `e2a03de` | Política estável do protocolo em seleção/funil/frequência e origem na retomada (#149, #138). |
 
 Publicação: somente `git push origin feat/tasks-victor-sprint-01`, sem force.
 A branch do checkout original foi conferida e continua
