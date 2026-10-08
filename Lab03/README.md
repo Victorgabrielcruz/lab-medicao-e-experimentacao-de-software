@@ -12,16 +12,42 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 
 ## Como executar
 
-Requer Python 3.11 ou superior.
+Requer Python 3.11 ou superior. Use o Python do ambiente virtual para garantir
+que as dependências instaladas sejam as mesmas usadas na execução.
+
+No Linux/macOS:
 
 ```bash
 cd Lab03
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 
-export GITHUB_TOKEN=<seu token>  # Windows (PowerShell): $env:GITHUB_TOKEN = "<seu token>"
+export GITHUB_TOKEN=<seu token>
 python -m pipeline --config config.yaml
+```
+
+No Windows (Prompt de Comando ou PowerShell), prepare o ambiente:
+
+```powershell
+cd Lab03
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Defina o token no mesmo terminal: no Prompt de Comando, use
+`set GITHUB_TOKEN=seu_token`; no PowerShell, use
+`$env:GITHUB_TOKEN = "seu_token"`. Execute usando diretamente o Python do ambiente:
+
+```powershell
+.\.venv\Scripts\python.exe -m pipeline --config config.yaml
+```
+
+Esse caminho funciona sem ativar o ambiente virtual. Ao executar só uma etapa,
+mantenha o mesmo executável, por exemplo:
+
+```powershell
+.\.venv\Scripts\python.exe -m pipeline --config config.yaml --etapas workflow_runs
 ```
 
 O token é lido apenas da variável de ambiente `GITHUB_TOKEN` e nunca deve ser versionado.
@@ -82,6 +108,7 @@ sendo propagados pelo cliente.
 
 Referência: [rate limits da REST API do GitHub](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
 
+<<<<<<< HEAD
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
@@ -128,6 +155,63 @@ sobrescrever o arquivo de entrada.
 A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
 final de inclusão por releases/runs e sem calcular uma CFR global. A integração
 das métricas e da seleção em um único comando pertence à S01-21 (#149).
+=======
+### Coleta mensal de workflow runs (S01-18)
+
+Para validar a coleta sem percorrer todos os candidatos, depois de gerar
+`data/raw/candidatos.json`, execute um piloto:
+
+```bash
+python -m pipeline --config config.yaml --piloto 100
+```
+
+Esse comando não repete a Search API. Usa os primeiros **até 100 candidatos**
+da busca existente e executa Actions, metadados e workflow runs. Os filtros
+podem reduzir a quantidade final de repositórios. Os resultados ficam em
+`data/raw/piloto-100/`, sem sobrescrever a busca nem as saídas completas. O
+cache continua em `data/cache` e as respostas anteriores são reutilizadas.
+Use `--piloto` sem `--etapas`; ele não pode ser combinado com `--limpar-cache`.
+Se a cota da API ainda estiver esgotada, o piloto também aguardará o reset.
+Uma interrupção pode ser retomada repetindo o mesmo comando.
+
+O piloto verifica a coleta da S01-18. Ele não equivale à conclusão da S01-21,
+que exige seleção, coleta **e cálculo** integrados para 100 repositórios.
+
+A etapa `workflow_runs` lê `data/raw/metadados.json` e usa a `default_branch`
+de cada repositório. Consulta `GET /repos/{owner}/{repo}/actions/runs` com
+`branch=<default_branch>`, `event=push` e `created=<início>..<fim>` para cada mês
+da janela de observação. O fim da consulta é inclusivo: o primeiro segundo do
+mês seguinte menos um segundo, evitando sobreposição entre meses.
+
+```bash
+python -m pipeline --config config.yaml --etapas workflow_runs
+```
+
+Sem `--etapas`, a coleta de runs também é executada após os metadados. Cada mês
+é paginado em até dez páginas de 100 runs. As páginas são persistidas pelo cache
+da S01-16 e as requisições usam o controle de rate limit/backoff da S01-17.
+Depois de uma interrupção, execute novamente o mesmo comando para reutilizar
+as páginas concluídas e consultar as restantes.
+
+Se um mês atingir **1.000 runs**, há um alerta no log e
+`limite_atingido=true` nos dados. Acima de 1.000, a API não permite recuperar
+todos os resultados com esses filtros: `coleta_incompleta=true`. Essa marca
+também é aplicada se a paginação entregar menos IDs únicos que o total esperado.
+Não há subdivisão diária nesta etapa; uma coleta marcada como incompleta deve
+ser considerada nas análises posteriores.
+
+A saída `data/raw/workflow_runs.json` contém os repositórios, os runs ordenados
+por `created_at`/ID, os totais e o diagnóstico de cada mês. Os IDs são
+deduplicados e os filtros de branch, evento e intervalo são conferidos também
+localmente. São preservados `workflow_id`, status, conclusion (inclusive nula),
+datas, SHA, número/tentativa do run e URL. As conclusions ignoradas nas métricas
+são mantidas nesta coleta para auditoria; CFR e recuperação serão calculados
+nas tarefas S01-19 e S01-20. Repositórios com HTTP 404/451 são registrados como
+inacessíveis; os demais erros são propagados. O consolidado é gravado de forma
+atômica e respostas completas da API ficam no cache.
+
+Referência: [workflow runs na REST API do GitHub](https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository).
+>>>>>>> origin/main
 
 ### Etapas
 
@@ -136,6 +220,7 @@ das métricas e da seleção em um único comando pertence à S01-21 (#149).
 | `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
 | `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
 | `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
+| `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
 
 Testes:
 
