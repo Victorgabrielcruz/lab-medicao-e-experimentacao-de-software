@@ -307,6 +307,67 @@ o consolidado anterior.
 
 Referência: [compare na REST API do GitHub](https://docs.github.com/en/rest/commits/commits#compare-two-commits).
 
+### Lead time por release (RQ02a — S01-13 — #141)
+
+O módulo `pipeline.lead_time_release` calcula a variante (a) usando
+`data/raw/compare.json` da S01-12. Para cada release, o lead time é
+`published_at - min(commit.author.date)` em **horas**, sem arredondamento.
+O valor do repositório é a **mediana dos lead times das releases válidas**;
+cada release tem o mesmo peso, independentemente da quantidade de commits.
+Não usa a data do committer nem presume que a ordem dos commits na API seja a
+ordem das datas dos autores. Commits escritos antes da janela são considerados.
+
+Execute após a etapa `compare`, na pasta `Lab03`:
+
+```bash
+python -m pipeline.lead_time_release --config config.yaml
+```
+
+O comando lê `data/raw/compare.json` e grava
+`data/processed/lead_time_release.json`. É um cálculo local, sem token nem
+acesso à API. Para usar os dados de um piloto:
+
+```bash
+python -m pipeline.lead_time_release --config config.yaml --entrada data/raw/piloto-100/compare.json --saida data/processed/piloto-100/lead_time_release.json
+```
+
+No Windows, use `.\.venv\Scripts\python.exe` em lugar de `python`, como nos
+outros comandos. A entrada deve declarar a mesma janela da configuração e
+`definicao_deploy=release_estavel`; a saída não pode sobrescrever a entrada.
+A gravação é atômica. A integração dos cálculos no comando único do pipeline
+pertence à S01-21 (#149), como ocorre com a CFR.
+
+A saída informa `lead_time_horas` de cada release, a referência à release
+anterior, o SHA e a data do autor mais antiga e a quantidade de commits únicos.
+Por repositório, contém a mediana em `lead_time_horas`, sua `classe_lead_time`
+pela tabela C1, contagens de releases calculadas/ignoradas, motivos e diagnóstico
+de coleta incompleta. O consolidado também informa unidade, fórmula, variante
+e totais. Por exemplo, uma release em 15/03 com commits de 02/03, 10/03 e 14/03
+tem lead time de **312 horas (13 dias)**.
+
+Casos de borda:
+
+- Primeira release histórica sem anterior: `null`, motivo `sem_release_anterior`.
+  A primeira release **da janela** pode ser calculada se houver uma anterior
+  fora dela, já recuperada pela S01-12.
+- Release sem commits novos: `null`, motivo `sem_commits_novos`, fora da mediana.
+  Um intervalo real de zero horas é válido e recebe classe Elite.
+- Compare ignorado (inclusive HTTP 404) ou incompleto: `null`, preservando o
+  motivo/diagnóstico da coleta. A quantidade de SHAs é conferida contra os
+  totais declarados para evitar calcular sobre uma lista parcial.
+- Commit sem SHA ou com data do autor ausente, inválida ou sem fuso: a release
+  inteira é ignorada, pois não há como garantir qual era o commit mais antigo.
+- Lead time negativo: `null`, motivo `lead_time_negativo`, sem converter para
+  zero; o SHA/data mais antigos permanecem disponíveis para auditoria.
+- Repositório sem releases calculáveis: mediana e classe `null`.
+
+O recorte por publicação é conferido novamente em `[início, fim)`. IDs de
+releases e SHAs de commits são deduplicados. Releases fora da janela e duplicadas
+são contadas separadamente. Datas de publicação inválidas no consolidado geram
+erro de entrada. Quando o repositório tem coleta incompleta, a mediana pode usar
+as releases com comparações completas, mantendo `coleta_incompleta=true` e aviso
+no log; ela não representa todas as releases nesse caso.
+
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
