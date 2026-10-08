@@ -163,3 +163,15 @@ não serem necessárias à definição principal desta execução. Compare/lead 
 #140–#142 seguem pendências. A suíte conjunta atual tem 421 testes aprovados e
 98,73% de cobertura. O estado persistido e o executor próprio continuam
 aguardando o consolidado do piloto; não iniciar outro executor vivo.
+
+
+## Integração da #140 — 08/10/2026
+
+Compare `7dfab9f` de Matheus foi incorporado seletivamente como `bbf7053`,
+preservando autoria. `004791c` conecta o compare ao comando integrado apenas
+para a amostra elegível, com checkpoints separados e diagnósticos explícitos.
+O protocolo público define a data do autor do commit e a base estável anterior
+à janela; lead time #141/#142 permanece pendente. Tags não foram incorporadas.
+Suíte atual: 457 testes aprovados, cobertura global 98,77%, compare 100%.
+O piloto original e o executor continuam ativos, aguardando o consolidado;
+nenhum processo ou cálculo real adicional foi iniciado pelo acompanhamento.
