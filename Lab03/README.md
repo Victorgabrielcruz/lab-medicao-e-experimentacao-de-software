@@ -118,7 +118,7 @@ python -m pipeline --config config.yaml --piloto 100
 ```
 
 Esse comando não repete a Search API. Usa os primeiros **até 100 candidatos**
-da busca existente e executa Actions, metadados e workflow runs. Os filtros
+da busca existente e executa Actions, metadados, releases e workflow runs. Os filtros
 podem reduzir a quantidade final de repositórios. Os resultados ficam em
 `data/raw/piloto-100/`, sem sobrescrever a busca nem as saídas completas. O
 cache continua em `data/cache` e as respostas anteriores são reutilizadas.
@@ -126,7 +126,7 @@ Use `--piloto` sem `--etapas`; ele não pode ser combinado com `--limpar-cache`.
 Se a cota da API ainda estiver esgotada, o piloto também aguardará o reset.
 Uma interrupção pode ser retomada repetindo o mesmo comando.
 
-O piloto verifica a coleta da S01-18. Ele não equivale à conclusão da S01-21,
+O piloto verifica as coletas da S01-10 e S01-18. Ele não equivale à conclusão da S01-21,
 que exige seleção, coleta **e cálculo** integrados para 100 repositórios.
 
 A etapa `workflow_runs` lê `data/raw/metadados.json` e usa a `default_branch`
@@ -163,6 +163,43 @@ inacessíveis; os demais erros são propagados. O consolidado é gravado de form
 atômica e respostas completas da API ficam no cache.
 
 Referência: [workflow runs na REST API do GitHub](https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository).
+
+### Coleta de releases na janela (S01-10 — #138)
+
+A etapa `releases` lê `data/raw/metadados.json` e consulta
+`GET /repos/{owner}/{repo}/releases` com páginas de 100 registros, seguindo o
+cabeçalho `Link` (`rel="next"`) até o fim. Não encerra a paginação ao encontrar
+uma release antiga, pois o recorte é feito localmente por `published_at`.
+
+```bash
+python -m pipeline --config config.yaml --etapas releases
+```
+
+Sem `--etapas`, executa após os metadados; `--piloto 100` também inclui releases,
+com saída em `data/raw/piloto-100/releases.json`. A coleta usa o mesmo cliente,
+cache por página e tratamento de rate limit/backoff das demais etapas. Após
+interrupção, repetir o comando reutiliza as páginas concluídas, inclusive seus
+links de paginação. As respostas originais da API ficam no cache para auditoria.
+
+O consolidado `data/raw/releases.json` é gravado atomicamente. Contém apenas
+releases com `draft=false` e publicação na janela UTC `[início, fim)`, incluindo
+todo o último dia configurado. Datas de publicação nulas ou ausentes são
+excluídas; datas inválidas ou sem fuso geram aviso e são excluídas. IDs são
+deduplicados e os registros ordenados por publicação/ID. Os campos preservados
+são `id`, `draft`, `prerelease`, `published_at`, `tag_name`, `created_at`,
+`target_commitish`, `html_url`, `name` e `body`.
+
+Pré-releases são preservadas para a RQ07. `total_releases` conta todas as releases
+publicadas retidas; `total_prereleases` conta aquelas com `prerelease=true` e
+`total_releases_estaveis` conta aquelas com `prerelease=false`. A definição
+principal de deploy usa somente as estáveis. Esses totais aparecem por
+repositório e no consolidado, junto da janela e dos descartes. Repositórios sem
+releases são mantidos com lista vazia e totais zero. HTTP 404/451 gera descarte
+`repositorio_inacessivel`; outros erros são propagados e preservam o consolidado
+anterior. O filtro mínimo de inclusão e o cálculo das métricas pertencem à
+integração posterior do pipeline.
+
+Referência: [releases na REST API do GitHub](https://docs.github.com/en/rest/releases/releases#list-releases).
 
 ### CFR variante (a) — S01-19
 
@@ -218,6 +255,7 @@ das métricas e da seleção em um único comando pertence à S01-21 (#149).
 | `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
 | `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
 | `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
+| `releases` | `data/raw/releases.json` | Lê `metadados.json`, pagina pelo Link header com cache e retém publicações na janela sem drafts; preserva pré-releases e contabiliza as estáveis separadamente. |
 | `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
 
 Testes:
