@@ -6,7 +6,7 @@ import logging
 import sys
 from pathlib import Path
 import requests
-from pipeline import actions, auditoria, candidatos, cfr, compare, funil, metadados, releases, tempo_recuperacao
+from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_release, metadados, releases, tempo_recuperacao
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import classificar_metrica
@@ -178,6 +178,17 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     gravar_json(processed / "auditoria.json", validacao)
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
     comparacoes = _coletar_compares(config, client, [rels[r["id"]] for r in selecionados], inicio, fim)
+    entrada_compare = raw / compare.ARQUIVO_SAIDA
+    saida_lead_time = processed / lead_time_release.ARQUIVO_SAIDA
+    audit_lead_time = processed / "auditoria_lead_time.json"
+    audit_lt_anterior = _ler(audit_lead_time) if audit_lead_time.is_file() else {}
+    mesma_entrada_lt = (audit_lt_anterior.get("origem") == str(entrada_compare.resolve())
+                       and audit_lt_anterior.get("entrada_semantica_sha256") == auditoria.hash_compare(_ler(entrada_compare))
+                       and saida_lead_time.is_file())
+    if not mesma_entrada_lt:
+        lead_time_release.executar(config, entrada_compare, saida_lead_time)
+    validacao_lt = auditoria.validar_lead_time(config, entrada_compare, saida_lead_time)
+    gravar_json(audit_lead_time, validacao_lt)
     frequencias = []
     for r in selecionados:
         quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,
@@ -191,8 +202,9 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                  "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
                  "execucao_completa": len(amostra) == alvo,
                  "coletas_incompletas": sum(r["coleta_incompleta"] for r in dados["workflow_runs"]["repositorios"]),
-                 "metricas": ["deployment_frequency", "cfr_a", "tempo_recuperacao"],
-                 "dependencias_pendentes": ["lead time #141/#142"],
+                 "metricas": ["deployment_frequency", "cfr_a", "tempo_recuperacao", "lead_time_release_a"],
+                 "dependencias_pendentes": ["lead time por commit #142"],
+                 "repositorios_com_lead_time_release": validacao_lt["repositorios_com_lead_time"],
                  "total_comparacoes": sum(r["total_comparacoes"] for r in comparacoes),
                  "releases_compare_ignoradas": sum(r["total_releases_ignoradas"] for r in comparacoes),
                  "coletas_compare_incompletas": sum(r["coleta_incompleta"] for r in comparacoes),

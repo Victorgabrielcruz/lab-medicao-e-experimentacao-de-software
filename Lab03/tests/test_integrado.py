@@ -87,17 +87,21 @@ def test_100_elegiveis_nao_100_candidatos_e_retomada_sem_api(tmp_path):
     assert result["total_comparacoes"] == 400
     assert result["releases_compare_ignoradas"] == 100
     assert result["coletas_compare_incompletas"] == 0
-    assert result["dependencias_pendentes"] == ["lead time #141/#142"]
-    compares = json.loads((tmp_path / "raw/compare.json").read_text())
+    assert result["repositorios_com_lead_time_release"] == 100
+    lead = json.loads((tmp_path / "processed/lead_time_release.json").read_text(encoding="utf-8"))
+    assert lead["releases_com_lead_time"] == 400
+    assert lead["repositorios"][0]["lead_time_horas"] == 216
+    assert result["dependencias_pendentes"] == ["lead time por commit #142"]
+    compares = json.loads((tmp_path / "raw/compare.json").read_text(encoding="utf-8"))
     assert compares["total_repositorios"] == 100
     assert compares["total_comparacoes"] == 400
     assert not any("repo1/compare/" in p for p, _ in api.chamadas)
     assert fonte.read_bytes() == original
     assert not any("repo1/actions/runs" in p for p, _ in api.chamadas)
-    cfr = json.loads((tmp_path / "processed/cfr.json").read_text())
+    cfr = json.loads((tmp_path / "processed/cfr.json").read_text(encoding="utf-8"))
     assert cfr["total_repositorios"] == 100
     assert cfr["repositorios"][0]["change_failure_rate"] == 1/50
-    recuperacao = json.loads((tmp_path / "processed/tempo_recuperacao.json").read_text())
+    recuperacao = json.loads((tmp_path / "processed/tempo_recuperacao.json").read_text(encoding="utf-8"))
     assert recuperacao["total_episodios"] == 100
     assert recuperacao["episodios_censurados"] == 0
     api2 = Api(falhar=21)
@@ -206,7 +210,7 @@ def test_404_e_sem_actions_sao_descartados_e_continua(tmp_path):
             return super().get_resposta(path, params)
     r = integrado.executar(cfg, Erros(), 1, 3, fonte)
     assert r["execucao_completa"] and r["candidatos_avaliados"] == 3
-    funil = json.loads((tmp_path / "processed/funil.json").read_text())
+    funil = json.loads((tmp_path / "processed/funil.json").read_text(encoding="utf-8"))
     assert {d["motivo"] for d in funil["descartes"]} == {"sem_github_actions", "repositorio_inacessivel"}
 
 
@@ -238,7 +242,7 @@ def test_auditoria_recusa_resultados_corrompidos(tmp_path, arquivo, campo, valor
     cfg, fonte = configurar(tmp_path, 1)
     integrado.executar(cfg, Api(), 1, 1, fonte)
     saida = tmp_path / "processed" / arquivo
-    documento = json.loads(saida.read_text())
+    documento = json.loads(saida.read_text(encoding="utf-8"))
     documento["repositorios"][0][campo] = valor
     gravar_json(saida, documento)
     with pytest.raises(ConfigError, match="Auditoria"):
@@ -277,7 +281,7 @@ def test_auditoria_confere_censura_e_rejeita_run_duplicado(tmp_path):
     taxas = tmp_path / "processed/cfr.json"
     tempos = tmp_path / "processed/tempo_recuperacao.json"
     assert auditoria.validar(cfg, entrada, taxas, tempos)["episodios_censurados"] == 1
-    dados = json.loads(entrada.read_text())
+    dados = json.loads(entrada.read_text(encoding="utf-8"))
     dados["repositorios"][0]["workflow_runs"].append(dados["repositorios"][0]["workflow_runs"][0])
     gravar_json(entrada, dados)
     with pytest.raises(ConfigError, match="duplicados"):
@@ -286,14 +290,14 @@ def test_auditoria_confere_censura_e_rejeita_run_duplicado(tmp_path):
 
 def test_busca_padrao_preservada_para_ampliacao_sem_busca_nova(tmp_path):
     cfg, fonte = configurar(tmp_path, 3)
-    gravar_json(tmp_path / "raw/candidatos.json", json.loads(fonte.read_text()))
+    gravar_json(tmp_path / "raw/candidatos.json", json.loads(fonte.read_text(encoding="utf-8")))
     primeira = integrado.executar(cfg, Api(excluidos=1), 1, 3)
     assert primeira["candidatos_avaliados"] == 2
-    busca = json.loads((tmp_path / "raw/candidatos_busca.json").read_text())
+    busca = json.loads((tmp_path / "raw/candidatos_busca.json").read_text(encoding="utf-8"))
     assert len(busca["candidatos"]) == 3
     segunda = integrado.executar(cfg, Api(excluidos=1), 2, 3)
     assert segunda["execucao_completa"] and segunda["candidatos_avaliados"] == 3
-    assert json.loads((tmp_path / "raw/candidatos_busca.json").read_text()) == busca
+    assert json.loads((tmp_path / "raw/candidatos_busca.json").read_text(encoding="utf-8")) == busca
 
 
 def test_fonte_explicita_ausente_nao_dispara_busca(tmp_path):
@@ -309,13 +313,22 @@ def test_retomada_mesma_entrada_audita_sem_recalcular_metricas(tmp_path, monkeyp
         raise AssertionError("não deveria repetir cálculo")
     monkeypatch.setattr(integrado.cfr, "executar", proibido)
     monkeypatch.setattr(integrado.tempo_recuperacao, "executar", proibido)
+    monkeypatch.setattr(integrado.lead_time_release, "executar", proibido)
+    original = integrado.compare.gravar_consolidado
+    def nova_gravacao(*args, **kwargs):
+        saida, lista = original(*args, **kwargs)
+        dados = json.loads(saida.read_text(encoding="utf-8"))
+        dados["gerado_em"] = "2030-01-01T00:00:00Z"
+        gravar_json(saida, dados)
+        return saida, lista
+    monkeypatch.setattr(integrado.compare, "gravar_consolidado", nova_gravacao)
     assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
 
 
 def test_fonte_explicita_sobre_saida_e_recusada(tmp_path):
     cfg, fonte = configurar(tmp_path, 1)
     destino = tmp_path / "raw/candidatos.json"
-    gravar_json(destino, json.loads(fonte.read_text()))
+    gravar_json(destino, json.loads(fonte.read_text(encoding="utf-8")))
     with pytest.raises(ConfigError, match="Fonte explícita"):
         integrado.executar(cfg, Api(), 1, 1, destino)
 
@@ -330,13 +343,13 @@ def test_regra_estavel_explicita_alinha_inclusao_e_frequencia(tmp_path):
     assert not integrado.executar(cfg, QuatroEstaveis(), 1, 1, fonte)["execucao_completa"]
     cfg["inclusao"]["incluir_prereleases"] = True
     assert integrado.executar(cfg, QuatroEstaveis(), 1, 1, fonte)["execucao_completa"]
-    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text())
+    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text(encoding="utf-8"))
     assert df["repositorios"][0]["releases_ano"] == 5
     cfg["inclusao"]["incluir_prereleases"] = False
     # Novo contexto/raw para coletor atualizado, sem reutilizar fixture com 4 estáveis.
     cfg["caminhos"]["raw"] = str(tmp_path / "raw2")
     assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
-    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text())
+    df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text(encoding="utf-8"))
     assert df["repositorios"][0]["releases_ano"] == 5
 
 
@@ -376,6 +389,30 @@ def test_compare_404_mantem_amostra_e_incompletude_explicita(tmp_path):
     assert resultado["total_amostra_completa"] == 1
     assert resultado["coletas_compare_incompletas"] == 1
     assert resultado["releases_compare_ignoradas"] == 2
-    compare = json.loads((tmp_path / "raw/compare.json").read_text())
+    compare = json.loads((tmp_path / "raw/compare.json").read_text(encoding="utf-8"))
     assert compare["total_releases_ignoradas_404"] == 1
     assert compare["total_comparacoes"] == 3
+
+
+@pytest.mark.parametrize("nivel,campo,valor", [
+    ("repo", "lead_time_horas", 1),
+    ("repo", "classe_lead_time", "Elite"),
+    ("repo", "coleta_incompleta", True),
+    ("release", "lead_time_horas", 1),
+    ("documento", "releases_com_lead_time", 999),
+])
+def test_retomada_recusa_lead_time_corrompido_sem_recalcular(tmp_path, monkeypatch, nivel, campo, valor):
+    cfg, fonte = configurar(tmp_path, 1)
+    integrado.executar(cfg, Api(), 1, 1, fonte)
+    caminho = tmp_path / "processed/lead_time_release.json"
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
+    alvo = dados if nivel == "documento" else dados["repositorios"][0]
+    if nivel == "release":
+        alvo = alvo["releases"][1]
+    alvo[campo] = valor
+    gravar_json(caminho, dados)
+    def proibido(*args, **kwargs):
+        raise AssertionError("não sobrescrever resultados auditados divergentes")
+    monkeypatch.setattr(integrado.lead_time_release, "executar", proibido)
+    with pytest.raises(ConfigError, match="Auditoria"):
+        integrado.executar(cfg, Api(), 1, 1, fonte)

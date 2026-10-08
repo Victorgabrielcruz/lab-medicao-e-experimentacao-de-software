@@ -572,10 +572,17 @@ O compare (#140) é coletado apenas para a amostra elegível, com checkpoints
 próprios em `raw/checkpoints/compare/<hash>/`. Seu contexto inclui as releases,
 a janela e a API. `raw/compare.json` e `execucao.json` registram comparações
 completas, releases ignoradas e repositórios com compare incompleto. Um 404
-nessa etapa mantém a amostra e sua incompletude explícita; não comprova lead time.
+nessa etapa mantém a amostra e sua incompletude explícita; a release ignorada
+não produz lead time.
 A retomada de compare não repete os cálculos de CFR/recuperação já auditados.
 
-O comando integra as métricas disponíveis. Lead time (#141/#142)
-ainda é dependência explícita em `execucao.json`; isso não comprova o
-cálculo das quatro métricas DORA. A validação real dos 100 repositórios continua
+O comando também calcula lead time por release (#141) em
+`processed/lead_time_release.json` e o confere contra os commits de origem em
+`auditoria_lead_time.json`. A retomada reutiliza essa métrica apenas com origem
+e hash de conteúdo/diagnósticos iguais, desconsiderando somente `gerado_em`.
+Resultados auditados divergentes são recusados sem sobrescrever a saída.
+
+A variante por commit (#142) ainda é dependência explícita em `execucao.json`.
+A presença dos quatro tipos de métrica implementados não comprova execução real
+nem atendimento de todas as variantes do protocolo. A validação real dos 100 repositórios continua
 pendente até haver evidência registrada no relatório.

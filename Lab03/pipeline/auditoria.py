@@ -133,3 +133,94 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
             "repositorios_com_recuperacao": sum(r["tempo_recuperacao"] is not None for r in tempos["repositorios"]),
             "coletas_incompletas": sum(r["coleta_incompleta"] for r in taxas["repositorios"]),
             "episodios_recuperados": recuperados, "episodios_censurados": censurados}
+
+
+def hash_compare(dados):
+    """Ignora apenas o instante de gravação; os dados/diagnósticos definem a entrada."""
+    conteudo = {k: v for k, v in dados.items() if k != "gerado_em"}
+    return hashlib.sha256(json.dumps(conteudo, sort_keys=True).encode()).hexdigest()
+
+
+def _horas_release(comparacao):
+    if (comparacao.get("ignorada") or comparacao.get("coleta_incompleta")
+            or comparacao.get("release_anterior") is None):
+        return None
+    commits = {}
+    for commit in comparacao.get("commits", []):
+        sha = commit.get("sha")
+        if not isinstance(sha, str) or not sha:
+            return None
+        commits.setdefault(sha, commit)
+    if not commits or any(comparacao.get(k) is not None and comparacao[k] != len(commits)
+                          for k in ("total_commits_api", "total_commits_coletados")):
+        return None
+    datas = []
+    for commit in commits.values():
+        try:
+            data = _data(((commit.get("commit") or {}).get("author") or {}).get("date"))
+        except (AttributeError, ValueError, TypeError):
+            return None
+        if data.tzinfo is None:
+            return None
+        datas.append(data)
+    horas = (_data(comparacao["release"]["published_at"]) - min(datas)).total_seconds() / 3600
+    return horas if horas >= 0 else None
+
+
+def validar_lead_time(config, entrada, saida):
+    """Confere RQ02a com os commits de origem, sem chamar o cálculo de produção."""
+    from pipeline.classificacao import classificar_metrica
+    entrada = Path(entrada)
+    dados = json.loads(entrada.read_text(encoding="utf-8"))
+    metrica = json.loads(Path(saida).read_text(encoding="utf-8"))
+    inicio, fim = janela_utc(config)
+    janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
+    for documento in (dados, metrica):
+        _exigir(documento["janela"] == janela, "janela de lead time divergente")
+        _exigir(documento["definicao_deploy"] == "release_estavel", "política de lead time divergente")
+    _exigir(Path(metrica["origem"]).resolve() == entrada.resolve(), "origem de lead time divergente")
+    _exigir(metrica["variante"] == "a" and metrica["unidade"] == "horas", "variante/unidade divergente")
+    identidades = [(r["id"], r["full_name"], r.get("default_branch")) for r in dados["repositorios"]]
+    _exigir(len({r[0] for r in identidades}) == len(identidades), "IDs de compare duplicados")
+    _exigir([(r["id"], r["full_name"], r.get("default_branch")) for r in metrica["repositorios"]]
+            == identidades, "identidades de lead time divergentes")
+    totais = valores = incompletas = calculados = 0
+    for repo, resultado in zip(dados["repositorios"], metrica["repositorios"]):
+        comparacoes, ids = [], set()
+        for c in repo["comparacoes"]:
+            r = c["release"]
+            _exigir(inicio <= _data(r["published_at"]) < fim and r["id"] not in ids,
+                    "compare fora da janela ou duplicado")
+            ids.add(r["id"])
+            comparacoes.append(c)
+        comparacoes.sort(key=lambda c: (_data(c["release"]["published_at"]), c["release"]["id"]))
+        _exigir([r["release"] for r in resultado["releases"]] == [c["release"] for c in comparacoes],
+                "releases de lead time divergentes")
+        horas = [_horas_release(c) for c in comparacoes]
+        for h, release in zip(horas, resultado["releases"]):
+            _exigir(_igual(release["lead_time_horas"], h), "lead time por release divergente")
+            _exigir(release["ignorada"] == (h is None), "descarte de lead time divergente")
+        validos = [h for h in horas if h is not None]
+        mediana = _quantil(validos, .5)
+        _exigir(_igual(resultado["lead_time_horas"], mediana), "mediana de lead time divergente")
+        _exigir(resultado["classe_lead_time"] == classificar_metrica("lead_time", mediana),
+                "classe de lead time divergente")
+        _exigir(resultado["total_releases"] == len(horas)
+                and resultado["releases_com_lead_time"] == len(validos)
+                and resultado["releases_ignoradas"] == len(horas)-len(validos), "contagens de lead time divergentes")
+        incompleta = bool(repo.get("coleta_incompleta") or any(c.get("coleta_incompleta") for c in comparacoes)
+                     or any(c.get(k) is not None and c[k] != len({r.get("sha") for r in c.get("commits", [])})
+                            for c in comparacoes if not c.get("ignorada")
+                            for k in ("total_commits_api", "total_commits_coletados")))
+        _exigir(resultado["coleta_incompleta"] == incompleta, "incompletude de lead time perdida")
+        totais += len(horas)
+        valores += len(validos)
+        incompletas += incompleta
+        calculados += mediana is not None
+    for campo, valor in (("total_repositorios", len(identidades)), ("total_releases", totais),
+                         ("releases_com_lead_time", valores), ("releases_ignoradas", totais-valores),
+                         ("repositorios_com_coleta_incompleta", incompletas), ("repositorios_com_lead_time", calculados)):
+        _exigir(metrica[campo] == valor, f"total de lead time divergente: {campo}")
+    return {"origem": str(entrada.resolve()), "entrada_semantica_sha256": hash_compare(dados),
+            "total_repositorios": len(identidades), "releases_com_lead_time": valores,
+            "repositorios_com_lead_time": calculados, "coletas_incompletas": incompletas}
