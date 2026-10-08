@@ -1,0 +1,25 @@
+\section{Discussão e ameaças à validade}
+\label{sec:discussao}
+\subsection{Validade de construto}
+Uma release pública é uma aproximação de implantação, e falhas de workflows
+não identificam necessariamente incidentes em produção. Runs podem incluir
+testes instáveis, falhas de infraestrutura ou de configuração. Recuperação
+observada em CI não equivale à restauração de serviço percebida pelo usuário.
+As variantes operacionais e as classes adaptadas devem ser comparadas somente
+após integração e validação das métricas correspondentes.
+
+\subsection{Validade interna e confiabilidade}
+Limites de paginação, indisponibilidade de repositórios e retenção ou remoção
+de históricos podem produzir dados incompletos mesmo numa janela fechada.
+Releases podem ser editadas ou publicadas posteriormente; uma janela fechada
+não garante imutabilidade dos registros. Cache preserva o snapshot observado,
+mas deve ser distinguido de uma consulta atual. O default branch é observado
+na coleta e pode ter sido diferente no passado. A censura e recuperações
+anteriores ao início da janela exigem cuidado ao interpretar as durações.
+
+\subsection{Validade externa}
+Repositórios populares, usuários de Actions e projetos com releases frequentes
+não representam todos os projetos de software. Selecionar os primeiros elegíveis
+na ordem de estrelas introduz viés para projetos populares. As conclusions devem
+ser limitadas à população e à janela estudadas. A discussão empírica das hipóteses
+será adicionada após a auditoria, sem alterar seu registro anterior à coleta.

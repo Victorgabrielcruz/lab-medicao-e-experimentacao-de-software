@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+\usepackage{sbc-template}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx,url,amsmath}
+\sloppy
+\title{Mineração de métricas DORA em repositórios\\ populares com GitHub Actions}
+\author{Víctor G. C. Pereira\inst{1}, Jonathan S. da Silva\inst{1},\\
+Matheus F. de Oliveira\inst{1}}
+\address{Laboratório de Medição e Experimentação de Software\\
+Engenharia de Software -- PUC Minas}
+\begin{document}
+\maketitle
+\begin{abstract}
+This study defines a reproducible protocol to mine delivery metrics from public
+GitHub repositories using GitHub Actions. Published releases represent deployments,
+while workflow runs indicate failures and recoveries. The protocol uses a twelve-month
+window, explicit inclusion criteria, and diagnostics for incomplete collections.
+This draft presents the study structure and prior hypotheses; empirical results
+and the complete DORA analysis remain subject to collection and validation.
+\end{abstract}
+\begin{resumo}
+Este estudo define um protocolo reproduzível para minerar métricas de entrega em
+repositórios públicos do GitHub que usam Actions. Releases publicadas representam
+implantações, e runs indicam falhas e recuperações. O protocolo utiliza uma janela
+de doze meses, critérios explícitos de inclusão e diagnósticos de coleta incompleta.
+Este rascunho apresenta a estrutura do estudo e hipóteses prévias; os resultados
+empíricos e a análise DORA completa dependem da coleta e validação.
+\end{resumo}
+\input{introducao}
+\input{metodologia}
+\input{resultados}
+\input{discussao}
+\input{conclusao}
+\bibliographystyle{sbc}
+\bibliography{referencias}
+\end{document}
