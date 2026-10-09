@@ -295,7 +295,7 @@ def test_cli_executa_so_workflow_runs(monkeypatch, capsys):
     assert "Workflow runs: 1 repositórios, 5 runs, 1 coletas incompletas" in capsys.readouterr().out
 
 
-def test_cli_padrao_executa_as_seis_etapas_na_ordem(monkeypatch):
+def test_cli_padrao_executa_as_sete_etapas_na_ordem(monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "token-falso")
     chamadas = []
 
@@ -310,6 +310,7 @@ def test_cli_padrao_executa_as_seis_etapas_na_ordem(monkeypatch):
     monkeypatch.setattr("pipeline.metadados.executar", etapa("metadados", (Path("metadados.json"), [], [])))
     monkeypatch.setattr("pipeline.releases.executar", etapa("releases", (Path("releases.json"), [], [])))
     monkeypatch.setattr("pipeline.compare.executar", etapa("compare", (Path("compare.json"), [])))
+    monkeypatch.setattr("pipeline.tags.executar", etapa("tags", (Path("tags.json"), [], [])))
     monkeypatch.setattr(workflow_runs, "executar", etapa("workflow_runs", (Path("workflow_runs.json"), [], [])))
     assert main(["--config", str(CONFIG)]) == 0
-    assert chamadas == ["candidatos", "actions", "metadados", "releases", "compare", "workflow_runs"]
+    assert chamadas == ["candidatos", "actions", "metadados", "releases", "compare", "tags", "workflow_runs"]

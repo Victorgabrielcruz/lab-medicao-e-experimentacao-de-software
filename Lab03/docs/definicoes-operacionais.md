@@ -26,6 +26,15 @@ O pipeline recusa executar se a janela configurada não cobrir exatamente 12 mes
 - Pré-releases ficam fora da definição principal e são usadas como variantes na RQ07. A coleta S01-10 (#138) as preserva com `prerelease = true`; `total_releases_estaveis` contabiliza apenas a definição principal, enquanto `total_releases` inclui também as pré-releases publicadas na janela.
 - Tags sem release (com a data do commit da tag) são coletadas apenas como definição alternativa de deploy na RQ07.
 
+A coleta de tags S01-11 (#139) inclui todas as tags, com ou sem release
+associada. Sua data de referência é `commit.author.date` do commit identificado
+pelo SHA retornado por `GET /repos/{owner}/{repo}/tags`, consultado em
+`GET /repos/{owner}/{repo}/commits/{sha}`. Usa a mesma janela UTC semiaberta da
+coleta de releases; a data do committer e a data de criação de tags anotadas
+não são usadas. Nomes distintos no mesmo commit são preservados e duplicatas
+por nome são removidas. Tags sem data válida ou com commit inacessível ficam
+registradas como ignoradas e a coleta do repositório é marcada como incompleta.
+
 ## 3. Workflow runs
 
 | Regra | Valor |
@@ -89,7 +98,6 @@ Runs iniciados depois da janela são diagnosticados. Essas limitações temporai
 e `coleta_incompleta` permanecem explícitas. Os demais workflows válidos podem
 contribuir à mediana. Quartis usam interpolação inclusiva; uma recuperação tem
 IQR zero e nenhuma recuperação produz estatísticas/classificação null.
-
 ### Commits entre releases (S01-12 — #140)
 
 Os dados para lead time vêm de `compare/{release anterior}...{release atual}`,

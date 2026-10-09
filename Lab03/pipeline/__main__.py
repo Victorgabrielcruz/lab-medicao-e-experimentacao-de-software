@@ -5,12 +5,12 @@ import logging
 import sys
 from pathlib import Path
 
-from pipeline import actions, candidatos, compare, metadados, releases, workflow_runs
+from pipeline import actions, candidatos, compare, metadados, releases, tags, workflow_runs
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.config import ConfigError, load_config, read_token
 from pipeline.github_api import GitHubClient
 
-ETAPAS = ("candidatos", "actions", "metadados", "releases", "compare", "workflow_runs")
+ETAPAS = ("candidatos", "actions", "metadados", "releases", "compare", "tags", "workflow_runs")
 
 
 def _limite_positivo(valor):
@@ -52,7 +52,7 @@ def parse_args(argv=None):
                        help="usa até N candidatos da busca existente e salva a coleta em raw/piloto-N")
     args = parser.parse_args(argv)
     if args.piloto is not None and args.etapas != list(ETAPAS):
-        parser.error("use --piloto sem --etapas; o piloto executa actions, metadados, releases, compare e workflow_runs")
+        parser.error("use --piloto sem --etapas; o piloto executa actions, metadados, releases, compare, tags e workflow_runs")
     return args
 
 
@@ -69,7 +69,7 @@ def main(argv=None):
         token = read_token()
         if args.piloto is not None:
             config = preparar_piloto(config, args.piloto)
-            args.etapas = ["actions", "metadados", "releases", "compare", "workflow_runs"]
+            args.etapas = ["actions", "metadados", "releases", "compare", "tags", "workflow_runs"]
             print(f"Piloto: até {args.piloto} candidatos da busca existente, "
                   f"cache compartilhado, saída em {config['caminhos']['raw']}")
         api = config["api"]
@@ -104,6 +104,13 @@ def main(argv=None):
             ignoradas = sum(r["total_releases_ignoradas"] for r in lista)
             print(f"Compare: {len(lista)} repositórios, {total} comparações completas, "
                   f"{ignoradas} releases ignoradas -> {saida}")
+
+        if "tags" in args.etapas:
+            saida, lista, descartes = tags.executar(config, client)
+            total = sum(r["total_tags"] for r in lista)
+            incompletas = sum(r["coleta_incompleta"] for r in lista)
+            print(f"Tags: {len(lista)} repositórios, {total} tags na janela, "
+                  f"{incompletas} coletas incompletas, {len(descartes)} inacessíveis -> {saida}")
 
         if "workflow_runs" in args.etapas:
             saida, lista, descartes = workflow_runs.executar(config, client)
