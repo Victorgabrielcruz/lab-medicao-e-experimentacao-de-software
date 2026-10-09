@@ -9,6 +9,7 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 | Documento | Conteúdo |
 |---|---|
 | [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs, critério de inclusão, filtro de Actions, metadados e tabela de classificação DORA (C1) |
+| [`artigo/README.md`](artigo/README.md) | Organização do artigo em LaTeX, hipóteses informais das RQ01 a RQ07 e registro de sua cronologia; RQ05 a RQ07 na S01-15 (#143) |
 
 ## Como executar
 
