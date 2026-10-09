@@ -107,7 +107,7 @@ preservados como na fonte; código/documentação autorais passaram por diff che
 
 ## Evidências, testes e publicação
 
-Última suíte após RQ04 v2: **520 testes passaram, cobertura global 97,87%**. CFR, workflow runs, releases, compare, lead time por release, rate limit e funil têm 100% de cobertura. Recuperação: 98%; auditoria: 91%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
+Última suíte após alinhamento ao enunciado: **532 testes passaram, cobertura global 97,89%**. CFR, workflow runs, releases, compare, lead time por release, rate limit e funil têm 100% de cobertura. Recuperação: 98%; auditoria: 91%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
 retomada e o comando próprio da etapa.
 Não confundimos cobertura com validação empírica.
 
@@ -133,7 +133,8 @@ C:/Users/vgppl/Documents/lab-medicao-e-experimentacao-de-software/Lab03/.venv/Sc
 
 | Commit publicado | Entrega |
 |---|---|
-| `8cc3c30` | Recuperação por workflow, censura e testes (#148). |
+| `8cc3c30` | Recuperação legada por criação (#148), corrigida em `5dfddfb`. |
+| `5dfddfb` | Recuperação conforme RQ04, auditoria independente, censuras e piloto v2 (#148). |
 | `c34e31b` | Plano inicial e fonte do template (#146–#150). |
 | `2bf7947` | Funil #134, preservando autoria de Jonathan. |
 | `50ecb8d` | Comando integrado, releases, subdivisão e auditoria (#149, #146–#148). |
@@ -264,7 +265,7 @@ com cache/checkpoints preservados, e precisa reprocessar métricas após encerra
 seu eventual resultado não será aceito sem confrontação com o contrato atual.
 A versão da métrica muda sem invalidar os checkpoints de coleta.
 Frequência deve ser releases/semana e as faixas de lead time são as do enunciado;
-o alinhamento dessas partes está em andamento. A fórmula por commit da #142
+essas partes foram alinhadas, com unidade e versão explícitas na saída. A fórmula por commit da #142
 agora é conhecida, mas a integração pública ainda é uma dependência.
 
 O piloto foi auditado; o relatório será atualizado quando a execução dos cem
@@ -286,3 +287,16 @@ Legados: `.pytest_cache/sprint01-agente/legado-created-at/` no worktree exclusiv
 Esses arquivos reais não são versionados. Comando offline aplicado uma única vez,
 no Lab03 exclusivo: `pipeline.tempo_recuperacao.executar(config, entrada_absoluta,
 saida_absoluta)`, seguido de `pipeline.auditoria.validar`, sem token/API.
+
+
+## Frequência e classificação conforme enunciado (#149)
+
+Deployment frequency é releases/semana, usando semanas reais da janela.
+O corte civil de 1/mês usa 12 releases em 12 meses, convertido à duração real,
+com testes para 365 e 366 dias. As contagens anuais antigas permanecem apenas
+como campos de compatibilidade. As faixas de lead time são 24/168/720 horas;
+CFR e recuperação mantêm os cortes já correspondentes ao enunciado.
+A versão é `lab03-enunciado-cortes-v2`.
+A migração de classificação audita os valores de lead time antes de alterar
+somente classes, sem repetir o cálculo dos intervalos ou a coleta.
+Valores corrompidos são recusados sem sobrescrita. Suíte: 532 testes, 97,89%.

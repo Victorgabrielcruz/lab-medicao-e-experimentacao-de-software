@@ -1,24 +1,24 @@
 import pytest
 
-from pipeline.classificacao import (CLASSES, DIA, ELITE, HIGH, HORA, LOW, MEDIUM, METRICAS, SEIS_MESES, SEMANA,
+from pipeline.classificacao import (CLASSES, DIA, ELITE, HIGH, HORA, LOW, MEDIUM, METRICAS, MES, SEMANA,
                                     Faixas, classificar, classificar_metrica, nota_geral)
 
 
 @pytest.mark.parametrize("valor, esperado", [
-    (1000, ELITE), (365, ELITE),
-    (364.9, HIGH), (12, HIGH),
-    (11.9, MEDIUM), (2, MEDIUM),
-    (1.9, LOW), (0, LOW),
+    (1000, ELITE), (7, ELITE),
+    (6.999, HIGH), (1, HIGH),
+    (.999, MEDIUM), (12*7/365, MEDIUM),
+    (12*7/365-.00001, LOW), (0, LOW),
 ])
 def test_limites_deployment_frequency(valor, esperado):
     assert classificar_metrica("deployment_frequency", valor) == esperado
 
 
 @pytest.mark.parametrize("valor, esperado", [
-    (0, ELITE), (0.99 * HORA, ELITE),
-    (1 * HORA, HIGH), (12 * HORA, HIGH), (SEMANA - 0.01, HIGH),
-    (SEMANA, MEDIUM), (30 * DIA, MEDIUM), (SEIS_MESES - 0.01, MEDIUM),
-    (SEIS_MESES, LOW), (400 * DIA, LOW),
+    (0, ELITE), (DIA-.01, ELITE),
+    (DIA, HIGH), (2*DIA, HIGH), (SEMANA-.01, HIGH),
+    (SEMANA, MEDIUM), (MES-.01, MEDIUM),
+    (MES, LOW), (400*DIA, LOW),
 ])
 def test_limites_lead_time(valor, esperado):
     assert classificar_metrica("lead_time", valor) == esperado
@@ -80,7 +80,7 @@ def test_nota_geral_mediana_arredondada_para_baixo(classes, esperado):
 
 def test_classificar_repositorio():
     resultado = classificar({
-        "deployment_frequency": 52,     # High
+        "deployment_frequency": 1,      # High
         "lead_time": 3 * DIA,           # High
         "change_failure_rate": 0.10,    # Elite
         "tempo_recuperacao": 2 * DIA,   # Medium
@@ -110,3 +110,24 @@ def test_faixas_personalizadas():
 
 def test_ordem_das_classes():
     assert CLASSES == (ELITE, HIGH, MEDIUM, LOW)
+
+
+@pytest.mark.parametrize("dias", [365,366])
+@pytest.mark.parametrize("quantidade,classe", [(11,LOW),(12,MEDIUM),(52,MEDIUM),(53,HIGH),(365,ELITE)])
+def test_frequencia_duracao_real_e_corte_mensal(dias, quantidade, classe):
+    import datetime as dt
+    from pipeline.classificacao import classificar_frequencia
+    inicio = dt.datetime(2023,1,1)
+    fim = inicio + dt.timedelta(days=dias)
+    taxa, categoria = classificar_frequencia(quantidade,inicio,fim)
+    assert taxa == pytest.approx(quantidade/(dias/7))
+    if quantidade == 365 and dias == 366:
+        classe = HIGH
+    assert categoria == classe
+
+
+def test_frequencia_janela_invalida():
+    import datetime as dt
+    from pipeline.classificacao import classificar_frequencia
+    with pytest.raises(ValueError, match="duração"):
+        classificar_frequencia(1,dt.datetime(2026,1,1),dt.datetime(2026,1,1))

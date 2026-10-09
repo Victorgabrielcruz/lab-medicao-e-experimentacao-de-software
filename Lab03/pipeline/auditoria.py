@@ -220,7 +220,7 @@ def _horas_release(comparacao):
     return horas if horas >= 0 else None
 
 
-def validar_lead_time(config, entrada, saida):
+def validar_lead_time(config, entrada, saida, conferir_classificacao=True):
     """Confere RQ02a com os commits de origem, sem chamar o cálculo de produção."""
     from pipeline.classificacao import classificar_metrica
     entrada = Path(entrada)
@@ -232,6 +232,8 @@ def validar_lead_time(config, entrada, saida):
         _exigir(documento["janela"] == janela, "janela de lead time divergente")
         _exigir(documento["definicao_deploy"] == "release_estavel", "política de lead time divergente")
     _exigir(Path(metrica["origem"]).resolve() == entrada.resolve(), "origem de lead time divergente")
+    if conferir_classificacao:
+        _exigir(metrica.get("versao_classificacao") == "lab03-enunciado-cortes-v2", "versão de classificação divergente")
     _exigir(metrica["variante"] == "a" and metrica["unidade"] == "horas", "variante/unidade divergente")
     identidades = [(r["id"], r["full_name"], r.get("default_branch")) for r in dados["repositorios"]]
     _exigir(len({r[0] for r in identidades}) == len(identidades), "IDs de compare duplicados")
@@ -256,8 +258,9 @@ def validar_lead_time(config, entrada, saida):
         validos = [h for h in horas if h is not None]
         mediana = _quantil(validos, .5)
         _exigir(_igual(resultado["lead_time_horas"], mediana), "mediana de lead time divergente")
-        _exigir(resultado["classe_lead_time"] == classificar_metrica("lead_time", mediana),
-                "classe de lead time divergente")
+        if conferir_classificacao:
+            _exigir(resultado["classe_lead_time"] == classificar_metrica("lead_time", mediana),
+                    "classe de lead time divergente")
         _exigir(resultado["total_releases"] == len(horas)
                 and resultado["releases_com_lead_time"] == len(validos)
                 and resultado["releases_ignoradas"] == len(horas)-len(validos), "contagens de lead time divergentes")
@@ -275,5 +278,6 @@ def validar_lead_time(config, entrada, saida):
                          ("repositorios_com_coleta_incompleta", incompletas), ("repositorios_com_lead_time", calculados)):
         _exigir(metrica[campo] == valor, f"total de lead time divergente: {campo}")
     return {"origem": str(entrada.resolve()), "entrada_semantica_sha256": hash_compare(dados),
+            "versao_classificacao": metrica.get("versao_classificacao"),
             "total_repositorios": len(identidades), "releases_com_lead_time": valores,
             "repositorios_com_lead_time": calculados, "coletas_incompletas": incompletas}

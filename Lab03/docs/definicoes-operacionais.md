@@ -56,7 +56,7 @@ Cada descarte é registrado com o motivo na tabela do funil de seleção (`pipel
 
 | Métrica | RQ | Variantes |
 |---|---|---|
-| Deployment frequency | RQ01 | releases publicadas na janela |
+| Deployment frequency | RQ01 | releases estáveis publicadas / semanas reais da janela |
 | Lead time | RQ02 | (a) por release; (b) por commit |
 | Change failure rate | RQ03 | (a) runs com falha / (falhas + sucessos); (b) releases corretivas (heurística validada manualmente) |
 | Tempo de recuperação | RQ04 | episódios de falha por workflow, com censura no fim da janela |
@@ -145,20 +145,28 @@ Sobre os contribuidores:
 
 ## 7. Classificação DORA de referência (C1)
 
-Cada métrica é classificada em Elite, High, Medium ou Low (`pipeline/classificacao.py`). A tabela parte do *Accelerate State of DevOps 2021*, o último relatório com as quatro classes:
+Usamos os cortes fixos do enunciado oficial fornecido pelo usuário, versão
+`lab03-enunciado-cortes-v2`. A tabela anterior adaptada de 2021 era divergente
+para DF e lead time e não deve ser usada para o aceite do protocolo.
 
 | Métrica | Unidade | Elite | High | Medium | Low |
 |---|---|---|---|---|---|
-| Deployment frequency | deploys por ano | ≥ 365 (pelo menos 1 por dia) | ≥ 12 (pelo menos 1 por mês) | ≥ 2 (pelo menos 1 a cada 6 meses) | < 2 |
-| Lead time | horas | < 1 hora | < 1 semana | < 6 meses | ≥ 6 meses |
-| Change failure rate | fração | ≤ 15% | ≤ 30% | ≤ 45% | > 45% |
-| Tempo de recuperação | horas | < 1 hora | < 1 dia | < 1 semana | ≥ 1 semana |
+| Deployment frequency | releases/semana | ≥7 | ≥1 e <7 | ≥1 por mês e <1 por semana | <1 por mês |
+| Lead time | horas | <24 | ≥24 e <168 | ≥168 e <720 | ≥720 |
+| Change failure rate | fração | ≤0,15 | >0,15 e ≤0,30 | >0,30 e ≤0,45 | >0,45 |
+| Tempo de recuperação | horas | <1 | ≥1 e <24 | ≥24 e <168 | ≥168 |
 
-Ajustes em relação ao relatório:
+A DF divide a quantidade de releases pelas semanas reais:
+`(fim_exclusivo - inicio).total_seconds() / 604800`.
+Para o corte mensal civil, 1/mês equivale a 12 releases na janela de 12 meses;
+o limite semanal correspondente é 12/semanas da janela. Isso trata anos de
+365 e 366 dias sem usar uma aproximação de 52 semanas. A função genérica de
+classificação toma 365 dias como referência; a integração usa a duração real.
+`releases_ano` permanece apenas como contagem de compatibilidade, junto de
+`releases_janela`; o valor de DF e sua unidade semanal são explícitos na saída.
 
-- **Lacunas fechadas.** Os intervalos do relatório não são contíguos. Por exemplo, o lead time High é "entre 1 dia e 1 semana", e o Medium é "entre 1 mês e 6 meses". Aqui cada valor cai na melhor classe cujo limite ele atende, então 6 horas é High e 2 semanas é Medium.
-- **Change failure rate.** O relatório de 2021 dá "16–30%" para High, Medium e Low, sem diferenciá-las. Aqui a faixa Elite do relatório (até 15%) é mantida, e as demais seguem o mesmo passo de 15 pontos (30% e 45%). É a escolha mais arbitrária da tabela.
-- **Tempo de recuperação Low.** O relatório define Low como "mais de 6 meses", deixando de fora o intervalo de 1 semana a 6 meses. Aqui Low começa em 1 semana.
-- **Deployment frequency.** Como a janela tem 12 meses, deploys por ano é o número de releases na janela. Com o critério de inclusão de pelo menos 5 releases, nenhum repositório da amostra fica em Low nessa métrica.
+Quando somente o contrato de classificação muda, o integrado audita primeiro
+os valores de lead time existentes, migra suas classes e audita novamente.
+Não repete a coleta nem o cálculo dos intervalos já auditados.
 
 **Nota geral:** as classes viram notas (Low = 1, Medium = 2, High = 3, Elite = 4). A nota geral é a mediana das notas, arredondada para baixo, ou seja, para a classe pior em caso de empate (Elite, High, Medium e Low dá 2,5, que vira Medium). Uma métrica que não pôde ser calculada (por exemplo, tempo de recuperação sem nenhum episódio de falha) fica sem classe e não entra na mediana.

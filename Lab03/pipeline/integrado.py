@@ -9,7 +9,7 @@ import requests
 from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_release, metadados, releases, tempo_recuperacao
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
-from pipeline.classificacao import classificar_metrica
+from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
@@ -196,15 +196,23 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                        and saida_lead_time.is_file())
     if not mesma_entrada_lt:
         lead_time_release.executar(config, entrada_compare, saida_lead_time)
+    elif _ler(saida_lead_time).get("versao_classificacao") != VERSAO_REFERENCIA:
+        # Confere valores/diagnósticos antes de migrar somente a categoria.
+        auditoria.validar_lead_time(config, entrada_compare, saida_lead_time, conferir_classificacao=False)
+        lead_time_release.reclassificar(saida_lead_time)
     validacao_lt = auditoria.validar_lead_time(config, entrada_compare, saida_lead_time)
     gravar_json(audit_lead_time, validacao_lt)
     frequencias = []
     for r in selecionados:
         quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,
             config["inclusao"].get("incluir_prereleases", True))["releases_publicadas"]
+        frequencia, classe = classificar_frequencia(quantidade, inicio, fim)
         frequencias.append({"id": r["id"], "full_name": r["full_name"], "releases_ano": quantidade,
-                            "classe": classificar_metrica("deployment_frequency", quantidade)})
+                            "releases_janela": quantidade, "deployment_frequency": frequencia,
+                            "classe": classe})
     gravar_json(processed / "deployment_frequency.json", {"janela": janela,
+               "unidade": "releases_por_semana", "semanas_janela": (fim-inicio).total_seconds()/(7*24*3600),
+               "versao_classificacao": VERSAO_REFERENCIA,
                "incluir_prereleases": config["inclusao"].get("incluir_prereleases", True),
                "repositorios": frequencias})
     resultado = {"contexto": contexto, "alvo": alvo, "total_amostra_completa": len(amostra),

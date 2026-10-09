@@ -349,12 +349,16 @@ def test_regra_estavel_explicita_alinha_inclusao_e_frequencia(tmp_path):
     assert integrado.executar(cfg, QuatroEstaveis(), 1, 1, fonte)["execucao_completa"]
     df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text(encoding="utf-8"))
     assert df["repositorios"][0]["releases_ano"] == 5
+    assert df["unidade"] == "releases_por_semana"
+    assert df["repositorios"][0]["deployment_frequency"] == pytest.approx(5/(365/7))
     cfg["inclusao"]["incluir_prereleases"] = False
     # Novo contexto/raw para coletor atualizado, sem reutilizar fixture com 4 estáveis.
     cfg["caminhos"]["raw"] = str(tmp_path / "raw2")
     assert integrado.executar(cfg, Api(), 1, 1, fonte)["execucao_completa"]
     df = json.loads((tmp_path / "processed/deployment_frequency.json").read_text(encoding="utf-8"))
     assert df["repositorios"][0]["releases_ano"] == 5
+    assert df["unidade"] == "releases_por_semana"
+    assert df["repositorios"][0]["deployment_frequency"] == pytest.approx(5/(365/7))
 
 
 def test_interrupcao_compare_retoma_sem_recoletar_repo_ou_recalcular_metricas(tmp_path, monkeypatch):
@@ -456,3 +460,37 @@ def test_auditoria_temporal_recusa_diagnosticos_corrompidos(tmp_path, campo, val
     with pytest.raises(ConfigError, match="Auditoria"):
         auditoria.validar(cfg, tmp_path / "raw/amostra_workflow_runs.json",
                          tmp_path / "processed/cfr.json", saida)
+
+
+def test_migracao_classe_lt_preserva_valores_sem_recalcular(tmp_path, monkeypatch):
+    cfg, fonte = configurar(tmp_path,1)
+    integrado.executar(cfg,Api(),1,1,fonte)
+    saida = tmp_path/"processed/lead_time_release.json"
+    dados = json.loads(saida.read_text(encoding="utf-8"))
+    del dados["versao_classificacao"]
+    dados["repositorios"][0]["classe_lead_time"] = "Low"
+    gravar_json(saida,dados)
+    valores = dados["repositorios"][0]["releases"]
+    def proibido(*args,**kwargs):
+        raise AssertionError("Lead time já auditado não deve ser recalculado")
+    monkeypatch.setattr(integrado.lead_time_release,"executar",proibido)
+    integrado.executar(cfg,Api(),1,1,fonte)
+    migrado = json.loads(saida.read_text(encoding="utf-8"))
+    assert migrado["repositorios"][0]["releases"] == valores
+    assert migrado["repositorios"][0]["classe_lead_time"] == "Medium"
+    assert migrado["versao_classificacao"] == integrado.VERSAO_REFERENCIA
+
+
+
+def test_migracao_classe_antiga_recusa_valor_lt_corrompido(tmp_path):
+    cfg, fonte = configurar(tmp_path,1)
+    integrado.executar(cfg,Api(),1,1,fonte)
+    saida = tmp_path/"processed/lead_time_release.json"
+    dados = json.loads(saida.read_text(encoding="utf-8"))
+    del dados["versao_classificacao"]
+    dados["repositorios"][0]["lead_time_horas"] = 999
+    gravar_json(saida,dados)
+    anterior = saida.read_bytes()
+    with pytest.raises(ConfigError,match="mediana"):
+        integrado.executar(cfg,Api(),1,1,fonte)
+    assert saida.read_bytes() == anterior
