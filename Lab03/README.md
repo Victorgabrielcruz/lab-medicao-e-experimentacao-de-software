@@ -366,8 +366,6 @@ são contadas separadamente. Datas de publicação inválidas no consolidado ger
 erro de entrada. Quando o repositório tem coleta incompleta, a mediana pode usar
 as releases com comparações completas, mantendo `coleta_incompleta=true` e aviso
 no log; ela não representa todas as releases nesse caso.
-<<<<<<< HEAD
-=======
 
 ### Lead time por commit (RQ02b — S01-14 — #142)
 
@@ -426,7 +424,6 @@ Datas de publicação inválidas no consolidado geram erro de entrada. Os testes
 incluem a fixture do enunciado e verificam a mediana de todos os commits entre
 múltiplas releases, além dos casos de borda e da compatibilidade com a S01-12.
 
->>>>>>> origin/main
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração

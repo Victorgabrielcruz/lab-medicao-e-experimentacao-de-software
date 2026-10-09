@@ -9,11 +9,7 @@ import sys
 from pathlib import Path
 
 from pipeline.cache import gravar_json
-<<<<<<< HEAD
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_metrica
-=======
-from pipeline.classificacao import classificar_metrica
->>>>>>> origin/main
 from pipeline.config import ConfigError, janela_utc, load_config
 
 ARQUIVO_ENTRADA = "compare.json"
@@ -150,11 +146,7 @@ def executar(config, entrada=None, saida=None):
     lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-<<<<<<< HEAD
         "origem": str(entrada), "janela": janela, "variante": "a", "versao_classificacao": VERSAO_REFERENCIA, "unidade": "horas",
-=======
-        "origem": str(entrada), "janela": janela, "variante": "a", "unidade": "horas",
->>>>>>> origin/main
         "definicao_deploy": "release_estavel", "formula": "published_at - min(commit.author.date)",
         "total_repositorios": len(lista), "repositorios_com_lead_time": sum(r["lead_time_horas"] is not None for r in lista),
         "total_releases": sum(r["total_releases"] for r in lista),
@@ -165,7 +157,6 @@ def executar(config, entrada=None, saida=None):
     return saida, lista
 
 
-<<<<<<< HEAD
 
 def reclassificar(saida):
     """Migra apenas as classes de valores previamente conferidos pela auditoria."""
@@ -177,8 +168,6 @@ def reclassificar(saida):
     gravar_json(saida, dados)
 
 
-=======
->>>>>>> origin/main
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Lead time por release (RQ02a) a partir de compare local.")
     parser.add_argument("--config", default="config.yaml", help="caminho da configuração")
