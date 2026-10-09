@@ -1,6 +1,6 @@
 # Relatório técnico — Victor, Lab03 Sprint 01
 
-Atualizado em 08/10/2026 às 20:32 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
+Atualizado em 08/10/2026 após correção da RQ04 (America/Sao_Paulo). **Relatório parcial: coleta real em andamento.**
 As entregas de código foram publicadas exclusivamente em
 `feat/tasks-victor-sprint-01`. Este relatório não dá aceite, fecha issues nem
 altera o GitHub Projects. A validação empírica ainda não permite encerrar o escopo.
@@ -13,7 +13,7 @@ altera o GitHub Projects. A validação empírica ainda não permite encerrar o 
 | [#145 — rate limit/backoff](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/145) | `X-RateLimit-Remaining`/`Reset` lidos por recurso; espera até reset + 1s; 5xx com 1, 2, 4 e 8s. 42 testes simulados e 100% de cobertura do módulo. | Critérios de implementação/testes auditados. Não foi provocado um 5xx ou esgotamento real para simular evidência; estado remoto preservado. |
 | [#146 — workflow runs](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/146) | Coletor mensal integrado; 37 testes e 100% de cobertura. O piloto real tem 100 candidatos, 82 após Actions/metadados e 18 descartes de Actions. | **Piloto consolidado e auditado:** 82 repos, 238.629 runs deduplicados, 18 coletas incompletas explicitadas. Identidades, branch/push, janela, cobertura mensal e totais conferidos. Isso ainda não comprova os 100 elegíveis da #149. |
 | [#147 — CFR (a)](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/147) | Fórmula falhas/(falhas+sucessos), três conclusions de falha, restantes ignoradas; 47 testes e 100% de cobertura. Auditoria independente dos contadores, fração, null e diagnósticos. | **Cálculo real auditado no piloto:** 70 repos com CFR e 12 sem runs válidos; 22.893 falhas e 194.519 sucessos. As 18 coletas incompletas permanecem sinalizadas. A amostra final de 100 ainda está em execução. |
-| [#148 — recuperação](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/148) | Implementação publicada em `8cc3c30`; episódios por workflow, primeira falha ao próximo sucesso, censura no fim; fixture de 1h20, mediana/IQR apenas dos recuperados. 66 testes e 100% de cobertura. | **Piloto real auditado:** 57 repos com recuperação observada, 6.206 episódios recuperados e 66 censurados; 18 coletas incompletas sinalizadas. O enunciado completo não está versionado; não se afirma confrontação com seu exemplo original. |
+| [#148 — recuperação](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/148) | Contrato corrigido conforme enunciado: updated_at do sucesso menos run_started_at da primeira falha após sucesso observado; versão v2, censuras à direita/esquerda e proporção por repo, diagnóstico temporal sem fallback. 64 testes específicos; exemplo oficial com criação/início/fim distintos. | **Piloto v2 auditado:** 56 repos com recuperação, 6.163 episódios recuperados, 38 censurados; 92 sequências iniciais com censura à esquerda e 1 repo com dados temporais incompletos. As 18 coletas incompletas persistem. A saída antiga por criação foi preservada como legado, sem conformidade RQ04. |
 | [#149 — pipeline/100 repos](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/149) | Comando integrado, releases paginadas, funil, subdivisão de meses, checkpoints e auditoria; fixture obtém 100 elegíveis a partir de 120 candidatos. | **Execução real em andamento desde 20:30.** Executor confirmou o fim dos processos originais e iniciou o comando com alvo 100, limite inicial de 1000 candidatos e saídas próprias; alvo ainda não alcançado. Compare #140 e lead time por release #141 foram integrados; a variante por commit #142 permanece dependência explícita; não há alegação de quatro métricas DORA completas. |
 | [#150 — artigo SBC](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/150) | Pacote local com arquivo principal, cinco seções, abstract/resumo, quatro referências preservadas e links repo/Projects. Template SBC, licença e proveniência registrados. | **Projeto Overleaf e compilação pendentes.** `/project` abriu tela de login; nenhum projeto criado. O compilador nativo falhou por infraestrutura, sem comprovar compilação do pacote. |
 
@@ -107,9 +107,7 @@ preservados como na fonte; código/documentação autorais passaram por diff che
 
 ## Evidências, testes e publicação
 
-Última suíte: **518 testes passaram, cobertura global 98,63%**. CFR, recuperação,
-workflow runs, releases, compare, lead time por release, rate limit e funil permanecem com 100% de cobertura. Auditoria:
-96%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
+Última suíte após RQ04 v2: **520 testes passaram, cobertura global 97,87%**. CFR, workflow runs, releases, compare, lead time por release, rate limit e funil têm 100% de cobertura. Recuperação: 98%; auditoria: 91%; comando integrado: 93%; coletor completo de runs: 93%. Releases: 100%, incluindo paginação, datas inválidas, erros de acesso, cache,
 retomada e o comando próprio da etapa.
 Não confundimos cobertura com validação empírica.
 
@@ -173,9 +171,11 @@ Uma espera futura por rate limit não deve ser confundida com falha.
 | Falhas / sucessos | 22.893 / 194.519 |
 | Conclusions ignoradas | 21.217 |
 | Repositórios com CFR / sem runs válidos | 70 / 12 |
-| Repositórios com recuperação observada | 57 |
-| Episódios recuperados / censurados | 6.206 / 66 |
-| Total de episódios | 6.272 |
+| Repositórios com recuperação observada (RQ04 v2) | 56 |
+| Episódios recuperados / censurados (RQ04 v2) | 6.163 / 38 |
+| Total de episódios definidos (RQ04 v2) | 6.201 |
+| Sequências iniciais com censura à esquerda | 92 |
+| Repos com dados temporais incompletos | 1 |
 | Coletas incompletas / completas | 18 / 64 |
 
 **Incompletude preservada:** o piloto não é a amostra final de cem elegíveis e
@@ -243,23 +243,46 @@ para exportar seu pacote, os arquivos locais foram obtidos de um espelho SBC
 2005 de Cezar Lamann, commit fixo e licença MIT, com avisos originais preservados.
 Não afirmamos equivalência entre o .sty de 2005 e o de 2017.
 
-O navegador confirmou tela de login no Overleaf. É necessária autenticação da
-conta para criar/importar o projeto e registrar sua URL; esse critério não está
-atendido. O editor nativo foi aberto no `main.tex`, mas o compilador retornou
-`Unable to find standard directories for platform`. Trata-se de falha de
-infraestrutura, não de evidência de erro corrigível na fonte. O editor também
-não oferece suporte a arquivos adicionais desse projeto. Compilação do pacote
-e inspeção visual permanecem não verificadas; não instalamos TeX ou plugin.
+O usuário forneceu o projeto Overleaf existente:
+https://www.overleaf.com/project/6ac8318e750c2cce451d6f68.
+A sessão autenticada foi verificada e o template original 2017 foi baixado antes
+de qualquer substituição; edição e compilação do artigo ainda estão em andamento.
+O problema anterior do compilador nativo permanece uma limitação de infraestrutura;
+não instalamos TeX/plugin.
 
-A tentativa de consultar o enunciado na sessão privada do Canvas foi rejeitada
-pela revisão automática por ausência de autorização explícita para essa conta.
-Foi solicitada autorização específica para ler somente o enunciado do Lab03;
-nenhum conteúdo privado foi acessado e nenhum acesso alternativo foi tentado.
-Enquanto não houver autorização, usar somente repositório/issues e dependências
-públicas. Compare e lead time por release foram integrados com protocolo público;
-a variante por commit #142 ainda depende de implementação/definição verificável.
-Não inventar sua fórmula para declarar o pipeline completo.
+O usuário também forneceu o enunciado oficial completo como anexo. Isso dispensa
+novo acesso ao Canvas. A leitura revelou uma divergência real na #148: a versão
+anterior usava criação e permitia falha inicial sem sucesso. O legado do piloto
+(57 repos, 6.206 recuperados/66 censurados) foi preservado localmente, junto da
+auditoria antiga, e não constitui conformidade com a RQ04. Somente a recuperação
+foi recalculada com o novo contrato; a CFR ficou idêntica byte a byte, e o hash
+bruto permaneceu o mesmo. Auditoria independente conferiu a fórmula, os IDs,
+censuras, diagnósticos, quartis e agregados v2.
+
+O pipeline ativo carregou a versão anterior em memória. Ele continua coletando,
+com cache/checkpoints preservados, e precisa reprocessar métricas após encerrar;
+seu eventual resultado não será aceito sem confrontação com o contrato atual.
+A versão da métrica muda sem invalidar os checkpoints de coleta.
+Frequência deve ser releases/semana e as faixas de lead time são as do enunciado;
+o alinhamento dessas partes está em andamento. A fórmula por commit da #142
+agora é conhecida, mas a integração pública ainda é uma dependência.
 
 O piloto foi auditado; o relatório será atualizado quando a execução dos cem
 elegíveis for consolidada e auditada. O acompanhamento só será encerrado ao cumprir o escopo ou,
 terminado todo trabalho independente, quando restar exclusivamente ação humana.
+
+## Correção RQ04 após recebimento do enunciado oficial
+
+A amostra inicial de falhas sem sucesso anterior não prova o início do episódio:
+ela é registrada como censura à esquerda, separada dos episódios definidos.
+A proporção de censura à direita por repo é publicada na saída local v2.
+Um timestamp essencial inválido invalida a estimativa do workflow, preservando
+o diagnóstico; isso evita unir episódios após descartar um run problemático.
+Esse diagnóstico não apaga a incompletude da coleta.
+
+Saída corrigida: `data/processed/piloto-100/tempo_recuperacao.json` do checkout
+original. Auditoria local: `.pytest_cache/sprint01-agente/validacao-piloto-rq04-v2.json`.
+Legados: `.pytest_cache/sprint01-agente/legado-created-at/` no worktree exclusivo.
+Esses arquivos reais não são versionados. Comando offline aplicado uma única vez,
+no Lab03 exclusivo: `pipeline.tempo_recuperacao.executar(config, entrada_absoluta,
+saida_absoluta)`, seguido de `pipeline.auditoria.validar`, sem token/API.

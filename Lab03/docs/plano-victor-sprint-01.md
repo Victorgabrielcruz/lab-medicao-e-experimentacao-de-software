@@ -199,3 +199,18 @@ Os processos originais encerraram. O executor iniciou o pipeline integrado para
 100 elegíveis com limite 1000 e saídas próprias. Monitorar os PIDs e o log; não
 iniciar outro coletor enquanto o atual estiver vivo. A amostra final e a #142
 continuam pendentes; os agregados do piloto não substituem os critérios finais.
+
+
+## Enunciado oficial e correção RQ04 — 08/10/2026
+
+O usuário forneceu o enunciado completo e o projeto Overleaf existente
+6ac8318e750c2cce451d6f68, autenticado. Não acessar Canvas; preservar antes o
+template 2017 e usar esse projeto sem alterar compartilhamento.
+RQ04 v2 usa success.updated_at - first_failure.run_started_at e exige sucesso
+anterior observado. O legado por criação foi preservado e a recuperação do
+piloto foi recalculada uma vez; CFR preservada. Agregados v2: 56 repos,
+6.163 recuperados, 38 censurados, 92 sequências iniciais com censura à esquerda;
+1 repo temporalmente incompleto e 18 coletas parciais. 520 testes, 97,87%.
+Não reiniciar o coletor vivo: aguardar saída e reprocessar métricas com código
+novo, reutilizando checkpoints/cache. Alinhar DF semanal e cortes oficiais;
+#142 pública ainda pendente. Validação manual/S02 e análises/S03 não são S01.

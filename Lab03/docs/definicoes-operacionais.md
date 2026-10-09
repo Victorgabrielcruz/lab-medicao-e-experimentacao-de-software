@@ -65,24 +65,30 @@ Os resultados são reportados por **mediana e IQR**. O detalhamento de cada vari
 
 ### 5.1 Tempo de recuperação (RQ04)
 
-Cada `workflow_id` tem sua própria sequência, ordenada por `created_at` e ID.
-A primeira falha abre um episódio, as falhas seguintes mantêm esse início e o
-próximo `success` do mesmo workflow registra a recuperação. Conclusions
-ignoradas não alteram o episódio. Os filtros de default branch, evento `push`
-e janela são os da seção 3.
+O enunciado oficial fornecido em 08/10/2026 define a fórmula
+`success.updated_at - first_failure.run_started_at`. O contrato é
+`rq04-updated-at-run-started-at-v2`; a versão anterior por `created_at`
+não satisfaz a RQ04. A entrada continua restrita a runs criados na janela,
+do default branch e com evento push. Em cada workflow, a sequência é ordenada
+por `run_started_at` e ID; a primeira falha **após um sucesso observado**
+abre o episódio, e o próximo sucesso o encerra em seu `updated_at`.
+Falhas consecutivas mantêm o início; conclusions ignoradas não o alteram.
 
-A duração usa os `created_at` da primeira falha e do sucesso. Um episódio sem
-sucesso antes do fim exclusivo da janela é censurado nesse limite: a duração
-observada é um limite inferior e não significa que houve recuperação. Sucessos
-na fronteira final ou depois dela não recuperam um episódio dentro da janela.
+Se o sucesso termina em/após o fim exclusivo da janela, o episódio é censurado
+nesse limite, mesmo quando o run foi criado dentro da janela. Sua duração é
+um limite inferior, excluído da mediana/IQR dos recuperados.
+`proporcao_censurados` é censurados/total de episódios definidos, ou null
+quando não há episódios. A primeira sequência de falhas sem sucesso anterior
+observado é registrada separadamente em `historico_inicial_nao_observado`,
+como censura à esquerda: não se presume um início nem uma duração conhecida.
 
-Por repositório, reportamos a mediana e o IQR, em horas, somente dos episódios
-recuperados, junto dos totais recuperados/censurados. Os quartis usam
-interpolação linear inclusiva; uma única recuperação tem IQR zero. Sem
-recuperações, mediana, quartis, IQR e classe ficam ausentes (`null`). Essa
-estatística é condicionada à recuperação observada; não é uma estimativa de
-sobrevivência que inclua as censuras. Uma coleta incompleta mantém o alerta,
-pois páginas ausentes podem alterar episódios e a identificação de censura.
+Não há fallback para criação. Timestamps essenciais ausentes, sem fuso,
+inválidos ou contraditórios invalidam a estimativa daquele workflow inteiro,
+preservando seus IDs/motivos: retirar somente um run poderia unir episódios.
+Runs iniciados depois da janela são diagnosticados. Essas limitações temporais
+e `coleta_incompleta` permanecem explícitas. Os demais workflows válidos podem
+contribuir à mediana. Quartis usam interpolação inclusiva; uma recuperação tem
+IQR zero e nenhuma recuperação produz estatísticas/classificação null.
 
 ### Commits entre releases (S01-12 — #140)
 

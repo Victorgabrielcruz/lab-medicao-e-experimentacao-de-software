@@ -19,14 +19,15 @@ JANELA = {"inicio": "2025-10-01T00:00:00Z", "fim_exclusivo": "2026-10-01T00:00:0
 
 
 def run(id=1, conclusion="failure", hora="10:00:00", workflow_id=100, **campos):
+    data = campos.get("created_at", f"2026-05-10T{hora}Z")
     return {"id": id, "workflow_id": workflow_id, "conclusion": conclusion,
             "head_branch": "main", "event": "push", "name": "CI",
-            "created_at": f"2026-05-10T{hora}Z", **campos}
+            "created_at": data, "run_started_at": data, "updated_at": data, **campos}
 
 
 def repo(runs=None, **campos):
     return {"id": 10, "full_name": "org/projeto", "default_branch": "main",
-            "workflow_runs": [run()] if runs is None else runs,
+            "workflow_runs": [run(99, "success", "09:00:00"), run()] if runs is None else runs,
             "coleta_incompleta": False, "meses": [], **campos}
 
 
@@ -56,163 +57,132 @@ def gravar_config(config, tmp_path):
     return str(caminho)
 
 
-def test_cenario_de_1h20_da_primeira_falha_ate_o_sucesso():
-    runs = [run(1), run(2, "timed_out", "10:30:00"), run(3, "success", "11:20:00")]
-    resultado = tr.calcular_repositorio(repo(runs), INICIO, FIM)
-    assert resultado["episodios"] == [{"workflow_id": 100, "run_falha_id": 1,
+def test_exemplo_oficial_usa_inicio_da_falha_e_termino_do_sucesso():
+    runs = [run(9, "success", "09:00:00"),
+            run(1, created_at="2026-05-10T09:55:00Z", run_started_at="2026-05-10T10:00:00Z"),
+            run(2, "timed_out", "10:30:00"),
+            run(3, "success", "11:10:00", run_started_at="2026-05-10T11:15:00Z",
+                updated_at="2026-05-10T11:20:00Z")]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["episodios"] == [{"workflow_id": 100, "run_falha_id": 1,
         "run_sucesso_id": 3, "inicio": "2026-05-10T10:00:00Z", "fim": "2026-05-10T11:20:00Z",
-        "duracao_horas": 4 / 3, "censurado": False, "falhas_no_episodio": 2}]
-    assert resultado["tempo_recuperacao"] == 80 / 60
-    assert resultado["total_episodios"] == resultado["episodios_recuperados"] == 1
-    assert resultado["episodios_censurados"] == 0
-    assert resultado["iqr_horas"] == 0
-    assert resultado["classe_tempo_recuperacao"] == "High"
+        "duracao_horas": 4/3, "censurado": False, "falhas_no_episodio": 2}]
+    assert r["tempo_recuperacao"] == 4/3
+    assert r["iqr_horas"] == r["proporcao_censurados"] == 0
+    assert r["classe_tempo_recuperacao"] == "High"
 
 
 @pytest.mark.parametrize("conclusion", ["failure", "timed_out", "startup_failure"])
-def test_cada_tipo_de_falha_abre_episodio(conclusion):
-    episodios = tr.identificar_episodios([run(1, conclusion), run(2, "success", "11:00:00")], FIM)
-    assert len(episodios) == 1
-    assert episodios[0]["duracao_horas"] == 1
-    assert episodios[0]["censurado"] is False
+def test_falha_so_abre_apos_sucesso_observado(conclusion):
+    runs = [run(1, conclusion), run(2, "success", "11:00:00")]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["episodios"] == []
+    assert r["historico_inicial_nao_observado"] == [{"workflow_id": 100, "run_falha_ids": [1],
+        "run_sucesso_id": 2, "censura_esquerda": True, "duracao_horas": None}]
+    assert r["tempo_recuperacao"] is r["proporcao_censurados"] is None
+    e = tr.identificar_episodios([run(9, "success", "09:00:00"), *runs], FIM)
+    assert len(e) == 1 and e[0]["duracao_horas"] == 1
 
 
 @pytest.mark.parametrize("conclusion", ["cancelled", "skipped", "neutral", "action_required", "stale",
                                        "unknown", "SUCCESS", "", None])
 def test_conclusions_ignoradas_nao_abrem_nem_recuperam(conclusion):
-    registro = run(2, conclusion, "10:30:00")
-    assert tr.identificar_episodios([registro], FIM) == []
-    episodios = tr.identificar_episodios([run(1), registro, run(3, "success", "11:20:00")], FIM)
-    assert len(episodios) == 1
-    assert episodios[0]["duracao_horas"] == 4 / 3
-    assert episodios[0]["falhas_no_episodio"] == 1
-    assert tr.identificar_episodios([run(1), registro], FIM)[0]["censurado"] is True
+    runs = [run(9, "success", "09:00:00"), run(1), run(2, conclusion, "10:30:00")]
+    e = tr.identificar_episodios(runs, FIM)
+    assert len(e) == 1 and e[0]["censurado"] and e[0]["falhas_no_episodio"] == 1
+    e = tr.identificar_episodios([*runs, run(3, "success", "11:20:00")], FIM)
+    assert e[0]["duracao_horas"] == 4/3
+    assert tr.identificar_episodios([run(2, conclusion)], FIM) == []
 
 
-def test_conclusion_ausente_nao_altera_episodio():
-    registro = run(2, hora="10:30:00")
-    del registro["conclusion"]
-    resultado = tr.calcular_repositorio(repo([run(1), registro, run(3, "success", "11:00:00")]), INICIO, FIM)
-    assert resultado["tempo_recuperacao"] == 1
-    assert resultado["runs_ignorados"] == 1
+def test_workflows_independentes_e_ordenacao_por_inicio():
+    runs = [run(9, "success", "09:00:00"), run(8, "success", "09:00:00", workflow_id=200),
+            run(1), run(2, hora="10:20:00", workflow_id=200),
+            run(3, "success", "11:00:00", workflow_id=200), run(4, "success", "11:20:00")]
+    esperado = tr.identificar_episodios(runs, FIM)
+    assert [(e["workflow_id"], e["duracao_horas"]) for e in esperado] == [(100, 4/3), (200, 2/3)]
+    assert tr.identificar_episodios(list(reversed(runs)) + [runs[2]], FIM) == esperado
+    assert tr.identificar_episodios(runs[:-1], FIM)[0]["censurado"]
 
 
-def test_workflows_intercalados_nao_compartilham_episodios_mesmo_com_nome_igual():
-    runs = [run(1, workflow_id=100), run(2, hora="10:20:00", workflow_id=200),
-            run(3, "success", "11:00:00", workflow_id=200),
-            run(4, "success", "11:20:00", workflow_id=100)]
-    episodios = tr.identificar_episodios(runs, FIM)
-    assert [(e["workflow_id"], e["run_falha_id"], e["run_sucesso_id"]) for e in episodios] == [
-        (100, 1, 4), (200, 2, 3)]
-    assert [e["duracao_horas"] for e in episodios] == [4 / 3, 2 / 3]
+def test_episodios_multiplos_quartis_e_proporcao():
+    runs = [run(9, "success", "09:00:00"), run(1), run(2, "success", "11:00:00"),
+            run(3, hora="12:00:00"), run(4, "startup_failure", "13:00:00"),
+            run(5, "success", "14:00:00"), run(6, hora="15:00:00")]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["tempo_recuperacao"] == 1.5
+    assert (r["q1_horas"], r["q3_horas"], r["iqr_horas"]) == (1.25, 1.75, .5)
+    assert (r["total_episodios"], r["episodios_recuperados"], r["episodios_censurados"]) == (3, 2, 1)
+    assert r["proporcao_censurados"] == 1/3
+    assert r["episodios"][1]["falhas_no_episodio"] == 2
 
 
-def test_sucesso_de_outro_workflow_nao_recupera_falha():
-    episodios = tr.identificar_episodios([run(1), run(2, "success", "11:00:00", workflow_id=200)], FIM)
-    assert len(episodios) == 1
-    assert episodios[0]["workflow_id"] == 100
-    assert episodios[0]["censurado"] is True
+@pytest.mark.parametrize("termino", ["2026-10-01T00:00:00Z", "2026-10-01T00:05:00Z"])
+def test_sucesso_criado_dentro_mas_terminado_fora_e_censurado(termino):
+    runs = [run(9, "success", created_at="2026-09-30T21:00:00Z"),
+            run(1, created_at="2026-09-30T21:55:00Z", run_started_at="2026-09-30T22:00:00Z"),
+            run(2, "success", created_at="2026-09-30T23:50:00Z", updated_at=termino)]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["episodios"][0]["duracao_horas"] == 2
+    assert r["episodios"][0]["censurado"] and r["episodios"][0]["run_sucesso_id"] is None
+    assert r["proporcao_censurados"] == 1 and r["tempo_recuperacao"] is None
+    assert r["runs_fora_recorte"] == 0
 
 
-def test_sucessos_sem_falha_anterior_nao_criam_episodios():
-    assert tr.identificar_episodios([run(1, "success"), run(2, "success", "11:00:00")], FIM) == []
+@pytest.mark.parametrize("campo,valor", [
+    ("run_started_at", None), ("run_started_at", "inválido"),
+    ("run_started_at", "2026-05-10T10:00:00"), ("updated_at", None),
+    ("updated_at", "inválido"), ("updated_at", "2026-05-10T08:00:00Z"),
+    ("run_started_at", "2026-05-10T08:00:00Z")])
+def test_timestamp_invalido_nao_produz_estimativa_nem_fallback(campo, valor):
+    runs = [run(9, "success", "09:00:00"), run(1), run(2, "success", "11:00:00", **{campo: valor})]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["episodios"] == [] and r["tempo_recuperacao"] is None
+    assert r["dados_temporais_incompletos"]
+    assert r["workflows_com_dados_temporais_invalidos"][0]["runs_invalidos"][0]["run_id"] == 2
 
 
-def test_varios_episodios_no_mesmo_workflow_e_falhas_consecutivas():
-    runs = [run(1, "success", "09:00:00"), run(2), run(3, "success", "11:00:00"),
-            run(4, hora="12:00:00"), run(5, "startup_failure", "13:00:00"),
-            run(6, "success", "14:00:00"), run(7, "success", "15:00:00")]
-    episodios = tr.identificar_episodios(runs, FIM)
-    assert [e["duracao_horas"] for e in episodios] == [1, 2]
-    assert [e["falhas_no_episodio"] for e in episodios] == [1, 2]
-    assert tr.resumir(episodios) == {"total_episodios": 2, "episodios_recuperados": 2,
-        "episodios_censurados": 0, "tempo_recuperacao": 1.5,
-        "q1_horas": 1.25, "q3_horas": 1.75, "iqr_horas": 0.5}
+def test_timestamp_ausente_preserva_outro_workflow_valido():
+    runs = [run(9, "success", "09:00:00"), run(1), run(2, "success", "11:00:00"),
+            run(3, workflow_id=200)]
+    del runs[-1]["run_started_at"]
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["tempo_recuperacao"] == 1 and r["dados_temporais_incompletos"]
 
 
-def test_entrada_fora_de_ordem_e_ids_duplicados_nao_alteram_resultado():
-    r1, r2 = run(1), run(2, "success", "11:20:00")
-    esperado = tr.identificar_episodios([r1, r2], FIM)
-    assert tr.identificar_episodios([r2, r1, deepcopy(r1), deepcopy(r2)], FIM) == esperado
-    resultado = tr.calcular_repositorio(repo([r2, r1, deepcopy(r1), deepcopy(r2)]), INICIO, FIM)
-    assert resultado["episodios"] == esperado
-    assert resultado["runs_duplicados"] == 2
+def test_falha_inicial_aberta_nao_inventa_inicio_apos_sucesso():
+    r = tr.calcular_repositorio(repo([run(1), run(2, "timed_out", "11:00:00")]), INICIO, FIM)
+    assert r["episodios"] == [] and r["historico_inicial_nao_observado"][0]["run_falha_ids"] == [1, 2]
+    assert r["historico_inicial_nao_observado"][0]["run_sucesso_id"] is None
 
 
-def test_mesma_data_usa_id_para_desempate_e_pode_ter_duracao_zero():
-    episodios = tr.identificar_episodios([run(2, "success"), run(1)], FIM)
-    assert len(episodios) == 1
-    assert episodios[0]["duracao_horas"] == 0
-    assert episodios[0]["censurado"] is False
-    resultado = tr.calcular_repositorio(repo([run(2, "success"), run(1)]), INICIO, FIM)
-    assert resultado["classe_tempo_recuperacao"] == "Elite"
-
-
-def test_censura_usa_primeira_falha_ate_fim_exclusivo_da_janela():
-    episodios = tr.identificar_episodios([
-        run(1, created_at="2026-09-30T22:00:00Z"),
-        run(2, "timed_out", created_at="2026-09-30T23:00:00Z")], FIM)
-    assert episodios == [{"workflow_id": 100, "run_falha_id": 1, "run_sucesso_id": None,
-        "inicio": "2026-09-30T22:00:00Z", "fim": "2026-10-01T00:00:00Z",
-        "duracao_horas": 2, "censurado": True, "falhas_no_episodio": 2}]
-    assert tr.resumir(episodios)["tempo_recuperacao"] is None
-
-
-@pytest.mark.parametrize("data", ["2026-10-01T00:00:00Z", "2026-10-01T00:00:01Z"])
-def test_sucesso_no_fim_ou_depois_nao_recupera_episodio(data):
-    runs = [run(1, created_at="2026-09-30T23:00:00Z"), run(2, "success", created_at=data)]
-    episodios = tr.identificar_episodios(runs, FIM)
-    assert len(episodios) == 1
-    assert episodios[0]["censurado"] is True
-    assert episodios[0]["duracao_horas"] == 1
-    resultado = tr.calcular_repositorio(repo(runs), INICIO, FIM)
-    assert resultado["runs_fora_recorte"] == 1
-    assert resultado["tempo_recuperacao"] is None
-
-
-def test_censurados_nao_entram_na_mediana_ou_iqr():
-    episodios = [{"duracao_horas": 1, "censurado": False},
-                 {"duracao_horas": 1000, "censurado": True}]
-    assert tr.resumir(episodios) == {"total_episodios": 2, "episodios_recuperados": 1,
-        "episodios_censurados": 1, "tempo_recuperacao": 1, "q1_horas": 1, "q3_horas": 1, "iqr_horas": 0}
-
-
-def test_mediana_e_quartis_inclusivos():
-    episodios = [{"duracao_horas": h, "censurado": False} for h in [8, 2, 1, 4]]
-    resumo = tr.resumir(episodios)
-    assert resumo["tempo_recuperacao"] == 3
-    assert resumo["q1_horas"] == 1.75
-    assert resumo["q3_horas"] == 5
-    assert resumo["iqr_horas"] == 3.25
-
-
-@pytest.mark.parametrize("runs", [[], [run(conclusion="success")], [run()], [run(conclusion=None)]])
-def test_sem_recuperacoes_estatisticas_e_classe_ficam_nulas(runs):
-    resultado = tr.calcular_repositorio(repo(runs), INICIO, FIM)
-    for campo in ("tempo_recuperacao", "q1_horas", "q3_horas", "iqr_horas", "classe_tempo_recuperacao"):
-        assert resultado[campo] is None
-    assert resultado["episodios_recuperados"] == 0
-
-
-def test_recorte_branch_evento_inicio_inclusivo_e_dados_preservados():
-    runs = [run(1, created_at="2025-10-01T00:00:00Z"),
+def test_recorte_nao_usa_sucesso_anterior_fora_da_janela():
+    runs = [run(9, "success", created_at="2025-09-30T23:59:59Z"),
+            run(1, created_at="2025-10-01T00:00:00Z"),
             run(2, "success", created_at="2025-10-01T01:20:00Z"),
-            run(3, head_branch="dev"), run(4, event="pull_request"),
-            run(5, created_at="2025-09-30T23:59:59Z"), run(6, "skipped")]
+            run(3, head_branch="dev"), run(4, event="pull_request"), run(5, "skipped")]
     original = deepcopy(runs)
-    resultado = tr.calcular_repositorio(repo(runs), INICIO, FIM)
-    assert resultado["tempo_recuperacao"] == 4 / 3
-    assert resultado["runs_fora_recorte"] == 3
-    assert resultado["runs_ignorados"] == 1
-    assert runs == original
+    r = tr.calcular_repositorio(repo(runs), INICIO, FIM)
+    assert r["tempo_recuperacao"] is None and len(r["historico_inicial_nao_observado"]) == 1
+    assert r["runs_fora_recorte"] == 3 and r["runs_ignorados"] == 1 and runs == original
 
 
-def test_datas_com_fuso_normalizadas_e_branch_diferente_de_main():
-    runs = [run(1, head_branch="master", created_at="2025-09-30T21:00:00-03:00"),
-            run(2, "success", head_branch="master", created_at="2025-10-01T01:20:00Z")]
-    resultado = tr.calcular_repositorio(repo(runs, default_branch="master"), INICIO, FIM)
-    assert resultado["episodios"][0]["inicio"] == "2025-10-01T00:00:00Z"
-    assert resultado["tempo_recuperacao"] == 4 / 3
+def test_fuso_horario_e_inicio_atrasado_fora_janela():
+    runs = [run(9, "success", "09:00:00", head_branch="master"),
+            run(1, head_branch="master", run_started_at="2026-05-10T07:00:00-03:00"),
+            run(2, "success", "11:00:00", head_branch="master"),
+            run(3, head_branch="master", created_at="2026-09-30T23:59:00Z", run_started_at="2026-10-01T00:01:00Z")]
+    r = tr.calcular_repositorio(repo(runs, default_branch="master"), INICIO, FIM)
+    assert r["tempo_recuperacao"] == 1 and r["episodios"][0]["inicio"] == "2026-05-10T10:00:00Z"
+    assert r["runs_iniciados_fora_janela"] == [3] and r["dados_temporais_incompletos"]
+
+
+def test_mediana_iqr_e_sem_episodios():
+    assert tr.resumir([])["proporcao_censurados"] is None
+    r = tr.resumir([{"duracao_horas": h, "censurado": False} for h in [8,2,1,4]]
+                   + [{"duracao_horas": 1000, "censurado": True}])
+    assert (r["tempo_recuperacao"], r["q1_horas"], r["q3_horas"], r["iqr_horas"]) == (3,1.75,5,3.25)
+    assert r["proporcao_censurados"] == .2
 
 
 @pytest.mark.parametrize("branch", [None, "", "  ", 12])
@@ -244,15 +214,15 @@ def test_created_at_ausente():
 @pytest.mark.parametrize("campos", [{"coleta_incompleta": True},
                                     {"meses": [{"coleta_incompleta": True}]}])
 def test_coleta_incompleta_preserva_marca_e_alerta(campos, caplog):
-    resultado = tr.calcular_repositorio(repo([run(1), run(2, "success", "11:00:00")], **campos), INICIO, FIM)
+    resultado = tr.calcular_repositorio(repo([run(9, "success", "09:00:00"), run(1), run(2, "success", "11:00:00")], **campos), INICIO, FIM)
     assert resultado["coleta_incompleta"] is True
     assert resultado["tempo_recuperacao"] == 1
     assert "org/projeto: tempo de recuperação calculado sobre coleta incompleta" in caplog.text
 
 
 def test_executar_consolida_episodios_recuperados_e_censurados(config):
-    entrada = gravar_entrada(config, [repo([run(1), run(2, "success", "11:20:00")]),
-        repo([run(3)], id=11, full_name="org/censurado", coleta_incompleta=True)])
+    entrada = gravar_entrada(config, [repo([run(9, "success", "09:00:00"), run(1), run(2, "success", "11:20:00")]),
+        repo([run(9, "success", "09:00:00"), run(3)], id=11, full_name="org/censurado", coleta_incompleta=True)])
     original = entrada.read_bytes()
     saida, lista = tr.executar(config)
     dados = json.loads(saida.read_text(encoding="utf-8"))
@@ -337,7 +307,7 @@ def test_entrypoint_executa_cli(config, tmp_path, monkeypatch):
 
 
 def test_integracao_com_coletor_mensal_episodio_atravessa_meses(config):
-    registros = [run(1, created_at="2025-10-31T23:00:00Z"),
+    registros = [run(9, "success", created_at="2025-10-31T22:00:00Z"), run(1, created_at="2025-10-31T23:00:00Z"),
                  run(2, "success", created_at="2025-11-01T00:20:00Z")]
     class ClienteFalso:
         chamadas = 0

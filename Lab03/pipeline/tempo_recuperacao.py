@@ -7,6 +7,7 @@ import logging
 import statistics
 import sys
 from pathlib import Path
+from collections import defaultdict
 
 from pipeline.cache import gravar_json
 from pipeline.cfr import CONCLUSOES_FALHA, CONCLUSOES_SUCESSO
@@ -15,6 +16,7 @@ from pipeline.config import ConfigError, janela_utc, load_config
 
 ARQUIVO_ENTRADA = "workflow_runs.json"
 ARQUIVO_SAIDA = "tempo_recuperacao.json"
+VERSAO_METRICA = "rq04-updated-at-run-started-at-v2"
 log = logging.getLogger(__name__)
 
 
@@ -22,13 +24,13 @@ def _iso(data):
     return data.astimezone(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def _data_run(run):
+def _data_run(run, campo="created_at"):
     try:
-        data = dt.datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+        data = dt.datetime.fromisoformat(run[campo].replace("Z", "+00:00"))
         if data.tzinfo is None:
             raise ValueError("data sem fuso horário")
-    except (KeyError, ValueError, AttributeError) as exc:
-        raise ConfigError(f"created_at inválido no run {run.get('id')}.") from exc
+    except (KeyError, ValueError, AttributeError, TypeError) as exc:
+        raise ConfigError(f"{campo} inválido no run {run.get('id')}.") from exc
     return data
 
 
@@ -48,38 +50,79 @@ def _episodio(workflow_id, primeira, fim, sucesso, falhas):
             "censurado": sucesso is None, "falhas_no_episodio": falhas}
 
 
-def identificar_episodios(runs, fim):
-    """Da primeira falha ao próximo sucesso do mesmo workflow, por created_at.
+def _avaliar(runs, fim):
+    """Recorte por criação, ordem por início; nenhum fallback de timestamp.
 
-    Recebe runs já filtrados por branch/evento/início da janela. Conclusions
-    ignoradas não iniciam nem encerram episódios. Falhas consecutivas mantêm
-    o início original. Runs em/após fim não recuperam episódios da janela.
+    Um workflow com timestamps essenciais inválidos fica sem estimativa, pois
+    remover somente um run poderia unir episódios ou deslocar a primeira falha.
+    Falhas no prefixo sem sucesso anterior são censuras à esquerda separadas.
     """
-    ordenados = []
+    grupos, vistos = defaultdict(list), set()
     for run in runs:
-        conclusion = run.get("conclusion")
-        if conclusion not in CONCLUSOES_FALHA | CONCLUSOES_SUCESSO:
+        if run.get("conclusion") not in CONCLUSOES_FALHA | CONCLUSOES_SUCESSO:
             continue
-        data = _data_run(run)
-        if data >= fim:
+        if _data_run(run) >= fim:
             continue
-        ordenados.append((data, _id(run, "id"), _id(run, "workflow_id"), run))
-    ordenados.sort(key=lambda item: (item[0], item[1]))
-    abertos, episodios, ids = {}, [], set()
-    for data, id_run, workflow_id, run in ordenados:
-        if id_run in ids:
+        id_run, workflow = _id(run, "id"), _id(run, "workflow_id")
+        if id_run not in vistos:
+            vistos.add(id_run)
+            grupos[workflow].append(run)
+    episodios, iniciais, invalidos, fora = [], [], [], []
+    for workflow, lista in sorted(grupos.items()):
+        ordenados, erros = [], []
+        for run in lista:
+            try:
+                inicio = _data_run(run, "run_started_at")
+                termino = _data_run(run, "updated_at") if run["conclusion"] == "success" else None
+                if inicio < _data_run(run) or (termino is not None and termino < inicio):
+                    raise ConfigError("ordem temporal inválida")
+                if inicio >= fim:
+                    fora.append(run["id"])
+                else:
+                    ordenados.append((inicio, run["id"], run, termino))
+            except ConfigError as exc:
+                erros.append({"run_id": run["id"], "motivo": str(exc)})
+        if erros:
+            invalidos.append({"workflow_id": workflow, "runs_invalidos": erros})
             continue
-        ids.add(id_run)
-        if run["conclusion"] in CONCLUSOES_FALHA:
-            if workflow_id not in abertos:
-                abertos[workflow_id] = [(run, data), 0]
-            abertos[workflow_id][1] += 1
-        elif workflow_id in abertos:
-            primeira, falhas = abertos.pop(workflow_id)
-            episodios.append(_episodio(workflow_id, primeira, data, run, falhas))
-    for workflow_id, (primeira, falhas) in abertos.items():
-        episodios.append(_episodio(workflow_id, primeira, fim, None, falhas))
-    return sorted(episodios, key=lambda e: (e["inicio"], e["workflow_id"], e["run_falha_id"]))
+        anterior = False
+        aberto, falhas, prefixo = None, 0, []
+        for inicio, _, run, termino in sorted(ordenados, key=lambda x: (x[0], x[1])):
+            if run["conclusion"] in CONCLUSOES_FALHA:
+                if not anterior:
+                    prefixo.append(run["id"])
+                else:
+                    aberto = aberto or (run, inicio)
+                    falhas += 1
+            else:
+                if prefixo:
+                    iniciais.append({"workflow_id": workflow, "run_falha_ids": prefixo,
+                                     "run_sucesso_id": run["id"] if termino < fim else None,
+                                     "censura_esquerda": True, "duracao_horas": None})
+                    prefixo = []
+                if aberto:
+                    if termino >= fim:
+                        # A próxima execução bem-sucedida não termina na janela.
+                        break
+                    episodios.append(_episodio(workflow, aberto, termino, run, falhas))
+                    aberto, falhas = None, 0
+                if termino < fim:
+                    anterior = True
+        if aberto:
+            episodios.append(_episodio(workflow, aberto, fim, None, falhas))
+        if prefixo:
+            iniciais.append({"workflow_id": workflow, "run_falha_ids": prefixo,
+                             "run_sucesso_id": None, "censura_esquerda": True, "duracao_horas": None})
+    return (sorted(episodios, key=lambda e: (e["inicio"], e["workflow_id"], e["run_falha_id"])),
+            {"historico_inicial_nao_observado": iniciais,
+             "workflows_com_dados_temporais_invalidos": invalidos,
+             "runs_iniciados_fora_janela": sorted(fora),
+             "dados_temporais_incompletos": bool(invalidos or fora)})
+
+
+def identificar_episodios(runs, fim):
+    """Primeira falha após sucesso observado -> updated_at do próximo sucesso."""
+    return _avaliar(runs, fim)[0]
 
 
 def resumir(episodios):
@@ -92,6 +135,7 @@ def resumir(episodios):
         q1 = q3 = mediana
     return {"total_episodios": len(episodios), "episodios_recuperados": len(duracoes),
             "episodios_censurados": len(episodios) - len(duracoes),
+            "proporcao_censurados": (len(episodios)-len(duracoes))/len(episodios) if episodios else None,
             "tempo_recuperacao": mediana, "q1_horas": q1, "q3_horas": q3,
             "iqr_horas": q3 - q1 if mediana is not None else None}
 
@@ -119,7 +163,7 @@ def calcular_repositorio(repo, inicio, fim):
         if run.get("conclusion") not in CONCLUSOES_FALHA | CONCLUSOES_SUCESSO:
             ignorados += 1
         runs.append(run)
-    episodios = identificar_episodios(runs, fim)
+    episodios, diagnosticos = _avaliar(runs, fim)
     resumo = resumir(episodios)
     incompleta = bool(repo.get("coleta_incompleta") or
                       any(m.get("coleta_incompleta") for m in repo.get("meses", [])))
@@ -127,7 +171,7 @@ def calcular_repositorio(repo, inicio, fim):
         log.warning("%s: tempo de recuperação calculado sobre coleta incompleta; "
                     "episódios e censuras podem estar incompletos.", repo["full_name"])
     return {"id": repo["id"], "full_name": repo["full_name"], "default_branch": branch,
-            **resumo, "classe_tempo_recuperacao": classificar_metrica("tempo_recuperacao", resumo["tempo_recuperacao"]),
+            **resumo, **diagnosticos, "classe_tempo_recuperacao": classificar_metrica("tempo_recuperacao", resumo["tempo_recuperacao"]),
             "runs_fora_recorte": fora_recorte, "runs_duplicados": duplicados, "runs_ignorados": ignorados,
             "coleta_incompleta": incompleta, "episodios": episodios}
 
@@ -148,7 +192,10 @@ def executar(config, entrada=None, saida=None):
     lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-        "origem": str(entrada), "janela": janela,
+        "origem": str(entrada), "janela": janela, "versao_metrica": VERSAO_METRICA,
+        "formula": "success.updated_at - first_failure.run_started_at",
+        "total_sequencias_com_censura_esquerda": sum(len(r["historico_inicial_nao_observado"]) for r in lista),
+        "repositorios_com_dados_temporais_incompletos": sum(r["dados_temporais_incompletos"] for r in lista),
         "total_repositorios": len(lista),
         "repositorios_com_tempo_recuperacao": sum(r["tempo_recuperacao"] is not None for r in lista),
         "repositorios_com_coleta_incompleta": sum(r["coleta_incompleta"] for r in lista),

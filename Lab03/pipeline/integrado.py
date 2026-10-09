@@ -171,8 +171,17 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     audit_anterior = _ler(audit_path) if audit_path.is_file() else {}
     mesma_entrada = (audit_anterior.get("origem") == str(entrada.resolve())
                      and audit_anterior.get("entrada_sha256") == hashlib.sha256(entrada.read_bytes()).hexdigest())
-    if not mesma_entrada:
+    if not mesma_entrada or not (processed / "cfr.json").is_file():
         cfr.executar(config, entrada)
+    saida_recuperacao = processed / tempo_recuperacao.ARQUIVO_SAIDA
+    if (not mesma_entrada or not saida_recuperacao.is_file()
+            or _ler(saida_recuperacao).get("versao_metrica") != tempo_recuperacao.VERSAO_METRICA):
+        # A versão da métrica muda sem invalidar os checkpoints de coleta.
+        if saida_recuperacao.is_file() and mesma_entrada:
+            legado = processed / "tempo_recuperacao-legado-created-at.json"
+            if legado.exists():
+                raise ConfigError("Backup legado já existe; audite antes de sobrescrever recuperação.")
+            legado.write_bytes(saida_recuperacao.read_bytes())
         tempo_recuperacao.executar(config, entrada)
     validacao = auditoria.validar(config, entrada, processed / "cfr.json", processed / "tempo_recuperacao.json")
     gravar_json(processed / "auditoria.json", validacao)

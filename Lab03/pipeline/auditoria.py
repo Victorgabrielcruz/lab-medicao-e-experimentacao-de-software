@@ -33,6 +33,8 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
     tempos = json.loads(Path(saida_recuperacao).read_text(encoding="utf-8"))
     inicio, fim = janela_utc(config)
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
+    _exigir(tempos.get("versao_metrica") == "rq04-updated-at-run-started-at-v2", "versão de recuperação não conforme RQ04")
+    _exigir(tempos.get("formula") == "success.updated_at - first_failure.run_started_at", "fórmula de recuperação divergente")
     for documento in (dados, taxas, tempos):
         _exigir(documento["janela"] == janela, "janela divergente")
     for documento in (taxas, tempos):
@@ -81,20 +83,61 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
         for run in runs:
             if run.get("conclusion") in ("success", "failure", "timed_out", "startup_failure"):
                 grupos[run["workflow_id"]].append(run)
-        esperados = []
-        for workflow, lista in grupos.items():
-            aberto, n = None, 0
-            for run in sorted(lista, key=lambda r: (_data(r["created_at"]), r["id"])):
+        esperados, iniciais, invalidos, fora_inicio = [], [], {}, []
+        for workflow, lista in sorted(grupos.items()):
+            registros, erros = [], []
+            for run in lista:
+                try:
+                    comeco = _data(run.get("run_started_at"))
+                    termino = _data(run.get("updated_at")) if run["conclusion"] == "success" else None
+                    if (comeco.tzinfo is None or comeco < _data(run["created_at"])
+                            or (termino is not None and (termino.tzinfo is None or termino < comeco))):
+                        raise ValueError("timestamp inválido")
+                    if comeco >= fim:
+                        fora_inicio.append(run["id"])
+                    else:
+                        registros.append((comeco, run["id"], run, termino))
+                except (ValueError, AttributeError, TypeError):
+                    erros.append(run["id"])
+            if erros:
+                invalidos[workflow] = sorted(erros)
+                continue
+            sucesso_anterior = False
+            aberto, n, prefixo = None, 0, []
+            for comeco, _, run, termino in sorted(registros, key=lambda r: (r[0], r[1])):
                 if run["conclusion"] != "success":
-                    aberto = aberto or run
-                    n += 1
-                elif aberto:
-                    esperados.append((workflow, aberto["id"], run["id"], _iso(_data(aberto["created_at"])),
-                                      _iso(_data(run["created_at"])), False, n))
-                    aberto, n = None, 0
+                    if sucesso_anterior:
+                        aberto = aberto or (run, comeco)
+                        n += 1
+                    else:
+                        prefixo.append(run["id"])
+                else:
+                    if prefixo:
+                        iniciais.append({"workflow_id": workflow, "run_falha_ids": prefixo,
+                                         "run_sucesso_id": run["id"] if termino < fim else None,
+                                         "censura_esquerda": True, "duracao_horas": None})
+                        prefixo = []
+                    if aberto:
+                        if termino >= fim:
+                            break
+                        esperados.append((workflow, aberto[0]["id"], run["id"], _iso(aberto[1]),
+                                          _iso(termino), False, n))
+                        aberto, n = None, 0
+                    if termino < fim:
+                        sucesso_anterior = True
             if aberto:
-                esperados.append((workflow, aberto["id"], None, _iso(_data(aberto["created_at"])),
-                                  _iso(fim), True, n))
+                esperados.append((workflow, aberto[0]["id"], None, _iso(aberto[1]), _iso(fim), True, n))
+            if prefixo:
+                iniciais.append({"workflow_id": workflow, "run_falha_ids": prefixo,
+                                 "run_sucesso_id": None, "censura_esquerda": True, "duracao_horas": None})
+        _exigir(tempo["historico_inicial_nao_observado"] == iniciais, "censuras à esquerda divergentes")
+        diag_invalidos = tempo["workflows_com_dados_temporais_invalidos"]
+        _exigir(len(diag_invalidos) == len(invalidos) and
+                {r["workflow_id"]: sorted(x["run_id"] for x in r["runs_invalidos"]) for r in diag_invalidos}
+                == invalidos, "diagnósticos temporais divergentes")
+        _exigir(tempo["runs_iniciados_fora_janela"] == sorted(fora_inicio)
+                and tempo["dados_temporais_incompletos"] == bool(invalidos or fora_inicio),
+                "incompletude temporal perdida")
         observados = [(e["workflow_id"], e["run_falha_id"], e["run_sucesso_id"], e["inicio"], e["fim"],
                        e["censurado"], e["falhas_no_episodio"]) for e in tempo["episodios"]]
         _exigir(sorted(observados, key=str) == sorted(esperados, key=str), "episódios/censura divergentes")
@@ -111,6 +154,11 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
         _exigir(tempo["total_episodios"] == len(esperados)
                 and tempo["episodios_recuperados"] == len(duracoes)
                 and tempo["episodios_censurados"] == len(esperados)-len(duracoes), "totais de episódios divergentes")
+        _exigir(_igual(tempo["proporcao_censurados"], (len(esperados)-len(duracoes))/len(esperados) if esperados else None),
+                "proporção de censurados divergente")
+        mediana = _quantil(duracoes, .5)
+        classe = None if mediana is None else ("Elite" if mediana < 1 else "High" if mediana < 24 else "Medium" if mediana < 168 else "Low")
+        _exigir(tempo["classe_tempo_recuperacao"] == classe, "classe de recuperação divergente")
         censurados += tempo["episodios_censurados"]
         recuperados += len(duracoes)
         if "meses" in repo:
@@ -126,7 +174,12 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
             "total de recuperações calculadas divergente")
     _exigir(tempos["total_episodios"] == recuperados + censurados
             and tempos["episodios_censurados"] == censurados, "totais globais de episódios divergentes")
-    return {"validado": True, "origem": str(entrada.resolve()), "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),
+    _exigir(tempos["total_sequencias_com_censura_esquerda"] == sum(len(r["historico_inicial_nao_observado"]) for r in tempos["repositorios"]), "total de censuras à esquerda divergente")
+    _exigir(tempos["repositorios_com_dados_temporais_incompletos"] == sum(r["dados_temporais_incompletos"] for r in tempos["repositorios"]), "total de incompletude temporal divergente")
+    return {"validado": True, "versao_recuperacao": tempos["versao_metrica"],
+            "sequencias_com_censura_esquerda": tempos["total_sequencias_com_censura_esquerda"],
+            "repositorios_com_dados_temporais_incompletos": tempos["repositorios_com_dados_temporais_incompletos"],
+            "origem": str(entrada.resolve()), "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),
             "total_repositorios": len(identidades), "runs_no_recorte_deduplicados": total_runs,
             "falhas": falhas, "sucessos": sucessos, "runs_validos": falhas + sucessos,
             "repositorios_com_cfr": sum(r["change_failure_rate"] is not None for r in taxas["repositorios"]),

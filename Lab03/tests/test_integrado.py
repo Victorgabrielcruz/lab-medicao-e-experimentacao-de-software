@@ -16,7 +16,9 @@ FIM = dt.datetime(2025, 11, 1, tzinfo=dt.timezone.utc)
 def run(i, data=None):
     return {"id": i + 1, "workflow_id": 7, "head_branch": "main", "event": "push",
             "created_at": data or (INICIO + dt.timedelta(minutes=i)).isoformat(),
-            "conclusion": "failure" if i == 0 else "success"}
+            "run_started_at": data or (INICIO + dt.timedelta(minutes=i)).isoformat(),
+            "updated_at": data or (INICIO + dt.timedelta(minutes=i)).isoformat(),
+            "conclusion": "failure" if i == 1 else "success"}
 
 
 def resposta(corpo, link=None):
@@ -272,6 +274,8 @@ def test_auditoria_confere_censura_e_rejeita_run_duplicado(tmp_path):
             r = super().get(path, params)
             if path.endswith("/actions/runs"):
                 for run in r["workflow_runs"]:
+                    if run["id"] == 49:
+                        run["workflow_id"] = 8
                     if run["id"] == 50:
                         run["workflow_id"] = 8
                         run["conclusion"] = "failure"
@@ -416,3 +420,39 @@ def test_retomada_recusa_lead_time_corrompido_sem_recalcular(tmp_path, monkeypat
     monkeypatch.setattr(integrado.lead_time_release, "executar", proibido)
     with pytest.raises(ConfigError, match="Auditoria"):
         integrado.executar(cfg, Api(), 1, 1, fonte)
+
+
+def test_versao_antiga_reprocessa_so_recuperacao_preservando_coleta_e_cfr(tmp_path, monkeypatch):
+    cfg, fonte = configurar(tmp_path, 1)
+    integrado.executar(cfg, Api(), 1, 1, fonte)
+    caminho = tmp_path / "processed/tempo_recuperacao.json"
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
+    del dados["versao_metrica"]
+    gravar_json(caminho, dados)
+    legado = caminho.read_bytes()
+    taxas = (tmp_path / "processed/cfr.json").read_bytes()
+    def proibido(*args, **kwargs):
+        raise AssertionError("CFR não deve ser repetida")
+    monkeypatch.setattr(integrado.cfr, "executar", proibido)
+    api = Api()
+    integrado.executar(cfg, api, 1, 1, fonte)
+    assert not api.chamadas
+    assert (tmp_path / "processed/cfr.json").read_bytes() == taxas
+    assert (tmp_path / "processed/tempo_recuperacao-legado-created-at.json").read_bytes() == legado
+    assert json.loads(caminho.read_text(encoding="utf-8"))["versao_metrica"] == integrado.tempo_recuperacao.VERSAO_METRICA
+
+
+@pytest.mark.parametrize("campo,valor", [
+    ("proporcao_censurados", .5), ("historico_inicial_nao_observado", [{"inventado": True}]),
+    ("dados_temporais_incompletos", True)])
+def test_auditoria_temporal_recusa_diagnosticos_corrompidos(tmp_path, campo, valor):
+    from pipeline import auditoria
+    cfg, fonte = configurar(tmp_path, 1)
+    integrado.executar(cfg, Api(), 1, 1, fonte)
+    saida = tmp_path / "processed/tempo_recuperacao.json"
+    dados = json.loads(saida.read_text(encoding="utf-8"))
+    dados["repositorios"][0][campo] = valor
+    gravar_json(saida, dados)
+    with pytest.raises(ConfigError, match="Auditoria"):
+        auditoria.validar(cfg, tmp_path / "raw/amostra_workflow_runs.json",
+                         tmp_path / "processed/cfr.json", saida)

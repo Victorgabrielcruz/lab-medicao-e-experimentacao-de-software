@@ -373,20 +373,21 @@ das métricas e da seleção em um único comando pertence à S01-21 (#149).
 
 ### Tempo de recuperação por workflow — S01-20
 
-O módulo `pipeline.tempo_recuperacao` identifica episódios independentes para
-cada `workflow_id`: a primeira falha abre o episódio e o próximo sucesso do
-mesmo workflow o encerra. Falhas seguintes não reiniciam o relógio. São usadas
-as mesmas conclusions da CFR: `failure`, `timed_out` e `startup_failure` para
-falhas, e `success` para recuperação. Conclusions ignoradas não abrem nem
-encerram episódios; o sucesso de outro workflow também não encerra o episódio.
+O módulo `pipeline.tempo_recuperacao` implementa a RQ04 oficial por workflow:
+a primeira falha após um sucesso observado inicia o episódio em
+`run_started_at`; o próximo sucesso encerra em `updated_at`.
+Falhas consecutivas mantêm o início. As conclusions e os filtros branch/push
+são os da CFR; `created_at` define apenas o recorte da entrada.
+A sequência usa início e ID. Sucessos que terminam em/após o fim da janela
+mantêm censura à direita e duração limite inferior. A proporção de censurados
+é informada por repositório.
 
-As datas são `created_at`, conforme as definições operacionais. Os runs são
-ordenados por data e ID e deduplicados por ID. O cálculo confere novamente
-default branch, `push` e a janela `[início, fim)`. Sucessos no instante final
-ou depois da janela não são recuperações observadas nesse período. Episódios
-abertos no fim da janela têm `censurado=true`, `run_sucesso_id=null` e a duração
-observada até o limite final; essa duração é um **limite inferior**, não um
-tempo conhecido de recuperação.
+Falhas iniciais sem sucesso anterior observado são censuras à esquerda
+separadas, sem duração presumida. Timestamps essenciais inválidos deixam
+o workflow sem estimativa, com diagnóstico, sem fallback para criação.
+A versão `rq04-updated-at-run-started-at-v2` distingue a correção do cálculo
+legado por criação. O integrado preserva o legado antes de reprocessar essa
+métrica, reutilizando a coleta e a CFR auditada.
 
 Execute após concluir a coleta, na pasta `Lab03`:
 
@@ -417,11 +418,9 @@ reportadas separadamente; censurados não entram na mediana/IQR. Essas
 estatísticas descrevem os episódios observados com recuperação, sem estimar
 uma distribuição que inclua episódios censurados.
 
-O teste de 1h20 exigido na #148 usa a primeira falha às 10:00, outra falha às
-10:30 e o sucesso às 11:20: a duração é 80 minutos (`4/3` hora). É um cenário
-numérico equivalente; o enunciado completo não está versionado neste
-repositório. A suíte também cobre workflows intercalados, repetição de
-falhas, conclusões ignoradas, fronteiras da janela e censura.
+O teste oficial de 1h20 contém um sucesso às 09:00, primeira falha iniciada
+às 10:00, outra às 10:30 e sucesso iniciado às 11:15 e terminado às 11:20.
+As datas de criação são diferentes, para detectar o uso indevido de criação.
 
 Coletas incompletas mantêm `coleta_incompleta=true` e geram alerta. Ausência de
 páginas pode esconder a primeira falha ou uma recuperação, então os episódios
