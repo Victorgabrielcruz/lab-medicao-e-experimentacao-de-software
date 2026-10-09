@@ -1,0 +1,27 @@
+% Complemento registrado em 08/10/2026 após o piloto, antes das análises RQ05--07.
+\subsection{Questões e hipóteses complementares}
+O texto anterior e suas quatro hipóteses foram preservados. As expectativas
+abaixo foram acrescentadas após o piloto de coleta, antes de análises de
+associação, comparação entre grupos ou sensibilidade. Esse momento de registro
+não equivale a uma hipótese anterior a toda observação dos dados.
+
+\textbf{RQ05 -- Maior frequência de deploy se associa a maior ou menor taxa de falha?}
+Esperamos uma associação fraca ou negativa entre frequência e CFR: projetos
+capazes de publicar com frequência podem automatizar verificações e entregar
+mudanças menores. Falhas de CI e correções após releases medem eventos distintos,
+portanto esperamos correlações diferentes nas duas variantes. A associação
+não será interpretada como causalidade.
+
+\textbf{RQ06 -- Que características se associam a melhor desempenho DORA?}
+Esperamos diferenças por popularidade, número de contribuidores e tipo do
+projeto. Projetos com mais contribuidores podem automatizar mais a integração,
+mas também enfrentar maior coordenação; aplicações e serviços podem publicar
+com frequência diferente de bibliotecas. Por isso, esperamos heterogeneidade
+entre métricas, sem atribuir automaticamente melhor estabilidade a maior tamanho.
+
+\textbf{RQ07 -- Quanto a classificação depende da definição operacional?}
+Esperamos mudanças de categoria ao trocar releases estáveis por pré-releases
+ou tags e ao usar as variantes de lead time e CFR. O lead time por release
+depende do commit mais antigo, enquanto a mediana por commit dilui observações
+extremas. Falhas de CI também podem não corresponder a entregas corretivas.
+Esperamos maior concordância para as classes extremas do que junto aos limites.

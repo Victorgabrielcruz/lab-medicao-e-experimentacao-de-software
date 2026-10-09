@@ -1,0 +1,11 @@
+Template SBC atualizado em dezembro de 2017.
+Autoria: Sociedade Brasileira de Computação (SBC); cabeçalhos e avisos dos arquivos preservados.
+Fonte: projeto Overleaf fornecido pelo usuário, exportado em 08/10/2026,
+https://www.overleaf.com/project/6ac8318e750c2cce451d6f68
+Referência pública: https://www.overleaf.com/latex/templates/sbc-conferences-template/blbxwjwzdngr
+A galeria atribui licença Creative Commons Attribution 4.0:
+https://creativecommons.org/licenses/by/4.0/
+sbc-template.sty e sbc.bst foram copiados sem alterações desse export.
+O bst contém também os avisos de autoria e cópia de apalike.
+As fontes autorais do artigo substituem o texto de exemplo; não são parte do template.
+A licença MIT anterior aplica-se ao espelho 2005, não é atribuída a esta exportação.

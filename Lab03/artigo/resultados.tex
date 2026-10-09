@@ -1,15 +1,33 @@
-\section{Resultados}
+\section{Resultados disponíveis do piloto}
 \label{sec:resultados}
-Esta seção será preenchida após a coleta e a auditoria dos dados reais.
-A validação com fixtures comprova propriedades do código, mas não é um
-resultado empírico dos repositórios. O piloto usa cem candidatos e ainda
-não comprova uma amostra final de cem projetos elegíveis.
+O piloto partiu de cem candidatos, com 82 repositórios após a verificação
+de Actions e metadados. O snapshot consolidado contém 238.629 runs
+deduplicados no recorte. A coleta de runs é completa em 64 repositórios e
+incompleta em 18, condição que permanece explícita nas saídas.
 
-A apresentação final deve incluir o funil de seleção, motivos de descarte,
-quantidade de coletas completas e incompletas e, para cada RQ, mediana, IQR,
-quantidade de observações e valores ausentes. A RQ04 também deve informar
-episódios recuperados e censurados. Dados parciais devem ser identificados
-separadamente, pois podem alterar tanto a CFR quanto os episódios.
+Para a CFR (a), há 217.412 runs válidos: 22.893 falhas e 194.519 sucessos;
+21.217 runs têm conclusions ignoradas. Há valor observado em 70 repositórios
+e ausência em doze. Essas contagens agregadas não substituem a distribuição
+da CFR por repositório nem permitem generalizar para a população.
 
-A confirmação ou refutação das hipóteses registradas na Introdução permanece
-pendente. Nenhuma estimativa da amostra é apresentada neste rascunho.
+Na RQ04 corrigida conforme o enunciado, foram auditados 6.163 episódios
+recuperados e 38 censurados à direita, em um total de 6.201 episódios definidos.
+Há recuperação observada em 56 repositórios. Registram-se também 92 sequências
+iniciais com censura à esquerda e um repositório com dados temporais
+incompletos. Os históricos parciais podem alterar as contagens e os episódios;
+a auditoria demonstra correspondência com a entrada, sem provar completude.
+
+Uma leitura exclusivamente do cache existente, sem novas consultas,
+recuperou releases com paginação completa para cinco repositórios; os demais
+77 não têm essa evidência disponível. Combinando os dados de runs e releases,
+nenhum repositório pôde ser confirmado como elegível completo, 42 já não
+atendem aos critérios conhecidos e 40 têm elegibilidade indeterminada.
+Esses diagnósticos não são etapas cumulativas de um funil.
+Não houve observação suficiente para lead time por release.
+
+A execução adicional destinada a cem elegíveis foi encerrada por limite de
+tempo, preservando o material já obtido. Assim, esta entrega é parcial e
+não atende ao critério de cem projetos elegíveis completos. Os testes com
+fixtures verificam propriedades da implementação, sem constituir resultados
+empíricos. A confirmação ou refutação das hipóteses e as análises conjuntas
+das RQs permanecem pendentes.
