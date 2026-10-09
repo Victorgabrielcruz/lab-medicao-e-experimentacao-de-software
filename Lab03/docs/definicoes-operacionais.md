@@ -112,7 +112,11 @@ com HTTP 404 (tag apagada ou inacessível) ignora somente a release atual, regis
 o motivo e continua os próximos pares. Comparações incompletas também são
 ignoradas, preservando os dados parciais para auditoria. A quantidade de releases
 ignoradas e a parcela com HTTP 404 são informadas por repositório e no consolidado.
+<<<<<<< HEAD
 O cálculo por release é feito pela S01-13; a variante por commit é uma etapa posterior.
+=======
+O cálculo por release é feito pela S01-13 e a variante por commit pela S01-14.
+>>>>>>> origin/main
 
 ### Lead time por release (RQ02a — S01-13 — #141)
 
@@ -133,6 +137,29 @@ parcial mantém o diagnóstico de coleta incompleta.
 O cálculo local lê `data/raw/compare.json` e grava
 `data/processed/lead_time_release.json`, preservando os resultados por release
 e a mediana/classificação por repositório. Não usa token nem consulta a API.
+<<<<<<< HEAD
+=======
+
+### Lead time por commit (RQ02b — S01-14 — #142)
+
+Cada par commit–release contribui com `release.published_at - commit.author.date`,
+em horas. O valor do repositório é a mediana de todos os intervalos válidos de
+todas as releases estáveis da janela. A release de 15/03 com commits de 02/03,
+10/03 e 14/03 produz 13, 5 e 1 dias, cuja mediana é 5 dias (120 horas).
+
+A data do autor é convertida para UTC e pode estar antes da janela. Duplicatas
+por SHA são removidas dentro de cada release; o mesmo SHA em outra release
+representa outro par commit–release. Primeira release sem anterior, releases
+sem commits novos e comparações ignoradas/incompletas ficam fora da métrica.
+Datas de autor inválidas ou intervalos negativos invalidam o commit individual.
+Uma mediana baseada nos demais valores é marcada como cálculo parcial, com
+motivos e contagens registrados. Zero real é válido; sem valores válidos, a
+mediana e a classificação C1 ficam nulas.
+
+O cálculo local lê `data/raw/compare.json` e grava
+`data/processed/lead_time_commit.json`, mantendo os intervalos por commit e a
+mediana/classificação por repositório. Não usa token nem consulta a API.
+>>>>>>> origin/main
 
 ## 6. Metadados dos repositórios
 

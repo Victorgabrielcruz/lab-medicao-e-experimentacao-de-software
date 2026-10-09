@@ -366,6 +366,67 @@ são contadas separadamente. Datas de publicação inválidas no consolidado ger
 erro de entrada. Quando o repositório tem coleta incompleta, a mediana pode usar
 as releases com comparações completas, mantendo `coleta_incompleta=true` e aviso
 no log; ela não representa todas as releases nesse caso.
+<<<<<<< HEAD
+=======
+
+### Lead time por commit (RQ02b — S01-14 — #142)
+
+O módulo `pipeline.lead_time_commit` usa `data/raw/compare.json` da S01-12 e
+calcula `release.published_at - commit.author.date` para **cada commit incluído
+em cada release**, em horas, sem arredondamento. O valor do repositório é a
+mediana de **todos esses intervalos**, reunindo todas as releases válidas.
+Uma release com mais commits contribui com mais valores. Não há uma agregação
+intermediária por release.
+
+Execute após a etapa `compare`, na pasta `Lab03`:
+
+```bash
+python -m pipeline.lead_time_commit --config config.yaml
+```
+
+O comando é local, sem token nem acesso à API, e grava
+`data/processed/lead_time_commit.json`. Para um piloto:
+
+```bash
+python -m pipeline.lead_time_commit --config config.yaml --entrada data/raw/piloto-100/compare.json --saida data/processed/piloto-100/lead_time_commit.json
+```
+
+No Windows, use `.\.venv\Scripts\python.exe` em lugar de `python`. A entrada
+deve declarar a mesma janela da configuração e `definicao_deploy=release_estavel`.
+A saída é gravada atomicamente e não pode sobrescrever o compare. A integração
+dos cálculos no comando único pertence à S01-21 (#149), como na variante (a).
+
+A saída preserva os intervalos individuais sob `releases[].commits[]`, com SHA,
+URL, data do autor em UTC, `lead_time_horas` e diagnóstico de valores ignorados.
+Cada repositório informa sua mediana em `lead_time_horas`, `classe_lead_time`
+pela tabela C1, contagens de releases/commits calculados e ignorados, seus
+motivos e os indicadores `coleta_incompleta` e `calculo_parcial`. O consolidado
+inclui unidade, fórmula, variante `b` e totais. No exemplo do enunciado, a
+release de 15/03 contém commits de 02/03, 10/03 e 14/03: **312, 120 e 24 horas
+(13, 5 e 1 dias)**, com mediana de **120 horas (5 dias)**.
+
+O recorte usa a publicação da release na janela UTC `[início, fim)`; commits
+escritos antes da janela são mantidos. IDs de releases são deduplicados e cada
+SHA conta uma vez **por release**. Se o mesmo SHA aparecer em outra comparação,
+seu intervalo até essa outra publicação também é mantido, conforme a unidade
+commit–release. A data do committer não é usada.
+
+A primeira release histórica sem anterior, releases sem commits novos e
+comparações ignoradas/incompletas ficam fora do cálculo, com motivo registrado.
+Os totais de commits são conferidos para detectar listas parciais; um commit
+sem SHA impede confirmar a comparação e invalida a release. Datas de autor
+ausentes, inválidas ou sem fuso e intervalos negativos invalidam somente o
+commit correspondente, que recebe `null` e um motivo. Os demais intervalos
+válidos podem compor a mediana, marcada como `calculo_parcial=true` e com aviso
+no log. A coleta incompleta recebida do compare também é preservada.
+
+Zero real é válido. Sem intervalos válidos, a mediana e sua classe ficam `null`.
+Uma release cujos commits são todos inválidos recebe motivo `sem_commits_validos`.
+Datas de publicação inválidas no consolidado geram erro de entrada. Os testes
+incluem a fixture do enunciado e verificam a mediana de todos os commits entre
+múltiplas releases, além dos casos de borda e da compatibilidade com a S01-12.
+
+>>>>>>> origin/main
 ### CFR variante (a) — S01-19
 
 O módulo `pipeline.cfr` calcula, para cada repositório, a fração
