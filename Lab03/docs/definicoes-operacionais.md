@@ -86,7 +86,27 @@ com HTTP 404 (tag apagada ou inacessível) ignora somente a release atual, regis
 o motivo e continua os próximos pares. Comparações incompletas também são
 ignoradas, preservando os dados parciais para auditoria. A quantidade de releases
 ignoradas e a parcela com HTTP 404 são informadas por repositório e no consolidado.
-O cálculo das duas variantes de lead time é uma etapa posterior.
+O cálculo por release é feito pela S01-13; a variante por commit é uma etapa posterior.
+
+### Lead time por release (RQ02a — S01-13 — #141)
+
+Para cada release estável com comparação completa, o lead time é
+`release.published_at - min(commit.author.date)`, expresso em horas. O valor do
+repositório é a mediana dos lead times calculados por release, sem ponderar pelo
+número de commits. Usa a data do autor, inclusive antes da janela, com os fusos
+convertidos para UTC.
+
+A primeira release histórica sem anterior, releases sem commits novos e
+comparações ignoradas/incompletas recebem valor nulo e não entram na mediana.
+Datas de autor inválidas também invalidam a release inteira, pois o mínimo fica
+desconhecido. Um intervalo negativo é registrado como inválido; zero real é
+válido. As releases ignoradas são contadas com seus motivos. Sem valores válidos,
+a mediana e a classificação C1 ficam nulas. Uma mediana baseada em um repositório
+parcial mantém o diagnóstico de coleta incompleta.
+
+O cálculo local lê `data/raw/compare.json` e grava
+`data/processed/lead_time_release.json`, preservando os resultados por release
+e a mediana/classificação por repositório. Não usa token nem consulta a API.
 
 ## 6. Metadados dos repositórios
 
