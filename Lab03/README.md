@@ -581,6 +581,50 @@ em `workflow_runs.json`), `repositorios` com `id`, `full_name` e a lista
 `descartes` com `id`, `full_name`, `motivo` e `detalhe`. Drafts e releases
 fora da janela podem estar no arquivo: o funil os filtra de novo.
 
+### Sorteio da amostra-ouro e planilhas de rotulagem (S02-05 — #155)
+
+`pipeline/amostra_ouro.py` sorteia a amostra da validação manual e gera as
+planilhas que cada integrante preenche:
+
+- 60 repositórios da amostra final, com `DataFrame.sample(n=60, random_state=42)`;
+- 5 releases de cada repositório, com o mesmo `random_state`, entre as
+  publicadas na janela, sem drafts nem repetidas e seguindo
+  `inclusao.incluir_prereleases`.
+
+Execute depois do pipeline integrado, na pasta `Lab03`:
+
+```bash
+python -m pipeline.amostra_ouro --config config.yaml
+```
+
+O comando é local, sem token nem acesso à API. Ele lê a amostra final em
+`data/processed/deployment_frequency.json` (os elegíveis completos) e as
+releases em `data/raw/releases.json`; `--amostra` e `--releases` trocam esses
+caminhos. No Windows, use `.\.venv\Scripts\python.exe` em lugar de `python`.
+
+A saída vai para `validacao/amostra-ouro/`, que é versionada:
+
+| Arquivo | Conteúdo |
+|---|---|
+| `amostra_ouro.json` | O sorteio: janela, `random_state`, tamanho e hash da população, repositórios e releases sorteados. |
+| `rotulador_<A,B,C>_repositorios.csv` | Uma linha por repositório, com link do repositório e da página de releases. Colunas a preencher: `tipo_projeto`, `releases_sao_entregas_reais` e `observacoes`. |
+| `rotulador_<A,B,C>_releases.csv` | Uma linha por release, com `release_url` (link direto) e `compare_url` (diferença para a release elegível anterior). Colunas a preencher: `corretiva` e `observacoes`. |
+
+As planilhas dos três rotuladores saem idênticas e com os rótulos em branco;
+cada integrante preenche somente a sua, sem consultar as demais. Os CSVs usam
+UTF-8 com BOM, para abrir no Excel com os acentos corretos.
+
+O sorteio não depende da ordem dos arquivos de entrada: os repositórios são
+ordenados por ID e as releases por data de publicação antes do sorteio. O
+`amostra_ouro.json` não leva data de geração, então repetir o comando sobre a
+mesma amostra regrava o mesmo arquivo.
+
+O comando recusa uma amostra final com menos de 60 repositórios, um
+repositório sorteado com menos de 5 releases elegíveis e janelas diferentes
+da configurada; nesses casos nada é gravado. Se alguma planilha já existir,
+ele também recusa, para não apagar rótulos preenchidos. `--sobrescrever`
+regrava todas as planilhas em branco.
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
@@ -610,6 +654,7 @@ Lab03/
 ├── docs/              # Definições operacionais e documentação
 ├── pipeline/          # Código do pipeline (entry point: python -m pipeline)
 ├── tests/             # Testes automatizados
+├── validacao/         # Amostra-ouro: sorteio e planilhas de rotulagem
 └── data/              # Cache, dados brutos e processados (gerados pelo pipeline)
 ```
 
