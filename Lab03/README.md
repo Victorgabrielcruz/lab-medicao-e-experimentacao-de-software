@@ -581,6 +581,45 @@ em `workflow_runs.json`), `repositorios` com `id`, `full_name` e a lista
 `descartes` com `id`, `full_name`, `motivo` e `detalhe`. Drafts e releases
 fora da janela podem estar no arquivo: o funil os filtra de novo.
 
+### Métricas em todas as variantes (S02-02 — #152)
+
+`pipeline/metricas.py` reúne, em uma linha por repositório, as métricas das
+RQ01 a RQ04 já calculadas:
+
+| Campo | RQ | Origem em `data/processed/` | Unidade |
+|---|---|---|---|
+| `deployment_frequency` | RQ01 | `deployment_frequency.json` | releases por semana |
+| `lead_time_a` | RQ02a | `lead_time_release.json` | horas |
+| `lead_time_b` | RQ02b | `lead_time_commit.json` | horas |
+| `cfr_a` | RQ03a | `cfr.json` | fração |
+| `cfr_b` | RQ03b | `cfr_b.json` | fração |
+| `tempo_recuperacao` | RQ04 | `tempo_recuperacao.json` | horas |
+
+Execute depois do pipeline integrado, na pasta `Lab03`:
+
+```bash
+python -m pipeline.metricas --config config.yaml
+```
+
+O comando é local, sem token nem acesso à API, e grava
+`data/processed/metricas.json`. No Windows, use `.\.venv\Scripts\python.exe`
+em lugar de `python`. Se `lead_time_commit.json` ainda não existir e houver
+`data/raw/compare.json`, a variante (b) do lead time é calculada antes.
+
+Cada repositório traz o valor e a classe (`classe_<campo>`) de cada métrica,
+`coleta_incompleta`, `calculo_parcial` e `metricas_ausentes`. Uma métrica que
+não pôde ser calculada fica `null`, nunca zero. O cabeçalho informa a janela,
+as origens, as unidades e quantos repositórios têm cada métrica.
+
+A CFR (b) depende da heurística de release corretiva (S02-11 — #161). Enquanto
+`cfr_b.json` não existir, `cfr_b` fica `null` em todos os repositórios e
+aparece em `variantes_pendentes`. O arquivo esperado segue o formato de
+`cfr.json`: `janela` e `repositorios` com `id`, `full_name`,
+`change_failure_rate` e `classe_cfr`. As demais saídas são obrigatórias.
+
+O comando recusa janelas diferentes da configurada, um repositório repetido
+na mesma saída e o mesmo ID com nomes diferentes entre as saídas.
+
 ### Etapas
 
 | Etapa | Saída | Descrição |
@@ -666,7 +705,7 @@ progresso anterior. `raw/progresso.json` permite acompanhar a execução.
 
 Saídas: consolidados por etapa em raw; `amostra_workflow_runs.json` restrito aos
 elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,
-`cfr.json`, `tempo_recuperacao.json` e `execucao.json` em processed. O exit code
+`cfr.json`, `tempo_recuperacao.json`, `metricas.json` e `execucao.json` em processed. O exit code
 é 0 quando o alvo é atingido, 3 quando faltam elegíveis e 2 em erro. A presença
 de arquivos não comprova sucesso: confira `execucao_completa` e contagens.
 
@@ -684,7 +723,10 @@ O comando também calcula lead time por release (#141) em
 e hash de conteúdo/diagnósticos iguais, desconsiderando somente `gerado_em`.
 Resultados auditados divergentes são recusados sem sobrescrever a saída.
 
-A variante por commit (#142) ainda é dependência explícita em `execucao.json`.
-A presença dos quatro tipos de métrica implementados não comprova execução real
+O comando calcula também a variante por commit (#142) em
+`processed/lead_time_commit.json`, a cada execução, e reúne todas as métricas
+por repositório em `processed/metricas.json` (#152). A CFR (b) (#161) é a
+dependência explícita em `execucao.json`.
+A presença dos tipos de métrica implementados não comprova execução real
 nem atendimento de todas as variantes do protocolo. A validação real dos 100 repositórios continua
 pendente até haver evidência registrada no relatório.
