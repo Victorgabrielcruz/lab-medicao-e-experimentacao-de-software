@@ -93,7 +93,16 @@ def test_100_elegiveis_nao_100_candidatos_e_retomada_sem_api(tmp_path):
     lead = json.loads((tmp_path / "processed/lead_time_release.json").read_text(encoding="utf-8"))
     assert lead["releases_com_lead_time"] == 400
     assert lead["repositorios"][0]["lead_time_horas"] == 216
-    assert result["dependencias_pendentes"] == ["lead time por commit #142"]
+    assert result["dependencias_pendentes"] == ["CFR (b) #161"]
+    assert result["metricas"] == ["deployment_frequency", "lead_time_a", "lead_time_b", "cfr_a", "tempo_recuperacao"]
+    todas = json.loads((tmp_path / "processed/metricas.json").read_text(encoding="utf-8"))
+    assert todas["total_repositorios"] == 100
+    assert todas["variantes_pendentes"] == ["cfr_b"]
+    assert todas["repositorios_por_metrica"] == {"deployment_frequency": 100, "lead_time_a": 100, "lead_time_b": 100,
+                                                 "cfr_a": 100, "cfr_b": 0, "tempo_recuperacao": 100}
+    primeiro = todas["repositorios"][0]
+    assert (primeiro["lead_time_a"], primeiro["lead_time_b"], primeiro["cfr_a"]) == (216, 216, 1/50)
+    assert primeiro["metricas_ausentes"] == ["cfr_b"]
     compares = json.loads((tmp_path / "raw/compare.json").read_text(encoding="utf-8"))
     assert compares["total_repositorios"] == 100
     assert compares["total_comparacoes"] == 400
