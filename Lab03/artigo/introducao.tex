@@ -1,6 +1,7 @@
 % Seção 1 do artigo do Lab03 (template SBC).
-% Hipóteses escritas antes da coleta dos dados: a data do commit que criou este
-% arquivo no repositório registra esse momento.
+% RQ01 a RQ04: S01-09 (#137); RQ05 a RQ07: S01-15 (#143).
+% A redação de cada conjunto está registrada no histórico Git.
+% O início da coleta principal deve ser registrado para verificar a cronologia.
 
 \section{Introdução}
 \label{sec:introducao}
@@ -42,9 +43,13 @@ quanto a classificação depende das definições operacionais escolhidas.
 \subsection{Questões de pesquisa e hipóteses}
 \label{sec:hipoteses}
 
-As quatro primeiras questões de pesquisa descrevem cada métrica na amostra. As
-hipóteses abaixo são informais e foram registradas antes da coleta dos dados.
-Elas servem como ponto de comparação na discussão dos resultados.
+As quatro primeiras questões de pesquisa descrevem cada métrica na amostra.
+As três seguintes investigam associações entre métricas, diferenças entre
+grupos de repositórios e sensibilidade às definições operacionais. As hipóteses
+abaixo são expectativas informais, registradas no histórico Git para servir
+como ponto de comparação na discussão dos resultados. As hipóteses das RQ05
+a RQ07 foram formuladas a partir das definições do estudo, sem consulta a
+resultados de coleta ou de análise.
 
 \textbf{RQ01 -- Qual é a frequência de implantação dos repositórios?}
 Esperamos que a maioria dos repositórios fique na classe High, com mediana entre
@@ -77,3 +82,38 @@ costuma ser seguida por uma correção em pouco tempo, já que ela bloqueia o
 trabalho dos demais contribuidores. Esperamos também uma cauda longa, formada
 por episódios que só se resolvem dias depois, e alguns episódios ainda abertos
 no fim da janela.
+
+% S01-15 (#143): hipóteses informais das RQ05 a RQ07.
+\textbf{RQ05 -- Repositórios com maior frequência de implantação apresentam
+maior ou menor taxa de falha?}
+Esperamos uma associação negativa entre frequência de implantação e taxa de
+falha: repositórios que publicam mais frequentemente tenderiam a apresentar
+menor CFR. Nossa expectativa é que entregas menores facilitem a revisão e a
+correção das mudanças. Esperamos que essa associação seja mais fraca para a
+CFR baseada em execuções de CI, pois testes instáveis e falhas de configuração
+podem ocorrer sem afetar uma entrega ao usuário. As duas variantes de CFR
+serão examinadas separadamente; uma associação observada não será interpretada
+como evidência de causalidade.
+
+\textbf{RQ06 -- Quais características dos repositórios estão associadas a um
+melhor desempenho DORA?}
+Esperamos diferenças nas métricas entre os grupos definidos pelos quartis de
+estrelas, número de contribuidores e idade do repositório. Nossa hipótese é que
+os quartis superiores desses três fatores apresentem, em geral, maior
+frequência de implantação e menores lead time, CFR e tempo de recuperação.
+A expectativa é que projetos mais maduros, com maior participação e atenção
+da comunidade, tenham processos de revisão e automação mais consolidados.
+Essa hipótese diz respeito a associações entre grupos, sem atribuir às
+características um efeito causal sobre o desempenho.
+
+\textbf{RQ07 -- Quanto a classificação DORA de um repositório depende da
+definição operacional escolhida?}
+Esperamos que uma parcela relevante dos repositórios mude de categoria ao
+compararmos as combinações de releases estáveis, releases com pré-releases e
+tags, juntamente com as variantes de lead time e CFR. Esperamos maior
+concordância entre a combinação de referência e a que inclui pré-releases do
+que entre a referência e a que usa tags. A inclusão de outras unidades de
+entrega pode alterar a frequência medida, e a escolha entre o lead time por
+release e por commit pode alterar a classe dessa métrica. Nossa expectativa é
+que parte das classificações dependa dessas escolhas, indicando sensibilidade
+dos proxies e limites à robustez das conclusões das RQ01 a RQ06.
