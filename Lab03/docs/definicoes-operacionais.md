@@ -59,7 +59,7 @@ Antes disso, são descartados os repositórios **sem GitHub Actions**: os que n�
 
 Repositórios que respondem 404 ou 451 nessa consulta (removidos, tornados privados ou bloqueados depois da busca) também são descartados.
 
-Cada descarte é registrado com o motivo (`sem_github_actions` ou `repositorio_inacessivel`) na tabela do funil de seleção.
+Cada descarte é registrado com o motivo na tabela do funil de seleção (`pipeline/funil.py`): `sem_github_actions` ou `repositorio_inacessivel` nas etapas de coleta e, no critério mínimo, `releases_insuficientes`, `runs_validos_insuficientes` ou `releases_e_runs_insuficientes` (um único motivo por repositório).
 
 ## 5. Métricas
 
