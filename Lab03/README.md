@@ -245,7 +245,6 @@ Outros erros são propagados e preservam o consolidado anterior para retomada.
 Referências: [lista de tags](https://docs.github.com/en/rest/repos/repos#list-repository-tags)
 e [consulta de commit](https://docs.github.com/en/rest/commits/commits#get-a-commit)
 na REST API do GitHub.
-
 ### Commits entre releases consecutivas (S01-12 — #140)
 
 A etapa `compare` lê `data/raw/releases.json`, confere se a janela corresponde
@@ -473,6 +472,62 @@ A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
 final de inclusão por releases/runs e sem calcular uma CFR global. A integração
 das métricas e da seleção em um único comando pertence à S01-21 (#149).
 
+### Tempo de recuperação por workflow — S01-20
+
+O módulo `pipeline.tempo_recuperacao` implementa a RQ04 oficial por workflow:
+a primeira falha após um sucesso observado inicia o episódio em
+`run_started_at`; o próximo sucesso encerra em `updated_at`.
+Falhas consecutivas mantêm o início. As conclusions e os filtros branch/push
+são os da CFR; `created_at` define apenas o recorte da entrada.
+A sequência usa início e ID. Sucessos que terminam em/após o fim da janela
+mantêm censura à direita e duração limite inferior. A proporção de censurados
+é informada por repositório.
+
+Falhas iniciais sem sucesso anterior observado são censuras à esquerda
+separadas, sem duração presumida. Timestamps essenciais inválidos deixam
+o workflow sem estimativa, com diagnóstico, sem fallback para criação.
+A versão `rq04-updated-at-run-started-at-v2` distingue a correção do cálculo
+legado por criação. O integrado preserva o legado antes de reprocessar essa
+métrica, reutilizando a coleta e a CFR auditada.
+
+Execute após concluir a coleta, na pasta `Lab03`:
+
+```bash
+python -m pipeline.tempo_recuperacao --config config.yaml
+```
+
+O comando lê `data/raw/workflow_runs.json` e grava atomicamente
+`data/processed/tempo_recuperacao.json`, sem token nem acesso à API. Para o piloto:
+
+```bash
+python -m pipeline.tempo_recuperacao --config config.yaml --entrada data/raw/piloto-100/workflow_runs.json --saida data/processed/piloto-100/tempo_recuperacao.json
+```
+
+Em outro worktree, indique o caminho absoluto da entrada na pasta da coleta.
+Use o Python do ambiente virtual com as dependências instaladas; no Windows,
+`.\.venv\Scripts\python.exe` também funciona sem ativação. O consolidado de
+runs deve estar concluído e declarar a mesma janela da configuração. A saída
+não pode sobrescrever a entrada.
+
+A saída preserva os episódios, IDs, datas, quantidade de falhas e censura.
+`tempo_recuperacao` é a **mediana em horas dos episódios recuperados**;
+`q1_horas`, `q3_horas` e `iqr_horas` usam quartis inclusivos com interpolação
+linear (`statistics.quantiles`, método `inclusive`). Com uma recuperação,
+Q1 = Q3 = mediana e IQR = 0. Sem recuperações, essas estatísticas e a classe C1
+ficam `null`. As quantidades de episódios recuperados e censurados são
+reportadas separadamente; censurados não entram na mediana/IQR. Essas
+estatísticas descrevem os episódios observados com recuperação, sem estimar
+uma distribuição que inclua episódios censurados.
+
+O teste oficial de 1h20 contém um sucesso às 09:00, primeira falha iniciada
+às 10:00, outra às 10:30 e sucesso iniciado às 11:15 e terminado às 11:20.
+As datas de criação são diferentes, para detectar o uso indevido de criação.
+
+Coletas incompletas mantêm `coleta_incompleta=true` e geram alerta. Ausência de
+páginas pode esconder a primeira falha ou uma recuperação, então os episódios
+calculados também ficam sujeitos a essa limitação. O cálculo não aplica o
+filtro final de inclusão nem integra as etapas em um único comando; isso fica
+para a S01-21 (#149). A validação real e o aceite da task permanecem pendentes.
 ### Funil de seleção e critério mínimo de inclusão (S01-06)
 
 O módulo `pipeline.funil` aplica o critério mínimo de inclusão de
@@ -568,3 +623,68 @@ Lab03/
 | Entrega Final | 29/10 a 04/11 |
 
 O acompanhamento das tarefas é feito no [GitHub Project](https://github.com/users/Victorgabrielcruz/projects/7). Todo commit deve referenciar o número da issue correspondente (ex.: `feat: ... (#N)`).
+
+
+### Pipeline integrado — S01-21 (#149)
+
+Um único comando amplia gradualmente a busca até obter 100 repositórios com
+pelo menos cinco releases estáveis e cinquenta runs válidos na janela, ou esgotar o
+limite explícito de candidatos:
+
+```text
+python -m pipeline.integrado --config config.yaml --alvo 100 --max-candidatos 1000
+```
+
+`--candidatos CAMINHO` reutiliza uma busca consolidada existente. No modo
+padrão, `raw/candidatos_busca.json` preserva a busca completa, enquanto
+`raw/candidatos.json` contém somente os candidatos avaliados no funil.
+`--reutilizar-runs CAMINHO` reutiliza os meses completos de uma coleta mensal
+com a mesma janela, identidade e default branch. Use caminhos próprios em
+`caminhos.raw` e `caminhos.processed` para preservar o piloto; o cache pode ser
+compartilhado depois que a coleta original terminar.
+
+A política principal atual usa `inclusao.incluir_prereleases=false`, conforme
+as definições de deploy/inclusão atualizadas na #138. Pré-releases continuam
+nos dados brutos para variantes. Configurações antigas sem a chave preservam
+a inclusão anterior; `true` conta todas as releases publicadas. O mesmo filtro
+é aplicado no prefiltro, funil e frequência de implantação. O hash do contexto
+invalida checkpoints se essa política mudar.
+
+A ordem é candidatos → Actions → metadados → releases → workflow runs →
+critério mínimo → frequência de releases/CFR (a)/tempo de recuperação. O
+prefiltro de releases evita coletar runs de quem já não satisfaz a inclusão.
+O funil registra `prefiltro_releases_insuficientes` nessa passagem; ele não
+infere quantos runs esses repositórios teriam. Meses com mais de 1000 resultados
+são subdivididos recursivamente até caber na API. Saturação dentro de um único
+segundo, contagem inconsistente ou páginas ausentes mantêm `coleta_incompleta`;
+repositórios parciais não contam para os 100 da execução completa.
+
+Checkpoints atômicos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
+inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
+repositórios concluídos e páginas do cache; um erro temporário não apaga o
+progresso anterior. `raw/progresso.json` permite acompanhar a execução.
+
+Saídas: consolidados por etapa em raw; `amostra_workflow_runs.json` restrito aos
+elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,
+`cfr.json`, `tempo_recuperacao.json` e `execucao.json` em processed. O exit code
+é 0 quando o alvo é atingido, 3 quando faltam elegíveis e 2 em erro. A presença
+de arquivos não comprova sucesso: confira `execucao_completa` e contagens.
+
+O compare (#140) é coletado apenas para a amostra elegível, com checkpoints
+próprios em `raw/checkpoints/compare/<hash>/`. Seu contexto inclui as releases,
+a janela e a API. `raw/compare.json` e `execucao.json` registram comparações
+completas, releases ignoradas e repositórios com compare incompleto. Um 404
+nessa etapa mantém a amostra e sua incompletude explícita; a release ignorada
+não produz lead time.
+A retomada de compare não repete os cálculos de CFR/recuperação já auditados.
+
+O comando também calcula lead time por release (#141) em
+`processed/lead_time_release.json` e o confere contra os commits de origem em
+`auditoria_lead_time.json`. A retomada reutiliza essa métrica apenas com origem
+e hash de conteúdo/diagnósticos iguais, desconsiderando somente `gerado_em`.
+Resultados auditados divergentes são recusados sem sobrescrever a saída.
+
+A variante por commit (#142) ainda é dependência explícita em `execucao.json`.
+A presença dos quatro tipos de métrica implementados não comprova execução real
+nem atendimento de todas as variantes do protocolo. A validação real dos 100 repositórios continua
+pendente até haver evidência registrada no relatório.

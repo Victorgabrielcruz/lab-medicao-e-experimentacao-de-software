@@ -16,6 +16,7 @@ janela:
 inclusao:
   min_releases: 5
   min_runs_validos: 50
+  incluir_prereleases: false  # definição principal: releases estáveis (#138)
 
 # Workflow runs considerados no cálculo.
 runs:

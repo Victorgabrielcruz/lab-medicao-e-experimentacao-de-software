@@ -4,6 +4,8 @@ Lê as saídas das etapas de coleta e conta, para cada etapa, quantos
 repositórios entraram, quantos foram descartados e por quê. A última etapa
 aplica o critério mínimo: pelo menos `inclusao.min_releases` releases
 publicadas e `inclusao.min_runs_validos` runs válidos dentro da janela.
+`inclusao.incluir_prereleases=false` restringe a definição principal às estáveis;
+configurações antigas sem essa chave preservam a regra anterior.
 
 Releases publicadas são as que têm draft = false e published_at em
 [início, fim). Runs válidos seguem as mesmas regras da CFR (S01-19): default
@@ -53,13 +55,15 @@ def _data(texto, full_name):
     return data
 
 
-def contar_releases(repo, inicio, fim):
+def contar_releases(repo, inicio, fim, incluir_prereleases=True):
     """Conta as releases publicadas na janela, sem drafts e sem duplicatas."""
     publicadas, chaves = 0, set()
     drafts = fora_janela = duplicadas = 0
     for release in repo.get("releases", []):
         if release.get("draft") is not False:
             drafts += 1
+            continue
+        if not incluir_prereleases and release.get("prerelease") is not False:
             continue
         if not inicio <= _data(release.get("published_at"), repo["full_name"]) < fim:
             fora_janela += 1
@@ -127,7 +131,7 @@ def _ler(raw_dir, arquivo, etapa):
     return json.loads(caminho.read_text(encoding="utf-8"))
 
 
-def montar_funil(dados, config):
+def montar_funil(dados, config, etapas_coleta=ETAPAS):
     """Monta as etapas, os descartes e a amostra a partir das saídas carregadas.
 
     `dados` mapeia o nome de cada etapa em ETAPAS para o JSON da sua saída.
@@ -140,7 +144,7 @@ def montar_funil(dados, config):
 
     etapas, descartes = [], []
     anteriores = None
-    for nome, descricao, _, chave in ETAPAS:
+    for nome, descricao, _, chave in etapas_coleta:
         aprovados = dados[nome][chave]
         if anteriores is None:
             seguem, descartados = list(dict.fromkeys(r["id"] for r in aprovados)), []
@@ -160,7 +164,7 @@ def montar_funil(dados, config):
     amostra, excluidos = [], []
     for repo_id in anteriores:
         contagem_runs = calcular_repositorio(runs[repo_id], inicio, fim)
-        contagem_releases = contar_releases(releases[repo_id], inicio, fim)
+        contagem_releases = contar_releases(releases[repo_id], inicio, fim, inclusao.get("incluir_prereleases", True))
         registro = {"id": repo_id, "full_name": runs[repo_id]["full_name"],
                     **contagem_releases, "runs_validos": contagem_runs["runs_validos"],
                     "coleta_runs_incompleta": contagem_runs["coleta_incompleta"]}
@@ -176,19 +180,19 @@ def montar_funil(dados, config):
                    "entrada": len(anteriores), "descartados": len(excluidos),
                    "restantes": len(amostra), "motivos": _contar_motivos(excluidos)})
     descartes.extend(excluidos)
-    return {"janela": janela, "criterio": {"min_releases": inclusao["min_releases"],
-                                           "min_runs_validos": inclusao["min_runs_validos"]},
+    return {"janela": janela, "criterio": dict(inclusao),
             "etapas": etapas, "total_amostra": len(amostra), "amostra": amostra, "descartes": descartes}
 
 
 def tabela_markdown(funil):
     """Tabela do funil com a quantidade por etapa e os motivos de descarte."""
     criterio = funil["criterio"]
+    tipo_release = "releases publicadas" if criterio.get("incluir_prereleases", True) else "releases estáveis publicadas"
     linhas = [
         "# Funil de seleção",
         "",
         f"Janela: `{funil['janela']['inicio']}` a `{funil['janela']['fim_exclusivo']}` (exclusivo). "
-        f"Critério mínimo: {criterio['min_releases']} releases publicadas e "
+        f"Critério mínimo: {criterio['min_releases']} {tipo_release} e "
         f"{criterio['min_runs_validos']} runs válidos na janela.",
         "",
         "| Etapa | Entrada | Descartados | Restantes | Motivos de descarte |",

@@ -43,3 +43,13 @@ Lab02/reference-solutions/**/*.py
 .idea/
 .DS_Store
 Thumbs.db
+
+# Dados reais locais do Lab03: publicar apenas código e evidências agregadas.
+Lab03/data/raw/
+Lab03/data/processed/
+Lab03/artigo/*.aux
+Lab03/artigo/*.bbl
+Lab03/artigo/*.blg
+Lab03/artigo/*.out
+Lab03/artigo/*.pdf
+Lab03/artigo/*.zip

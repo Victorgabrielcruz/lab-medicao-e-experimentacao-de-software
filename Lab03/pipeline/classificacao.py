@@ -1,25 +1,16 @@
-"""Classificação DORA de referência (C1).
+"""Classificação C1 pelos cortes fixos do enunciado oficial do Lab03.
 
-Cada métrica é classificada em Elite, High, Medium ou Low pela tabela de
-referência abaixo, e a nota geral do repositório é a mediana das classificações,
-arredondada para baixo (para a classe pior).
-
-A tabela segue o Accelerate State of DevOps 2021, o último relatório com as
-quatro classes. Os intervalos do relatório deixam lacunas (por exemplo, lead
-time entre 1 hora e 1 dia não cai em nenhuma classe) e não diferenciam High,
-Medium e Low no change failure rate (todos "16-30%"). Aqui as lacunas são
-fechadas: cada valor cai na melhor classe cujo limite ele atende. As decisões
-estão em docs/definicoes-operacionais.md, seção 7.
-
-Unidades de entrada:
-- deployment_frequency: deploys por ano (= releases na janela de 12 meses)
-- lead_time e tempo_recuperacao: horas
-- change_failure_rate: fração entre 0 e 1
+Entradas: DF em releases/semana; lead time e recuperação em horas; CFR em
+fração. A classificação geral é a mediana das notas, arredondada para baixo.
+Para DF na janela real, classificar_frequencia mantém o corte mensal civil:
+12 releases em 12 meses, independentemente da duração em dias da janela.
 """
 
 import math
 import statistics
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+
+VERSAO_REFERENCIA = "lab03-enunciado-cortes-v2"
 
 ELITE, HIGH, MEDIUM, LOW = "Elite", "High", "Medium", "Low"
 CLASSES = (ELITE, HIGH, MEDIUM, LOW)
@@ -29,7 +20,7 @@ CLASSE_DA_NOTA = {nota: classe for classe, nota in NOTA.items()}
 HORA = 1
 DIA = 24 * HORA
 SEMANA = 7 * DIA
-SEIS_MESES = 182.5 * DIA
+MES = 30 * DIA
 
 
 @dataclass(frozen=True)
@@ -58,11 +49,10 @@ class Faixas:
 
 
 REFERENCIA = {
-    # Elite: sob demanda (pelo menos 1 por dia); High: pelo menos 1 por mês;
-    # Medium: pelo menos 1 a cada 6 meses; Low: menos que isso.
-    "deployment_frequency": Faixas(elite=365, high=12, medium=2, maior_melhor=True),
-    # Elite: < 1 hora; High: < 1 semana; Medium: < 6 meses; Low: 6 meses ou mais.
-    "lead_time": Faixas(elite=1 * HORA, high=SEMANA, medium=SEIS_MESES),
+    # Conversão de 1/mês em uma referência de 12 meses / 365 dias.
+    # O integrado ajusta esse limite à duração real da janela com a função abaixo.
+    "deployment_frequency": Faixas(elite=7, high=1, medium=12*7/365, maior_melhor=True),
+    "lead_time": Faixas(elite=DIA, high=SEMANA, medium=MES),
     # Elite: até 15%; High: até 30%; Medium: até 45%; Low: acima de 45%.
     "change_failure_rate": Faixas(elite=0.15, high=0.30, medium=0.45, inclusivo=True),
     # Elite: < 1 hora; High: < 1 dia; Medium: < 1 semana; Low: 1 semana ou mais.
@@ -105,3 +95,13 @@ def classificar(valores, referencia=REFERENCIA):
     resultado = {m: classificar_metrica(m, valores.get(m), referencia) for m in referencia}
     resultado["geral"] = nota_geral(resultado.values())
     return resultado
+
+
+def classificar_frequencia(quantidade, inicio, fim):
+    """Releases/semana real; Medium exige >=1 por mês na janela de 12 meses."""
+    semanas = (fim-inicio).total_seconds() / (7*24*3600)
+    if semanas <= 0:
+        raise ValueError("Janela de frequência deve ter duração positiva.")
+    frequencia = quantidade/semanas
+    referencia = {"deployment_frequency": replace(REFERENCIA["deployment_frequency"], medium=12/semanas)}
+    return frequencia, classificar_metrica("deployment_frequency", frequencia, referencia)

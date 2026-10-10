@@ -45,7 +45,7 @@ def _config_com(tmp_path, janela="inicio: 2025-10-01\n  fim: 2026-09-30", inclus
 def test_janela_e_criterios_do_repositorio():
     config = load_config(CONFIG)
     assert config["janela"] == {"inicio": dt.date(2025, 10, 1), "fim": dt.date(2026, 9, 30)}
-    assert config["inclusao"] == {"min_releases": 5, "min_runs_validos": 50}
+    assert config["inclusao"] == {"min_releases": 5, "min_runs_validos": 50, "incluir_prereleases": False}
     assert config["runs"]["conclusoes_falha"] == ["failure", "timed_out", "startup_failure"]
 
 
@@ -138,3 +138,10 @@ def test_entry_point_sem_token(monkeypatch, capsys):
     monkeypatch.delenv(TOKEN_ENV, raising=False)
     assert main(["--config", str(CONFIG)]) == 2
     assert TOKEN_ENV in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("valor", ["false", 0, None])
+def test_incluir_prereleases_exige_booleano(valor):
+    from pipeline.config import ConfigError, validate_inclusao
+    with pytest.raises(ConfigError, match="booleano"):
+        validate_inclusao({"min_releases": 5, "min_runs_validos": 50, "incluir_prereleases": valor})

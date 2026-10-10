@@ -214,7 +214,7 @@ def test_consolidado_le_metadados_registra_totais_janela_e_incompletude(tmp_path
     monkeypatch.setattr(tags, "LOG_A_CADA", 1)
     with caplog.at_level("INFO"):
         caminho, lista, _ = executar(config(tmp_path), c)
-    dados = json.loads(caminho.read_text())
+    dados = json.loads(caminho.read_text(encoding="utf-8"))
     assert dados["janela"] == {"inicio": "2025-10-01T00:00:00Z", "fim_exclusivo": "2026-10-01T00:00:00Z"}
     assert dados["data_referencia"] == "commit.author.date"
     assert dados["total_avaliados"] == dados["total_repositorios"] == dados["total_tags"] == 1

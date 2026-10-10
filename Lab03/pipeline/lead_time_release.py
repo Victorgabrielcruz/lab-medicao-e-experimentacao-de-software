@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 from pipeline.cache import gravar_json
-from pipeline.classificacao import classificar_metrica
+from pipeline.classificacao import VERSAO_REFERENCIA, classificar_metrica
 from pipeline.config import ConfigError, janela_utc, load_config
 
 ARQUIVO_ENTRADA = "compare.json"
@@ -146,7 +146,7 @@ def executar(config, entrada=None, saida=None):
     lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-        "origem": str(entrada), "janela": janela, "variante": "a", "unidade": "horas",
+        "origem": str(entrada), "janela": janela, "variante": "a", "versao_classificacao": VERSAO_REFERENCIA, "unidade": "horas",
         "definicao_deploy": "release_estavel", "formula": "published_at - min(commit.author.date)",
         "total_repositorios": len(lista), "repositorios_com_lead_time": sum(r["lead_time_horas"] is not None for r in lista),
         "total_releases": sum(r["total_releases"] for r in lista),
@@ -155,6 +155,17 @@ def executar(config, entrada=None, saida=None):
         "repositorios_com_coleta_incompleta": sum(r["coleta_incompleta"] for r in lista), "repositorios": lista,
     })
     return saida, lista
+
+
+
+def reclassificar(saida):
+    """Migra apenas as classes de valores previamente conferidos pela auditoria."""
+    saida = Path(saida)
+    dados = json.loads(saida.read_text(encoding="utf-8"))
+    for repo in dados["repositorios"]:
+        repo["classe_lead_time"] = classificar_metrica("lead_time", repo["lead_time_horas"])
+    dados["versao_classificacao"] = VERSAO_REFERENCIA
+    gravar_json(saida, dados)
 
 
 def main(argv=None):

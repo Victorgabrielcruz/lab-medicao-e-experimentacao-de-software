@@ -1,0 +1,71 @@
+\section{Metodologia}
+\label{sec:metodologia}
+\subsection{Seleção e coleta}
+A população de candidatos é obtida pela Search API do GitHub, com pelo menos
+mil estrelas, sem forks nem repositórios arquivados e com atividade desde o
+início da janela. A janela é o intervalo UTC de 1 de outubro de 2025 (inclusivo)
+a 1 de outubro de 2026 (exclusivo). Incluímos projetos com workflows próprios
+em \texttt{.github/workflows/}, pelo menos cinco releases estáveis publicadas e cinquenta
+runs válidos dentro da janela. Pré-releases são preservadas para variantes, mas ficam fora da definição
+principal de deploy e inclusão; drafts são excluídos.
+
+A coleta registra metadados, releases e workflow runs do default branch,
+com evento \texttt{push}. As consultas de runs são mensais; a integração
+subdivide intervalos saturados para lidar com o teto de mil resultados por
+consulta. Os IDs são deduplicados. Cache por página e checkpoints permitem
+retomada, e a incompletude é registrada, sem ser convertida em ausência de falhas.
+O comando integrado implementa a seleção dos primeiros cem projetos elegíveis
+completos na ordem da busca, que prioriza estrelas. Na execução disponível,
+contudo, usamos o piloto já coletado: a coleta adicional foi encerrada por
+limite de tempo. Cem candidatos não equivalem a cem incluídos, e a meta de
+cem elegíveis completos não foi atingida.
+
+\subsection{Definições operacionais e análise}
+Deployment frequency é o número de releases estáveis publicadas dividido
+pelas semanas reais da janela, calculadas a partir de sua duração em segundos. A CFR (a) é calculada pela Equação~\ref{eq:cfr}; são falhas as conclusions
+\texttt{failure}, \texttt{timed\_out} e \texttt{startup\_failure}, e sucesso a
+conclusion \texttt{success}. As demais conclusions são ignoradas. Sem runs
+válidos, a CFR fica ausente.
+\begin{equation}
+\mathrm{CFR}(a)=\frac{\text{falhas}}{\text{falhas}+\text{sucessos}}
+\label{eq:cfr}
+\end{equation}
+Os runs criados na janela são ordenados por \texttt{run\_started\_at} e ID em
+cada workflow. A primeira falha após um sucesso observado inicia o episódio;
+a duração é \texttt{updated\_at} do próximo sucesso menos
+\texttt{run\_started\_at} da primeira falha. Falhas consecutivas mantêm o início.
+Sem término antes do fim da janela, o episódio tem censura à direita, e
+reportamos sua proporção por repositório. Sequências iniciais sem sucesso
+anterior observado têm censura à esquerda separada, sem duração presumida.
+Timestamps essenciais inválidos deixam o workflow sem estimativa, com
+diagnóstico, evitando unir episódios ao remover somente um run.
+A mediana e o intervalo interquartil (IQR), em horas, usam apenas recuperações
+observadas, com interpolação linear inclusiva; não são estimativas de sobrevivência.
+
+A coleta de commits compara releases estáveis consecutivas, recuperando a
+release anterior à janela quando existir. O protocolo usa a data do autor do
+commit. A consulta é paginada e registra comparações inacessíveis ou incompletas;
+a primeira release histórica sem anterior é ignorada. O lead time por release
+é a publicação menos a data do autor mais antiga entre os commits da comparação.
+O valor do repositório é a mediana por release, sem ponderação por número de
+commits. Ausência de commits, datas inválidas, comparações incompletas e tempos
+negativos não produzem valor; zero observado é válido. Essa variante está
+implementada e aguarda validação real. A variante por commit ainda depende de
+integração e validação antes da análise conjunta do protocolo.
+A classificação usa os cortes fixos do enunciado da disciplina: frequência
+Elite a partir de sete releases/semana, High a partir de uma/semana e Medium
+a partir de uma/mês; para lead time, os limites são 24, 168 e 720 horas.
+CFR usa 15\%, 30\% e 45\%, e recuperação usa 1, 24 e 168 horas.
+Os rótulos de classe originalmente previstos nas hipóteses ficam preservados
+como registro anterior, mesmo onde divergiam dos cortes agora confirmados.
+
+\subsection{Artefatos e rastreabilidade}
+\begingroup\raggedright
+O código, as decisões e os testes estão no repositório público:
+\url{https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software}.\par
+O planejamento pode ser consultado no GitHub Projects:
+\url{https://github.com/users/Victorgabrielcruz/projects/7}.\par
+O relatório técnico está em \texttt{Lab03/docs/relatorio-victor-sprint-01.md}.\par
+Dados brutos, cache, credenciais e saídas reais permanecem locais. Hashes da
+entrada e contagens agregadas permitem identificar a execução auditada.
+\par\endgroup
