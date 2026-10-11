@@ -243,7 +243,8 @@ def main(argv=None):
         config = load_config(args.config)
         api = config["api"]
         client = GitHubClient(read_token(), api["base_url"], api.get("timeout_s", 30),
-                              cache=CacheDisco(config["caminhos"]["cache"]))
+                              cache=CacheDisco(config["caminhos"]["cache"]),
+                              paralelismo=api.get("paralelismo", 1))
         resultado = executar(config, client, args.alvo, args.max_candidatos, args.candidatos, args.reutilizar_runs)
     except (ConfigError, FileNotFoundError, ValueError, requests.RequestException) as exc:
         # Não imprimir objetos de requisição ou headers autenticados.

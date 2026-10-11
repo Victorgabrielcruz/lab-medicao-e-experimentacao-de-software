@@ -1,6 +1,7 @@
 """Espera pelo rate limit e repetição limitada de respostas HTTP temporárias."""
 
 import logging
+import threading
 import time
 
 BACKOFF_5XX = (1, 2, 4, 8)
@@ -25,6 +26,8 @@ class ControleRequisicoes:
         self.relogio = relogio
         self.resets = {}
         self.recursos = {}
+        # As páginas de runs podem ser consultadas em paralelo (api.paralelismo).
+        self._trava = threading.Lock()
 
     def _recurso(self, path):
         if path == "/search/code":
@@ -34,23 +37,31 @@ class ControleRequisicoes:
         return self.recursos.get(path, padrao)
 
     def _registrar(self, path, resposta):
-        recurso = resposta.headers.get("X-RateLimit-Resource") or self._recurso(path)
-        self.recursos[path] = recurso
         restante = _inteiro(resposta.headers.get("X-RateLimit-Remaining"))
         reset = _inteiro(resposta.headers.get("X-RateLimit-Reset"))
-        if restante == 0 and reset is not None:
-            self.resets[recurso] = reset + MARGEM_RESET_S
-        elif restante is not None and restante > 0:
-            self.resets.pop(recurso, None)
+        with self._trava:
+            recurso = resposta.headers.get("X-RateLimit-Resource") or self._recurso(path)
+            self.recursos[path] = recurso
+            if restante == 0 and reset is not None:
+                self.resets[recurso] = reset + MARGEM_RESET_S
+            elif restante is not None and restante > 0:
+                self.resets.pop(recurso, None)
         return restante, reset
 
     def _aguardar(self, path):
-        prazo = self.resets.pop(self._recurso(path), None)
-        if prazo is not None:
-            espera = max(0, prazo - self.relogio())
-            if espera > 0:
-                log.info("Rate limit: aguardando %.1fs antes de consultar %s", espera, path)
-                self.sleep(espera)
+        # O prazo só sai depois da espera: as demais threads aguardam o mesmo reset.
+        with self._trava:
+            recurso = self._recurso(path)
+            prazo = self.resets.get(recurso)
+        if prazo is None:
+            return
+        espera = max(0, prazo - self.relogio())
+        if espera > 0:
+            log.info("Rate limit: aguardando %.1fs antes de consultar %s", espera, path)
+            self.sleep(espera)
+        with self._trava:
+            if self.resets.get(recurso) == prazo:
+                del self.resets[recurso]
 
     def _espera_limite(self, resposta, restante, reset, repeticoes):
         if resposta.status_code not in (403, 429):
@@ -90,7 +101,8 @@ class ControleRequisicoes:
                             resposta.status_code, limites, MAX_REPETICOES_LIMITE, espera, path)
                 self.sleep(espera)
                 # A espera calculada já respeitou o reset deste recurso.
-                self.resets.pop(self._recurso(path), None)
+                with self._trava:
+                    self.resets.pop(self._recurso(path), None)
                 continue
             if 500 <= resposta.status_code < 600 and falhas < len(BACKOFF_5XX):
                 espera = BACKOFF_5XX[falhas]

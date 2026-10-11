@@ -6,11 +6,16 @@ import requests
 from pipeline.rate_limit import ControleRequisicoes
 
 API_VERSION = "2022-11-28"
+PARALELISMO_MAXIMO = 8
 
 
 class GitHubClient:
     def __init__(self, token, base_url="https://api.github.com", timeout_s=30, session=None, cache=None,
-                 sleep=time.sleep, relogio=time.time):
+                 sleep=time.sleep, relogio=time.time, paralelismo=1):
+        if isinstance(paralelismo, bool) or not isinstance(paralelismo, int) or not 1 <= paralelismo <= PARALELISMO_MAXIMO:
+            raise ValueError(f"api.paralelismo deve ser um inteiro de 1 a {PARALELISMO_MAXIMO}.")
+        # Conexões simultâneas admitidas pelas coletas que paginam em paralelo.
+        self.paralelismo = paralelismo
         self.base_url = base_url.rstrip("/")
         self.timeout_s = timeout_s
         self.session = session or requests.Session()

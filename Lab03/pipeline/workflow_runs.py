@@ -16,6 +16,8 @@ from pipeline.metadados import ARQUIVO_SAIDA as ARQUIVO_METADADOS
 ARQUIVO_SAIDA = "workflow_runs.json"
 PER_PAGE = 100
 LIMITE_API = 1000
+# A lista de pull requests de cada run é a maior parte da resposta e não é usada.
+SEM_PULL_REQUESTS = {"exclude_pull_requests": "true"}
 LOG_A_CADA = 100
 log = logging.getLogger(__name__)
 
@@ -53,7 +55,7 @@ def _resumo(run):
 def coletar_mes(client, full_name, branch, inicio, fim):
     """Consulta no máximo dez páginas e registra a completude da fatia."""
     path = f"/repos/{full_name}/actions/runs"
-    params = {"branch": branch, "event": "push", "per_page": PER_PAGE,
+    params = {"branch": branch, "event": "push", "per_page": PER_PAGE, **SEM_PULL_REQUESTS,
               "created": f"{_iso(inicio)}..{_iso(fim - dt.timedelta(seconds=1))}", "page": 1}
     primeira = client.get(path, params)
     total = primeira["total_count"]
