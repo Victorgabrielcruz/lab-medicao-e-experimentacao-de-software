@@ -494,3 +494,46 @@ def test_migracao_classe_antiga_recusa_valor_lt_corrompido(tmp_path):
     with pytest.raises(ConfigError,match="mediana"):
         integrado.executar(cfg,Api(),1,1,fonte)
     assert saida.read_bytes() == anterior
+
+
+def test_runs_ficam_nos_checkpoints_e_os_consolidados_sao_gravados_por_linha(tmp_path, monkeypatch):
+    from pipeline import consolidado, funil
+    cfg, fonte = configurar(tmp_path, 6)
+    recebidos = []
+    montar = funil.montar_funil
+    monkeypatch.setattr(funil, "montar_funil", lambda dados, *a, **k: recebidos.append(dados) or montar(dados, *a, **k))
+    assert integrado.executar(cfg, Api(excluidos=2), 3, 6, fonte)["execucao_completa"]
+    na_memoria = recebidos[0]["workflow_runs"]["repositorios"]
+    assert len(na_memoria) == 3 and all("workflow_runs" not in r for r in na_memoria)
+    assert all(r["resumo_runs"]["runs_validos"] == 50 and r["total_runs"] == 50 for r in na_memoria)
+    for nome, total in (("workflow_runs.json", 3), ("amostra_workflow_runs.json", 3)):
+        caminho = tmp_path / "raw" / nome
+        assert caminho.read_bytes().count(b"\n") == total + 2
+        lido = json.loads(caminho.read_text(encoding="utf-8"))
+        assert lido["janela"] == recebidos[0]["workflow_runs"]["janela"]
+        assert [len(r["workflow_runs"]) for r in lido["repositorios"]] == [50] * total
+        assert all("resumo_runs" not in r for r in lido["repositorios"])
+        assert list(consolidado.repositorios(caminho)) == lido["repositorios"]
+    bruto = json.loads((tmp_path / "raw/workflow_runs.json").read_text(encoding="utf-8"))
+    assert list(bruto) == ["janela", "repositorios", "descartes"] and len(bruto["descartes"]) == 2
+
+
+def test_funil_integrado_e_igual_ao_funil_montado_com_os_runs_completos(tmp_path):
+    from pipeline import funil
+    cfg, fonte = configurar(tmp_path, 8)
+    integrado.executar(cfg, Api(excluidos=3, nruns=60), 4, 8, fonte)
+    gravado = json.loads((tmp_path / "processed/funil.json").read_text(encoding="utf-8"))
+    completos_ = {nome: funil._ler(tmp_path / "raw", arquivo, nome) for nome, _, arquivo, _ in integrado.ETAPAS}
+    assert all(len(r["workflow_runs"]) == 60 for r in completos_["workflow_runs"]["repositorios"])
+    assert funil.montar_funil(completos_, cfg, integrado.ETAPAS) == gravado
+    assert [r["runs_validos"] for r in gravado["amostra"]] == [60] * 4
+
+
+def test_auditoria_usa_o_hash_do_arquivo_inteiro(tmp_path):
+    import hashlib
+    cfg, fonte = configurar(tmp_path, 2)
+    integrado.executar(cfg, Api(), 2, 2, fonte)
+    entrada = tmp_path / "raw/amostra_workflow_runs.json"
+    registro = json.loads((tmp_path / "processed/auditoria.json").read_text(encoding="utf-8"))
+    assert registro["entrada_sha256"] == hashlib.sha256(entrada.read_bytes()).hexdigest()
+    assert registro["total_repositorios"] == 2 and registro["runs_no_recorte_deduplicados"] == 100

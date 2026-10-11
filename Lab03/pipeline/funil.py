@@ -163,7 +163,8 @@ def montar_funil(dados, config, etapas_coleta=ETAPAS):
     inclusao = config["inclusao"]
     amostra, excluidos = [], []
     for repo_id in anteriores:
-        contagem_runs = calcular_repositorio(runs[repo_id], inicio, fim)
+        # O pipeline integrado entrega a contagem pronta, sem a lista de runs na memória.
+        contagem_runs = runs[repo_id].get("resumo_runs") or calcular_repositorio(runs[repo_id], inicio, fim)
         contagem_releases = contar_releases(releases[repo_id], inicio, fim, inclusao.get("incluir_prereleases", True))
         registro = {"id": repo_id, "full_name": runs[repo_id]["full_name"],
                     **contagem_releases, "runs_validos": contagem_runs["runs_validos"],

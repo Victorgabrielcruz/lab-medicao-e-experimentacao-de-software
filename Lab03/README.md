@@ -472,6 +472,20 @@ A S01-19 calcula a métrica dos repositórios recebidos, sem aplicar o filtro
 final de inclusão por releases/runs e sem calcular uma CFR global. A integração
 das métricas e da seleção em um único comando pertence à S01-21 (#149).
 
+#### Consolidados de runs com um repositório por linha
+
+No pipeline integrado, `raw/workflow_runs.json` e
+`raw/amostra_workflow_runs.json` são gravados por `pipeline/consolidado.py`
+com um repositório por linha. O arquivo continua sendo um único JSON válido,
+com as mesmas chaves, e pode ser aberto por qualquer leitor de JSON.
+
+Esse formato permite gravar e ler um repositório por vez. Durante a execução,
+o pipeline integrado mantém na memória só o resumo de cada repositório; a
+lista de runs fica no checkpoint e é relida na hora de gravar. A CFR, o tempo
+de recuperação e a auditoria leem a entrada da mesma forma, e o hash da
+auditoria é calculado em blocos. Consolidados antigos, em qualquer
+formatação, continuam aceitos e são lidos inteiros.
+
 ### Tempo de recuperação por workflow — S01-20
 
 O módulo `pipeline.tempo_recuperacao` implementa a RQ04 oficial por workflow:

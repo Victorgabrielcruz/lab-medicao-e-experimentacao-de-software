@@ -7,6 +7,7 @@ import logging
 import sys
 from pathlib import Path
 
+from pipeline import consolidado
 from pipeline.cache import gravar_json
 from pipeline.classificacao import classificar_metrica
 from pipeline.config import ConfigError, janela_utc, load_config
@@ -86,13 +87,12 @@ def executar(config, entrada=None, saida=None):
         raise ConfigError("A saída da CFR deve ser diferente do arquivo de workflow runs.")
     if not entrada.is_file():
         raise FileNotFoundError(f"{entrada} não encontrado; execute antes a coleta de workflow_runs (S01-18).")
-    dados = json.loads(entrada.read_text(encoding="utf-8"))
     inicio, fim = janela_utc(config)
     janela = {"inicio": inicio.isoformat(timespec="seconds").replace("+00:00", "Z"),
               "fim_exclusivo": fim.isoformat(timespec="seconds").replace("+00:00", "Z")}
-    if dados.get("janela") != janela:
+    if consolidado.cabecalho(entrada).get("janela") != janela:
         raise ConfigError("A janela dos workflow runs não corresponde à janela configurada para a CFR.")
-    lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
+    lista = [calcular_repositorio(repo, inicio, fim) for repo in consolidado.repositorios(entrada)]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "origem": str(entrada), "janela": janela, "variante": "a",
