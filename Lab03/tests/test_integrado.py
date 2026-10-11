@@ -603,4 +603,3 @@ def test_consultas_de_runs_dispensam_a_lista_de_pull_requests():
     api = Api(nruns=150)
     completos.coletar_repositorio(api, REPO, INICIO, FIM)
     assert [p["exclude_pull_requests"] for _, p in api.chamadas] == ["true", "true"]
-

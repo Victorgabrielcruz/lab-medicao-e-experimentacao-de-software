@@ -327,4 +327,3 @@ def test_prazo_renovado_durante_a_espera_e_preservado():
     controle.resets["core"] = 130
     controle._aguardar("/repos/org/projeto")
     assert controle.resets == {"core": 200}
-
