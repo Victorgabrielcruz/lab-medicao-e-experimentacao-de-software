@@ -63,6 +63,13 @@ parâmetros e página tem sua própria entrada, inclusive na Search API. Os head
 necessários à paginação (`Link`) são preservados; o token e os headers de
 autenticação não são gravados.
 
+As entradas são gravadas sem indentação. As páginas de workflow runs
+(`/actions/runs`) guardam somente `total_count` e, de cada run, os campos que
+o pipeline usa (`CAMPOS_RUN` em `pipeline/cache.py`): uma página de 100 runs
+chega a vários megabytes na API, quase tudo em `pull_requests`, `repository` e
+`head_repository`, que não entram em nenhum cálculo. As demais respostas são
+guardadas inteiras. Entradas antigas, inteiras e indentadas, continuam válidas.
+
 Se a coleta falhar, execute novamente o mesmo comando: as consultas já
 concluídas são lidas do disco e as demais voltam à API. A gravação usa um arquivo
 temporário e substituição atômica para evitar JSON parcial. Erros HTTP e buscas
@@ -161,7 +168,7 @@ datas, SHA, número/tentativa do run e URL. As conclusions ignoradas nas métric
 são mantidas nesta coleta para auditoria; CFR e recuperação serão calculados
 nas tarefas S01-19 e S01-20. Repositórios com HTTP 404/451 são registrados como
 inacessíveis; os demais erros são propagados. O consolidado é gravado de forma
-atômica e respostas completas da API ficam no cache.
+atômica; o cache guarda de cada run somente esses mesmos campos.
 
 Referência: [workflow runs na REST API do GitHub](https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository).
 

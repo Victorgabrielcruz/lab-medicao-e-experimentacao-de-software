@@ -13,9 +13,27 @@ import requests
 log = logging.getLogger(__name__)
 VERSAO = 1
 HEADERS_PERSISTIDOS = ("Content-Type", "Link")
+# Campos de um workflow run usados pelo pipeline; o restante da página não é persistido.
+CAMPOS_RUN = ("id", "workflow_id", "name", "head_branch", "event", "status", "conclusion",
+              "created_at", "updated_at", "run_started_at", "head_sha", "run_number",
+              "run_attempt", "html_url")
+PAGINA_DE_RUNS = re.compile(r"/repos/[^/]+/[^/]+/actions/runs$")
 
 
-def gravar_json(caminho, dados):
+def enxugar(url, corpo):
+    """Reduz as páginas de workflow runs aos campos usados; outras respostas ficam inteiras.
+
+    Uma página de 100 runs chega a vários megabytes: pull_requests, repository
+    e head_repository vêm repetidos em cada run e não entram em nenhum cálculo.
+    """
+    if (not PAGINA_DE_RUNS.search(urlsplit(url).path) or not isinstance(corpo, dict)
+            or not isinstance(corpo.get("workflow_runs"), list)):
+        return corpo
+    return {"total_count": corpo.get("total_count"),
+            "workflow_runs": [{campo: run.get(campo) for campo in CAMPOS_RUN} for run in corpo["workflow_runs"]]}
+
+
+def gravar_json(caminho, dados, compacto=False):
     """Substitui o arquivo só depois de terminar a escrita no mesmo diretório."""
     caminho = Path(caminho)
     caminho.parent.mkdir(parents=True, exist_ok=True)
@@ -24,7 +42,10 @@ def gravar_json(caminho, dados):
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=caminho.parent,
                                          suffix=".tmp", delete=False) as arquivo:
             temporario = Path(arquivo.name)
-            json.dump(dados, arquivo, ensure_ascii=False, indent=2)
+            if compacto:
+                json.dump(dados, arquivo, ensure_ascii=False, separators=(",", ":"))
+            else:
+                json.dump(dados, arquivo, ensure_ascii=False, indent=2)
         temporario.replace(caminho)
     finally:
         if temporario is not None:
@@ -90,8 +111,8 @@ class CacheDisco:
             "versao": VERSAO,
             "status": resposta.status_code,
             "headers": {h: resposta.headers[h] for h in HEADERS_PERSISTIDOS if h in resposta.headers},
-            "corpo": corpo,
-        })
+            "corpo": enxugar(url, corpo),
+        }, compacto=True)
 
     def limpar(self):
         """Remove só os JSON das áreas de cache conhecidas, incluindo metadados."""

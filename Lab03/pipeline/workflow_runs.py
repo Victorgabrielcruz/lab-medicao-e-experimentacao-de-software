@@ -9,7 +9,7 @@ from pathlib import Path
 import requests
 
 from pipeline.actions import MOTIVO_INACESSIVEL, STATUS_INACESSIVEL
-from pipeline.cache import gravar_json
+from pipeline.cache import CAMPOS_RUN, gravar_json
 from pipeline.config import ConfigError, janela_utc
 from pipeline.metadados import ARQUIVO_SAIDA as ARQUIVO_METADADOS
 
@@ -44,10 +44,7 @@ def fatias_mensais(inicio, fim):
 
 
 def _resumo(run):
-    campos = ("id", "workflow_id", "name", "head_branch", "event", "status", "conclusion",
-              "created_at", "updated_at", "run_started_at", "head_sha", "run_number",
-              "run_attempt", "html_url")
-    return {campo: run.get(campo) for campo in campos}
+    return {campo: run.get(campo) for campo in CAMPOS_RUN}
 
 
 def coletar_mes(client, full_name, branch, inicio, fim):
