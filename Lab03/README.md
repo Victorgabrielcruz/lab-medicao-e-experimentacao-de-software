@@ -581,6 +581,26 @@ em `workflow_runs.json`), `repositorios` com `id`, `full_name` e a lista
 `descartes` com `id`, `full_name`, `motivo` e `detalhe`. Drafts e releases
 fora da janela podem estar no arquivo: o funil os filtra de novo.
 
+### Etapas
+
+| Etapa | Saída | Descrição |
+|---|---|---|
+| `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
+| `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
+| `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
+| `releases` | `data/raw/releases.json` | Lê `metadados.json`, pagina pelo Link header com cache e retém publicações na janela sem drafts; preserva pré-releases e contabiliza as estáveis separadamente. |
+| `compare` | `data/raw/compare.json` | Lê `releases.json`, compara releases estáveis consecutivas com paginação/cache, recupera a base anterior à janela e registra o limite de 250 commits e releases ignoradas por 404 ou coleta incompleta. |
+| `tags` | `data/raw/tags.json` | Lê `metadados.json`, pagina as tags e consulta a data do autor de cada commit por SHA, filtrando pela janela e reutilizando o cache de páginas/commits para a variante da RQ07. |
+| `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
+
+Testes:
+
+```bash
+pytest --cov=pipeline --cov-fail-under=80
+```
+
+O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo comando a cada push e pull request, em Python 3.11 e 3.13. O build falha se algum teste falhar ou se a cobertura ficar abaixo de 80%.
+
 ### Sorteio da amostra-ouro e planilhas de rotulagem (S02-05 — #155)
 
 `pipeline/amostra_ouro.py` sorteia a amostra da validação manual e gera as
@@ -624,26 +644,6 @@ repositório sorteado com menos de 5 releases elegíveis e janelas diferentes
 da configurada; nesses casos nada é gravado. Se alguma planilha já existir,
 ele também recusa, para não apagar rótulos preenchidos. `--sobrescrever`
 regrava todas as planilhas em branco.
-
-### Etapas
-
-| Etapa | Saída | Descrição |
-|---|---|---|
-| `candidatos` | `data/raw/candidatos.json` | Busca pela Search API (seção `busca` do `config.yaml`). A faixa de estrelas é dividida ao meio até cada consulta ter no máximo 1000 resultados; faixas indivisíveis acima do limite são marcadas como truncadas e geram alerta. Duplicatas são removidas pelo id do repositório. |
-| `actions` | `data/raw/actions.json` | Lê `candidatos.json` e consulta o endpoint de workflows de cada repositório. Descarta os que não têm nenhum workflow em `.github/workflows/` (workflows dinâmicos do GitHub, como Dependabot e CodeQL, não contam) e os que respondem 404 ou 451. Os descartes ficam no arquivo com o motivo, para o funil de seleção. |
-| `metadados` | `data/raw/metadados.json` | Lê os aprovados de `actions.json` e coleta estrelas, linguagem, idade (até o fim da janela), default branch e número de contribuidores (Link header com `per_page=1&anon=1`). Cada repositório é salvo em `data/cache/metadados/`; numa reexecução, os que já estão lá não são consultados de novo. |
-| `releases` | `data/raw/releases.json` | Lê `metadados.json`, pagina pelo Link header com cache e retém publicações na janela sem drafts; preserva pré-releases e contabiliza as estáveis separadamente. |
-| `compare` | `data/raw/compare.json` | Lê `releases.json`, compara releases estáveis consecutivas com paginação/cache, recupera a base anterior à janela e registra o limite de 250 commits e releases ignoradas por 404 ou coleta incompleta. |
-| `tags` | `data/raw/tags.json` | Lê `metadados.json`, pagina as tags e consulta a data do autor de cada commit por SHA, filtrando pela janela e reutilizando o cache de páginas/commits para a variante da RQ07. |
-| `workflow_runs` | `data/raw/workflow_runs.json` | Lê `metadados.json`, coleta os runs de push do default branch por mês com paginação e cache e registra os meses que atingem o limite de 1000 resultados. |
-
-Testes:
-
-```bash
-pytest --cov=pipeline --cov-fail-under=80
-```
-
-O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo comando a cada push e pull request, em Python 3.11 e 3.13. O build falha se algum teste falhar ou se a cobertura ficar abaixo de 80%.
 
 ## Estrutura
 
