@@ -7,11 +7,11 @@ import sys
 from pathlib import Path
 import requests
 from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_release, metadados, releases, tempo_recuperacao
-from pipeline import consolidado
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
+from pipeline import consolidado
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
 
