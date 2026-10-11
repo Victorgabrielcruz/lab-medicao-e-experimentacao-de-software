@@ -302,4 +302,3 @@ def test_gravar_json_compacto_e_indentado(tmp_path):
     assert (tmp_path / "compacto.json").read_text(encoding="utf-8") == '{"a":[1,2],"ç":"é"}'
     assert "\n" in (tmp_path / "padrao.json").read_text(encoding="utf-8")
     assert json.loads((tmp_path / "padrao.json").read_text(encoding="utf-8")) == dados
-
