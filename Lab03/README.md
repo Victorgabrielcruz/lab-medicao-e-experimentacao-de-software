@@ -761,8 +761,18 @@ prefiltro de releases evita coletar runs de quem já não satisfaz a inclusão.
 O funil registra `prefiltro_releases_insuficientes` nessa passagem; ele não
 infere quantos runs esses repositórios teriam. Meses com mais de 1000 resultados
 são subdivididos recursivamente até caber na API. Saturação dentro de um único
-segundo, contagem inconsistente ou páginas ausentes mantêm `coleta_incompleta`;
+segundo, contagem inconsistente nas folhas ou páginas ausentes mantêm `coleta_incompleta`;
 repositórios parciais não contam para os 100 da execução completa.
+
+Na coleta real da #151, intervalos amplos de `openclaw/openclaw` informaram
+`total_count=2500` mesmo quando suas subfatias completas continham mais runs
+(janeiro/2026: 9153 IDs únicos). O coletor reconhece esse teto observado
+somente em intervalos subdivididos: todas as folhas devem estar completas,
+e os IDs da página inicial do pai precisam aparecer na união das subfatias.
+O diagnóstico mantém `total_api=2500`, `runs_retidos`, `total_api_limitado` e
+`ids_pagina_inicial_ausentes`. Outras divergências de contagem continuam
+marcando coleta incompleta. Isso trata a contagem limitada do pai sem aceitar
+páginas ausentes ou saturação dentro de um segundo.
 
 As consultas de runs usam `exclude_pull_requests=true`: a lista de pull
 requests de cada run é a maior parte da resposta e não entra em nenhum cálculo.
@@ -791,7 +801,9 @@ ter `contribuidores=null`, `contribuidores_pendentes=true` e uma observação de
 coleta adiada; esses dados parciais não entram no cache de metadados completos.
 A amostra aprovada recebe os metadados completos, inclusive quando o endpoint
 de contribuidores informa que a lista é grande demais (nulo com justificativa).
-Checkpoints anteriores continuam reutilizáveis, sem invalidar coletas concluídas.
+O contexto inclui a versão do coletor de runs. A versão 2 reavalia checkpoints
+de versões anteriores para não perpetuar descartes por contagem limitada;
+as páginas do cache e os meses completos do piloto continuam reutilizáveis.
 
 `processed/execucao.json` inclui `desempenho`: tempo de seleção/coleta, compare,
 cálculos locais e total; número de tentativas HTTP, acertos no cache de respostas,

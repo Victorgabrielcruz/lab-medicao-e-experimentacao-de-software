@@ -169,7 +169,8 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     contexto = {"janela": janela, "inclusao": config["inclusao"], "runs": config["runs"],
                 "api": config["api"]["base_url"],
-                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 2}
+                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 2,
+                "versao_coletor_runs": completos.VERSAO_COLETOR}
     digest = hashlib.sha256(json.dumps(contexto, sort_keys=True).encode()).hexdigest()
     pasta = raw / "checkpoints" / digest
     anteriores = {}

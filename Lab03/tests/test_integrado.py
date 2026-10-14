@@ -191,6 +191,74 @@ def test_subdivide_mes_saturado_sem_perder_runs_nas_fronteiras():
     assert all(p["event"] == "push" and p["branch"] == "main" for _, p in api.chamadas)
 
 
+def test_total_api_limitado_a_2500_confere_completude_nas_folhas():
+    class TotalLimitado(Api):
+        def get(self, path, params=None):
+            dados = super().get(path, params)
+            return {**dados, "total_count": min(2500, dados["total_count"])}
+
+    fatias, runs = completos.coletar_intervalo(TotalLimitado(nruns=3500), "org/repo1", "main", INICIO, FIM)
+    mes = fatias[0]
+    assert len(runs) == len({r["id"] for r in runs}) == 3500
+    assert mes["total_api"] == 2500 and mes["runs_retidos"] == 3500
+    assert mes["total_api_limitado"]
+    assert mes["ids_pagina_inicial_ausentes"] == 0
+    assert not mes["coleta_incompleta"]
+
+
+def test_total_limitado_nao_esconde_paginas_ausentes():
+    class TotalLimitado(Api):
+        def get(self, path, params=None):
+            dados = super().get(path, params)
+            return {**dados, "total_count": min(2500, dados["total_count"]),
+                    "workflow_runs": [] if params["page"] == 2 else dados["workflow_runs"]}
+
+    fatias, _ = completos.coletar_intervalo(TotalLimitado(nruns=3500), "org/repo1", "main", INICIO, FIM)
+    assert fatias[0]["coleta_incompleta"]
+
+
+def test_subdivisao_exige_ids_da_pagina_inicial_mesmo_com_contagens_iguais():
+    intervalo_pai = f"{completos.wr._iso(INICIO)}..{completos.wr._iso(FIM-dt.timedelta(seconds=1))}"
+
+    class IdAusente(Api):
+        def get(self, path, params=None):
+            dados = super().get(path, params)
+            if params["created"] != intervalo_pai:
+                dados["workflow_runs"] = [{**r, "id": 99999} if r["id"] == 1 else r
+                                          for r in dados["workflow_runs"]]
+            return dados
+
+    fatias, runs = completos.coletar_intervalo(IdAusente(nruns=1100), "org/repo1", "main", INICIO, FIM)
+    assert len(runs) == 1100
+    assert fatias[0]["ids_pagina_inicial_ausentes"] == 1
+    assert fatias[0]["coleta_incompleta"]
+
+
+def test_outros_totais_divergentes_continuam_incompletos():
+    intervalo_pai = f"{completos.wr._iso(INICIO)}..{completos.wr._iso(FIM-dt.timedelta(seconds=1))}"
+
+    class ContagemDivergente(Api):
+        def get(self, path, params=None):
+            dados = super().get(path, params)
+            if params["created"] == intervalo_pai:
+                dados["total_count"] = 1099
+            return dados
+
+    fatias, _ = completos.coletar_intervalo(ContagemDivergente(nruns=1100), "org/repo1", "main", INICIO, FIM)
+    assert not fatias[0]["total_api_limitado"]
+    assert fatias[0]["coleta_incompleta"]
+
+
+def test_versao_coletor_invalida_checkpoint_de_selecao(tmp_path, monkeypatch):
+    cfg, fonte = configurar(tmp_path, 1)
+    integrado.executar(cfg, Api(), 1, 1, fonte)
+    monkeypatch.setattr(completos, "VERSAO_COLETOR", completos.VERSAO_COLETOR + 1)
+    api = Api()
+    assert integrado.executar(cfg, api, 1, 1, fonte)["execucao_completa"]
+    assert api.chamadas
+    assert len(list((tmp_path / "raw/checkpoints").glob("*/1.json"))) == 2
+
+
 def test_segundo_saturado_mantem_incompletude():
     class Saturada:
         def get(self, *_):
