@@ -6,7 +6,7 @@ import logging
 import sys
 from pathlib import Path
 import requests
-from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_release, metadados, releases, tempo_recuperacao
+from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_commit, lead_time_release, metadados, metricas, releases, tempo_recuperacao
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
@@ -202,6 +202,8 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
         lead_time_release.reclassificar(saida_lead_time)
     validacao_lt = auditoria.validar_lead_time(config, entrada_compare, saida_lead_time)
     gravar_json(audit_lead_time, validacao_lt)
+    # A variante por commit (#142) é recalculada do compare local a cada execução.
+    lead_time_commit.executar(config, entrada_compare)
     frequencias = []
     for r in selecionados:
         quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,
@@ -215,12 +217,13 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                "versao_classificacao": VERSAO_REFERENCIA,
                "incluir_prereleases": config["inclusao"].get("incluir_prereleases", True),
                "repositorios": frequencias})
+    _, _, pendentes = metricas.executar(config)
     resultado = {"contexto": contexto, "alvo": alvo, "total_amostra_completa": len(amostra),
                  "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
                  "execucao_completa": len(amostra) == alvo,
                  "coletas_incompletas": sum(r["coleta_incompleta"] for r in dados["workflow_runs"]["repositorios"]),
-                 "metricas": ["deployment_frequency", "cfr_a", "tempo_recuperacao", "lead_time_release_a"],
-                 "dependencias_pendentes": ["lead time por commit #142"],
+                 "metricas": [m for m in metricas.METRICAS if m not in pendentes],
+                 "dependencias_pendentes": ["CFR (b) #161"] if "cfr_b" in pendentes else [],
                  "repositorios_com_lead_time_release": validacao_lt["repositorios_com_lead_time"],
                  "total_comparacoes": sum(r["total_comparacoes"] for r in comparacoes),
                  "releases_compare_ignoradas": sum(r["total_releases_ignoradas"] for r in comparacoes),

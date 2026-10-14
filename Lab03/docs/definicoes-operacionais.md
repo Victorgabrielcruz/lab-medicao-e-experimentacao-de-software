@@ -72,6 +72,8 @@ Cada descarte é registrado com o motivo na tabela do funil de seleção (`pipel
 
 Os resultados são reportados por **mediana e IQR**. O detalhamento de cada variante é feito nas issues de implementação correspondentes.
 
+`pipeline/metricas.py` (S02-02 — #152) reúne todas as variantes por repositório em `data/processed/metricas.json`. Uma métrica sem valor fica `null` e é listada em `metricas_ausentes`; a CFR (b) fica pendente até a heurística da S02-11 (#161).
+
 ### 5.1 Tempo de recuperação (RQ04)
 
 O enunciado oficial fornecido em 08/10/2026 define a fórmula
