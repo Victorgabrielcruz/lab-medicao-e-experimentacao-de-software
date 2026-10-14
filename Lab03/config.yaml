@@ -5,8 +5,10 @@ api:
   base_url: https://api.github.com
   per_page: 100
   timeout_s: 30
-  # Páginas de workflow runs consultadas ao mesmo tempo no pipeline integrado (1 a 8).
+  # Teto global de chamadas HTTP simultâneas, incluindo páginas e retries (1 a 8).
   paralelismo: 4
+  # Repositórios em processamento na seleção e no compare integrado (1 a 8).
+  repositorios_paralelos: 2
 
 # Janela de observação de 12 meses (datas inclusivas, UTC).
 # Ver docs/definicoes-operacionais.md.

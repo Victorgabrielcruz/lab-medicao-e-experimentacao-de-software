@@ -1,6 +1,7 @@
 """Cenários de rate limit/backoff com HTTP e passagem do tempo simulados."""
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 import requests
@@ -323,7 +324,92 @@ def test_threads_simultaneas_aguardam_o_mesmo_reset():
 def test_prazo_renovado_durante_a_espera_e_preservado():
     from pipeline.rate_limit import ControleRequisicoes
 
-    controle = ControleRequisicoes(lambda segundos: controle.resets.update(core=200), lambda: 100)
+    esperas = []
+    def dormir(segundos):
+        esperas.append(segundos)
+        if len(esperas) == 1:
+            controle.resets.update(core=200)
+    controle = ControleRequisicoes(dormir, lambda: 100)
     controle.resets["core"] = 130
     controle._aguardar("/repos/org/projeto")
-    assert controle.resets == {"core": 200}
+    assert esperas == [30, 100]
+    assert controle.resets == {}
+
+
+def test_resposta_atrasada_com_cota_positiva_nao_remove_pausa():
+    from pipeline.rate_limit import ControleRequisicoes
+    tempo = Relogio()
+    controle = ControleRequisicoes(tempo.sleep, tempo.time)
+    path = "/repos/org/repo/actions/runs"
+    controle._registrar(path, resposta(headers={"X-RateLimit-Remaining": "0", "X-RateLimit-Reset": "130"}))
+    controle._registrar(path, resposta(headers={"X-RateLimit-Remaining": "1", "X-RateLimit-Reset": "130"}))
+    controle._aguardar(path)
+    assert tempo.esperas == [31]
+
+
+def test_retry_after_pausa_outra_thread_e_outros_recursos():
+    import threading
+    from pipeline.rate_limit import ControleRequisicoes
+    pausa_registrada = threading.Event()
+    outra_aguardou = threading.Event()
+    tempo = Relogio()
+    controle = ControleRequisicoes(relogio=tempo.time, paralelismo=2)
+    chamadas = []
+
+    def dormir(segundos):
+        if threading.current_thread().name == "limitada":
+            pausa_registrada.set()
+            assert outra_aguardou.wait(5)
+        else:
+            assert segundos == 7
+            outra_aguardou.set()
+        tempo.agora = 107
+
+    controle.sleep = dormir
+
+    def requisitar():
+        chamadas.append(tempo.agora)
+        return resposta(429, {"Retry-After": "7"}) if len(chamadas) == 1 else resposta()
+
+    with ThreadPoolExecutor(max_workers=1, thread_name_prefix="outra") as pool:
+        # A primeira thread só prossegue quando outra tiver respeitado a pausa.
+        erros = []
+        def limitada():
+            try:
+                controle.executar(requisitar, "/repos/org/repo")
+            except Exception as exc:
+                erros.append(exc)
+        t = threading.Thread(target=limitada, name="limitada")
+        t.start()
+        assert pausa_registrada.wait(5)
+        pool.submit(controle.executar, lambda: resposta(), "/search/repositories").result(timeout=5)
+        t.join(timeout=5)
+        assert not t.is_alive()
+        assert not erros
+    assert chamadas == [100, 107]
+
+
+def test_esperar_cota_core_nao_ocupa_vaga_http_do_search():
+    import threading
+    from pipeline.rate_limit import ControleRequisicoes
+
+    aguardando = threading.Event()
+    search_concluiu = threading.Event()
+    tempo = Relogio()
+
+    def dormir(segundos):
+        aguardando.set()
+        assert search_concluiu.wait(5)
+        tempo.agora += segundos
+
+    controle = ControleRequisicoes(dormir, tempo.time, paralelismo=1)
+    controle.resets["core"] = 130
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        core = executor.submit(controle.executar, lambda: resposta(), "/repos/org/repo")
+        assert aguardando.wait(5)
+        search = executor.submit(controle.executar, lambda: resposta(), "/search/repositories")
+        try:
+            assert search.result(timeout=2).status_code == 200
+        finally:
+            search_concluiu.set()
+        assert core.result(timeout=5).status_code == 200

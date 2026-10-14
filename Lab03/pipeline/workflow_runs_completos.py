@@ -14,6 +14,9 @@ def _paginas(client, path, params, paginas):
     if paralelismo <= 1:
         yield from map(buscar, paginas)
         return
+    if hasattr(client, "mapear_paginas"):
+        yield from client.mapear_paginas(buscar, paginas)
+        return
     with ThreadPoolExecutor(max_workers=paralelismo) as executor:
         yield from executor.map(buscar, paginas)
 

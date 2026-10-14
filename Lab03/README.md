@@ -766,13 +766,46 @@ repositórios parciais não contam para os 100 da execução completa.
 
 As consultas de runs usam `exclude_pull_requests=true`: a lista de pull
 requests de cada run é a maior parte da resposta e não entra em nenhum cálculo.
-Dentro de cada fatia de até 1000 runs, as páginas seguintes à primeira são
-consultadas em paralelo, com até `api.paralelismo` conexões (1 a 8; sem a
-chave, 1, que mantém a coleta sequencial). O resultado é o mesmo da coleta
-sequencial. O controle de rate limit é compartilhado entre as conexões: quando
-a cota se esgota, todas aguardam o mesmo reset.
+Na seleção e no compare, `api.repositorios_paralelos` controla quantos
+repositórios são processados ao mesmo tempo (1 a 8; padrão sem a chave: 1).
+A configuração distribuída usa dois repositórios. A fila é limitada e os
+resultados são consumidos na ordem da fonte, preservando os primeiros N
+elegíveis. Perto do alvo, a fila diminui para não coletar candidatos extras.
+Somente o coordenador escreve progresso e consolidados; cada worker escreve
+seu checkpoint e devolve os runs resumidos. Em falhas, tarefas não iniciadas
+são canceladas e as iniciadas terminam antes do retorno, preservando os
+checkpoints já concluídos.
 
-Checkpoints atômicos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
+Dentro de cada fatia de até 1000 runs, as páginas seguintes à primeira são
+consultadas em paralelo. `api.paralelismo` agora é o teto **global** de chamadas
+HTTP simultâneas, incluindo todos os repositórios, páginas e retries (1 a 8;
+padrão sem a chave: 1). A configuração distribuída usa quatro chamadas. O
+cliente mantém uma sessão HTTP por thread e reutiliza o pool de páginas entre
+meses. A cota esgotada pausa seu recurso; `Retry-After` e limites secundários
+pausam todas as threads. Respostas atrasadas não revogam pausas vigentes e
+prazos prolongados durante uma espera são conferidos novamente.
+
+A consulta de contribuidores ocorre apenas após confirmar releases suficientes,
+runs suficientes e coleta completa. Metadados de candidatos descartados podem
+ter `contribuidores=null`, `contribuidores_pendentes=true` e uma observação de
+coleta adiada; esses dados parciais não entram no cache de metadados completos.
+A amostra aprovada recebe os metadados completos, inclusive quando o endpoint
+de contribuidores informa que a lista é grande demais (nulo com justificativa).
+Checkpoints anteriores continuam reutilizáveis, sem invalidar coletas concluídas.
+
+`processed/execucao.json` inclui `desempenho`: tempo de seleção/coleta, compare,
+cálculos locais e total; número de tentativas HTTP, acertos no cache de respostas,
+retries e segundos de espera por rate limit/backoff. Os contadores HTTP são
+referentes à execução atual; tempos de espera somam as esperas de cada thread
+e podem superar o tempo de parede. Busca de candidatos e preparação entram
+no tempo total. Acertos em checkpoints e no cache de metadados evitam HTTP,
+mas não entram em `cache_hits`, que conta apenas respostas GET do cache.
+Para comparar configurações, use a mesma fonte, critérios e estado inicial de
+cache/checkpoints em diretórios de saída separados. Aumente a concorrência
+somente quando a redução de tempo compensar as esperas e retries observados;
+mais threads não aumentam a cota da API.
+
+Checkpoints atômicos e compactos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
 inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
 repositórios concluídos e páginas do cache; um erro temporário não apaga o
 progresso anterior. `raw/progresso.json` permite acompanhar a execução.

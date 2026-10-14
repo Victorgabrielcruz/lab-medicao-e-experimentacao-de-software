@@ -72,6 +72,9 @@ class Api:
 
 def configurar(tmp_path, n=120):
     cfg = load_config(CONFIG)
+    # Os cenários legados exercitam a execução sequencial; concorrência abaixo
+    # tem cenários próprios com conclusão fora de ordem e falhas simultâneas.
+    cfg["api"]["repositorios_paralelos"] = 1
     cfg["caminhos"] = {k: str(tmp_path / k) for k in ("raw", "processed", "cache")}
     fonte = tmp_path / "fonte.json"
     gravar_json(fonte, {"candidatos": [{"id": i, "full_name": f"org/repo{i}"} for i in range(1, n+1)]})
@@ -655,3 +658,175 @@ def test_consultas_de_runs_dispensam_a_lista_de_pull_requests():
     api = Api(nruns=150)
     completos.coletar_repositorio(api, REPO, INICIO, FIM)
     assert [p["exclude_pull_requests"] for _, p in api.chamadas] == ["true", "true"]
+
+
+def test_contribuidores_so_para_elegiveis_e_sem_cache_parcial(tmp_path):
+    cfg, fonte = configurar(tmp_path, 3)
+    api = Api(excluidos=1)
+    integrado.executar(cfg, api, 2, 3, fonte)
+    assert [p for p, _ in api.chamadas if p.endswith("/contributors")] == [
+        "/repos/org/repo2/contributors", "/repos/org/repo3/contributors"]
+    assert not (tmp_path / "cache/metadados/org__repo1.json").exists()
+    metas = integrado._ler(tmp_path / "raw/metadados.json")["repositorios"]
+    assert metas[0]["contribuidores_pendentes"] is True
+    assert all("contribuidores_pendentes" not in m for m in metas[1:])
+
+
+def test_contribuidores_nao_consultados_quando_runs_insuficientes(tmp_path):
+    cfg, fonte = configurar(tmp_path, 2)
+    api = Api(nruns=49)
+    resultado = integrado.executar(cfg, api, 1, 2, fonte)
+    assert not resultado["execucao_completa"]
+    assert not any(p.endswith("/contributors") for p, _ in api.chamadas)
+
+
+def test_contribuidores_inacessiveis_descartam_sem_quebrar_funil(tmp_path):
+    cfg, fonte = configurar(tmp_path, 2)
+
+    class Inacessivel(Api):
+        def get_resposta(self, path, params=None):
+            if path.endswith("repo1/contributors"):
+                r = requests.Response()
+                r.status_code = 404
+                raise requests.HTTPError(response=r)
+            return super().get_resposta(path, params)
+
+    assert integrado.executar(cfg, Inacessivel(), 1, 2, fonte)["execucao_completa"]
+    funil = integrado._ler(tmp_path / "processed/funil.json")
+    assert funil["descartes"][0]["etapa"] == "metadados"
+    assert [r["id"] for r in funil["amostra"]] == [2]
+
+
+def _sem_datas_e_origem(valor):
+    if isinstance(valor, dict):
+        return {k: _sem_datas_e_origem(v) for k, v in valor.items()
+                if k not in ("gerado_em", "coletado_em", "origem", "origens")}
+    if isinstance(valor, list):
+        return [_sem_datas_e_origem(v) for v in valor]
+    return valor
+
+
+def test_selecao_e_compare_paralelos_preservam_amostra_e_metricas(tmp_path):
+    import threading
+
+    cfg_s, fonte_s = configurar(tmp_path / "sequencial", 6)
+    integrado.executar(cfg_s, Api(excluidos=2), 3, 6, fonte_s)
+    cfg, fonte = configurar(tmp_path / "paralelo", 6)
+    cfg["api"]["repositorios_paralelos"] = 2
+
+    class ForaDeOrdem(Api):
+        segundo = threading.Event()
+
+        def get(self, path, params=None):
+            if path.endswith("repo1/actions/workflows"):
+                assert self.segundo.wait(5)
+            if path.endswith("repo2/actions/workflows"):
+                self.segundo.set()
+            return super().get(path, params)
+
+    api = ForaDeOrdem(excluidos=2)
+    resultado = integrado.executar(cfg, api, 3, 6, fonte)
+    assert resultado["candidatos_avaliados"] == 5
+    assert not any("repo6/" in p for p, _ in api.chamadas)
+    for pasta in ("raw", "processed"):
+        for arquivo in (tmp_path / "sequencial" / pasta).glob("*.json"):
+            if arquivo.name.startswith("auditoria") or arquivo.name in ("execucao.json", "progresso.json"):
+                continue
+            esperado = _sem_datas_e_origem(integrado._ler(arquivo))
+            atual = _sem_datas_e_origem(integrado._ler(tmp_path / "paralelo" / pasta / arquivo.name))
+            assert atual == esperado, arquivo.name
+    # A retomada concorrente usa os checkpoints de seleção e de compare.
+    nova_api = Api(falhar=3)
+    assert integrado.executar(cfg, nova_api, 3, 6, fonte)["execucao_completa"]
+    assert nova_api.chamadas == []
+
+
+def test_interrupcao_paralela_preserva_checkpoints_e_retoma(tmp_path):
+    cfg, fonte = configurar(tmp_path, 4)
+    cfg["api"]["repositorios_paralelos"] = 2
+    with pytest.raises(requests.ConnectionError):
+        integrado.executar(cfg, Api(falhar=2), 4, 4, fonte)
+    assert (next((tmp_path / "raw/checkpoints").glob("*/1.json"))).is_file()
+    api = Api()
+    assert integrado.executar(cfg, api, 4, 4, fonte)["execucao_completa"]
+    assert not any(p == "/repos/org/repo1" for p, _ in api.chamadas)
+
+
+@pytest.mark.parametrize("valor", [0, 9, -1, 2.0, "2", True, None])
+def test_workers_invalidos_recusados_antes_da_coleta(tmp_path, valor):
+    cfg, fonte = configurar(tmp_path, 1)
+    cfg["api"]["repositorios_paralelos"] = valor
+    api = Api()
+    with pytest.raises(ConfigError, match="repositorios_paralelos"):
+        integrado.executar(cfg, api, 1, 1, fonte)
+    assert not api.chamadas
+
+
+def test_compare_processa_repositorios_simultaneamente_em_ordem(tmp_path, monkeypatch):
+    import threading
+    cfg, _ = configurar(tmp_path, 2)
+    cfg["api"]["repositorios_paralelos"] = 2
+    inicio, fim = integrado.janela_utc(cfg)
+    repos = [releases.coletar_repositorio(Api(), {"id": i, "full_name": f"org/repo{i}"}, inicio, fim)
+             for i in (1, 2)]
+    barreira = threading.Barrier(2, timeout=5)
+    original = integrado.compare.coletar_repositorio
+
+    def coletar(*args):
+        barreira.wait()
+        return original(*args)
+
+    monkeypatch.setattr(integrado.compare, "coletar_repositorio", coletar)
+    assert [r["id"] for r in integrado._coletar_compares(cfg, Api(), repos, inicio, fim)] == [1, 2]
+
+
+@pytest.mark.parametrize("paralelismo", [1, 2, 4])
+def test_teto_global_inclui_repositorios_paginas_e_telemetria(tmp_path, paralelismo):
+    import threading
+    import time
+    from urllib.parse import urlsplit
+    from pipeline.cache import CacheDisco
+    from pipeline.github_api import GitHubClient
+
+    cfg, fonte = configurar(tmp_path, 2)
+    cfg["api"]["repositorios_paralelos"] = 2
+    api = Api(nruns=250)
+    trava = threading.Lock()
+    ativas = maximo = 0
+
+    class Sessao:
+        def __init__(self):
+            self.headers = {}
+
+        def get(self, url, params, timeout):
+            nonlocal ativas, maximo
+            with trava:
+                ativas += 1
+                maximo = max(maximo, ativas)
+            try:
+                time.sleep(0.01)
+                return resposta(api.get(urlsplit(url).path, params))
+            finally:
+                with trava:
+                    ativas -= 1
+
+        def close(self):
+            pass
+
+    client = GitHubClient("fixture", paralelismo=paralelismo, session_factory=Sessao,
+                          cache=CacheDisco(cfg["caminhos"]["cache"]))
+    try:
+        resultado = integrado.executar(cfg, client, 2, 2, fonte)
+        assert resultado["execucao_completa"]
+        assert maximo == paralelismo
+        http = resultado["desempenho"]["http"]
+        assert http["requisicoes"] == len(api.chamadas)
+        assert http["cache_hits"] == 2  # Histórico de releases reutiliza as páginas.
+        assert http["espera_rate_limit_s"] == 0
+        assert all(v >= 0 for v in resultado["desempenho"]["tempos"].values())
+        chamadas = len(api.chamadas)
+        retomada = integrado.executar(cfg, client, 2, 2, fonte)
+        assert len(api.chamadas) == chamadas
+        assert retomada["desempenho"]["http"]["requisicoes"] == 0
+    finally:
+        client.close()
