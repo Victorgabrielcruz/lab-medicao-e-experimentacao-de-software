@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 import requests
 
-from pipeline import actions, cache as modulo_cache
+from pipeline import actions, cache as modulo_cache, workflow_runs
 from pipeline.__main__ import main
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.github_api import GitHubClient
@@ -220,3 +220,85 @@ def test_cli_habilita_cache_nas_etapas(tmp_path, monkeypatch):
 
     monkeypatch.setattr(actions, "executar", etapa)
     assert main(["--config", str(config), "--etapas", "actions"]) == 0
+
+
+def run_da_api(id=1, **campos):
+    """Run no formato da API: os campos usados e os objetos pesados que os acompanham."""
+    return {"id": id, "workflow_id": 7, "name": "CI", "head_branch": "main", "event": "push",
+            "status": "completed", "conclusion": "success", "created_at": "2026-05-10T12:00:00Z",
+            "updated_at": "2026-05-10T12:05:00Z", "run_started_at": "2026-05-10T12:00:01Z",
+            "head_sha": "abc", "run_number": id, "run_attempt": 1,
+            "html_url": f"https://github.com/org/repo/actions/runs/{id}",
+            "pull_requests": [{"id": n, "head": {"repo": {"name": "repo"}}} for n in range(50)],
+            "repository": {"full_name": "org/repo", "owner": {"login": "org"}},
+            "head_repository": {"full_name": "org/repo"}, "actor": {"login": "alguem"}, **campos}
+
+
+def test_pagina_de_runs_guarda_so_os_campos_usados_sem_indentacao(tmp_path):
+    pagina = {"total_count": 2, "workflow_runs": [run_da_api(1), run_da_api(2, conclusion="failure")]}
+    client, _ = cliente(tmp_path, [resposta(pagina)])
+    params = {"branch": "main", "event": "push", "per_page": 100, "page": 1}
+    assert client.get("/repos/org/repo/actions/runs", params) == pagina
+
+    arquivo, = (tmp_path / "respostas").rglob("*.json")
+    texto = arquivo.read_text(encoding="utf-8")
+    assert "\n" not in texto and '": ' not in texto
+    corpo = json.loads(texto)["corpo"]
+    assert set(corpo) == {"total_count", "workflow_runs"} and corpo["total_count"] == 2
+    assert [tuple(r) for r in corpo["workflow_runs"]] == [modulo_cache.CAMPOS_RUN] * 2
+    assert corpo["workflow_runs"] == [workflow_runs._resumo(r) for r in pagina["workflow_runs"]]
+    assert len(texto) < len(json.dumps(pagina)) / 5
+
+    do_cache = client.get("/repos/org/repo/actions/runs", params)
+    assert do_cache == corpo
+
+
+def test_coleta_de_runs_e_igual_na_api_e_no_cache_enxuto(tmp_path):
+    import datetime as dt
+    inicio = dt.datetime(2026, 5, 1, tzinfo=dt.timezone.utc)
+    fim = dt.datetime(2026, 6, 1, tzinfo=dt.timezone.utc)
+    pagina = {"total_count": 3, "workflow_runs": [run_da_api(1), run_da_api(2, head_branch="outra"),
+                                                  run_da_api(3, conclusion=None, run_started_at=None)]}
+    client, sessao = cliente(tmp_path, [resposta(pagina)])
+    da_api = workflow_runs.coletar_mes(client, "org/repo", "main", inicio, fim)
+    do_cache = workflow_runs.coletar_mes(client, "org/repo", "main", inicio, fim)
+    assert da_api == do_cache and len(sessao.chamadas) == 1
+    assert [r["id"] for r in da_api[1]] == [1, 3]
+
+
+@pytest.mark.parametrize("path, corpo", [
+    ("/repos/org/repo/actions/runs/1", run_da_api()),
+    ("/repos/org/repo/actions/runs/1/jobs", {"total_count": 1, "jobs": [{"id": 1, "steps": [{"name": "x"}]}]}),
+    ("/repos/org/repo/actions/workflows", {"total_count": 1, "workflows": [{"path": ".github/workflows/ci.yml"}]}),
+    ("/repos/org/repo/releases", [{"id": 1, "body": "notas", "author": {"login": "alguem"}}]),
+    ("/repos/org/repo/actions/runs", [run_da_api()]),
+    ("/repos/org/repo/actions/runs", {"message": "sem a lista de runs"}),
+])
+def test_demais_respostas_ficam_inteiras_no_cache(tmp_path, path, corpo):
+    client, _ = cliente(tmp_path, [resposta(corpo)])
+    assert client.get(path) == corpo
+    assert client.get(path) == corpo
+
+
+def test_run_sem_um_campo_usado_fica_nulo_no_cache(tmp_path):
+    client, _ = cliente(tmp_path, [resposta({"total_count": 1, "workflow_runs": [{"id": 1}]})])
+    client.get("/repos/org/repo/actions/runs")
+    assert client.get("/repos/org/repo/actions/runs")["workflow_runs"] == [dict.fromkeys(modulo_cache.CAMPOS_RUN) | {"id": 1}]
+
+
+def test_cache_antigo_inteiro_e_indentado_continua_valido(tmp_path):
+    pagina = {"total_count": 1, "workflow_runs": [run_da_api()]}
+    client, sessao = cliente(tmp_path)
+    url = "https://api.github.com/repos/org/repo/actions/runs?page=1"
+    gravar_json(client.cache.caminho(url), {"versao": 1, "status": 200, "headers": {}, "corpo": pagina})
+    assert client.get("/repos/org/repo/actions/runs", {"page": 1}) == pagina
+    assert not sessao.chamadas
+
+
+def test_gravar_json_compacto_e_indentado(tmp_path):
+    dados = {"a": [1, 2], "ç": "é"}
+    gravar_json(tmp_path / "padrao.json", dados)
+    gravar_json(tmp_path / "compacto.json", dados, compacto=True)
+    assert (tmp_path / "compacto.json").read_text(encoding="utf-8") == '{"a":[1,2],"ç":"é"}'
+    assert "\n" in (tmp_path / "padrao.json").read_text(encoding="utf-8")
+    assert json.loads((tmp_path / "padrao.json").read_text(encoding="utf-8")) == dados
