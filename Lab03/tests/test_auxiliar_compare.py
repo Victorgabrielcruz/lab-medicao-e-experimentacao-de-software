@@ -252,3 +252,151 @@ def test_execucao_publica_retoma_rede_e_encerra_so_auxiliar(tmp_path, monkeypatc
     assert result["checkpoints_publicados"] == 1
     assert len(chamadas) == (2 if falha_rede else 1)
     assert {f: f.read_bytes() for f in antes} == antes
+
+
+def configurar_futuros(tmp_path):
+    cfg, p, progresso = configurar(tmp_path)
+    fonte = tmp_path / "fonte.json"
+    gravar_json(fonte, {"candidatos": [{"id": i, "full_name": f"org/repo{i}"} for i in range(1, 61)]})
+    p = aux.Principal(cfg, fonte, relogio=lambda: 1000)
+    progresso["contexto"] = copy.deepcopy(p.contexto)
+    gravar_json(p.raw / "progresso.json", progresso)
+    return cfg, p, progresso
+
+
+def test_fila_futura_respeita_margem_janela_e_checkpoints_existentes(tmp_path):
+    cfg, p, _ = configurar_futuros(tmp_path)
+    candidatos = p.proximos()
+    assert candidatos[0][0] == 9  # 2 consumidos + 1 worker + 6 de margem.
+    assert candidatos[0][1]["id"] == 10
+    assert len(candidatos) == 32
+    checkpoint(p, 10, False)
+    assert p.proximos()[0][1]["id"] == 11
+    estado = aux.ler(p.raw / "processo.json")
+    estado["max_candidatos"] = 12
+    gravar_json(p.raw / "processo.json", estado)
+    assert [r["id"] for _, r in p.proximos()] == [11, 12]
+
+
+@pytest.mark.parametrize("elegivel", [True, False])
+def test_checkpoint_candidato_com_runs_inteiros_reutilizado_sem_api(tmp_path, elegivel):
+    from test_integrado import Api
+    cfg, p, _ = configurar_futuros(tmp_path)
+    indice, candidato = p.proximos()[0]
+    api = Api(excluidos=0 if elegivel else 10)
+    antes = {f: f.read_bytes() for f in (p.raw / "processo.json", p.raw / "progresso.json")}
+    resultado, incluido = aux.antecipar_candidato(cfg, p, api, indice, candidato, tmp_path / "aux")
+    assert (resultado, incluido) == ("publicado", elegivel)
+    registro = aux.ler(p.pasta / "10.json")
+    assert registro["elegivel"] == elegivel
+    if elegivel:
+        assert len(registro["aprovados"]["workflow_runs"]["workflow_runs"]) == 50
+    inicio, fim = janela_utc(cfg)
+    retomado = integrado._coletar_candidato(cfg, object(), candidato, p.pasta, {}, inicio, fim)
+    assert retomado["elegivel"] == elegivel
+    assert {f: f.read_bytes() for f in antes} == antes
+    assert api.validar_tarefa is None
+
+
+def test_principal_consumiu_candidato_durante_coleta_guarda_so_privado(tmp_path, monkeypatch):
+    cfg, p, progresso = configurar_futuros(tmp_path)
+    indice, candidato = p.proximos()[0]
+    def coletar(config, client, repo, pasta, anteriores, inicio, fim):
+        registro = {"candidato": repo, "elegivel": False, "aprovados": {}, "descartes": {}}
+        gravar_json(pasta / f"{repo['id']}.json", registro)
+        progresso["candidatos_avaliados"] += 1
+        gravar_json(p.raw / "progresso.json", progresso)
+        return registro
+    class Api:
+        pass
+    api = Api()
+    monkeypatch.setattr(integrado, "_coletar_candidato", coletar)
+    with pytest.raises(aux.PausaAuxiliar):
+        aux.antecipar_candidato(cfg, p, api, indice, candidato, tmp_path / "aux")
+    assert not (p.pasta / "10.json").exists()
+    assert list((tmp_path / "aux/candidatos").rglob("10.json"))
+    assert api.validar_tarefa is None
+
+
+def test_fila_da_principal_e_amostra_preservadas_com_antecipacao(tmp_path):
+    from test_integrado import Api
+    cfg, p, _ = configurar_futuros(tmp_path)
+    fonte = tmp_path / "fonte.json"
+    antes = fonte.read_bytes()
+    indice, candidato = p.proximos()[0]
+    aux.antecipar_candidato(cfg, p, Api(excluidos=9), indice, candidato, tmp_path / "aux")
+    api = Api(excluidos=9)
+    resultado = integrado.executar(cfg, api, alvo=2, max_candidatos=60, fonte=fonte)
+    assert resultado["total_amostra_completa"] == 2
+    assert resultado["candidatos_avaliados"] == 11
+    frequencia = aux.ler(Path(cfg["caminhos"]["processed"]) / "deployment_frequency.json")
+    assert [r["id"] for r in frequencia["repositorios"]] == [10, 11]
+    assert not [path for path, _ in api.chamadas if path.startswith('/repos/org/repo10/actions/')]
+    assert fonte.read_bytes() == antes
+
+
+def test_guard_do_candidato_interrompe_antes_de_nova_requisicao(tmp_path):
+    sessao = Sessao()
+    client, clock, p = cliente(tmp_path, sessao)
+    client.validar_tarefa = lambda: p.conferir_candidato(9)
+    client.get('/repos/org/repo10/actions/workflows')
+    chamadas = len(sessao.chamadas)
+    progresso = aux.ler(p.raw / 'progresso.json')
+    progresso['candidatos_avaliados'] = 3
+    gravar_json(p.raw / 'progresso.json', progresso)
+    with pytest.raises(aux.PausaAuxiliar):
+        client.get('/repos/org/repo10/actions/runs')
+    assert len(sessao.chamadas) == chamadas
+
+
+def test_reutiliza_mes_do_piloto_somente_de_candidatos_futuros(tmp_path):
+    cfg, p, _ = configurar_futuros(tmp_path)
+    entrada = tmp_path / "piloto.json"
+    gravar_json(entrada, {"janela": p.contexto['janela'], "repositorios": [
+        {"id": 1, "workflow_runs": []}, {"id": 10, "workflow_runs": []}]})
+    assert set(aux.carregar_anteriores(entrada, p)) == {10}
+    gravar_json(entrada, {"janela": {}, "repositorios": []})
+    with pytest.raises(ConfigError):
+        aux.carregar_anteriores(entrada, p)
+
+
+def test_candidato_grande_cede_rodada_e_preserva_paginas(tmp_path, monkeypatch):
+    cfg, p, _ = configurar_futuros(tmp_path)
+    clock, sessao = Relogio(), Sessao(reset=4600)
+    c = aux.ClienteAuxiliar("token-falso", cfg, p, session=sessao,
+                            relogio=clock.time, sleep=clock.sleep)
+    def coletar(config, client, repo, *args):
+        for i in range(31):
+            client.get(f'/repos/org/repo10/pagina/{i}')
+        pytest.fail('Deveria ter cedido antes da chamada 31')
+    monkeypatch.setattr(integrado, '_coletar_candidato', coletar)
+    with pytest.raises(aux.AdiarCandidato):
+        aux.antecipar_candidato(cfg, p, c, 9, p.candidatos[9], tmp_path / 'aux')
+    assert c.requisicoes_reais == 30
+    assert c.cache.ler(f'{c.base_url}/repos/org/repo10/pagina/0') is not None
+    assert c.cache.ler(f'{c.base_url}/repos/org/repo10/pagina/29') is not None
+    assert not (p.pasta/'10.json').exists()
+    assert c.validar_tarefa is None
+
+
+def test_scheduler_prioriza_candidato_antes_de_compare(tmp_path, monkeypatch):
+    from test_integrado import Api
+    cfg, p, _ = configurar_futuros(tmp_path)
+    gravar_json(p.raw/'processo.json', {'estado':'executando', 'atualizado_utc':
+        dt.datetime.now(dt.timezone.utc).isoformat()})
+    class ClienteSemRede(Api):
+        def __init__(self, *args, **kwargs):
+            super().__init__(excluidos=9)
+        def estatisticas(self):
+            if (p.pasta/'10.json').exists():
+                (p.raw/'auxiliar-compare/parar').touch()
+            return {'requisicoes':len(self.chamadas)}
+        def close(self):
+            pass
+    def proibido(*args):
+        pytest.fail('Compare executado enquanto havia candidato futuro pendente')
+    monkeypatch.setattr(aux, 'ClienteAuxiliar', ClienteSemRede)
+    monkeypatch.setattr(aux, 'antecipar', proibido)
+    s=aux.executar(cfg,tmp_path/'fonte.json','token-falso')
+    assert s['estado']=='encerrada'
+    assert s['candidatos_antecipados']==s['candidatos_publicados']==s['elegiveis_antecipados']==1

@@ -1,6 +1,6 @@
-"""Antecipa compares da amostra confirmada sem reiniciar o integrado (#151).
+"""Antecipa candidatos e compares sem reiniciar o integrado (#151).
 
-Somente novos checkpoints compare e respostas GET são compartilhados. Não
+Somente novos checkpoints compatíveis e respostas GET são compartilhados. Não
 altera configuração, progresso, consolidados ou código do processo principal.
 """
 
@@ -20,7 +20,7 @@ import time
 
 import requests
 
-from pipeline import compare, workflow_runs_completos
+from pipeline import compare, integrado, consolidado, workflow_runs_completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
 from pipeline.github_api import GitHubClient
@@ -34,6 +34,10 @@ class PausaAuxiliar(Exception):
 
 class EncerrarAuxiliar(Exception):
     """A principal atingiu o alvo ou já encerrou; não disputar seus compares."""
+
+
+class AdiarCandidato(PausaAuxiliar):
+    """Rotaciona candidatos grandes sem descartar as páginas já coletadas."""
 
 
 def ler(caminho):
@@ -115,6 +119,7 @@ class Principal:
             raise ConfigError("IDs duplicados na fonte da auxiliar")
         self.vistos, self.fila = set(), {}
         self.alvo = None
+        self.max_candidatos = len(self.candidatos)
 
     def conferir(self):
         if (self.raw / "auxiliar-compare" / "parar").exists():
@@ -129,6 +134,7 @@ class Principal:
             self.alvo = progresso["alvo"]
         if progresso["alvo"] != self.alvo:
             raise ConfigError("Alvo da principal mudou durante a execução auxiliar")
+        self.max_candidatos = min(len(self.candidatos), estado.get("max_candidatos", len(self.candidatos)))
         if progresso["elegiveis_com_coleta_completa"] >= self.alvo or estado["estado"] in ("concluido", "alvo_nao_atingido"):
             raise EncerrarAuxiliar("seleção encerrada; comparações ficam com a principal")
         sinal = dt.datetime.fromisoformat(estado["atualizado_utc"]).timestamp()
@@ -161,6 +167,23 @@ class Principal:
         # Concluir primeiro projetos menores não muda a seleção da principal.
         return sorted(self.fila.values(), key=lambda r: (len(r["releases"]), r["id"]))
 
+    def conferir_candidato(self, indice):
+        progresso = self.conferir()
+        # O integrado pode ter até workers candidatos em voo, após o último
+        # consumido. Uma margem extra deixa a principal avançar antes de ceder.
+        inicio = progresso["candidatos_avaliados"] + integrado._workers(self.config) + 6
+        if indice < inicio:
+            raise PausaAuxiliar("principal alcançou a margem do candidato antecipado")
+        return progresso
+
+    def proximos(self):
+        progresso = self.conferir()
+        inicio = progresso["candidatos_avaliados"] + integrado._workers(self.config) + 6
+        # Fila curta e próxima da principal; não pré-coletar toda a população.
+        fim = min(self.max_candidatos, inicio + 32)
+        return [(i, self.candidatos[i]) for i in range(inicio, fim)
+                if not (self.pasta / f"{self.candidatos[i]['id']}.json").is_file()]
+
 
 class ClienteAuxiliar(GitHubClient):
     def __init__(self, token, config, principal, notificar=lambda **_: None, intervalo=6.0,
@@ -176,6 +199,12 @@ class ClienteAuxiliar(GitHubClient):
         self.ultima, self.verificada, self.cota = None, None, None
         self.consultas_cota = self.requisicoes_reais = 0
         self.pausa_ate = 0
+        self.validar_tarefa = None
+
+    def _conferir(self):
+        self.principal.conferir()
+        if self.validar_tarefa is not None:
+            self.validar_tarefa()
 
     def estatisticas(self):
         dados = super().estatisticas()
@@ -185,7 +214,7 @@ class ClienteAuxiliar(GitHubClient):
         return dados
 
     def _consultar_cota(self):
-        self.principal.conferir()
+        self._conferir()
         resposta = self.session.get(f"{self.base_url}/rate_limit", timeout=self.timeout_s)
         self.consultas_cota += 1
         resposta.raise_for_status()
@@ -194,13 +223,13 @@ class ClienteAuxiliar(GitHubClient):
 
     def _requisitar(self, path, params):
         # Executado antes de CADA tentativa de rede, inclusive backoff/retries.
-        self.principal.conferir()
+        self._conferir()
         agora = self.relogio()
         if agora < self.pausa_ate:
             raise PausaAuxiliar("cooldown da API; prioridade da principal")
         if self.ultima is not None and agora - self.ultima < self.intervalo:
             self.sleep(self.intervalo - (agora - self.ultima))
-        self.principal.conferir()
+        self._conferir()
         agora = self.relogio()
         if self.verificada is None or agora - self.verificada >= 30 or agora >= self.cota["reset"]:
             self._consultar_cota()
@@ -252,16 +281,54 @@ def antecipar(config, principal, client, repo, pasta):
     return "publicado" if publicar(origem, destino) else "reutilizado"
 
 
-def executar(config, fonte, token, pasta=None):
+def antecipar_candidato(config, principal, client, indice, repo, pasta, anteriores=None):
+    """Usa o coletor original; publica seu arquivo completo, nunca o resumo em RAM."""
+    principal.conferir_candidato(indice)
+    destino = principal.pasta / f"{repo['id']}.json"
+    if destino.is_file():
+        return "reutilizado", None
+    privados = Path(pasta) / "candidatos" / principal.pasta.name
+    inicio, fim = janela_utc(config)
+    validacao_anterior = getattr(client, "validar_tarefa", None)
+    inicio_requisicoes = getattr(client, "requisicoes_reais", 0)
+    def validar():
+        principal.conferir_candidato(indice)
+        if getattr(client, "requisicoes_reais", 0) - inicio_requisicoes >= 30:
+            raise AdiarCandidato("30 requisições nesta rodada; próximo candidato, mantendo cache")
+    client.validar_tarefa = validar
+    try:
+        registro = integrado._coletar_candidato(config, client, repo, privados, anteriores or {}, inicio, fim)
+        principal.conferir_candidato(indice)
+        # O coletor gravou os runs inteiros antes de compactar o retorno em RAM.
+        resultado = "publicado" if publicar(privados / destino.name, destino) else "reutilizado"
+        return resultado, registro["elegivel"]
+    finally:
+        client.validar_tarefa = validacao_anterior
+
+
+def carregar_anteriores(caminho, principal):
+    if caminho is None:
+        return {}
+    if consolidado.cabecalho(caminho).get("janela") != principal.contexto["janela"]:
+        raise ConfigError("Janela dos runs reutilizados divergente na auxiliar")
+    progresso = principal.conferir()
+    ids_futuros = {r["id"] for r in principal.candidatos[progresso["candidatos_avaliados"]:]}
+    return {r["id"]: r for r in consolidado.repositorios(caminho) if r["id"] in ids_futuros}
+
+
+def executar(config, fonte, token, pasta=None, reutilizar_runs=None):
     raw = Path(config["caminhos"]["raw"])
     pasta = Path(pasta) if pasta else raw / "auxiliar-compare"
     # Manter estado isolado: não aceitar o diretório de progresso da principal.
     if pasta.resolve() == raw.resolve():
         raise ConfigError("Estado auxiliar deve ficar em um subdiretório separado")
-    principal = Principal(config, fonte)
     estado = {"estado": "preparando", "pid": os.getpid(), "repositorios_concluidos": 0,
               "checkpoints_publicados": 0, "checkpoints_reutilizados": 0,
-              "intervalo_minimo_s": 6, "reserva_minima": 2000, "principal_raw": str(raw)}
+              "intervalo_minimo_s": 6, "reserva_minima": 2000, "principal_raw": str(raw),
+              "prioridade": "candidatos", "candidatos_antecipados": 0,
+              "elegiveis_antecipados": 0, "descartados_antecipados": 0,
+              "candidatos_publicados": 0, "candidatos_reutilizados": 0,
+              "candidatos_adiados": 0, "limite_requisicoes_por_candidato": 30}
 
     def atualizar(**campos):
         estado.update(campos)
@@ -271,18 +338,44 @@ def executar(config, fonte, token, pasta=None):
     with instancia_unica(pasta):
         logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s",
                             handlers=[logging.FileHandler(pasta / "auxiliar.log", encoding="utf-8"), logging.StreamHandler()])
+        atualizar()
+        principal = Principal(config, fonte)
+        anteriores = None
         client = ClienteAuxiliar(token, config, principal, notificar=atualizar)
         feitos = set()
+        adiados = set()
         try:
             while True:
                 try:
+                    futuros = principal.proximos()
+                    candidatos_futuros = [(i, r) for i, r in futuros if r["id"] not in adiados]
+                    if futuros and not candidatos_futuros:
+                        adiados.clear()
+                        candidatos_futuros = futuros
+                    if candidatos_futuros:
+                        if anteriores is None:
+                            anteriores = carregar_anteriores(reutilizar_runs, principal)
+                        indice, candidato = candidatos_futuros[0]
+                        atualizar(estado="coletando_candidato", tarefa="candidato",
+                                  repositorio_atual=candidato["full_name"], posicao_candidato=indice + 1,
+                                  candidatos_principal=principal.conferir()["candidatos_avaliados"])
+                        resultado, elegivel = antecipar_candidato(config, principal, client, indice,
+                                                                 candidato, pasta, anteriores)
+                        estado["candidatos_antecipados"] += 1
+                        estado["candidatos_publicados" if resultado == "publicado" else "candidatos_reutilizados"] += 1
+                        if resultado == "publicado":
+                            estado["elegiveis_antecipados" if elegivel else "descartados_antecipados"] += 1
+                        atualizar(http=client.estatisticas())
+                        log.info("Candidato antecipado: %s; posição %d; elegível=%s; %s",
+                                 candidato["full_name"], indice + 1, elegivel, resultado)
+                        continue
                     pendentes = [r for r in principal.descobrir() if r["id"] not in feitos]
                     if not pendentes:
                         atualizar(estado="aguardando_repositorios", repositorios_aprovados=len(principal.fila))
                         time.sleep(15)
                         continue
                     repo = pendentes[0]
-                    atualizar(estado="coletando_compare", repositorio_atual=repo["full_name"],
+                    atualizar(estado="coletando_compare", tarefa="compare", repositorio_atual=repo["full_name"],
                               repositorios_aprovados=len(principal.fila))
                     resultado = antecipar(config, principal, client, repo, pasta)
                     feitos.add(repo["id"])
@@ -290,6 +383,11 @@ def executar(config, fonte, token, pasta=None):
                     estado[chave] += 1
                     atualizar(repositorios_concluidos=len(feitos), http=client.estatisticas())
                     log.info("Compare pronto: %s (%s); %d repositórios concluídos", repo["full_name"], resultado, len(feitos))
+                except AdiarCandidato as exc:
+                    adiados.add(candidato["id"])
+                    estado["candidatos_adiados"] += 1
+                    atualizar(estado="rotacionando_candidato", motivo=str(exc), http=client.estatisticas())
+                    log.info("Candidato adiado: %s; páginas retidas no cache", candidato["full_name"])
                 except PausaAuxiliar as exc:
                     atualizar(estado="pausada", motivo=str(exc), http=client.estatisticas())
                     time.sleep(15)
@@ -317,9 +415,10 @@ def main(argv=None):
     parser.add_argument("--config", required=True, help="Configuração absoluta da principal em execução")
     parser.add_argument("--candidatos", required=True, help="Mesma fonte de candidatos da principal")
     parser.add_argument("--estado-dir", help="Pasta privada; padrão: raw/auxiliar-compare")
+    parser.add_argument("--reutilizar-runs", help="Mesmo consolidado de runs reutilizado pela principal")
     args = parser.parse_args(argv)
     try:
-        executar(load_config(args.config), args.candidatos, read_token(), args.estado_dir)
+        executar(load_config(args.config), args.candidatos, read_token(), args.estado_dir, args.reutilizar_runs)
     except (ConfigError, OSError, ValueError, requests.RequestException) as exc:
         print(f"Auxiliar encerrou: {type(exc).__name__}", file=sys.stderr)
         return 2

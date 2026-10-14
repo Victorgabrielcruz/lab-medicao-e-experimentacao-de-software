@@ -1,10 +1,11 @@
-# Instância auxiliar de comparação de commits (#151)
+# Instância auxiliar de candidatos e commits (#151)
 
-`pipeline.auxiliar_compare` antecipa commits entre releases de repositórios
-que o processo principal já confirmou como elegíveis. Ele usa o mesmo contrato
-de checkpoints de `pipeline.integrado` e não requer reiniciar a principal.
-O contador de seleção continua sendo atualizado somente pela principal; a
-auxiliar reduz trabalho futuro de compare e lead time, sem alterar a amostra.
+`pipeline.auxiliar_compare` prioriza a coleta dos próximos candidatos (filtros,
+releases e runs) e deixa os commits entre releases em segundo plano. Usa os
+coletores e contratos de checkpoints do `pipeline.integrado` existente, sem
+reiniciar a principal. A principal consome os candidatos preparados na ordem
+original; somente ela atualiza o contador de seleção. Candidatos prontos na
+auxiliar ainda não significam inclusão na amostra final.
 
 ## Execução
 
@@ -14,7 +15,8 @@ dependências do Lab03. Na pasta `Lab03`, com `GITHUB_TOKEN` no ambiente:
 ```powershell
 python -m pipeline.auxiliar_compare `
   --config 'C:\caminho\Lab03\data\raw\amostra-final-500\config.yaml' `
-  --candidatos 'C:\caminho\Lab03\data\raw\candidatos.json'
+  --candidatos 'C:\caminho\Lab03\data\raw\candidatos.json' `
+  --reutilizar-runs 'C:\caminho\Lab03\data\raw\piloto-100\workflow_runs.json'
 ```
 
 A configuração deve usar caminhos absolutos quando a auxiliar estiver em
@@ -22,13 +24,30 @@ outro checkout. Fonte, janela, critérios, API e versão do coletor devem
 corresponder ao contexto em `progresso.json`; divergências impedem o trabalho.
 O token não é recebido em argumento nem persistido. Um launcher local pode
 recuperar a credencial existente do Git e mantê-la somente na memória.
+`--reutilizar-runs` é opcional; quando a principal reutiliza um piloto, informe
+o mesmo arquivo para conservar seus meses completos. A auxiliar mantém em
+memória somente os registros do piloto relativos a candidatos ainda futuros.
 
 ## Coordenação e prioridades
 
-- Lê o progresso, heartbeat e checkpoints da seleção; só considera candidatos
-  já consumidos pelo coordenador em sua ordem, com `elegivel=true`.
-- Processa um repositório de cada vez, priorizando os que têm menos releases,
-  sem mudar a ordem de seleção nem a população da principal.
+- Lê progresso, heartbeat e o mesmo snapshot de candidatos. Trabalha na ordem
+  da fonte, a partir de `candidatos_avaliados + repositorios_paralelos + 6`
+  (índice começando em zero), fora dos candidatos que a principal pode ter em
+  voo. Examina no máximo 32 posições adiante e respeita `max_candidatos`.
+- Usa o coletor original para aprovar ou descartar cada candidato pelos mesmos
+  critérios. Grava o checkpoint com os runs completos; o resumo em memória
+  não serve como entrada para os cálculos finais.
+- Reconfere a margem antes de cada tentativa de rede e antes da publicação.
+  Se a principal se aproximar, cede aquele candidato e conserva páginas e
+  resultados privados já concluídos. Como a principal não participa de um
+  lock de tarefas, não há garantia de eliminar toda chamada simultânea nas
+  transições; a margem reduz a disputa, e checkpoints existentes não são sobrescritos.
+- Limita a 30 requisições reais de coleta por candidato em cada rodada. Ao
+  atingir esse orçamento, passa ao próximo, mantendo o cache. Depois de
+  visitar os demais pendentes da faixa, retoma os grandes pelas páginas salvas.
+- Se a faixa futura já estiver preparada ou tiver acabado, antecipa compares
+  de repositórios já confirmados como elegíveis pela principal, priorizando
+  aqueles com menos releases. Isso não muda a seleção nem a população final.
 - Compartilha o cache GET. A auxiliar usa uma requisição por vez, com intervalo
   mínimo de seis segundos entre tentativas de coleta, inclusive retries.
   Consultas de cota são separadas, com atualização no máximo a cada 30 segundos
@@ -42,11 +61,12 @@ recuperar a credencial existente do Git e mantê-la somente na memória.
 - Quando falta orçamento, pausa em vez de disputar a reserva. `Retry-After`,
   limite secundário e esgotamento de cota geram cooldown antes de nova consulta.
 - Salva primeiro um resultado completo em sua pasta privada e publica um
-  checkpoint novo de compare por criação atômica, sem substituir um existente.
-  O integrado atual reaproveita esse checkpoint na etapa de compare.
+  checkpoint novo de candidato ou compare por criação atômica, sem substituir
+  um existente. O integrado atual reaproveita candidatos antes de consultar
+  a API; os compares são lidos na etapa correspondente.
 - Não altera `config.yaml`, `processo.json`, `progresso.json`, consolidados,
   critérios ou código carregado pela principal. Apenas acrescenta respostas
-  ao cache e novos checkpoints de compare compatíveis.
+  ao cache e novos checkpoints compatíveis.
 - Ao atingir o alvo de seleção, a auxiliar encerra para deixar a etapa de
   compare com a principal. Se perceber essa transição durante uma coleta,
   conserva os resultados locais/cache sem publicar um novo checkpoint.
@@ -57,9 +77,10 @@ Por padrão, a pasta privada é `<raw>/auxiliar-compare/`:
 
 | Arquivo | Função |
 |---|---|
-| `estado.json` | PID, heartbeat, estado, repositório atual, orçamento reservado e contadores desta sessão. |
+| `estado.json` | PID, heartbeat, tarefa atual, posição, cota, candidatos antecipados/aprovados/descartados e contadores de compares desta sessão. |
 | `auxiliar.log` | Comparações concluídas e falhas temporárias. |
 | `prontos/<hash>/<id>.json` | Resultados completos antes da publicação. |
+| `candidatos/<contexto>/<id>.json` | Checkpoints completos de candidatos, antes de compartilhar com a principal. |
 | `auxiliar.lock` | Lock exclusivo do sistema operacional; impede duplicar a auxiliar. |
 
 Falhas de rede/5xx aguardam 60 segundos e retomam pelas páginas em cache.
@@ -78,3 +99,7 @@ os checkpoints e páginas já concluídos são reaproveitados. Os contadores de
 O ganho depende da folga de cota e da quantidade de comparações. Não há promessa
 de dobrar a velocidade: ambas as instâncias compartilham o orçamento da conta.
 Resultados inacessíveis/incompletos mantêm os diagnósticos normais do compare.
+Os checkpoints de seleção antecipados só são contabilizados quando a principal
+chegar até eles. Um candidato antecipado pode ficar fora da amostra se o alvo
+for alcançado antes; não se salta nenhum candidato da ordem original para
+aproveitar resultados prontos.
