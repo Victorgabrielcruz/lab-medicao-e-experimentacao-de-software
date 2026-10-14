@@ -1,71 +1,186 @@
 \section{Metodologia}
 \label{sec:metodologia}
-\subsection{Seleção e coleta}
-A população de candidatos é obtida pela Search API do GitHub, com pelo menos
-mil estrelas, sem forks nem repositórios arquivados e com atividade desde o
-início da janela. A janela é o intervalo UTC de 1 de outubro de 2025 (inclusivo)
-a 1 de outubro de 2026 (exclusivo). Incluímos projetos com workflows próprios
-em \texttt{.github/workflows/}, pelo menos cinco releases estáveis publicadas e cinquenta
-runs válidos dentro da janela. Pré-releases são preservadas para variantes, mas ficam fora da definição
-principal de deploy e inclusão; drafts são excluídos.
 
-A coleta registra metadados, releases e workflow runs do default branch,
-com evento \texttt{push}. As consultas de runs são mensais; a integração
-subdivide intervalos saturados para lidar com o teto de mil resultados por
-consulta. Os IDs são deduplicados. Cache por página e checkpoints permitem
-retomada, e a incompletude é registrada, sem ser convertida em ausência de falhas.
-O comando integrado implementa a seleção dos primeiros cem projetos elegíveis
-completos na ordem da busca, que prioriza estrelas. Na execução disponível,
-contudo, usamos o piloto já coletado: a coleta adicional foi encerrada por
-limite de tempo. Cem candidatos não equivalem a cem incluídos, e a meta de
-cem elegíveis completos não foi atingida.
+\subsection{Seleção, janela e coleta}
+A população de candidatos é obtida pela Search API do GitHub, com mil a um
+milhão de estrelas, acesso público, sem forks nem repositórios arquivados,
+sem restrição de linguagem e com atividade desde o início da janela.
+O recorte temporal é UTC: de 1 de outubro de 2025, inclusive, a 1 de outubro
+de 2026, exclusive, abrangendo doze meses civis completos. As faixas da busca
+são subdivididas para contornar o teto de resultados, e IDs são deduplicados.
+A seleção mantém a ordem dos candidatos da busca, que prioriza estrelas;
+portanto, a amostra não é aleatória e as conclusões se restringem a esse
+recorte de projetos populares.
 
-\subsection{Definições operacionais e análise}
-Deployment frequency é o número de releases estáveis publicadas dividido
-pelas semanas reais da janela, calculadas a partir de sua duração em segundos. A CFR (a) é calculada pela Equação~\ref{eq:cfr}; são falhas as conclusions
-\texttt{failure}, \texttt{timed\_out} e \texttt{startup\_failure}, e sucesso a
-conclusion \texttt{success}. As demais conclusions são ignoradas. Sem runs
-válidos, a CFR fica ausente.
+Incluímos projetos com workflows próprios em \texttt{.github/workflows/},
+pelo menos cinco releases estáveis publicadas e cinquenta runs válidos na
+janela. Workflows dinâmicos criados pelo GitHub não satisfazem o primeiro
+critério. Deploy, na definição principal, corresponde a release com
+\texttt{draft=false}, \texttt{prerelease=false} e \texttt{published\_at} na
+janela. Pré-releases são preservadas para análise alternativa, mas não
+contam para a inclusão principal; drafts são excluídos. Tags sem release,
+datadas pelo autor do commit apontado pela tag, constituem outra definição
+prevista para a RQ07, sem substituir releases na análise principal.
+
+Os runs são restritos ao default branch, evento \texttt{push} e
+\texttt{created\_at} na janela. São válidas as conclusions \texttt{success},
+\texttt{failure}, \texttt{timed\_out} e \texttt{startup\_failure}; as demais,
+incluindo \texttt{cancelled} e \texttt{skipped}, são ignoradas nas métricas de
+falha. As consultas são mensais, com subdivisão recursiva de intervalos
+saturados, paginação, deduplicação por ID e diagnóstico de incompletude.
+Cache por página e checkpoints por candidato permitem retomar a execução.
+O paralelismo preserva a ordem da seleção e respeita o limite global de
+requisições simultâneas; não altera os critérios científicos de inclusão.
+
+A coleta final da S02-01 (\#151) tem meta operacional de 500 repositórios,
+acima do mínimo de 300 exigido pela tarefa. Essa meta não representa um
+resultado alcançado: a execução iniciada em 14 de outubro de 2026 permanece
+em andamento nesta revisão. O integrado seleciona os primeiros elegíveis
+com coleta completa de runs e registra o funil, os descartes e o tamanho
+efetivamente obtido. Completude de runs não assegura completude das
+comparações de commits, tratadas separadamente. Os resultados do piloto
+apresentados nas demais seções não são resultados da amostra final.
+
+\subsection{Metadados e unidade de análise}
+A unidade do dataset é o repositório, identificado pelo ID do GitHub;
+metadados e métricas são associados por esse ID. Estrelas e linguagem
+principal representam o registro observado na coleta ou recuperado do cache,
+não uma reconstrução histórica ao fim da janela. A idade é a quantidade de
+dias completos entre \texttt{created\_at} e o fim exclusivo da janela; em
+anos, divide-se por 365,25, com duas casas decimais.
+
+Contribuidores são as entradas retornadas pelo endpoint com
+\texttt{per\_page=1} e \texttt{anon=1}, contadas pela última página ou pelo
+tamanho da resposta quando ela é única. Autores anônimos são incluídos;
+e-mails distintos podem representar a mesma pessoa. Listas grandes demais
+para a API produzem valor ausente e diagnóstico, sem imputação por zero.
+
+\subsection{Definições operacionais e variantes}
+\paragraph{Frequência de deploy (RQ01).}
+Para cada repositório, dividimos a quantidade de releases estáveis publicadas
+pelas semanas reais da janela:
 \begin{equation}
-\mathrm{CFR}(a)=\frac{\text{falhas}}{\text{falhas}+\text{sucessos}}
+\mathrm{DF}=\frac{N_{\text{releases estáveis}}}
+{(t_1-t_0)/604800}.
+\label{eq:df}
+\end{equation}
+Na equação, \(t_0\) e \(t_1\) são os limites inicial e final exclusivo,
+e a diferença temporal está em segundos. Não se aproxima um ano
+por 52 semanas. A inclusão de pré-releases e o uso de tags são definições
+alternativas previstas para avaliar a sensibilidade na RQ07; a disponibilidade
+desses dados não significa que suas análises já tenham sido executadas.
+
+\paragraph{Lead time (RQ02).}
+Comparamos releases estáveis consecutivas em ordem de publicação, recuperando
+a release anterior à janela quando existir. A release atual deve pertencer
+à janela; seus commits podem ser anteriores a ela. Usamos a data do autor
+\texttt{commit.author.date}, convertida a UTC, e não a do committer.
+Na variante (a), o intervalo de cada release é sua publicação menos a menor
+data de autor dos commits novos; o valor do repositório é a mediana desses
+intervalos. Na variante (b), calculamos publicação menos data do autor para
+cada par commit--release válido e tomamos a mediana de todos os pares, sem
+mediana intermediária por release. Um SHA conta uma vez em cada release;
+se associado a outra release, constitui outro par. Ambas são expressas em
+horas e estão implementadas para cálculo local.
+
+A primeira release histórica sem anterior, releases sem commits novos e
+comparações inacessíveis ou incompletas ficam fora do cálculo, com motivo
+registrado. Na variante (a), uma data de autor inválida invalida a release,
+pois seu mínimo é desconhecido; na variante (b), invalida o par individual,
+mantendo diagnóstico de cálculo parcial. Intervalos negativos são inválidos;
+zero observado é válido. Sem intervalos válidos, valor e classe ficam ausentes.
+
+\paragraph{Change failure rate (RQ03).}
+A variante (a) usa runs como proxy de falha de CI:
+\begin{equation}
+\mathrm{CFR}(a)=\frac{N_{\mathrm{falhas}}}
+{N_{\mathrm{falhas}}+N_{\mathrm{sucessos}}}.
 \label{eq:cfr}
 \end{equation}
-Os runs criados na janela são ordenados por \texttt{run\_started\_at} e ID em
-cada workflow. A primeira falha após um sucesso observado inicia o episódio;
-a duração é \texttt{updated\_at} do próximo sucesso menos
-\texttt{run\_started\_at} da primeira falha. Falhas consecutivas mantêm o início.
-Sem término antes do fim da janela, o episódio tem censura à direita, e
-reportamos sua proporção por repositório. Sequências iniciais sem sucesso
-anterior observado têm censura à esquerda separada, sem duração presumida.
-Timestamps essenciais inválidos deixam o workflow sem estimativa, com
-diagnóstico, evitando unir episódios ao remover somente um run.
-A mediana e o intervalo interquartil (IQR), em horas, usam apenas recuperações
-observadas, com interpolação linear inclusiva; não são estimativas de sobrevivência.
+Falhas são \texttt{failure}, \texttt{timed\_out} e
+\texttt{startup\_failure}; sucesso é \texttt{success}.
+As demais conclusions não participam do denominador. Sem runs válidos, a
+fração fica ausente. Essa definição não identifica diretamente incidentes
+causados por deploy em produção, o que limita sua interpretação como DORA.
 
-A coleta de commits compara releases estáveis consecutivas, recuperando a
-release anterior à janela quando existir. O protocolo usa a data do autor do
-commit. A consulta é paginada e registra comparações inacessíveis ou incompletas;
-a primeira release histórica sem anterior é ignorada. O lead time por release
-é a publicação menos a data do autor mais antiga entre os commits da comparação.
-O valor do repositório é a mediana por release, sem ponderação por número de
-commits. Ausência de commits, datas inválidas, comparações incompletas e tempos
-negativos não produzem valor; zero observado é válido. Essa variante está
-implementada e aguarda validação real. A variante por commit ainda depende de
-integração e validação antes da análise conjunta do protocolo.
-A classificação usa os cortes fixos do enunciado da disciplina: frequência
-Elite a partir de sete releases/semana, High a partir de uma/semana e Medium
-a partir de uma/mês; para lead time, os limites são 24, 168 e 720 horas.
-CFR usa 15\%, 30\% e 45\%, e recuperação usa 1, 24 e 168 horas.
-Os rótulos de classe originalmente previstos nas hipóteses ficam preservados
-como registro anterior, mesmo onde divergiam dos cortes agora confirmados.
+A variante (b) prevê a fração de releases estáveis elegíveis identificadas
+como corretivas na janela. A heurística e sua validação manual pertencem
+à S02-11 (\#161) e permanecem pendentes nesta revisão. Logo, não afirmamos
+que a CFR (b) já foi calculada ou validada: sua fonte local é opcional e,
+enquanto ausente, valor e classe são nulos. A rotulagem independente da
+amostra-ouro deve preceder a comparação com a heurística, sem consultar
+seus resultados nem os rótulos dos demais integrantes.
+
+\paragraph{Tempo de recuperação (RQ04).}
+Agrupamos os runs por workflow e os ordenamos por
+\texttt{run\_started\_at} e ID. A primeira falha após um sucesso observado
+abre um episódio; falhas consecutivas preservam seu início. O próximo sucesso
+encerra o episódio por seu \texttt{updated\_at}. A duração é
+\texttt{success.updated\_at - first\_failure.run\_started\_at}, em horas.
+Conclusions ignoradas não abrem nem encerram episódios. O valor do
+repositório é a mediana das durações com recuperação observada na janela.
+
+\subsection{Censura, ausências e qualidade}
+Sem término de sucesso antes do fim exclusivo da janela, o episódio tem
+censura à direita; preservamos o limite inferior de duração até esse fim,
+mas o excluímos da mediana e do IQR. A proporção censurada é a quantidade
+de episódios censurados à direita dividida pelo total de episódios definidos,
+ou valor ausente quando esse total é zero. Sequências iniciais de falhas sem
+sucesso anterior observado são registradas separadamente como censura à
+esquerda, sem presumir início ou duração. Não entram no denominador da
+proporção de censura à direita.
+
+Timestamps essenciais inválidos ou contraditórios invalidam a estimativa
+daquele workflow, preservando IDs e motivos. Não há substituição automática
+por \texttt{created\_at}, pois remover somente um run poderia unir episódios
+indevidamente. Runs iniciados fora da janela recebem diagnóstico.
+Os demais workflows válidos podem contribuir para a estatística do projeto.
+
+Quartis de recuperação usam interpolação linear inclusiva e
+\(\mathrm{IQR}=Q_3-Q_1\). Um único episódio recuperado produz IQR zero;
+nenhum produz mediana, quartis e classe ausentes. As estatísticas descrevem
+recuperações observadas, não uma estimativa de sobrevivência incluindo
+censurados. A análise deve consultar contagens e diagnósticos detalhados,
+além dos indicadores consolidados de coleta incompleta e cálculo parcial;
+esses indicadores não resumem toda a censura nem todos os problemas temporais.
+
+Cada métrica sem estimativa permanece nula, com seu nome em
+\texttt{metricas\_ausentes}; ausência não é convertida em zero.
+Resultados agregados entre repositórios serão apresentados por mediana e
+IQR, identificando o número de valores válidos de cada métrica. A disponibilidade
+de uma estimativa parcial não elimina o diagnóstico de incompletude.
+
+\subsection{Classificação e dicionário de dados}
+Usamos os cortes fixos do enunciado da disciplina, contrato
+\texttt{lab03-enunciado-cortes-v2}. Para frequência, Elite exige ao menos
+sete releases por semana; High, uma por semana; Medium, doze na janela de
+doze meses. Para lead time, os limites superiores exclusivos de Elite, High
+e Medium são 24, 168 e 720 horas. Para CFR, os limites são inclusivos:
+15\%, 30\% e 45\%. Para recuperação, são exclusivos: 1, 24 e 168 horas.
+Os demais valores válidos são Low. Valores ausentes não recebem classe.
+Quando utilizada, a classe geral resulta da mediana das notas
+Low=1, Medium=2, High=3 e Elite=4, arredondada para baixo e ignorando ausentes;
+as combinações de definições da RQ07 são uma etapa posterior.
+
+O dicionário versionado da S02-04 (\#154) está em
+\texttt{Lab03/docs/dicionario-dados.md}, contrato
+\texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
+identidade, janela, metadados, valores e classes das seis métricas/variantes,
+indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
+tipo, unidade e fórmula ou origem. A exportação do CSV final é a entrega
+separada S02-03 (\#153), ainda pendente nesta revisão. O contrato mantém
+uma linha por ID da amostra final e preserva nulos como células vazias;
+diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
 
 \subsection{Artefatos e rastreabilidade}
 \begingroup\raggedright
-O código, as decisões e os testes estão no repositório público:
+Código, definições e dicionário estão no repositório público:
 \url{https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software}.\par
-O planejamento pode ser consultado no GitHub Projects:
+O planejamento está no GitHub Projects:
 \url{https://github.com/users/Victorgabrielcruz/projects/7}.\par
-O relatório técnico está em \texttt{Lab03/docs/relatorio-victor-sprint-01.md}.\par
-Dados brutos, cache, credenciais e saídas reais permanecem locais. Hashes da
-entrada e contagens agregadas permitem identificar a execução auditada.
-\par\endgroup
+Configuração, commit do código, hashes das entradas e diagnósticos identificam
+a execução. Cache e dados brutos permanecem locais; credenciais não compõem
+os artefatos. O dataset consolidado versionado será entregue pela \#153.
+Hipóteses e resultados do piloto mantêm seu contexto histórico; a avaliação
+da amostra final depende do encerramento e da auditoria da coleta.\par
+\endgroup

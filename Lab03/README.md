@@ -604,6 +604,13 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 
 ### Métricas em todas as variantes (S02-02 — #152)
 
+O [dicionário de dados](docs/dicionario-dados.md) (S02-04 — #154) descreve o
+contrato `lab03-dataset-v1`, com 28 colunas para a consolidação em CSV da #153:
+metadados, janela, métricas/classes e qualidade. O exportador e o CSV final
+continuam como entrega da #153. As definições e variantes, inclusive censura
+e dependências pendentes, estão na [metodologia do artigo](artigo/metodologia.tex)
+(S02-16 — #166).
+
 `pipeline/metricas.py` reúne, em uma linha por repositório, as métricas das
 RQ01 a RQ04 já calculadas:
 
@@ -761,21 +768,71 @@ prefiltro de releases evita coletar runs de quem já não satisfaz a inclusão.
 O funil registra `prefiltro_releases_insuficientes` nessa passagem; ele não
 infere quantos runs esses repositórios teriam. Meses com mais de 1000 resultados
 são subdivididos recursivamente até caber na API. Saturação dentro de um único
-segundo, contagem inconsistente ou páginas ausentes mantêm `coleta_incompleta`;
+segundo, contagem inconsistente nas folhas ou páginas ausentes mantêm `coleta_incompleta`;
 repositórios parciais não contam para os 100 da execução completa.
+
+Na coleta real da #151, intervalos amplos de `openclaw/openclaw` informaram
+`total_count=2500` mesmo quando suas subfatias completas continham mais runs
+(janeiro/2026: 9153 IDs únicos). O coletor reconhece esse teto observado
+somente em intervalos subdivididos: todas as folhas devem estar completas,
+e os IDs da página inicial do pai precisam aparecer na união das subfatias.
+O diagnóstico mantém `total_api=2500`, `runs_retidos`, `total_api_limitado` e
+`ids_pagina_inicial_ausentes`. Outras divergências de contagem continuam
+marcando coleta incompleta. Isso trata a contagem limitada do pai sem aceitar
+páginas ausentes ou saturação dentro de um segundo.
 
 As consultas de runs usam `exclude_pull_requests=true`: a lista de pull
 requests de cada run é a maior parte da resposta e não entra em nenhum cálculo.
-Dentro de cada fatia de até 1000 runs, as páginas seguintes à primeira são
-consultadas em paralelo, com até `api.paralelismo` conexões (1 a 8; sem a
-chave, 1, que mantém a coleta sequencial). O resultado é o mesmo da coleta
-sequencial. O controle de rate limit é compartilhado entre as conexões: quando
-a cota se esgota, todas aguardam o mesmo reset.
+Na seleção e no compare, `api.repositorios_paralelos` controla quantos
+repositórios são processados ao mesmo tempo (1 a 8; padrão sem a chave: 1).
+A configuração distribuída usa dois repositórios. A fila é limitada e os
+resultados são consumidos na ordem da fonte, preservando os primeiros N
+elegíveis. Perto do alvo, a fila diminui para não coletar candidatos extras.
+Somente o coordenador escreve progresso e consolidados; cada worker escreve
+seu checkpoint e devolve os runs resumidos. Em falhas, tarefas não iniciadas
+são canceladas e as iniciadas terminam antes do retorno, preservando os
+checkpoints já concluídos.
 
-Checkpoints atômicos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
+Dentro de cada fatia de até 1000 runs, as páginas seguintes à primeira são
+consultadas em paralelo. `api.paralelismo` agora é o teto **global** de chamadas
+HTTP simultâneas, incluindo todos os repositórios, páginas e retries (1 a 8;
+padrão sem a chave: 1). A configuração distribuída usa quatro chamadas. O
+cliente mantém uma sessão HTTP por thread e reutiliza o pool de páginas entre
+meses. A cota esgotada pausa seu recurso; `Retry-After` e limites secundários
+pausam todas as threads. Respostas atrasadas não revogam pausas vigentes e
+prazos prolongados durante uma espera são conferidos novamente.
+
+A consulta de contribuidores ocorre apenas após confirmar releases suficientes,
+runs suficientes e coleta completa. Metadados de candidatos descartados podem
+ter `contribuidores=null`, `contribuidores_pendentes=true` e uma observação de
+coleta adiada; esses dados parciais não entram no cache de metadados completos.
+A amostra aprovada recebe os metadados completos, inclusive quando o endpoint
+de contribuidores informa que a lista é grande demais (nulo com justificativa).
+O contexto inclui a versão do coletor de runs. A versão 2 reavalia checkpoints
+de versões anteriores para não perpetuar descartes por contagem limitada;
+as páginas do cache e os meses completos do piloto continuam reutilizáveis.
+
+`processed/execucao.json` inclui `desempenho`: tempo de seleção/coleta, compare,
+cálculos locais e total; número de tentativas HTTP, acertos no cache de respostas,
+retries e segundos de espera por rate limit/backoff. Os contadores HTTP são
+referentes à execução atual; tempos de espera somam as esperas de cada thread
+e podem superar o tempo de parede. Busca de candidatos e preparação entram
+no tempo total. Acertos em checkpoints e no cache de metadados evitam HTTP,
+mas não entram em `cache_hits`, que conta apenas respostas GET do cache.
+Para comparar configurações, use a mesma fonte, critérios e estado inicial de
+cache/checkpoints em diretórios de saída separados. Aumente a concorrência
+somente quando a redução de tempo compensar as esperas e retries observados;
+mais threads não aumentam a cota da API.
+
+Checkpoints atômicos e compactos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
 inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
 repositórios concluídos e páginas do cache; um erro temporário não apaga o
 progresso anterior. `raw/progresso.json` permite acompanhar a execução.
+No Windows, leitores do progresso e antivírus podem bloquear brevemente a
+substituição de um JSON. A escrita atômica repete a substituição até oito
+tentativas, com esperas curtas (até 0,81 s no total), sem reserializar o arquivo
+nem repetir consultas à API. Bloqueios persistentes e outros erros de escrita
+continuam sendo propagados; o JSON anterior permanece íntegro.
 
 Saídas: consolidados por etapa em raw; `amostra_workflow_runs.json` restrito aos
 elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,

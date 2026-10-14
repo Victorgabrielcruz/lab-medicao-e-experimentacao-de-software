@@ -1,5 +1,23 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Revisão da metodologia — S02-16 (#166)
+
+A fonte local `metodologia.tex` foi atualizada para descrever seleção e meta
+da coleta final #151 (500 repositórios, execução em andamento na revisão),
+definições das RQ01–04, variantes (a)/(b), censura, ausências e limitações.
+Ela referencia o [dicionário de dados](../docs/dicionario-dados.md) (#154),
+contrato de 28 colunas para o CSV da #153. A CFR (b) continua dependente da
+heurística/validação #161; não é apresentada como resultado disponível.
+
+As demais seções do artigo preservam os resultados do piloto. A revisão
+atual não publica resultados da amostra final nem sincroniza o Overleaf.
+O PDF/ZIP e a compilação de seis páginas descritos abaixo são evidências
+da versão anterior (#150), não da metodologia revisada. Ao preparar a
+entrega final, recompilar o artigo inteiro e atualizar resultados, resumos
+e evidências a partir da coleta auditada.
+
+## Histórico da entrega do piloto (#150)
+
 Projeto existente editado e compilado:
 [Overleaf](https://www.overleaf.com/project/6ac8318e750c2cce451d6f68).
 

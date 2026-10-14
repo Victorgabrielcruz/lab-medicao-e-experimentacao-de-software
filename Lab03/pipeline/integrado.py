@@ -4,6 +4,7 @@ import hashlib
 import json
 import logging
 import sys
+import time
 from pathlib import Path
 import requests
 from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_commit, lead_time_release, metadados, metricas, releases, tempo_recuperacao
@@ -11,6 +12,7 @@ from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
+from pipeline.concorrencia import mapear_ordenado
 from pipeline import consolidado
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
@@ -39,11 +41,81 @@ def _identidade(a, b):
     return a["id"] == b["id"] and a["full_name"].lower() == b["full_name"].lower()
 
 
+def _workers(config):
+    valor = config["api"].get("repositorios_paralelos", 1)
+    if isinstance(valor, bool) or not isinstance(valor, int) or not 1 <= valor <= 8:
+        raise ConfigError("api.repositorios_paralelos deve ser um inteiro de 1 a 8")
+    return valor
+
+
+def _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim):
+    """Cada worker grava só seu checkpoint e devolve os runs já resumidos."""
+    caminho = pasta / f"{repo['id']}.json"
+    if caminho.is_file():
+        registro = _ler(caminho)
+        if not _identidade(registro["candidato"], repo):
+            raise ConfigError("Identidade divergente no checkpoint")
+    else:
+        registro = {"candidato": repo, "aprovados": {}, "descartes": {}, "elegivel": False}
+        etapa = "actions"
+        try:
+            total, proprios = actions.contar_workflows(client, repo["full_name"])
+            if not proprios:
+                registro["descartes"][etapa] = actions._descarte(repo, actions.MOTIVO_SEM_ACTIONS,
+                                                               "nenhum workflow próprio")
+            else:
+                registro["aprovados"][etapa] = {**repo, "total_workflows": total,
+                                                 "workflows_proprios": proprios}
+                etapa = "metadados"
+                meta = metadados.coletar_basicos(client, repo["full_name"], fim,
+                                                config["caminhos"]["cache"])
+                if not _identidade(repo, meta):
+                    raise ConfigError("Identidade divergente nos metadados")
+                registro["aprovados"][etapa] = meta
+                etapa = "releases"
+                rel = releases.coletar_repositorio(client, meta, inicio, fim)
+                registro["aprovados"][etapa] = rel
+                etapa = "workflow_runs"
+                n_releases = funil.contar_releases(rel, inicio, fim,
+                    config["inclusao"].get("incluir_prereleases", True))["releases_publicadas"]
+                if n_releases < config["inclusao"]["min_releases"]:
+                    registro["descartes"][etapa] = actions._descarte(repo,
+                        "prefiltro_releases_insuficientes", f"{n_releases} releases que atendem à definição configurada")
+                else:
+                    antigo = anteriores.get(repo["id"])
+                    if antigo and (not _identidade(meta, antigo)
+                                   or antigo["default_branch"] != meta["default_branch"]):
+                        raise ConfigError("Identidade/branch divergente nos runs reutilizados")
+                    runs = completos.coletar_repositorio(client, meta, inicio, fim, antigo)
+                    registro["aprovados"][etapa] = runs
+                    contagem = cfr.calcular_repositorio(runs, inicio, fim)
+                    if (contagem["runs_validos"] >= config["inclusao"]["min_runs_validos"]
+                            and not runs["coleta_incompleta"]):
+                        etapa = "metadados"
+                        registro["aprovados"][etapa] = metadados.completar_contribuidores(
+                            client, meta, config["caminhos"]["cache"])
+                        registro["elegivel"] = True
+        except requests.HTTPError as exc:
+            status = getattr(exc.response, "status_code", None)
+            if status not in actions.STATUS_INACESSIVEL:
+                raise
+            if etapa == "metadados":
+                # Contribuidores podem ficar inacessíveis após a coleta de runs.
+                # Mantém o descarte na mesma etapa do funil anterior.
+                registro["aprovados"] = {k: v for k, v in registro["aprovados"].items() if k == "actions"}
+            registro["descartes"][etapa] = actions._descarte(repo, actions.MOTIVO_INACESSIVEL,
+                                                            f"HTTP {status}")
+        gravar_json(caminho, registro, compacto=True)
+    if "workflow_runs" in registro["aprovados"]:
+        registro["aprovados"]["workflow_runs"] = _sem_runs(registro["aprovados"]["workflow_runs"], inicio, fim)
+    return registro
+
+
 def _coletar_compares(config, client, rels, inicio, fim):
     """Coleta somente a amostra elegível e retoma cada repositório separadamente."""
     raw = Path(config["caminhos"]["raw"])
     lista = []
-    for repo in rels:
+    def buscar(repo):
         contexto = {"releases": repo, "janela": {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)},
                     "api": config["api"]["base_url"], "versao_compare": 1}
         digest = hashlib.sha256(json.dumps(contexto, sort_keys=True).encode()).hexdigest()
@@ -52,17 +124,24 @@ def _coletar_compares(config, client, rels, inicio, fim):
             registro = _ler(caminho)
         else:
             registro = compare.coletar_repositorio(client, repo, inicio, fim)
-            gravar_json(caminho, registro)
+            gravar_json(caminho, registro, compacto=True)
         if not _identidade(registro, repo):
             raise ConfigError("Identidade divergente no checkpoint de compare")
-        lista.append(registro)
-        log.info("Compare integrado: %d/%d repositórios; %d releases ignoradas",
-                 len(lista), len(rels), registro["total_releases_ignoradas"])
+        return registro
+
+    with mapear_ordenado(buscar, rels, _workers(config)) as registros:
+        for registro in registros:
+            lista.append(registro)
+            log.info("Compare integrado: %d/%d repositórios; %d releases ignoradas",
+                     len(lista), len(rels), registro["total_releases_ignoradas"])
     compare.gravar_consolidado(config, lista, inicio, fim)
     return lista
 
 
 def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutilizar_runs=None):
+    inicio_execucao = time.perf_counter()
+    workers = _workers(config)
+    estatisticas_inicio = client.estatisticas() if hasattr(client, "estatisticas") else {}
     if alvo < 1 or max_candidatos < alvo:
         raise ConfigError("alvo positivo e max_candidatos >= alvo são obrigatórios")
     if config["runs"].get("evento") != "push" or config["runs"].get("somente_default_branch") is not True:
@@ -90,7 +169,8 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     contexto = {"janela": janela, "inclusao": config["inclusao"], "runs": config["runs"],
                 "api": config["api"]["base_url"],
-                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 2}
+                "fonte_sha256": hashlib.sha256(fonte.read_bytes()).hexdigest(), "versao": 2,
+                "versao_coletor_runs": completos.VERSAO_COLETOR}
     digest = hashlib.sha256(json.dumps(contexto, sort_keys=True).encode()).hexdigest()
     pasta = raw / "checkpoints" / digest
     anteriores = {}
@@ -102,75 +182,31 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     dados = {nome: {"janela": janela, "repositorios": [], "descartes": []} for nome, *_ in ETAPAS}
     dados["candidatos"] = {"candidatos": []}
     amostra = []
-    for repo in todos[:max_candidatos]:
-        caminho = pasta / f"{repo['id']}.json"
-        if caminho.is_file():
-            registro = _ler(caminho)
-            if not _identidade(registro["candidato"], repo):
-                raise ConfigError("Identidade divergente no checkpoint")
-        else:
-            registro = {"candidato": repo, "aprovados": {}, "descartes": {}, "elegivel": False}
-            etapa = "actions"
-            try:
-                total, proprios = actions.contar_workflows(client, repo["full_name"])
-                if not proprios:
-                    registro["descartes"][etapa] = actions._descarte(repo, actions.MOTIVO_SEM_ACTIONS,
-                                                                       "nenhum workflow próprio")
-                else:
-                    registro["aprovados"][etapa] = {**repo, "total_workflows": total,
-                                                     "workflows_proprios": proprios}
-                    etapa = "metadados"
-                    lista, descartes = metadados.coletar([repo],
-                        lambda nome: metadados.coletar_repositorio(client, nome, fim),
-                        config["caminhos"]["cache"])
-                    if descartes:
-                        registro["descartes"][etapa] = descartes[0]
-                    else:
-                        meta = lista[0]
-                        if not _identidade(repo, meta):
-                            raise ConfigError("Identidade divergente nos metadados")
-                        registro["aprovados"][etapa] = meta
-                        etapa = "releases"
-                        rel = releases.coletar_repositorio(client, meta, inicio, fim)
-                        registro["aprovados"][etapa] = rel
-                        etapa = "workflow_runs"
-                        n_releases = funil.contar_releases(rel, inicio, fim,
-                            config["inclusao"].get("incluir_prereleases", True))["releases_publicadas"]
-                        if n_releases < config["inclusao"]["min_releases"]:
-                            registro["descartes"][etapa] = actions._descarte(repo,
-                                "prefiltro_releases_insuficientes", f"{n_releases} releases que atendem à definição configurada")
-                        else:
-                            antigo = anteriores.get(repo["id"])
-                            if antigo and (not _identidade(meta, antigo)
-                                           or antigo["default_branch"] != meta["default_branch"]):
-                                raise ConfigError("Identidade/branch divergente nos runs reutilizados")
-                            runs = completos.coletar_repositorio(client, meta, inicio, fim, antigo)
-                            registro["aprovados"][etapa] = runs
-                            contagem = cfr.calcular_repositorio(runs, inicio, fim)
-                            registro["elegivel"] = (contagem["runs_validos"] >= config["inclusao"]["min_runs_validos"]
-                                                     and not runs["coleta_incompleta"])
-            except requests.HTTPError as exc:
-                status = getattr(exc.response, "status_code", None)
-                if status not in actions.STATUS_INACESSIVEL:
-                    raise
-                registro["descartes"][etapa] = actions._descarte(repo, actions.MOTIVO_INACESSIVEL,
-                                                                f"HTTP {status}")
-            gravar_json(caminho, registro)
-        dados["candidatos"]["candidatos"].append(repo)
-        for etapa, valor in registro["aprovados"].items():
-            # Só o resumo dos runs acompanha a execução; o checkpoint guarda a lista.
-            dados[etapa]["repositorios"].append(_sem_runs(valor, inicio, fim) if etapa == "workflow_runs" else valor)
-        for etapa, valor in registro["descartes"].items():
-            dados[etapa]["descartes"].append(valor)
-        if registro["elegivel"]:
-            amostra.append(repo["id"])
-        gravar_json(raw / "progresso.json", {"contexto": contexto, "alvo": alvo,
-                    "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
-                    "elegiveis_com_coleta_completa": len(amostra), "etapa": "selecao_coleta"})
-        log.info("Pipeline: %d candidatos avaliados; %d/%d elegíveis completos",
-                 len(dados["candidatos"]["candidatos"]), len(amostra), alvo)
-        if len(amostra) >= alvo:
-            break
+    inicio_selecao = time.perf_counter()
+
+    def buscar(repo):
+        return _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim)
+
+    with mapear_ordenado(buscar, todos[:max_candidatos], workers,
+                         limite=lambda: alvo - len(amostra)) as registros:
+        for registro in registros:
+            repo = registro["candidato"]
+            dados["candidatos"]["candidatos"].append(repo)
+            for etapa, valor in registro["aprovados"].items():
+                dados[etapa]["repositorios"].append(valor)
+            for etapa, valor in registro["descartes"].items():
+                dados[etapa]["descartes"].append(valor)
+            if registro["elegivel"]:
+                amostra.append(repo["id"])
+            gravar_json(raw / "progresso.json", {"contexto": contexto, "alvo": alvo,
+                        "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
+                        "elegiveis_com_coleta_completa": len(amostra), "etapa": "selecao_coleta"})
+            log.info("Pipeline: %d candidatos avaliados; %d/%d elegíveis completos",
+                     len(dados["candidatos"]["candidatos"]), len(amostra), alvo)
+            if len(amostra) >= alvo:
+                break
+    tempos = {"selecao_coleta_s": time.perf_counter() - inicio_selecao}
+    inicio_calculos = time.perf_counter()
     for nome, _, arquivo, _ in ETAPAS:
         if nome == "workflow_runs":
             consolidado.gravar(raw / arquivo, {"janela": janela},
@@ -205,7 +241,11 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     validacao = auditoria.validar(config, entrada, processed / "cfr.json", processed / "tempo_recuperacao.json")
     gravar_json(processed / "auditoria.json", validacao)
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
+    tempos["calculos_locais_s"] = time.perf_counter() - inicio_calculos
+    inicio_compare = time.perf_counter()
     comparacoes = _coletar_compares(config, client, [rels[r["id"]] for r in selecionados], inicio, fim)
+    tempos["compare_s"] = time.perf_counter() - inicio_compare
+    inicio_calculos = time.perf_counter()
     entrada_compare = raw / compare.ARQUIVO_SAIDA
     saida_lead_time = processed / lead_time_release.ARQUIVO_SAIDA
     audit_lead_time = processed / "auditoria_lead_time.json"
@@ -237,6 +277,10 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                "incluir_prereleases": config["inclusao"].get("incluir_prereleases", True),
                "repositorios": frequencias})
     _, _, pendentes = metricas.executar(config)
+    tempos["calculos_locais_s"] += time.perf_counter() - inicio_calculos
+    tempos["total_s"] = time.perf_counter() - inicio_execucao
+    estatisticas = ({k: v - estatisticas_inicio.get(k, 0) for k, v in client.estatisticas().items()}
+                    if hasattr(client, "estatisticas") else {})
     resultado = {"contexto": contexto, "alvo": alvo, "total_amostra_completa": len(amostra),
                  "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
                  "execucao_completa": len(amostra) == alvo,
@@ -247,7 +291,10 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                  "total_comparacoes": sum(r["total_comparacoes"] for r in comparacoes),
                  "releases_compare_ignoradas": sum(r["total_releases_ignoradas"] for r in comparacoes),
                  "coletas_compare_incompletas": sum(r["coleta_incompleta"] for r in comparacoes),
-                 "raw": str(raw.resolve()), "processed": str(processed.resolve())}
+                 "raw": str(raw.resolve()), "processed": str(processed.resolve()),
+                 "desempenho": {"tempos": tempos, "http": estatisticas,
+                                "repositorios_paralelos": workers,
+                                "limite_requisicoes_simultaneas": getattr(client, "paralelismo", 1)}}
     gravar_json(processed / "execucao.json", resultado)
     return resultado
 
@@ -261,6 +308,7 @@ def main(argv=None):
     parser.add_argument("--reutilizar-runs", help="consolidado mensal; reutiliza meses completos")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    client = None
     try:
         config = load_config(args.config)
         api = config["api"]
@@ -272,6 +320,9 @@ def main(argv=None):
         # Não imprimir objetos de requisição ou headers autenticados.
         print(f"erro: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
+    finally:
+        if client is not None and hasattr(client, "close"):
+            client.close()
     print(f"Pipeline: {resultado['total_amostra_completa']}/{args.alvo} elegíveis completos; "
           f"{resultado['candidatos_avaliados']} candidatos avaliados")
     return 0 if resultado["execucao_completa"] else 3

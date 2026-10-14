@@ -65,11 +65,12 @@ def idade_dias(created_at, referencia):
     return (referencia - criado).days
 
 
-def coletar_repositorio(client, full_name, referencia):
+def coletar_repositorio(client, full_name, referencia, incluir_contribuidores=True):
     repo = client.get(f"/repos/{full_name}")
-    contribuidores, observacao = contar_contribuidores(client, full_name)
+    contribuidores, observacao = (contar_contribuidores(client, full_name) if incluir_contribuidores
+                                 else (None, "coleta adiada até inclusão na amostra"))
     dias = idade_dias(repo["created_at"], referencia)
-    return {
+    dados = {
         "id": repo["id"],
         "full_name": repo["full_name"],
         "estrelas": repo["stargazers_count"],
@@ -82,6 +83,27 @@ def coletar_repositorio(client, full_name, referencia):
         "contribuidores_obs": observacao,
         "coletado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
     }
+    if not incluir_contribuidores:
+        dados["contribuidores_pendentes"] = True
+    return dados
+
+
+def coletar_basicos(client, full_name, referencia, cache_dir):
+    """Reutiliza metadados completos; nunca salva dados parciais nesse cache."""
+    caminho = caminho_cache(cache_dir, full_name)
+    if caminho.is_file():
+        return json.loads(caminho.read_text(encoding="utf-8"))
+    return coletar_repositorio(client, full_name, referencia, incluir_contribuidores=False)
+
+
+def completar_contribuidores(client, dados, cache_dir):
+    if not dados.get("contribuidores_pendentes"):
+        return dados
+    total, observacao = contar_contribuidores(client, dados["full_name"])
+    completos = {k: v for k, v in dados.items() if k != "contribuidores_pendentes"}
+    completos.update(contribuidores=total, contribuidores_obs=observacao)
+    gravar_json(caminho_cache(cache_dir, dados["full_name"]), completos)
+    return completos
 
 
 def caminho_cache(cache_dir, full_name):

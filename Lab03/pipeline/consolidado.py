@@ -14,6 +14,7 @@ import hashlib
 import json
 import tempfile
 from pathlib import Path
+from pipeline.cache import substituir_atomico
 
 ABERTURA = '"repositorios": [\n'
 BLOCO = 1024 * 1024
@@ -35,7 +36,7 @@ def gravar(caminho, cabecalho, repositorios, rodape=None):
                 arquivo.write((",\n" if total else "") + json.dumps(repo, ensure_ascii=False))
                 total += 1
             arquivo.write(("\n" if total else "") + "]" + (", " if depois else "") + depois + "}\n")
-        temporario.replace(caminho)
+        substituir_atomico(temporario, caminho)
     finally:
         if temporario is not None:
             temporario.unlink(missing_ok=True)
