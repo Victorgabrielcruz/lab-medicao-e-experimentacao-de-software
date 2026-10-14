@@ -2,6 +2,9 @@
 
 Este documento fixa as regras usadas na coleta e no cálculo das métricas DORA. Os valores numéricos correspondentes ficam em [`config.yaml`](../config.yaml) e são validados pelo pipeline ao iniciar.
 
+O contrato de colunas, tipos, unidades, ausências e proveniência da consolidação
+está no [dicionário de dados](dicionario-dados.md) (S02-04 — #154).
+
 ## 1. Janela de observação
 
 | Parâmetro | Valor |
