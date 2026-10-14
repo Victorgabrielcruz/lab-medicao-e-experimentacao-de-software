@@ -11,6 +11,7 @@ from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
+from pipeline import consolidado
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
 
@@ -20,6 +21,18 @@ ETAPAS = (funil.ETAPAS[0], funil.ETAPAS[1], funil.ETAPAS[2], funil.ETAPAS[4], fu
 
 def _ler(caminho):
     return json.loads(Path(caminho).read_text(encoding="utf-8"))
+
+
+def _sem_runs(runs, inicio, fim):
+    """Resumo que fica na memória; os runs são relidos do checkpoint quando gravados."""
+    resumo = {k: v for k, v in runs.items() if k != "workflow_runs"}
+    return {**resumo, "resumo_runs": cfr.calcular_repositorio(runs, inicio, fim)}
+
+
+def _runs_dos_checkpoints(pasta, repos):
+    """Entrega, um por vez, os registros completos de runs dos repositórios indicados."""
+    for repo in repos:
+        yield _ler(pasta / f"{repo['id']}.json")["aprovados"]["workflow_runs"]
 
 
 def _identidade(a, b):
@@ -145,7 +158,8 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
             gravar_json(caminho, registro)
         dados["candidatos"]["candidatos"].append(repo)
         for etapa, valor in registro["aprovados"].items():
-            dados[etapa]["repositorios"].append(valor)
+            # Só o resumo dos runs acompanha a execução; o checkpoint guarda a lista.
+            dados[etapa]["repositorios"].append(_sem_runs(valor, inicio, fim) if etapa == "workflow_runs" else valor)
         for etapa, valor in registro["descartes"].items():
             dados[etapa]["descartes"].append(valor)
         if registro["elegivel"]:
@@ -158,7 +172,12 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
         if len(amostra) >= alvo:
             break
     for nome, _, arquivo, _ in ETAPAS:
-        gravar_json(raw / arquivo, dados[nome])
+        if nome == "workflow_runs":
+            consolidado.gravar(raw / arquivo, {"janela": janela},
+                               _runs_dos_checkpoints(pasta, dados[nome]["repositorios"]),
+                               {"descartes": dados[nome]["descartes"]})
+        else:
+            gravar_json(raw / arquivo, dados[nome])
     funil_resultado = funil.montar_funil(dados, config, ETAPAS)
     gravar_json(processed / "funil.json", funil_resultado)
     processed.mkdir(parents=True, exist_ok=True)
@@ -166,11 +185,11 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     # O funil mantém inclusões com dados parciais; a execução completa exige completude.
     selecionados = [r for r in dados["workflow_runs"]["repositorios"] if r["id"] in amostra]
     entrada = raw / "amostra_workflow_runs.json"
-    gravar_json(entrada, {"janela": janela, "repositorios": selecionados})
+    consolidado.gravar(entrada, {"janela": janela}, _runs_dos_checkpoints(pasta, selecionados))
     audit_path = processed / "auditoria.json"
     audit_anterior = _ler(audit_path) if audit_path.is_file() else {}
     mesma_entrada = (audit_anterior.get("origem") == str(entrada.resolve())
-                     and audit_anterior.get("entrada_sha256") == hashlib.sha256(entrada.read_bytes()).hexdigest())
+                     and audit_anterior.get("entrada_sha256") == consolidado.sha256(entrada))
     if not mesma_entrada or not (processed / "cfr.json").is_file():
         cfr.executar(config, entrada)
     saida_recuperacao = processed / tempo_recuperacao.ARQUIVO_SAIDA

@@ -4,6 +4,7 @@ import json
 import math
 from collections import Counter, defaultdict
 from pathlib import Path
+from pipeline import consolidado
 from pipeline.config import ConfigError, janela_utc
 from pipeline.workflow_runs import _data, _iso, fatias_mensais
 
@@ -28,7 +29,8 @@ def _igual(a, b):
 
 def validar(config, entrada, saida_cfr, saida_recuperacao):
     entrada = Path(entrada)
-    dados = json.loads(entrada.read_text(encoding="utf-8"))
+    # Os runs são lidos um repositório por vez; só o cabeçalho e as identidades ficam na memória.
+    dados = consolidado.cabecalho(entrada)
     taxas = json.loads(Path(saida_cfr).read_text(encoding="utf-8"))
     tempos = json.loads(Path(saida_recuperacao).read_text(encoding="utf-8"))
     inicio, fim = janela_utc(config)
@@ -39,14 +41,14 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
         _exigir(documento["janela"] == janela, "janela divergente")
     for documento in (taxas, tempos):
         _exigir(Path(documento["origem"]).resolve() == entrada.resolve(), "origem divergente")
-    identidades = [(r["id"], r["full_name"], r["default_branch"]) for r in dados["repositorios"]]
+    identidades = [(r["id"], r["full_name"], r["default_branch"]) for r in consolidado.repositorios(entrada)]
     _exigir(len(set(r[0] for r in identidades)) == len(identidades), "IDs de repositórios duplicados")
     for documento in (taxas, tempos):
         _exigir([(r["id"], r["full_name"], r["default_branch"]) for r in documento["repositorios"]]
                 == identidades, "identidade/ordem de repositórios divergente")
         _exigir(documento["total_repositorios"] == len(identidades), "total de repositórios divergente")
     total_runs = falhas = sucessos = censurados = recuperados = 0
-    for repo, taxa, tempo in zip(dados["repositorios"], taxas["repositorios"], tempos["repositorios"]):
+    for repo, taxa, tempo in zip(consolidado.repositorios(entrada), taxas["repositorios"], tempos["repositorios"]):
         runs, ids = [], set()
         fora = duplicados = 0
         for run in repo["workflow_runs"]:
@@ -179,7 +181,7 @@ def validar(config, entrada, saida_cfr, saida_recuperacao):
     return {"validado": True, "versao_recuperacao": tempos["versao_metrica"],
             "sequencias_com_censura_esquerda": tempos["total_sequencias_com_censura_esquerda"],
             "repositorios_com_dados_temporais_incompletos": tempos["repositorios_com_dados_temporais_incompletos"],
-            "origem": str(entrada.resolve()), "entrada_sha256": hashlib.sha256(entrada.read_bytes()).hexdigest(),
+            "origem": str(entrada.resolve()), "entrada_sha256": consolidado.sha256(entrada),
             "total_repositorios": len(identidades), "runs_no_recorte_deduplicados": total_runs,
             "falhas": falhas, "sucessos": sucessos, "runs_validos": falhas + sucessos,
             "repositorios_com_cfr": sum(r["change_failure_rate"] is not None for r in taxas["repositorios"]),
