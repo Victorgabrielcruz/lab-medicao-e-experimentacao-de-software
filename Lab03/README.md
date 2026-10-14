@@ -757,6 +757,14 @@ são subdivididos recursivamente até caber na API. Saturação dentro de um ún
 segundo, contagem inconsistente ou páginas ausentes mantêm `coleta_incompleta`;
 repositórios parciais não contam para os 100 da execução completa.
 
+As consultas de runs usam `exclude_pull_requests=true`: a lista de pull
+requests de cada run é a maior parte da resposta e não entra em nenhum cálculo.
+Dentro de cada fatia de até 1000 runs, as páginas seguintes à primeira são
+consultadas em paralelo, com até `api.paralelismo` conexões (1 a 8; sem a
+chave, 1, que mantém a coleta sequencial). O resultado é o mesmo da coleta
+sequencial. O controle de rate limit é compartilhado entre as conexões: quando
+a cota se esgota, todas aguardam o mesmo reset.
+
 Checkpoints atômicos por repositório ficam em `raw/checkpoints/<hash>/`. O hash
 inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
 repositórios concluídos e páginas do cache; um erro temporário não apaga o

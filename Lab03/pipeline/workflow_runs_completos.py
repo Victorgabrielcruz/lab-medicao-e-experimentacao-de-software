@@ -1,12 +1,25 @@
 """Subdivide meses saturados sem alterar o coletor mensal do piloto (#149)."""
 import datetime as dt
 import math
+from concurrent.futures import ThreadPoolExecutor
 from pipeline import workflow_runs as wr
 from pipeline.config import ConfigError
 
 
+def _paginas(client, path, params, paginas):
+    """Entrega as páginas em ordem; consulta até client.paralelismo delas ao mesmo tempo."""
+    def buscar(pagina):
+        return client.get(path, {**params, "page": pagina})["workflow_runs"]
+    paralelismo = min(getattr(client, "paralelismo", 1), len(paginas))
+    if paralelismo <= 1:
+        yield from map(buscar, paginas)
+        return
+    with ThreadPoolExecutor(max_workers=paralelismo) as executor:
+        yield from executor.map(buscar, paginas)
+
+
 def coletar_intervalo(client, nome, branch, inicio, fim):
-    params = {"branch": branch, "event": "push", "per_page": wr.PER_PAGE, "page": 1,
+    params = {"branch": branch, "event": "push", "per_page": wr.PER_PAGE, "page": 1, **wr.SEM_PULL_REQUESTS,
               "created": f"{wr._iso(inicio)}..{wr._iso(fim - dt.timedelta(seconds=1))}"}
     path = f"/repos/{nome}/actions/runs"
     primeira = client.get(path, params)
@@ -23,8 +36,8 @@ def coletar_intervalo(client, nome, branch, inicio, fim):
                  "coleta_incompleta": len(registros) != total or any(f["coleta_incompleta"] for f in filhos),
                  "fatias": filhos}], list(registros.values())
     registros = {r["id"]: r for r in primeira["workflow_runs"][:wr.LIMITE_API]}
-    for pagina in range(2, math.ceil(min(total, wr.LIMITE_API) / wr.PER_PAGE) + 1):
-        lista = client.get(path, {**params, "page": pagina})["workflow_runs"]
+    paginas = range(2, math.ceil(min(total, wr.LIMITE_API) / wr.PER_PAGE) + 1)
+    for lista in _paginas(client, path, params, paginas):
         if not lista:
             break
         for run in lista:

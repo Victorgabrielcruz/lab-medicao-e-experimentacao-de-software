@@ -296,3 +296,34 @@ def test_erros_de_transporte_sao_propagados(erro):
         c.get("/repos/org/projeto")
     assert len(sessao.chamadas) == 1
     assert tempo.esperas == []
+
+
+def test_threads_simultaneas_aguardam_o_mesmo_reset():
+    import threading
+    from pipeline.rate_limit import ControleRequisicoes
+
+    juntas = threading.Barrier(2, timeout=5)
+    esperas = []
+
+    def dormir(segundos):
+        esperas.append(segundos)
+        juntas.wait()
+
+    controle = ControleRequisicoes(dormir, lambda: 100)
+    controle.resets["core"] = 130
+    threads = [threading.Thread(target=controle._aguardar, args=("/repos/org/projeto",)) for _ in range(2)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=5)
+    assert esperas == [30, 30]
+    assert controle.resets == {}
+
+
+def test_prazo_renovado_durante_a_espera_e_preservado():
+    from pipeline.rate_limit import ControleRequisicoes
+
+    controle = ControleRequisicoes(lambda segundos: controle.resets.update(core=200), lambda: 100)
+    controle.resets["core"] = 130
+    controle._aguardar("/repos/org/projeto")
+    assert controle.resets == {"core": 200}

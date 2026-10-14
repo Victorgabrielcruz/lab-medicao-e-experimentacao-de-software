@@ -81,7 +81,7 @@ def test_filtros_branch_push_e_intervalo_inclusivo_da_api():
     c = ClienteFalso([pagina([run()])])
     mes, lista = coletar_mes(c, REPO["full_name"], "develop", INICIO, FIM_MES)
     assert c.chamadas == [("/repos/org/projeto/actions/runs", {
-        "branch": "develop", "event": "push", "per_page": 100, "page": 1,
+        "branch": "develop", "event": "push", "per_page": 100, "page": 1, "exclude_pull_requests": "true",
         "created": "2025-10-01T00:00:00Z..2025-10-31T23:59:59Z",
     })]
     assert lista == [run()]

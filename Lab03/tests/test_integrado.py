@@ -546,3 +546,112 @@ def test_migracao_classe_antiga_recusa_valor_lt_corrompido(tmp_path):
     with pytest.raises(ConfigError,match="mediana"):
         integrado.executar(cfg,Api(),1,1,fonte)
     assert saida.read_bytes() == anterior
+
+
+REPO = {"id": 1, "full_name": "org/repo1", "default_branch": "main"}
+
+
+def test_paginas_em_paralelo_dao_o_mesmo_resultado_e_as_mesmas_consultas():
+    sequencial, paralelo = Api(nruns=950), Api(nruns=950)
+    paralelo.paralelismo = 4
+    esperado = completos.coletar_repositorio(sequencial, REPO, INICIO, FIM)
+    assert completos.coletar_repositorio(paralelo, REPO, INICIO, FIM) == esperado
+    assert esperado["total_runs"] == 950 and not esperado["coleta_incompleta"]
+    assert len(sequencial.chamadas) == 10
+    assert sorted(p["page"] for _, p in paralelo.chamadas) == list(range(1, 11))
+
+
+def test_paginas_em_paralelo_respeitam_o_limite_de_conexoes():
+    import threading
+    import time
+
+    class Lenta(Api):
+        paralelismo = 3
+        ativas = maximo = 0
+        trava = threading.Lock()
+
+        def get(self, path, params=None):
+            if params["page"] == 1:
+                return super().get(path, params)
+            with self.trava:
+                self.ativas += 1
+                self.maximo = max(self.maximo, self.ativas)
+            time.sleep(0.05)
+            try:
+                return super().get(path, params)
+            finally:
+                with self.trava:
+                    self.ativas -= 1
+
+    api = Lenta(nruns=950)
+    assert completos.coletar_repositorio(api, REPO, INICIO, FIM)["total_runs"] == 950
+    assert api.maximo == 3
+
+
+def test_pagina_vazia_em_paralelo_encerra_a_fatia_como_incompleta():
+    class Truncada(Api):
+        paralelismo = 4
+
+        def get(self, path, params=None):
+            corpo = super().get(path, params)
+            return {**corpo, "workflow_runs": []} if params["page"] >= 4 else corpo
+
+    registro = completos.coletar_repositorio(Truncada(nruns=950), REPO, INICIO, FIM)
+    assert registro["total_runs"] == 300 and registro["coleta_incompleta"]
+
+
+def test_erro_em_uma_pagina_paralela_e_propagado():
+    class Falha(Api):
+        paralelismo = 4
+
+        def get(self, path, params=None):
+            if params["page"] == 7:
+                raise requests.ConnectionError("interrupção simulada")
+            return super().get(path, params)
+
+    with pytest.raises(requests.ConnectionError):
+        completos.coletar_repositorio(Falha(nruns=950), REPO, INICIO, FIM)
+
+
+def test_paralelismo_maior_que_as_paginas_restantes(tmp_path):
+    api = Api(nruns=150)
+    api.paralelismo = 8
+    assert completos.coletar_repositorio(api, REPO, INICIO, FIM)["total_runs"] == 150
+    assert len(api.chamadas) == 2
+
+
+@pytest.mark.parametrize("valor", [0, 9, -1, 2.0, "4", True, None])
+def test_paralelismo_invalido_e_recusado_pelo_cliente(valor):
+    from pipeline.github_api import GitHubClient
+    with pytest.raises(ValueError, match="paralelismo"):
+        GitHubClient("fixture", paralelismo=valor)
+
+
+def test_cli_le_paralelismo_da_configuracao(tmp_path, monkeypatch, capsys):
+    import yaml
+    cfg, fonte = configurar(tmp_path, 1)
+    caminho = tmp_path / "config.yaml"
+    recebidos = []
+
+    def cliente(*a, **k):
+        recebidos.append(k["paralelismo"])
+        return Api(excluidos=1)
+
+    monkeypatch.setenv("GITHUB_TOKEN", "fixture")
+    monkeypatch.setattr(integrado, "GitHubClient", cliente)
+    argumentos = ["--config", str(caminho), "--alvo", "1", "--max-candidatos", "1", "--candidatos", str(fonte)]
+    for api, esperado in (({**cfg["api"], "paralelismo": 6}, 6), ({k: v for k, v in cfg["api"].items() if k != "paralelismo"}, 1)):
+        caminho.write_text(yaml.safe_dump({**cfg, "api": api}))
+        assert integrado.main(argumentos) == 3
+        assert recebidos[-1] == esperado
+    monkeypatch.undo()
+    monkeypatch.setenv("GITHUB_TOKEN", "fixture")
+    caminho.write_text(yaml.safe_dump({**cfg, "api": {**cfg["api"], "paralelismo": 99}}))
+    assert integrado.main(argumentos) == 2
+    assert "paralelismo" in capsys.readouterr().err
+
+
+def test_consultas_de_runs_dispensam_a_lista_de_pull_requests():
+    api = Api(nruns=150)
+    completos.coletar_repositorio(api, REPO, INICIO, FIM)
+    assert [p["exclude_pull_requests"] for _, p in api.chamadas] == ["true", "true"]
