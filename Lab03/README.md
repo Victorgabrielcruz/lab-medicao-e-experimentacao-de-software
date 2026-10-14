@@ -604,6 +604,11 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 
 ### Métricas em todas as variantes (S02-02 — #152)
 
+Durante uma coleta integrada, a [instância auxiliar de compare](docs/coleta-auxiliar.md)
+pode antecipar commits dos repositórios já aprovados, sem reiniciar a principal.
+Ela compartilha cache/checkpoints, mantém estado próprio e cede prioridade de
+cota à coleta de runs (#151).
+
 `pipeline/metricas.py` reúne, em uma linha por repositório, as métricas das
 RQ01 a RQ04 já calculadas:
 
