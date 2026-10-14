@@ -604,6 +604,13 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 
 ### Métricas em todas as variantes (S02-02 — #152)
 
+O [dicionário de dados](docs/dicionario-dados.md) (S02-04 — #154) descreve o
+contrato `lab03-dataset-v1`, com 28 colunas para a consolidação em CSV da #153:
+metadados, janela, métricas/classes e qualidade. O exportador e o CSV final
+continuam como entrega da #153. As definições e variantes, inclusive censura
+e dependências pendentes, estão na [metodologia do artigo](artigo/metodologia.tex)
+(S02-16 — #166).
+
 `pipeline/metricas.py` reúne, em uma linha por repositório, as métricas das
 RQ01 a RQ04 já calculadas:
 
