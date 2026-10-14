@@ -821,6 +821,11 @@ Checkpoints atômicos e compactos por repositório ficam em `raw/checkpoints/<ha
 inclui fonte, janela, critérios, regras e API. Uma retomada reutiliza os
 repositórios concluídos e páginas do cache; um erro temporário não apaga o
 progresso anterior. `raw/progresso.json` permite acompanhar a execução.
+No Windows, leitores do progresso e antivírus podem bloquear brevemente a
+substituição de um JSON. A escrita atômica repete a substituição até oito
+tentativas, com esperas curtas (até 0,81 s no total), sem reserializar o arquivo
+nem repetir consultas à API. Bloqueios persistentes e outros erros de escrita
+continuam sendo propagados; o JSON anterior permanece íntegro.
 
 Saídas: consolidados por etapa em raw; `amostra_workflow_runs.json` restrito aos
 elegíveis completos; `funil.json`, `funil.md`, `deployment_frequency.json`,

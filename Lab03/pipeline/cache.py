@@ -5,6 +5,7 @@ import json
 import logging
 import re
 import tempfile
+import time
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -18,6 +19,23 @@ CAMPOS_RUN = ("id", "workflow_id", "name", "head_branch", "event", "status", "co
               "created_at", "updated_at", "run_started_at", "head_sha", "run_number",
               "run_attempt", "html_url")
 PAGINA_DE_RUNS = re.compile(r"/repos/[^/]+/[^/]+/actions/runs$")
+ESPERAS_SUBSTITUICAO = (0.01, 0.02, 0.04, 0.08, 0.16, 0.25, 0.25)
+
+
+def substituir_atomico(temporario, caminho):
+    """Tolera bloqueios curtos de leitores/antivírus no Windows (#151).
+
+    Repete somente a substituição do temporário já completo. Erros permanentes
+    e bloqueios persistentes são propagados, preservando o destino anterior.
+    """
+    for tentativa in range(len(ESPERAS_SUBSTITUICAO) + 1):
+        try:
+            Path(temporario).replace(caminho)
+            return
+        except OSError as exc:
+            if getattr(exc, "winerror", None) not in (5, 32, 33) or tentativa == len(ESPERAS_SUBSTITUICAO):
+                raise
+            time.sleep(ESPERAS_SUBSTITUICAO[tentativa])
 
 
 def enxugar(url, corpo):
@@ -46,7 +64,7 @@ def gravar_json(caminho, dados, compacto=False):
                 json.dump(dados, arquivo, ensure_ascii=False, separators=(",", ":"))
             else:
                 json.dump(dados, arquivo, ensure_ascii=False, indent=2)
-        temporario.replace(caminho)
+        substituir_atomico(temporario, caminho)
     finally:
         if temporario is not None:
             temporario.unlink(missing_ok=True)
