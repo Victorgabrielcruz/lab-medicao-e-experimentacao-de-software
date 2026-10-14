@@ -20,7 +20,7 @@ import time
 
 import requests
 
-from pipeline import compare, integrado, consolidado, workflow_runs_completos
+from pipeline import compare, integrado, consolidado, workflow_runs_completos, agendamento
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
 from pipeline.github_api import GitHubClient
@@ -114,7 +114,11 @@ class Principal:
                          "versao_coletor_runs": workflow_runs_completos.VERSAO_COLETOR,
                          "fonte_sha256": hashlib.sha256(Path(fonte).read_bytes()).hexdigest()}
         self.pasta = self.raw / "checkpoints" / digest(self.contexto)
-        self.candidatos = ler(fonte)["candidatos"]
+        fonte_dados = ler(fonte)
+        self.candidatos = fonte_dados["candidatos"]
+        self.politica = agendamento.validar(fonte_dados.get("agendamento"), self.candidatos)
+        self.por_id = {r["id"]: r for r in self.candidatos}
+        self.posicoes = {r["id"]: i for i, r in enumerate(self.candidatos)}
         if len({r["id"] for r in self.candidatos}) != len(self.candidatos):
             raise ConfigError("IDs duplicados na fonte da auxiliar")
         self.vistos, self.fila = set(), {}
@@ -147,7 +151,9 @@ class Principal:
     def descobrir(self):
         progresso = self.conferir()
         # Somente candidatos já consumidos em ordem pelo coordenador principal.
-        for candidato in self.candidatos[:progresso["candidatos_avaliados"]]:
+        confirmados = ([self.por_id[i] for i in progresso["ids_avaliados"]] if "ids_avaliados" in progresso
+                       else self.candidatos[:progresso["candidatos_avaliados"]])
+        for candidato in confirmados:
             chave = candidato["id"]
             if chave in self.vistos:
                 continue
@@ -169,6 +175,10 @@ class Principal:
 
     def conferir_candidato(self, indice):
         progresso = self.conferir()
+        if self.politica:
+            if indice not in {i for i, _ in self._futuros_agendados(progresso)}:
+                raise PausaAuxiliar("candidato fora da janela segura ou adiado até o mínimo de elegíveis")
+            return progresso
         # O integrado pode ter até workers candidatos em voo, após o último
         # consumido. Uma margem extra deixa a principal avançar antes de ceder.
         inicio = progresso["candidatos_avaliados"] + integrado._workers(self.config) + 6
@@ -178,11 +188,23 @@ class Principal:
 
     def proximos(self):
         progresso = self.conferir()
+        if self.politica:
+            return [(i, r) for i, r in self._futuros_agendados(progresso)
+                    if not (self.pasta / f"{r['id']}.json").is_file()]
         inicio = progresso["candidatos_avaliados"] + integrado._workers(self.config) + 6
         # Fila curta e próxima da principal; não pré-coletar toda a população.
         fim = min(self.max_candidatos, inicio + 32)
         return [(i, self.candidatos[i]) for i in range(inicio, fim)
                 if not (self.pasta / f"{self.candidatos[i]['id']}.json").is_file()]
+
+    def _futuros_agendados(self, progresso):
+        from itertools import islice
+        consumidos = set(progresso.get("ids_avaliados", [r["id"] for r in self.candidatos[:progresso["candidatos_avaliados"]]]))
+        pendentes = (r for r in self.candidatos if r["id"] not in consumidos)
+        fila = agendamento.iterar(pendentes, self.politica, lambda: progresso["elegiveis_com_coleta_completa"])
+        fila = islice(fila, max(0, self.max_candidatos - progresso["candidatos_avaliados"]))
+        margem = integrado._workers(self.config) + 6
+        return [(self.posicoes[r["id"]], r) for r in islice(fila, margem, margem + 32)]
 
 
 class ClienteAuxiliar(GitHubClient):

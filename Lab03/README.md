@@ -604,6 +604,10 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 
 ### Métricas em todas as variantes (S02-02 — #152)
 
+A [decisão de priorizar candidatos até 300 elegíveis e depois retomar os grandes](docs/decisoes-coleta-final.md)
+registra a justificativa, regra de agendamento e consequências metodológicas
+do replanejamento autorizado da #151. A meta final permanece em 500.
+
 Durante uma coleta integrada, a [instância auxiliar](docs/coleta-auxiliar.md)
 prioriza filtros/releases/runs dos próximos candidatos e deixa compares dos
 repositórios aprovados em segundo plano, sem reiniciar a principal. Compartilha

@@ -7,6 +7,11 @@ reiniciar a principal. A principal consome os candidatos preparados na ordem
 original; somente ela atualiza o contador de seleção. Candidatos prontos na
 auxiliar ainda não significam inclusão na amostra final.
 
+Com a [política de adiamento até 300 elegíveis](decisoes-coleta-final.md), a
+auxiliar segue a fila dinâmica e os `ids_avaliados` publicados pela principal.
+Não antecipa candidatos bloqueados pela política; depois da liberação,
+respeita também a prioridade dos grandes nas vagas da principal.
+
 ## Execução
 
 Use um checkout compatível com a versão da principal e seu Python com as
