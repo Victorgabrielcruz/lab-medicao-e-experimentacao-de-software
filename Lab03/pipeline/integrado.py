@@ -69,8 +69,21 @@ def _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim):
                 etapa = "metadados"
                 meta = metadados.coletar_basicos(client, repo["full_name"], fim,
                                                 config["caminhos"]["cache"])
+                if repo["id"] != meta["id"]:
+                    raise ConfigError(
+                        f"Identidade divergente nos metadados de {repo['full_name']}: "
+                        f"ID esperado {repo['id']}, recebido {meta['id']}")
                 if not _identidade(repo, meta):
-                    raise ConfigError("Identidade divergente nos metadados")
+                    # O nome da busca identifica o snapshot e os checkpoints.
+                    # Renomeações/transferências só são aceitas com o mesmo ID.
+                    registro["renomeacao"] = {"id": repo["id"],
+                        "full_name_fonte": repo["full_name"],
+                        "full_name_atual": meta["full_name"]}
+                    log.warning("Repositório %s (ID %s) agora se chama %s; "
+                                "preservando o nome da fonte para consolidar a amostra",
+                                repo["full_name"], repo["id"], meta["full_name"])
+                    meta = {**meta, "full_name_atual": meta["full_name"],
+                            "full_name": repo["full_name"]}
                 registro["aprovados"][etapa] = meta
                 etapa = "releases"
                 rel = releases.coletar_repositorio(client, meta, inicio, fim)

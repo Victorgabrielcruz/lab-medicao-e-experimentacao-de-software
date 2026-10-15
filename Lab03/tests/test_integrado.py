@@ -898,3 +898,50 @@ def test_teto_global_inclui_repositorios_paginas_e_telemetria(tmp_path, paraleli
         assert retomada["desempenho"]["http"]["requisicoes"] == 0
     finally:
         client.close()
+
+
+@pytest.mark.parametrize("nome_atual", ["org/renomeado", "outra-org/transferido"])
+def test_renomeacao_com_mesmo_id_preserva_fonte_e_retomada(tmp_path, caplog, nome_atual):
+    class Renomeado(Api):
+        def get_resposta(self, path, params=None):
+            result = super().get_resposta(path, params)
+            if path == "/repos/org/repo1":
+                result = resposta({**result.json(), "full_name": nome_atual})
+            return result
+
+    cfg, fonte = configurar(tmp_path, 2)
+    fonte_original = fonte.read_bytes()
+    resultado = integrado.executar(cfg, Renomeado(), 2, 2, fonte)
+    assert resultado["execucao_completa"]
+    assert resultado["total_amostra_completa"] == 2
+    assert fonte.read_bytes() == fonte_original
+    checkpoint = next((tmp_path / "raw/checkpoints").glob("*/1.json"))
+    registro = integrado._ler(checkpoint)
+    assert registro["renomeacao"] == {"id": 1, "full_name_fonte": "org/repo1",
+                                      "full_name_atual": nome_atual}
+    assert registro["candidato"]["full_name"] == "org/repo1"
+    for etapa in ("actions", "metadados", "releases", "workflow_runs"):
+        assert registro["aprovados"][etapa]["id"] == 1
+        assert registro["aprovados"][etapa]["full_name"] == "org/repo1"
+    metas = integrado._ler(tmp_path / "raw/metadados.json")["repositorios"]
+    assert metas[0]["full_name_atual"] == nome_atual
+    assert "agora se chama" in caplog.text
+    antes = checkpoint.read_bytes()
+    sem_api = Api(falhar=1)
+    assert integrado.executar(cfg, sem_api, 2, 2, fonte)["execucao_completa"]
+    assert not sem_api.chamadas
+    assert checkpoint.read_bytes() == antes
+
+
+def test_metadados_com_id_diferente_continuam_rejeitados(tmp_path):
+    class IdentidadeTrocada(Api):
+        def get_resposta(self, path, params=None):
+            result = super().get_resposta(path, params)
+            if path == "/repos/org/repo1":
+                result = resposta({**result.json(), "id": 99})
+            return result
+
+    cfg, fonte = configurar(tmp_path, 1)
+    with pytest.raises(ConfigError, match="ID esperado 1, recebido 99"):
+        integrado.executar(cfg, IdentidadeTrocada(), 1, 1, fonte)
+    assert not list((tmp_path / "raw/checkpoints").glob("*/1.json"))
