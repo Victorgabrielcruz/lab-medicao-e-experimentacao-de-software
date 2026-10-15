@@ -1,0 +1,56 @@
+{
+  "issue": 158,
+  "verificado_utc": "2026-10-15T18:19:33.788358+00:00",
+  "fase": "aguardando_sorteio_oficial_155",
+  "preparacao_documental_validada": true,
+  "rotulagem_independente_validada": false,
+  "populacao": {
+    "total": 255,
+    "candidatos_avaliados": 561,
+    "janela": {
+      "inicio": "2025-10-01T00:00:00Z",
+      "fim_exclusivo": "2026-10-01T00:00:00Z"
+    },
+    "contexto_sha256": "efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609",
+    "populacao_sha256": "26b74c8b41531edf6a0b5fe6702d8856f2a5b0a2e0d1171c75e5c2be9f98e4e6",
+    "autoridade_sha256": "ffd16cf789c813f65eea2d47ca124c882fd169075864dfd3ffaa856112b8ad11"
+  },
+  "sorteio_oficial": {
+    "encontrado": false,
+    "arquivo": "amostra_ouro.json",
+    "pastas_verificadas": [
+      "Lab03/validacao",
+      "Lab03/data/processed"
+    ],
+    "sorteio_executado_por_158": false
+  },
+  "protocolo": {
+    "total_repositorios": 60,
+    "releases_por_repositorio": 5,
+    "total_releases": 300,
+    "random_state": 42,
+    "incluir_prereleases": false,
+    "fonte": "Lab03/pipeline/amostra_ouro.py",
+    "fonte_sha256": "5f99d5f3ffa375f01587029f6534e3c8b376cad0bdc95ac1cd7865cec356926f",
+    "commit_base": "4ddbab978c88426a385e195192cfd63ebdee7969"
+  },
+  "protecao": {
+    "consultas_api": 0,
+    "rotulos_preenchidos_por_agente": 0,
+    "planilhas_ab_lidas": false,
+    "heuristica_cfr_b_lida": false,
+    "arquivos_coleta_alterados": false,
+    "sobrescrita_planilhas": false
+  },
+  "validacoes": [
+    "autoridade estavel antes/depois da leitura",
+    "255 IDs unicos na autoridade",
+    "protocolo e cabecalhos conferidos no gerador existente",
+    "links relativos locais conferidos",
+    "sem manifesto oficial, nenhuma planilha ou sorteio gerado"
+  ],
+  "dependencias": [
+    "sorteio_oficial_155",
+    "rotulagem_humana_C"
+  ]
+}
