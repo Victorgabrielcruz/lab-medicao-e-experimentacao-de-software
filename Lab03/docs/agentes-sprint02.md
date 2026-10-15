@@ -1,72 +1,57 @@
-# Agentes recorrentes da Sprint 02
+# Agentes recorrentes da Sprint 02 — amostra encerrada
 
-Em 14/10/2026, o responsável autorizou um agente por task de sua Sprint 02,
-com verificação **a cada 30 minutos**, para analisar o marco de coleta e
-iniciar as entregas quando as dependências permitirem. As tasks são #151,
-#153, #154, #158 e #166. O agente #151 audita a conclusão; a coleta continua
-sendo executada pelos processos principal e auxiliar existentes, com meta
-de 500 elegíveis.
+## Revisão humana de 15/10/2026
 
-## Gatilho comum e proteção da coleta
+O responsável determinou parar a extração e trabalhar com os dados já obtidos.
+As duas coletas foram encerradas com **255 elegíveis completos entre 561 candidatos**.
+Esta decisão substitui os gates anteriores de 300 elegíveis e de pipeline final
+com 500. O mínimo original de 300 e a meta original de 500 não foram atingidos.
+Ver [decisao-encerramento-255.md](decisao-encerramento-255.md).
 
-Cada agente lê `processo.json` e `progresso.json` em
-`Lab03/data/raw/amostra-final-500/`, no checkout original. O gatilho é
-**300 elegíveis com coleta completa de runs**, não 300 candidatos avaliados.
-Antes disso, registra apenas uma verificação em seu estado privado, sem
-editar implementações, mudar Git ou consultar a API de coleta.
+Nenhum agente pode iniciar ou retomar coletores, fazer novas consultas à API,
+alterar fonte/cache/checkpoints ou declarar completo o pipeline original.
+Dados de origem e cache são privados. Saídas locais novas ficam separadas.
 
-O marco de 300 não congela a amostra nem autoriza interromper a execução:
-os grandes adiados são liberados nesse marco, e a coleta continua até 500.
-Saídas consolidadas e auditorias só ficam disponíveis ao terminar o pipeline.
-Não gerar resultados finais a partir de um conjunto de checkpoints mutável.
+## Entradas e tarefas
 
-Nenhum agente pode interromper/reiniciar coletores, alterar configuração,
-fila, fontes, cache ou checkpoints ativos. Implementações usam worktrees
-separados e branches `feat/`, sem trocar a branch do checkout original nem
-do worktree que mantém o coletor em execução.
+Autoridade no checkout original:
+`Lab03/data/processed/sprint02-agentes/encerramento-amostra.json`.
+Ler o manifesto e o snapshot imutável ali indicado, conferir identidade,
+janela e hashes antes/depois. A população é exatamente a lista oficial de
+255 IDs; não incluir checkpoints auxiliares não consumidos.
 
-## Responsabilidades
+| Task | Trabalho autorizado agora | Condição para entrega |
+| --- | --- | --- |
+| #151 — S02-01 | Auditar preservação, população, funil e auditorias locais; reportar encerramento e critérios originais não atingidos. | Evidência agregada validada sobre o escopo revisado, sem alegar 300/500. |
+| #153 — S02-03 | Consolidar offline e publicar CSV de 255 linhas com contrato, proveniência, métricas disponíveis e nulos explícitos. | CSV real, manifesto, comando offline e testes/validações; nenhuma API. |
+| #154 — S02-04 | Conferir dicionário já implementado contra exportador/contrato reais da #153; corrigir divergências comprovadas. | Contrato e testes reais, incluindo nulos e incompletudes. |
+| #158 — S02-08 | Preparar somente planilhas C do sorteio oficial #155 e instruções; validar posteriormente rótulos humanos. | População encerrada e sorteio oficial compatíveis; nenhum rótulo inventado ou planilha sobrescrita. |
+| #166 — S02-16 | Revisar metodologia já publicada com política de custo, encerramento em 255, limitações e variantes. | Links e LaTeX validados; piloto preservado e nenhuma alegação de 300/500 completos. |
 
-| Agente | Escopo após o marco | Dependências para concluir |
-|---|---|---|
-| #151 — S02-01 | Registrar o marco de 300 e preparar auditoria da coleta, sem duplicar o executor. | Pipeline completo com cache, mínimo de 300 incluídos (meta 500), funil atualizado e evidências/auditorias finais consistentes. |
-| #153 — S02-03 | Implementar exportador CSV local, uma linha por ID da amostra, com metadados/métricas e nulos preservados; testar sem API. | Para o CSV real: execução final concluída, amostra imutável e fontes/auditorias compatíveis. O CSV consolidado deve ser versionado conforme a issue; cache, dados brutos e credenciais não são publicados. |
-| #154 — S02-04 | Revisar o dicionário já publicado e conferir as colunas reais do exportador #153, corrigindo somente divergências. | Contrato real do exportador e evidência de correspondência. Não recriar documentação equivalente a cada execução. |
-| #158 — S02-08 | Preparar instruções e somente as planilhas em branco do rotulador C, preservando a independência. | População final congelada e sorteio oficial #155; depois, rotulagem independente feita pelo responsável. O agente não inventa rótulos humanos nem consulta A/B ou a heurística. |
-| #166 — S02-16 | Revisar a metodologia já publicada, incluindo priorização por custo até 300, retomada dos grandes e referência ao dicionário vigente. | Política documentada, definições/variantes/censura consistentes e validação LaTeX. Resultados da amostra final continuam distintos do piloto. |
+As tasks #154 e #166 partem de `feat/docs-s02-154-166` (11b0842), sem
+refazer a base. A política anterior continua documentada em
+[decisoes-coleta-final.md](decisoes-coleta-final.md), como histórico.
+A correção de renomeação ativada na coleta foi 4ddbab9.
 
-As tasks #154 e #166 foram implementadas em `feat/docs-s02-154-166`; os
-agentes partem desse trabalho. A política do coletor está em
-`feat/coleta-auxiliar`, com a justificativa em
-[decisoes-coleta-final.md](decisoes-coleta-final.md).
+## Isolamento, recorrência e aceite
 
-## Execução idempotente e coordenação
-
-Estado durável, separado por agente, no checkout original:
+Cada agente mantém somente seu estado privado no checkout original:
 `Lab03/data/processed/sprint02-agentes/<numero>/estado.json`.
-Guardar fase, última verificação, contagem observada, dependências, worktree,
-branch, commits, hashes das entradas e evidências de validação. Nunca escrever
-estado de outro agente nem reaproveitar o Git index de um worktree compartilhado.
+Guardar fase, contagem, dependências, worktree/branch, commits, hashes e
+validações. Não iniciar rodada duplicada nem repetir entrega equivalente.
 
-Ao iniciar implementação, criar/reutilizar um worktree dedicado. Prefixos
-de branches reservados: `feat/s02-01-validacao-coleta-151`, `feat/s02-03-dataset-153`,
-`feat/s02-04-dicionario-154`, `feat/s02-08-rotulagem-c-158` e
-`feat/s02-16-metodologia-166`. Os agentes #154 e #166 usam clones de trabalho
-separados, mesmo quando partem da mesma branch documental.
+Branches dedicadas: `feat/s02-01-validacao-coleta-151`,
+`feat/s02-03-dataset-153`, `feat/s02-04-dicionario-154`,
+`feat/s02-08-rotulagem-c-158` e `feat/s02-16-metodologia-166`.
+Nunca trocar a branch original ou dos worktrees compartilhados. Não fazer
+force push, merge automático, comentários GitHub ou mensagens a outros chats.
 
-Antes de cada geração de dados, validar identidade, janela e estabilidade
-das entradas por hashes. Mesmo hash e entrega já validada significam nenhuma
-reexecução. A CFR (b) pendente da #161 continua nula e explícita; não inventar
-métrica para satisfazer completude. Não sobrescrever planilhas com rótulos
-nem gerar sorteio alternativo ao oficial da #155.
+Compares ausentes e CFR(b) #161 continuam nulos com razão explícita. Nenhum
+agente preenche dados para simular completude. Na #158, não consultar A/B ou
+heurística, não usar --sobrescrever e não gerar sorteio alternativo ao #155.
 
-Publicar código/documentação por commits que referenciem a respectiva issue,
-com testes adequados, sem force push ou merge automático. Não fechar issues
-nem mudar o Projects automaticamente: entrega técnica e aceite são distintos.
-Após entrega validada, desativar o acompanhamento correspondente para evitar
-repetições. Quando faltar apenas a rotulagem humana, informar isso uma vez e
-pausar o agente #158, mantendo o material preparado.
-
-Os acompanhamentos ficam associados a esta conversa e retornam ao mesmo
-contexto. Enquanto aguardarem sem mudança relevante, apenas atualizar estado
-interno; comunicar conclusão, falha confirmada ou ação humana necessária.
+A periodicidade permanece 30 minutos. Sem mudança acionável, atualizar apenas
+estado interno. Comunicar conclusão, falha confirmada ou necessidade humana uma
+vez. Após validar o próprio escopo revisado, pausar o acompanhamento. Se faltar
+só rotulagem humana, #158 informa uma vez e pausa aguardando_rotulagem_humana.
+Não fechar issues nem mudar Projects automaticamente: a entrega exige aceite.
