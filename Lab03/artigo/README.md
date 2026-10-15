@@ -2,19 +2,38 @@
 
 ## Revisão da metodologia — S02-16 (#166)
 
-A fonte local `metodologia.tex` foi atualizada para descrever seleção e meta
-da coleta final #151 (500 repositórios, execução em andamento na revisão),
-definições das RQ01–04, variantes (a)/(b), censura, ausências e limitações.
-Ela referencia o [dicionário de dados](../docs/dicionario-dados.md) (#154),
-contrato de 28 colunas para o CSV da #153. A CFR (b) continua dependente da
-heurística/validação #161; não é apresentada como resultado disponível.
+A revisão de 15/10/2026 de `metodologia.tex` registra o encerramento humano
+da extração da #151 com **255 elegíveis entre 561 candidatos avaliados**,
+às **15h09min11s (America/Sao_Paulo)**, conforme a
+[decisão de encerramento registrada](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/blob/f1306c7/Lab03/docs/decisao-encerramento-255.md).
+A nova decisão substitui a espera
+por 300/500; o mínimo original de 300 não foi atingido e o pipeline de 500
+foi interrompido antes de todas as etapas.
 
-As demais seções do artigo preservam os resultados do piloto. A revisão
-atual não publica resultados da amostra final nem sincroniza o Overleaf.
-O PDF/ZIP e a compilação de seis páginas descritos abaixo são evidências
-da versão anterior (#150), não da metodologia revisada. Ao preparar a
-entrega final, recompilar o artigo inteiro e atualizar resultados, resumos
-e evidências a partir da coleta auditada.
+A metodologia descreve a [política de adiamento por custo observado](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/blob/5d311c2/Lab03/docs/decisoes-coleta-final.md)
+como decisão histórica de 14/10. Grafana seria liberado após 300 elegíveis,
+mas continuou adiado na parada em 255. A revisão explica o possível viés,
+a ordem relativa preservada dos demais e os critérios de inclusão mantidos.
+A população oficial inclui somente os IDs elegíveis já consumidos pelo
+progresso na parada; checkpoints auxiliares fora dela não ampliam a amostra.
+
+Foram preservadas as definições das RQ01–04, variantes (a)/(b), censura,
+ausências e classificação. A fonte referencia o [dicionário de dados](../docs/dicionario-dados.md)
+(#154), contrato de 28 colunas da consolidação #153. Comparações de commits
+faltantes não são consultadas novamente: só dados locais válidos alimentam
+lead time, com ausência/cobertura parcial explicitada. A CFR (b) permanece
+dependente da heurística e validação #161; sem fonte, valor e classe são nulos.
+A consolidação offline do CSV #153 é uma entrega separada; esta revisão não
+alega que ela já tenha terminado.
+
+As demais seções, os resumos e as hipóteses preservam seu contexto histórico
+e os resultados do piloto. Esta entrega é uma revisão da **metodologia**,
+sem apresentar resultados dos 255 nem sincronizar Overleaf. O PDF/ZIP e a
+compilação de seis páginas abaixo pertencem à versão anterior (#150).
+A [evidência própria desta revisão](validacao-s02-166.md) distingue verificação
+da fonte, compilação da seção isolada e situação do artigo integral.
+Recompilar e revisar o artigo inteiro será necessário para uma entrega
+integrada com resultados, resumos e conclusões da amostra encerrada.
 
 ## Histórico da entrega do piloto (#150)
 
