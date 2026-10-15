@@ -672,6 +672,12 @@ O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo c
 
 ### Sorteio da amostra-ouro e planilhas de rotulagem (S02-05 — #155)
 
+O protocolo metodológico da validação manual, incluindo rotulagem, Fleiss,
+consenso e avaliação da heurística, está documentado na
+[seção do artigo S02-15 — #165](artigo/README.md#validação-manual--s02-15-165).
+A documentação distingue os procedimentos previstos dos resultados humanos
+ainda pendentes; o gerador abaixo não cria rótulos nem métricas de validação.
+
 `pipeline/amostra_ouro.py` sorteia a amostra da validação manual e gera as
 planilhas que cada integrante preenche:
 
