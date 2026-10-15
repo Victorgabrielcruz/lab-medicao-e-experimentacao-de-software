@@ -8,9 +8,11 @@ sem restrição de linguagem e com atividade desde o início da janela.
 O recorte temporal é UTC: de 1 de outubro de 2025, inclusive, a 1 de outubro
 de 2026, exclusive, abrangendo doze meses civis completos. As faixas da busca
 são subdivididas para contornar o teto de resultados, e IDs são deduplicados.
-A seleção mantém a ordem dos candidatos da busca, que prioriza estrelas;
-portanto, a amostra não é aleatória e as conclusões se restringem a esse
-recorte de projetos populares.
+A ordem inicial dos candidatos da busca prioriza estrelas. Durante a coleta,
+foi aplicada a política de adiamento por custo observado descrita abaixo;
+assim, a ordem efetivamente consumida não é estritamente a ordem por estrelas.
+A amostra não é aleatória e as conclusões se restringem a esse recorte de
+projetos populares, condicionado também pela disponibilidade de coleta.
 
 Incluímos projetos com workflows próprios em \texttt{.github/workflows/},
 pelo menos cinco releases estáveis publicadas e cinquenta runs válidos na
@@ -29,17 +31,47 @@ incluindo \texttt{cancelled} e \texttt{skipped}, são ignoradas nas métricas de
 falha. As consultas são mensais, com subdivisão recursiva de intervalos
 saturados, paginação, deduplicação por ID e diagnóstico de incompletude.
 Cache por página e checkpoints por candidato permitem retomar a execução.
-O paralelismo preserva a ordem da seleção e respeita o limite global de
-requisições simultâneas; não altera os critérios científicos de inclusão.
+O paralelismo respeita o limite global de requisições simultâneas e a ordem
+da fila configurada, inclusive a política de adiamento; os critérios de
+inclusão e a janela não foram relaxados para acelerar a execução.
 
-A coleta final da S02-01 (\#151) tem meta operacional de 500 repositórios,
-acima do mínimo de 300 exigido pela tarefa. Essa meta não representa um
-resultado alcançado: a execução iniciada em 14 de outubro de 2026 permanece
-em andamento nesta revisão. O integrado seleciona os primeiros elegíveis
-com coleta completa de runs e registra o funil, os descartes e o tamanho
-efetivamente obtido. Completude de runs não assegura completude das
-comparações de commits, tratadas separadamente. Os resultados do piloto
-apresentados nas demais seções não são resultados da amostra final.
+\paragraph{Replanejamento e encerramento da extração.}
+Em 14 de outubro de 2026, após preservar 102 elegíveis entre 211 candidatos
+avaliados, o responsável autorizou adiar candidatos pendentes com alto volume
+de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
+único mês. O custo se refere a runs coletados, não a tamanho em disco;
+custo desconhecido não classifica um projeto como pequeno. O único candidato
+identificado e adiado foi \texttt{grafana/grafana}, ID 15111821, com 107.617
+runs em sete meses. Os projetos grandes já concluídos permaneceram na amostra,
+e os demais candidatos mantiveram sua ordem relativa.
+
+O plano era priorizar os demais até 300 elegíveis e então liberar os adiados
+nas próximas vagas, mantendo a meta operacional de 500 da S02-01 (\#151).
+Em 15 de outubro de 2026, às 15h09min11s de America/Sao\_Paulo
+(18h09min11s UTC), uma nova instrução do responsável encerrou a extração e
+autorizou trabalhar somente com os dados obtidos. Foram congelados
+\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}.
+Não se atingiu o mínimo original de 300, nem a meta de 500; o pipeline
+original foi interrompido antes de concluir todas as etapas. Como o marco
+não foi alcançado, Grafana não foi liberado nem incluído nessa população.
+
+A população congelada contém os IDs elegíveis dos checkpoints já consumidos
+pelo progresso oficial no momento da parada. Checkpoints auxiliares ainda
+não consumidos, resultados parciais de candidatos e duplicatas não ampliam
+essa população. Configuração, fonte de candidatos, progresso e checkpoints
+foram preservados com hashes. A consolidação posterior é local, sem novas
+consultas à API, e corresponde à amostra encerrada de 255, sem simular a
+conclusão da execução original de 500.
+
+Essa priorização condiciona a seleção ao custo observado de coleta. A parada
+antes da retomada dos adiados mantém essa preferência e limita a validade
+externa; não se presume que os 255 sejam representativos de todos os
+candidatos, nem que a ausência de Grafana seja aleatória. A ordem efetiva e
+os descartes devem acompanhar o funil, sem transformar candidatos não
+processados em exclusões científicas. Completude de runs dos incluídos
+não assegura completude das comparações de commits, tratadas separadamente.
+Os resultados do piloto apresentados nas demais seções não são resultados
+da amostra encerrada.
 
 \subsection{Metadados e unidade de análise}
 A unidade do dataset é o repositório, identificado pelo ID do GitHub;
@@ -84,8 +116,12 @@ se associado a outra release, constitui outro par. Ambas são expressas em
 horas e estão implementadas para cálculo local.
 
 A primeira release histórica sem anterior, releases sem commits novos e
-comparações inacessíveis ou incompletas ficam fora do cálculo, com motivo
-registrado. Na variante (a), uma data de autor inválida invalida a release,
+comparações ausentes, inacessíveis ou incompletas ficam fora do cálculo,
+com motivo registrado. Após o encerramento, somente comparações válidas já
+disponíveis localmente podem alimentar a estimativa; faltantes não são
+consultados novamente nem substituídos por zero. Se parte das comparações
+estiver disponível, a estimativa deve identificar sua cobertura parcial.
+Na variante (a), uma data de autor inválida invalida a release,
 pois seu mínimo é desconhecido; na variante (b), invalida o par individual,
 mantendo diagnóstico de cálculo parcial. Intervalos negativos são inválidos;
 zero observado é válido. Sem intervalos válidos, valor e classe ficam ausentes.
@@ -167,9 +203,10 @@ O dicionário versionado da S02-04 (\#154) está em
 \texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
 identidade, janela, metadados, valores e classes das seis métricas/variantes,
 indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
-tipo, unidade e fórmula ou origem. A exportação do CSV final é a entrega
-separada S02-03 (\#153), ainda pendente nesta revisão. O contrato mantém
-uma linha por ID da amostra final e preserva nulos como células vazias;
+tipo, unidade e fórmula ou origem. A exportação do CSV da amostra encerrada
+é a entrega separada S02-03 (\#153); documentar o procedimento não implica
+que essa consolidação já esteja pronta. O contrato mantém uma linha por
+ID dos 255 repositórios congelados e preserva nulos como células vazias;
 diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
 
 \subsection{Artefatos e rastreabilidade}
@@ -178,9 +215,14 @@ Código, definições e dicionário estão no repositório público:
 \url{https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software}.\par
 O planejamento está no GitHub Projects:
 \url{https://github.com/users/Victorgabrielcruz/projects/7}.\par
-Configuração, commit do código, hashes das entradas e diagnósticos identificam
-a execução. Cache e dados brutos permanecem locais; credenciais não compõem
-os artefatos. O dataset consolidado versionado será entregue pela \#153.
-Hipóteses e resultados do piloto mantêm seu contexto histórico; a avaliação
-da amostra final depende do encerramento e da auditoria da coleta.\par
+Configuração, commit do coletor \texttt{4ddbab9}, hashes das entradas e
+diagnósticos identificam a execução encerrada. O manifesto local
+\texttt{encerramento-amostra.json} registra os 255 IDs oficiais, a janela,
+a fonte, os hashes e a decisão humana; a política anterior está versionada
+em \texttt{Lab03/docs/decisoes-coleta-final.md}. Cache, manifesto detalhado
+e dados brutos permanecem locais; credenciais não compõem os artefatos.
+O dataset consolidado versionado é a entrega separada \#153. Hipóteses e
+resultados do piloto mantêm seu contexto histórico; análises da amostra
+encerrada dependem da auditoria e da consolidação local, preservando as
+pendências de comparações e da CFR (b).\par
 \endgroup
