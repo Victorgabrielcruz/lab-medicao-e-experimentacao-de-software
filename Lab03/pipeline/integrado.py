@@ -13,7 +13,7 @@ from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
 from pipeline.concorrencia import mapear_ordenado
-from pipeline import consolidado
+from pipeline import consolidado, agendamento
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
 
@@ -69,8 +69,21 @@ def _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim):
                 etapa = "metadados"
                 meta = metadados.coletar_basicos(client, repo["full_name"], fim,
                                                 config["caminhos"]["cache"])
+                if repo["id"] != meta["id"]:
+                    raise ConfigError(
+                        f"Identidade divergente nos metadados de {repo['full_name']}: "
+                        f"ID esperado {repo['id']}, recebido {meta['id']}")
                 if not _identidade(repo, meta):
-                    raise ConfigError("Identidade divergente nos metadados")
+                    # O nome da busca identifica o snapshot e os checkpoints.
+                    # Renomeações/transferências só são aceitas com o mesmo ID.
+                    registro["renomeacao"] = {"id": repo["id"],
+                        "full_name_fonte": repo["full_name"],
+                        "full_name_atual": meta["full_name"]}
+                    log.warning("Repositório %s (ID %s) agora se chama %s; "
+                                "preservando o nome da fonte para consolidar a amostra",
+                                repo["full_name"], repo["id"], meta["full_name"])
+                    meta = {**meta, "full_name_atual": meta["full_name"],
+                            "full_name": repo["full_name"]}
                 registro["aprovados"][etapa] = meta
                 etapa = "releases"
                 rel = releases.coletar_repositorio(client, meta, inicio, fim)
@@ -162,9 +175,11 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
             if not destino_candidatos.is_file():
                 candidatos.executar(config, client)
             gravar_json(fonte, _ler(destino_candidatos))
-    todos = _ler(fonte)["candidatos"]
+    fonte_dados = _ler(fonte)
+    todos = fonte_dados["candidatos"]
     if len({r["id"] for r in todos}) != len(todos):
         raise ConfigError("IDs duplicados na fonte de candidatos")
+    politica = agendamento.validar(fonte_dados.get("agendamento"), todos)
     inicio, fim = janela_utc(config)
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     contexto = {"janela": janela, "inclusao": config["inclusao"], "runs": config["runs"],
@@ -187,7 +202,9 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     def buscar(repo):
         return _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim)
 
-    with mapear_ordenado(buscar, todos[:max_candidatos], workers,
+    fila = agendamento.iterar(todos, politica, lambda: len(amostra))
+    from itertools import islice
+    with mapear_ordenado(buscar, islice(fila, max_candidatos), workers,
                          limite=lambda: alvo - len(amostra)) as registros:
         for registro in registros:
             repo = registro["candidato"]
@@ -200,7 +217,10 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                 amostra.append(repo["id"])
             gravar_json(raw / "progresso.json", {"contexto": contexto, "alvo": alvo,
                         "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
-                        "elegiveis_com_coleta_completa": len(amostra), "etapa": "selecao_coleta"})
+                        "elegiveis_com_coleta_completa": len(amostra), "etapa": "selecao_coleta",
+                        "ids_avaliados": [r["id"] for r in dados["candidatos"]["candidatos"]],
+                        "agendamento": politica,
+                        "adiados_liberados": bool(politica and len(amostra) >= politica["liberar_adiados_com_elegiveis"])})
             log.info("Pipeline: %d candidatos avaliados; %d/%d elegíveis completos",
                      len(dados["candidatos"]["candidatos"]), len(amostra), alvo)
             if len(amostra) >= alvo:
@@ -281,7 +301,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     tempos["total_s"] = time.perf_counter() - inicio_execucao
     estatisticas = ({k: v - estatisticas_inicio.get(k, 0) for k, v in client.estatisticas().items()}
                     if hasattr(client, "estatisticas") else {})
-    resultado = {"contexto": contexto, "alvo": alvo, "total_amostra_completa": len(amostra),
+    resultado = {"contexto": contexto, "agendamento": politica, "alvo": alvo, "total_amostra_completa": len(amostra),
                  "candidatos_avaliados": len(dados["candidatos"]["candidatos"]),
                  "execucao_completa": len(amostra) == alvo,
                  "coletas_incompletas": sum(r["coleta_incompleta"] for r in dados["workflow_runs"]["repositorios"]),

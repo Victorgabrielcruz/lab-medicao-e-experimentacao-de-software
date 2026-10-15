@@ -1,0 +1,157 @@
+{
+  "issue": 151,
+  "escopo": "amostra encerrada por instrucao humana",
+  "validado_utc": "2026-10-15T18:20:19.831383+00:00",
+  "total_amostra": 255,
+  "candidatos_avaliados": 561,
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "criterios_originais": {
+    "pipeline_original_500_completo": false,
+    "minimo300_atingido": false,
+    "meta500_atingida": false
+  },
+  "escopo_revisado_validado": true,
+  "consolidacao_offline_completa": true,
+  "novas_consultas_api": 0,
+  "snapshot_arquivos_preservados": 574,
+  "snapshot_identidades_validadas": 255,
+  "snapshot_repositorios_com_12_meses": 255,
+  "snapshot_populacao_sha256": "bb12c403c40c5921668822939ef4dc3e0613a48a945f99f5b6199b5ecf5a6612",
+  "criterio": {
+    "min_releases": 5,
+    "min_runs_validos": 50,
+    "incluir_prereleases": false
+  },
+  "funil_etapas": [
+    {
+      "etapa": "candidatos",
+      "descricao": "Busca na Search API",
+      "entrada": 561,
+      "descartados": 0,
+      "restantes": 561,
+      "motivos": {}
+    },
+    {
+      "etapa": "actions",
+      "descricao": "Usa GitHub Actions",
+      "entrada": 561,
+      "descartados": 74,
+      "restantes": 487,
+      "motivos": {
+        "sem_github_actions": 74
+      }
+    },
+    {
+      "etapa": "metadados",
+      "descricao": "Metadados coletados",
+      "entrada": 487,
+      "descartados": 1,
+      "restantes": 486,
+      "motivos": {
+        "repositorio_inacessivel": 1
+      }
+    },
+    {
+      "etapa": "releases",
+      "descricao": "Releases coletadas",
+      "entrada": 486,
+      "descartados": 0,
+      "restantes": 486,
+      "motivos": {}
+    },
+    {
+      "etapa": "workflow_runs",
+      "descricao": "Workflow runs coletados",
+      "entrada": 486,
+      "descartados": 198,
+      "restantes": 288,
+      "motivos": {
+        "prefiltro_releases_insuficientes": 198
+      }
+    },
+    {
+      "etapa": "inclusao",
+      "descricao": "Critério mínimo de inclusão",
+      "entrada": 288,
+      "descartados": 32,
+      "restantes": 256,
+      "motivos": {
+        "runs_validos_insuficientes": 32
+      }
+    },
+    {
+      "etapa": "completude_runs",
+      "descricao": "Coleta completa de runs (amostra oficial)",
+      "entrada": 256,
+      "descartados": 1,
+      "restantes": 255,
+      "motivos": {
+        "coleta_runs_incompleta": 1
+      }
+    }
+  ],
+  "cobertura_metricas": {
+    "deployment_frequency": 255,
+    "lead_time_a": 9,
+    "lead_time_b": 9,
+    "cfr_a": 255,
+    "cfr_b": 0,
+    "tempo_recuperacao": 241
+  },
+  "indicadores": {
+    "coleta_incompleta": 246,
+    "calculo_parcial": 247,
+    "repositorios_com_diagnosticos_temporais": 3
+  },
+  "auditoria_runs": {
+    "validado": true,
+    "versao_recuperacao": "rq04-updated-at-run-started-at-v2",
+    "sequencias_com_censura_esquerda": 352,
+    "repositorios_com_dados_temporais_incompletos": 3,
+    "total_repositorios": 255,
+    "runs_no_recorte_deduplicados": 2586659,
+    "falhas": 196867,
+    "sucessos": 2037553,
+    "runs_validos": 2234420,
+    "repositorios_com_cfr": 255,
+    "repositorios_com_recuperacao": 241,
+    "coletas_incompletas": 0,
+    "episodios_recuperados": 55987,
+    "episodios_censurados": 149
+  },
+  "auditoria_lead_time": {
+    "validado": true,
+    "total_repositorios": 9,
+    "repositorios_com_lead_time": 9,
+    "releases_com_lead_time": 63,
+    "coletas_incompletas": 0,
+    "cobertura_compare_completa": false
+  },
+  "compare_ausente": 246,
+  "pendencias": [
+    "Compares ausentes para 246 repositorios; lead times a/b nulos.",
+    "CFR(b) #161 ausente para toda amostra.",
+    "Sorteio oficial #155 e rotulagem humana #158 ainda pendentes."
+  ],
+  "hashes_entradas_auditadas": {
+    "execucao.json": "4cb1db85da861626a2f384727505db8f9c18b3e0efe5e58ee63a1562cdcb867d",
+    "funil.json": "35dcb3e4a99bddb4e297ee03b87e110888bb890b2d29bbb9fef5aa65c2b7d477",
+    "funil.md": "95cbfd3dcafa7eced9ab4621fef035a2b5a5420a9d497fcf938149f115f339ed",
+    "auditoria.json": "023796556e96b061cd160905c5b5df25481164c9e5406a7cbe9cff74dbc4390d",
+    "auditoria_lead_time.json": "e6d2f6fea8a6276473aeb8e1e10aa57607b5f003ceefea740dd1df6965c1ac4b",
+    "metricas.json": "b729e8854af98d210aff1a660553e07e2110f804b4a9f10bd0bce92bfae831cc",
+    "deployment_frequency.json": "46a732d3433684707bec7c5f791d2064d7ac4b1fab65d9715a232c2db2eb5d34",
+    "autoridade": "ffd16cf789c813f65eea2d47ca124c882fd169075864dfd3ffaa856112b8ad11",
+    "csv": "4e4b69ac63252eff0f29989b5c5fe6b348dbc49109824868ab3029b6f871e3d6",
+    "manifesto_csv": "215efdc0092e466c7418039212d221af22c87f774200f0352b9c9b3f9f460571"
+  },
+  "limitacoes": [
+    "Encerramento em255 abaixo do minimo original300 e meta500.",
+    "Prioridade de custo ate300; grandes adiados nao liberados antes da parada; possivel vies.",
+    "255 completos refere-se a elegibilidade/metadados/releases/runs; cobertura de compare e metricas distinta.",
+    "Snapshot processo.json guarda ultimo sinal anterior a parada; manifesto humano registra encerramento."
+  ]
+}

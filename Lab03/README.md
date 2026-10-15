@@ -604,12 +604,14 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 
 ### Métricas em todas as variantes (S02-02 — #152)
 
-O [dicionário de dados](docs/dicionario-dados.md) (S02-04 — #154) descreve o
-contrato `lab03-dataset-v1`, com 28 colunas para a consolidação em CSV da #153:
-metadados, janela, métricas/classes e qualidade. O exportador e o CSV final
-continuam como entrega da #153. As definições e variantes, inclusive censura
-e dependências pendentes, estão na [metodologia do artigo](artigo/metodologia.tex)
-(S02-16 — #166).
+A [decisão de priorizar candidatos até 300 elegíveis e depois retomar os grandes](docs/decisoes-coleta-final.md)
+registra a justificativa, regra de agendamento e consequências metodológicas
+do replanejamento autorizado da #151. A meta final permanece em 500.
+
+Durante uma coleta integrada, a [instância auxiliar](docs/coleta-auxiliar.md)
+prioriza filtros/releases/runs dos próximos candidatos e deixa compares dos
+repositórios aprovados em segundo plano, sem reiniciar a principal. Compartilha
+cache/checkpoints, mantém estado próprio e preserva a ordem da amostra (#151).
 
 `pipeline/metricas.py` reúne, em uma linha por repositório, as métricas das
 RQ01 a RQ04 já calculadas:
