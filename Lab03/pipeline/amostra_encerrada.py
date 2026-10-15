@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import yaml
-from pipeline import auditoria, cfr, compare, consolidado, funil, integrado, lead_time_commit, lead_time_release, metricas, tempo_recuperacao
+from pipeline import auditoria, cfr, cfr_b, compare, consolidado, funil, integrado, lead_time_commit, lead_time_release, metricas, tempo_recuperacao
 from pipeline.cache import gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import janela_utc, load_config
@@ -138,6 +138,7 @@ def executar(encerramento, saida):
     gravar_json(processed / "deployment_frequency.json", {"janela": janela, "versao_classificacao": VERSAO_REFERENCIA,
                 "unidade": "releases_por_semana", "semanas_janela": (fim-inicio).total_seconds()/604800,
                 "incluir_prereleases": False, "repositorios": frequencias})
+    cfr_b.executar(config, ids=filtro)
     caminho_metricas, _, _ = metricas.executar(config)
     documento = ler(caminho_metricas)
     # A ausencia de compare nao e um compare vazio/coletado. Marca a uniao final
@@ -165,7 +166,8 @@ def executar(encerramento, saida):
                 "excecao_humana": autoridade["decisao"], "encerrado_utc": autoridade["encerrado_utc"],
                 "novas_consultas_api": 0, "raw": str(raw), "processed": str(processed),
                 "repositorios_com_compare_local": len(comparacoes), "repositorios_sem_compare": len(faltantes),
-                "dependencias_pendentes": ["CFR(b) #161", "Compare nao coletado para IDs indicados na auditoria"],
+                "dependencias_pendentes": ["Validacao manual da heuristica CFR(b) #162",
+                                           "Compare nao coletado para IDs indicados na auditoria"],
                 "ids_amostra_sha256": hashlib.sha256(json.dumps(amostra).encode()).hexdigest(),
                 "autoridade_sha256": hashlib.sha256(autoridade_bytes).hexdigest(),
                 "entradas_sha256": {rel: hashes[rel] for rel in utilizados}}

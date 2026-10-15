@@ -7,14 +7,13 @@ import logging
 import sys
 from pathlib import Path
 
-from pipeline import cfr, lead_time_commit, lead_time_release, tempo_recuperacao
+from pipeline import cfr, cfr_b, lead_time_commit, lead_time_release, tempo_recuperacao
 from pipeline.cache import gravar_json
 from pipeline.config import ConfigError, janela_utc, load_config
 
 ARQUIVO_SAIDA = "metricas.json"
 ARQUIVO_FREQUENCIA = "deployment_frequency.json"
-# Saída esperada da heurística de release corretiva (#161), no formato de cfr.json.
-ARQUIVO_CFR_B = "cfr_b.json"
+ARQUIVO_CFR_B = cfr_b.ARQUIVO_SAIDA
 # (métrica, arquivo em processed, campo do valor, campo da classe)
 FONTES = (
     ("deployment_frequency", ARQUIVO_FREQUENCIA, "deployment_frequency", "classe"),

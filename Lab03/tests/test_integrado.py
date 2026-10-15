@@ -96,16 +96,18 @@ def test_100_elegiveis_nao_100_candidatos_e_retomada_sem_api(tmp_path):
     lead = json.loads((tmp_path / "processed/lead_time_release.json").read_text(encoding="utf-8"))
     assert lead["releases_com_lead_time"] == 400
     assert lead["repositorios"][0]["lead_time_horas"] == 216
-    assert result["dependencias_pendentes"] == ["CFR (b) #161"]
-    assert result["metricas"] == ["deployment_frequency", "lead_time_a", "lead_time_b", "cfr_a", "tempo_recuperacao"]
+    assert result["dependencias_pendentes"] == []
+    assert result["validacao_heuristica_pendente"]
+    assert result["metricas"] == ["deployment_frequency", "lead_time_a", "lead_time_b", "cfr_a", "cfr_b", "tempo_recuperacao"]
     todas = json.loads((tmp_path / "processed/metricas.json").read_text(encoding="utf-8"))
     assert todas["total_repositorios"] == 100
-    assert todas["variantes_pendentes"] == ["cfr_b"]
+    assert todas["variantes_pendentes"] == []
     assert todas["repositorios_por_metrica"] == {"deployment_frequency": 100, "lead_time_a": 100, "lead_time_b": 100,
-                                                 "cfr_a": 100, "cfr_b": 0, "tempo_recuperacao": 100}
+                                                 "cfr_a": 100, "cfr_b": 100, "tempo_recuperacao": 100}
     primeiro = todas["repositorios"][0]
     assert (primeiro["lead_time_a"], primeiro["lead_time_b"], primeiro["cfr_a"]) == (216, 216, 1/50)
-    assert primeiro["metricas_ausentes"] == ["cfr_b"]
+    # As cinco releases da fixture têm a mesma publicação: nenhuma é posterior.
+    assert primeiro["cfr_b"] == 0 and primeiro["metricas_ausentes"] == []
     compares = json.loads((tmp_path / "raw/compare.json").read_text(encoding="utf-8"))
     assert compares["total_repositorios"] == 100
     assert compares["total_comparacoes"] == 400
@@ -127,6 +129,39 @@ def test_amostra_insuficiente_nao_declara_sucesso(tmp_path):
     cfg, fonte = configurar(tmp_path, 3)
     r = integrado.executar(cfg, Api(excluidos=2), 2, 3, fonte)
     assert r["total_amostra_completa"] == 1 and not r["execucao_completa"]
+
+
+@pytest.mark.parametrize("compare_404", [False, True])
+def test_cfr_b_usa_so_elegiveis_patch_com_ou_sem_compare_e_censura(tmp_path, compare_404):
+    class ApiCfr(Api):
+        def get_resposta(self, path, params=None):
+            if compare_404 and path.endswith("/compare/v2.3.0...v2.3.1"):
+                r = resposta({})
+                r.status_code = 404
+                r.raise_for_status()
+            r = super().get_resposta(path, params)
+            if path.endswith("/releases"):
+                releases = r.json()
+                tags = ["v2.2.0-rc.1", "v2.3.0", "v2.3.1", "v2.4.0", "v2.5.0", "v3.0.0"]
+                datas = ["2026-05-01", "2026-05-10", "2026-05-12", "2026-06-01", "2026-06-20", "2026-09-30"]
+                for release in releases:
+                    i = release["id"]
+                    release.update(tag_name=tags[i], published_at=datas[i]+"T00:00:00Z")
+                return resposta(releases)
+            return r
+
+    cfg, fonte = configurar(tmp_path, n=3)
+    integrado.executar(cfg, ApiCfr(excluidos=1), 2, 3, fonte)
+    processed = Path(cfg["caminhos"]["processed"])
+    saida = json.loads((processed/"cfr_b.json").read_text())
+    assert {r["id"] for r in saida["repositorios"]} == {2, 3}
+    for r in saida["repositorios"]:
+        assert r["releases_avaliadas"] == 4 and r["releases_censuradas"] == 1
+        assert r["change_failure_rate"] == 0.25
+        assert r["releases"][0]["falhou"] is True
+        assert r["releases"][1]["corretiva"] is True
+    metricas = json.loads((processed/"metricas.json").read_text())
+    assert all(r["cfr_b"] == 0.25 and r["classe_cfr_b"] == "High" for r in metricas["repositorios"])
 
 
 def test_runs_ficam_nos_checkpoints_e_os_consolidados_sao_gravados_por_linha(tmp_path, monkeypatch):

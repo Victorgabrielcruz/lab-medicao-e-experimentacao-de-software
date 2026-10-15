@@ -641,7 +641,7 @@ Cada repositório traz o valor e a classe (`classe_<campo>`) de cada métrica,
 não pôde ser calculada fica `null`, nunca zero. O cabeçalho informa a janela,
 as origens, as unidades e quantos repositórios têm cada métrica.
 
-A CFR (b) depende da heurística de release corretiva (S02-11 — #161). Enquanto
+A CFR (b) é implementada por `pipeline/cfr_b.py` (S02-11 — #161). Enquanto
 `cfr_b.json` não existir, `cfr_b` fica `null` em todos os repositórios e
 aparece em `variantes_pendentes`. O arquivo esperado segue o formato de
 `cfr.json`: `janela` e `repositorios` com `id`, `full_name`,
@@ -649,6 +649,25 @@ aparece em `variantes_pendentes`. O arquivo esperado segue o formato de
 
 O comando recusa janelas diferentes da configurada, um repositório repetido
 na mesma saída e o mesmo ID com nomes diferentes entre as saídas.
+
+### Heurística de release corretiva v1 e CFR(b) (S02-11 — #161)
+
+A v1 identifica corretivas por aumento apenas do patch SemVer **ou** termos
+isolados `fix`, `revert` ou `hotfix` nas mensagens de commits. Uma release
+falha quando há uma corretiva posterior em até sete dias. As publicadas nos
+últimos sete dias da janela ficam censuradas, fora do denominador.
+
+```bash
+python -m pipeline.cfr_b --config config.yaml --amostra data/processed/deployment_frequency.json
+python -m pipeline.metricas --config config.yaml
+```
+
+O comando lê releases e compares locais e grava `data/processed/cfr_b.json`.
+O filtro `--amostra` restringe aos repositórios elegíveis. O integrado e a
+reconstrução offline já executam essa etapa com esse recorte. Ausências de
+evidência produzem decisões indeterminadas e diagnósticos de cobertura;
+patch pode sustentar decisões mesmo sem compare. A avaliação manual da v1
+continua pendente da #162. Veja as [regras, limites e opções](docs/heuristica-cfr-b-161.md).
 
 ### Etapas
 

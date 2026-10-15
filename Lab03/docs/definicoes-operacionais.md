@@ -70,12 +70,12 @@ Cada descarte é registrado com o motivo na tabela do funil de seleção (`pipel
 |---|---|---|
 | Deployment frequency | RQ01 | releases estáveis publicadas / semanas reais da janela |
 | Lead time | RQ02 | (a) por release; (b) por commit |
-| Change failure rate | RQ03 | (a) runs com falha / (falhas + sucessos); (b) releases corretivas (heurística validada manualmente) |
+| Change failure rate | RQ03 | (a) runs com falha / (falhas + sucessos); (b) releases seguidas por corretiva em até 7 dias / releases avaliadas não censuradas |
 | Tempo de recuperação | RQ04 | episódios de falha por workflow, com censura no fim da janela |
 
 Os resultados são reportados por **mediana e IQR**. O detalhamento de cada variante é feito nas issues de implementação correspondentes.
 
-`pipeline/metricas.py` (S02-02 — #152) reúne todas as variantes por repositório em `data/processed/metricas.json`. Uma métrica sem valor fica `null` e é listada em `metricas_ausentes`; a CFR (b) fica pendente até a heurística da S02-11 (#161).
+`pipeline/metricas.py` (S02-02 — #152) reúne todas as variantes por repositório em `data/processed/metricas.json`. Uma métrica sem valor fica `null` e é listada em `metricas_ausentes`. A CFR (b) usa a [heurística v1 da S02-11 (#161)](heuristica-cfr-b-161.md); sua validação manual permanece pendente da #162. A release corretiva é evidência de falha de uma anterior, não necessariamente de sua própria falha. Releases dos últimos sete dias são censuradas, e decisões indeterminadas por falta de evidência ficam fora do denominador com diagnóstico.
 
 ### 5.1 Tempo de recuperação (RQ04)
 

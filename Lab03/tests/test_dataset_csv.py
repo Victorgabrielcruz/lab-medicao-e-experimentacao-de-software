@@ -130,8 +130,11 @@ def test_reconstrucao_encerrada_sem_compare_nao_fabrica_dados(tmp_path,monkeypat
     assert result["repositorios_sem_compare"] == 2-n_compares
     assert len(json.loads((out/"raw/compare.json").read_text(encoding="utf-8"))["repositorios"]) == n_compares
     rows = json.loads((out/"processed/metricas.json").read_text(encoding="utf-8"))["repositorios"]
-    assert all(r["lead_time_a"] is None and r["lead_time_b"] is None and r["cfr_b"] is None
+    assert all(r["lead_time_a"] is None and r["lead_time_b"] is None
                and r["coleta_incompleta"] and r["calculo_parcial"] for r in rows if r["id"] not in com_compare)
+    # Publicações simultâneas na fixture: não há release posterior em até 7 dias,
+    # independentemente dos compares. Isso não fabrica mensagens ausentes.
+    assert all(r["cfr_b"] == 0 for r in rows)
     assert all(r["lead_time_a"] is not None and r["lead_time_b"] is not None for r in rows if r["id"] in com_compare)
     assert all(hashlib.sha256((raw/k).read_bytes()).hexdigest()==v for k,v in hashes.items())
     with pytest.raises(ConfigError, match="ja existe"):
