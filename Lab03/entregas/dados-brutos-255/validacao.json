@@ -1,0 +1,54 @@
+{
+  "restauracao": {
+    "arquivos_verificados": 576,
+    "hashes_originais_preservados": true,
+    "total_amostra": 255
+  },
+  "teste_destino_existente": "aprovado",
+  "teste_parte_corrompida": "aprovado",
+  "reconstrucao": {
+    "rede_bloqueada": true,
+    "novas_consultas_api": 0,
+    "consolidacao_offline_completa": true,
+    "pipeline_original_completo": false,
+    "auditorias_validas": true,
+    "comparacoes": {
+      "raw/releases.json": {
+        "repositorios_identicos": true,
+        "quantidade": 486
+      },
+      "raw/metadados.json": {
+        "repositorios_identicos": true,
+        "quantidade": 486
+      },
+      "raw/compare.json": {
+        "repositorios_identicos": true,
+        "quantidade": 9
+      },
+      "processed/deployment_frequency.json": {
+        "repositorios_identicos": true,
+        "quantidade": 255
+      },
+      "processed/cfr.json": {
+        "repositorios_identicos": true,
+        "quantidade": 255
+      },
+      "processed/tempo_recuperacao.json": {
+        "repositorios_identicos": true,
+        "quantidade": 255
+      },
+      "processed/lead_time_release.json": {
+        "repositorios_identicos": true,
+        "quantidade": 9
+      },
+      "processed/lead_time_commit.json": {
+        "repositorios_identicos": true,
+        "quantidade": 9
+      },
+      "processed/metricas.json": {
+        "repositorios_identicos": true,
+        "quantidade": 255
+      }
+    }
+  }
+}
