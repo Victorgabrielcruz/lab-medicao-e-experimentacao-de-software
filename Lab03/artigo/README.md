@@ -1,5 +1,51 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Validação manual — S02-15 (#165)
+
+A seção **Validação manual** de [metodologia.tex](metodologia.tex) descreve
+o protocolo para a população encerrada de 255 repositórios:
+
+- sorteio oficial da #155: 60 repositórios e 5 releases estáveis de cada um,
+  sem reposição e com `random_state=42`, total previsto de 300 pares;
+- três rotuladores independentes, catálogo de categorias e tratamento das
+  ausências, com preservação dos julgamentos antes do consenso;
+- kappa de Fleiss nas três dimensões, calculado **antes do consenso**, com
+  número de itens válidos, proporções das categorias e casos não estimáveis;
+- proposta explícita de consenso: maioria simples como proposta discutida,
+  reunião para três categorias distintas e pendências justificadas sem usar
+  a heurística como desempate;
+- avaliação binária de **release corretiva** contra consenso: matriz de
+  confusão, precisão, recall, F1, cobertura e tratamento de divisões por zero;
+- histórico das versões da heurística e refinamento previsto na #163 se
+  F1 < 0,70, com declaração do reuso da amostra para ajuste.
+
+O trecho da CFR(b) foi alinhado ao enunciado: a release que falha é aquela
+seguida, em até sete dias, por uma corretiva; as publicadas nos últimos sete
+dias ficam censuradas. A avaliação da heurística classifica a **corretiva**,
+não diretamente a release anterior nem um incidente em produção.
+
+**Estado em 15/10/2026:** na base `2b4ea3b`, não há manifesto do sorteio
+oficial nem rótulos completos, consenso, kappa ou avaliação numérica. A
+preparação C também registra essa dependência em
+[rotulagem-c-158.md](../docs/rotulagem-c-158.md). A publicação dos brutos e do
+CSV de 255 não constitui a amostra-ouro rotulada. Não foi feito novo sorteio,
+preenchimento de rótulos, implementação da heurística ou consulta aos dados
+de A/B/C nesta entrega.
+
+Os tamanhos 60/300 são previstos; as métricas permanecem **pendentes**, não
+zero. Para concluir o relato empírico, incorporar o manifesto oficial (#155),
+as três rotulagens independentes (#156–158), o relatório de concordância,
+o consenso aprovado e a avaliação da heurística (#161–163). O protocolo de
+consenso descrito aqui deve ser alinhado com o responsável por essa entrega
+antes de ser apresentado como executado. Nenhuma issue é fechada por esta
+revisão documental.
+
+As referências metodológicas foram acrescentadas em
+[referencias.bib](referencias.bib), preservando as entradas anteriores.
+As evidências e o alcance da conferência da seção estão em
+[validacao-s02-165.md](validacao-s02-165.md). Não houve sincronização do
+Overleaf nem atualização dos resultados/resumos históricos do piloto.
+
 ## Revisão da metodologia — S02-16 (#166)
 
 A revisão de 15/10/2026 de `metodologia.tex` registra o encerramento humano

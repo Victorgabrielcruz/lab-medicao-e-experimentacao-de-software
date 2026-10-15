@@ -139,13 +139,14 @@ As demais conclusions não participam do denominador. Sem runs válidos, a
 fração fica ausente. Essa definição não identifica diretamente incidentes
 causados por deploy em produção, o que limita sua interpretação como DORA.
 
-A variante (b) prevê a fração de releases estáveis elegíveis identificadas
-como corretivas na janela. A heurística e sua validação manual pertencem
-à S02-11 (\#161) e permanecem pendentes nesta revisão. Logo, não afirmamos
-que a CFR (b) já foi calculada ou validada: sua fonte local é opcional e,
-enquanto ausente, valor e classe são nulos. A rotulagem independente da
-amostra-ouro deve preceder a comparação com a heurística, sem consultar
-seus resultados nem os rótulos dos demais integrantes.
+A variante (b) considera falha uma release seguida, em até sete dias,
+por uma release corretiva. O denominador contém as releases avaliáveis;
+as publicadas nos últimos sete dias da janela ficam censuradas e fora dele.
+Identificar uma release corretiva não equivale a marcar essa própria release
+como falha. A implementação da heurística e da CFR (b) pertence à \#161;
+sua avaliação e eventual refinamento pertencem às \#162 e \#163. Sem a fonte
+local dessa métrica, valor e classe permanecem nulos. O protocolo de validação
+manual previsto é descrito na Seção~\ref{sec:validacao-manual}.
 
 \paragraph{Tempo de recuperação (RQ04).}
 Agrupamos os runs por workflow e os ordenamos por
@@ -185,6 +186,115 @@ Cada métrica sem estimativa permanece nula, com seu nome em
 Resultados agregados entre repositórios serão apresentados por mediana e
 IQR, identificando o número de valores válidos de cada métrica. A disponibilidade
 de uma estimativa parcial não elimina o diagnóstico de incompletude.
+
+% S02-15 (#165): protocolo metodológico; resultados humanos ainda pendentes.
+\subsection{Validação manual}
+\label{sec:validacao-manual}
+
+\paragraph{Amostra-ouro e instrumento.}
+O protocolo da \#155 prevê sortear, sem reposição, 60 dos 255 repositórios
+da população encerrada e cinco releases estáveis de cada um, totalizando
+300 pares repositório--release. O gerador usa
+\texttt{DataFrame.sample} com \texttt{random\_state=42} nos dois sorteios;
+ordena previamente os repositórios por ID e as releases por publicação/ID.
+O mesmo manifesto oficial deve orientar os três avaliadores, sem sorteios
+alternativos por integrante. Ele registra janela, IDs, semente, tamanho e
+hash da população. Releases devem pertencer à janela, sem drafts nem
+pré-releases, conforme a configuração usada nesta revisão.
+
+O instrumento contém duas planilhas por avaliador, com IDs e links de apoio.
+Por repositório, o tipo principal será classificado como biblioteca/framework,
+aplicação/serviço, ferramenta CLI ou outro; as releases serão julgadas como
+entregas reais ao usuário com as opções sim, não ou incerto. Por release,
+será indicado se seu objetivo principal é corrigir um defeito recente
+(sim/não), consultando notas de versão e evidências dos commits. O número
+da versão ou uma palavra-chave, isoladamente, não define o rótulo humano.
+Casos mistos e evidências insuficientes exigem justificativa em observações.
+O catálogo deve ser fixado no instrumento comum antes do preenchimento.
+
+\paragraph{Rotulagem independente.}
+Os três integrantes preencherão individualmente suas planilhas, sem consultar
+rótulos dos demais nem a heurística ou suas previsões. Serão priorizadas as
+evidências preservadas na coleta encerrada; links identificam a origem para
+inspeção humana e não autorizam retomar os coletores. Compare ausente não
+significa release não corretiva. Células vazias e decisões ainda pendentes
+permanecerão ausentes; a categoria incerto é válida somente no julgamento
+de entregas reais. Antes da análise, serão conferidos IDs, duplicatas,
+categorias e cobertura: até 60 julgamentos por dimensão de repositório e
+300 de releases, por avaliador. As versões independentes serão preservadas
+com hashes, sem substituição pelos rótulos de consenso.
+
+\paragraph{Concordância antes do consenso.}
+O protocolo prevê calcular separadamente o kappa de Fleiss para tipo de
+projeto, entregas reais e releases corretivas \cite{fleiss1971}.
+Os itens serão associados por ID e mantidos no cálculo de cada dimensão
+somente quando houver três julgamentos válidos. Serão informados o número
+de itens completos, as ausências e a distribuição das categorias.
+O coeficiente é
+\begin{equation}
+\kappa_F=\frac{\bar P-P_e}{1-P_e},
+\label{eq:fleiss-validacao}
+\end{equation}
+onde \(\bar P\) é a concordância observada média entre pares de avaliadores
+e \(P_e\) é a soma dos quadrados das proporções marginais das categorias.
+A implementação prevista usa \texttt{aggregate\_raters} para formar contagens
+por item/categoria e \texttt{fleiss\_kappa} com método
+\texttt{fleiss} \cite{statsmodelsFleiss}. Categorias são nominais, sem
+ponderação ordinal. Sem itens completos ou com \(P_e=1\), o coeficiente
+será registrado como não estimável, com motivo. O cálculo antecederá qualquer
+conciliação; o consenso não será usado para aumentar artificialmente a
+concordância independente.
+
+\paragraph{Protocolo de consenso previsto.}
+Após preservar os julgamentos e calcular a concordância, os três avaliadores
+discutirão as divergências com base nas evidências de cada item. Nos casos
+com dois votos iguais, a maioria simples será a proposta de rótulo, submetida
+à discussão e registrada com justificativa. Três categorias diferentes
+exigirão discussão conjunta até uma decisão fundamentada; sem resolução,
+o item permanecerá pendente, com motivo. Não haverá desempate pela heurística.
+A consolidação deverá registrar os rótulos originais, a decisão final,
+os participantes, a data e a evidência. Esse protocolo é uma proposta
+operacional da \#165 a alinhar com a entrega de consenso, não uma reunião
+já realizada nem prova de concordância obtida.
+
+\paragraph{Avaliação da heurística.}
+Depois de concluído o consenso, a \#162 comparará, nos mesmos pares
+\texttt{(repo\_id, release\_id)}, a previsão da \#161 com o rótulo humano
+de release corretiva. A classe positiva será sim. A matriz de confusão
+registrará verdadeiros positivos (VP), falsos positivos (FP), falsos negativos
+(FN) e verdadeiros negativos (VN). Precisão, recall e F1 serão calculados
+para a classe positiva \cite{sklearnPrecisionRecall}:
+\begin{equation}
+P=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FP}},\quad
+R=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FN}},\quad
+F_1=\frac{2\mathrm{VP}}{2\mathrm{VP}+\mathrm{FP}+\mathrm{FN}}.
+\label{eq:avaliacao-heuristica}
+\end{equation}
+A precisão mede a fração de previsões corretivas confirmadas; o recall,
+a fração de corretivas do consenso detectadas. Será reportada a cobertura
+dos 300 pares previstos, junto aos suportes positivo e negativo.
+Ausência de consenso, previsão ou evidência não será convertida em não;
+esses casos permanecerão identificados fora da avaliação, explicitando
+o possível viés de cobertura. Uma taxa com denominador nulo será não
+estimável; zero com denominador positivo continua sendo um resultado válido.
+
+Se F1 ficar abaixo de 0,70, a \#163 prevê revisar a heurística e reavaliar,
+registrando cada versão, regras, pares avaliados, matriz de confusão e
+métricas. Se o limiar não for alcançado, a limitação deverá ser justificada.
+O uso dos mesmos rótulos para ajuste e avaliação será declarado, sem
+apresentá-lo como avaliação independente em novos dados. A avaliação de
+releases corretivas sustenta a heurística; não mede diretamente incidentes
+em produção nem equivale ao valor da CFR (b).
+
+\paragraph{Situação nesta revisão.}
+Em 15 de outubro de 2026, a base versionada consultada disponibiliza o
+gerador da \#155 e a preparação documental de C (\#158), que registra
+dependência do sorteio oficial. Não há manifesto desse sorteio, planilhas
+humanas completas, resultados de Fleiss, consenso ou avaliação da heurística
+nesta base. Portanto, 60 repositórios e 300 releases são tamanhos previstos,
+e kappa, precisão, recall e F1 permanecem pendentes, sem valores numéricos
+atribuídos. Esta seção reporta o protocolo; sua execução e os resultados
+deverão ser incorporados com os respectivos artefatos de evidência.
 
 \subsection{Classificação e dicionário de dados}
 Usamos os cortes fixos do enunciado da disciplina, contrato
