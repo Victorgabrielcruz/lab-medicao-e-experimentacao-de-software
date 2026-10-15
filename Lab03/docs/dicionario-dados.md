@@ -5,9 +5,19 @@
 Este documento versiona o contrato **`lab03-dataset-v1`**: uma linha por
 repositório incluído na amostra final, com metadados e as seis métricas/variantes
 produzidas por [`pipeline/metricas.py`](../pipeline/metricas.py).
-O formato tabular abaixo orienta a implementação do CSV na **#153**; o exportador
-e o CSV final ainda não estão entregues nesta branch. As fontes locais já existem
-no código, mas suas saídas reais dependem da execução da coleta e dos cálculos.
+O formato tabular corresponde às 28 colunas do exportador local da **#153**,
+`pipeline/dataset_csv.py`, na branch `feat/s02-03-dataset-153`. Esta revisão
+mantém o contrato v1 e documenta a amostra encerrada por decisão humana em
+15/10/2026: **255 repositórios elegíveis entre 561 candidatos avaliados**.
+A janela permanece de `2025-10-01T00:00:00Z` (inclusivo) a
+`2026-10-01T00:00:00Z` (exclusivo). O mínimo planejado de 300 e a meta de 500
+não foram atingidos; a autorização para usar os dados obtidos não equivale
+à conclusão do pipeline de coleta originalmente planejado.
+
+A consolidação offline usa o snapshot congelado identificado pelo manifesto
+privado `encerramento-amostra.json`; não consulta a API nem amplia a amostra.
+As evidências da conferência estão em
+[validacao-dicionario-154.md](validacao-dicionario-154.md).
 
 O dicionário descreve o significado dos campos; os resultados da coleta #151 e
 os rótulos humanos da #158 não são presumidos. A CFR (b) depende da heurística
@@ -15,12 +25,18 @@ validada na #161. Ausência dessa variante deve permanecer explícita.
 
 ## Grão, seleção e convenções
 
-- Chave primária: `id` do GitHub; `full_name` identifica o nome observado.
-  A junção deve usar o ID, pois o nome pode mudar.
+- Chave primária: `id` do GitHub; `full_name` preserva o nome da fonte da
+  amostra. A junção usa o ID e confere o nome sem distinguir maiúsculas de
+  minúsculas. Renomeações confirmadas pelo mesmo ID preservam o nome da fonte
+  nos estágios; `full_name_atual` e o registro de renomeação ficam na
+  proveniência JSON, sem acrescentar coluna ao CSV.
 - População do CSV final: IDs de `processed/deployment_frequency.json`,
   que o integrado gera para os elegíveis com coleta completa de runs. A união
   de IDs feita por `metricas.consolidar` não substitui esse filtro: saídas
-  avulsas podem conter repositórios fora da amostra final.
+  avulsas podem conter repositórios fora da amostra final. Nesta entrega,
+  essa população reproduz exatamente os 255 IDs elegíveis dos checkpoints
+  consumidos pelo progresso oficial no instante do encerramento. Checkpoints
+  auxiliares ainda não consumidos não ampliam a população.
 - Cada ID deve ocorrer uma vez nas fontes e no CSV. IDs/nome divergentes,
   janela incompatível e metadados ausentes para um ID selecionado devem causar
   erro de consolidação, em vez de descartar silenciosamente a linha.
@@ -98,13 +114,23 @@ ou sem episódios recuperados, valor e classe correspondentes ficam nulos.
 
 | Coluna | Tipo lógico | Unidade/formato | Nulo? | Origem ou fórmula |
 |---|---|---|---|---|
-| `coleta_incompleta` | booleano | `true`/`false` | não | R.`coleta_incompleta`: OR dos indicadores homônimos nas fontes presentes de métricas. Mesmo com runs completos, o compare pode ser incompleto. |
-| `calculo_parcial` | booleano | `true`/`false` | não | R.`calculo_parcial`: OR dos indicadores homônimos nas fontes presentes; atualmente informado pelos cálculos de lead time. Não resume todos os diagnósticos temporais da RQ04. |
+| `coleta_incompleta` | booleano | `true`/`false` | não | R.`coleta_incompleta`: OR dos indicadores homônimos nas fontes presentes, acrescido de `true` para ID sem compare local no encerramento. Runs completos não garantem compare completo. |
+| `calculo_parcial` | booleano | `true`/`false` | não | R.`calculo_parcial`: OR dos indicadores homônimos nas fontes presentes, acrescido de `true` para ID sem compare local no encerramento. Não resume todos os diagnósticos temporais da RQ04. |
 | `metricas_ausentes` | lista de texto | array JSON | não | R.`metricas_ausentes`: nomes das seis métricas cujo valor é nulo, na ordem de `pipeline.metricas.METRICAS`. Não inclui os campos de classe. |
 
 `coleta_incompleta=false` e `calculo_parcial=false` não garantem seis métricas
 disponíveis nem ausência de censura. `cfr_b` pendente aparece em
 `metricas_ausentes`, mesmo que os dois indicadores sejam falsos.
+
+Na reconstrução offline da amostra encerrada, `pipeline/amostra_encerrada.py`
+calcula lead time somente para compares locais efetivamente disponíveis.
+Um ID sem compare mantém `lead_time_a`, `lead_time_b` e suas classes nulos;
+`metricas_ausentes` inclui ambas as variantes e `cfr_b`. A união
+`metricas.json` marca `coleta_incompleta=true`, `calculo_parcial=true` e o
+atributo JSON `compare_ausente_no_encerramento=true`. Esse último atributo não
+é coluna adicional. Não se sintetizam compares vazios nem se converte ausência
+em zero. A auditoria de lead time registra a cobertura de compare; validar os
+compares disponíveis não afirma cobertura da população inteira.
 
 ## Fontes complementares e rastreabilidade
 
