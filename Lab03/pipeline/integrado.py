@@ -7,7 +7,7 @@ import sys
 import time
 from pathlib import Path
 import requests
-from pipeline import actions, auditoria, candidatos, cfr, compare, funil, lead_time_commit, lead_time_release, metadados, metricas, releases, tempo_recuperacao
+from pipeline import actions, auditoria, candidatos, cfr, cfr_b, compare, funil, lead_time_commit, lead_time_release, metadados, metricas, releases, tempo_recuperacao
 from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
@@ -296,6 +296,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                "versao_classificacao": VERSAO_REFERENCIA,
                "incluir_prereleases": config["inclusao"].get("incluir_prereleases", True),
                "repositorios": frequencias})
+    cfr_b.executar(config, ids={r["id"] for r in selecionados})
     _, _, pendentes = metricas.executar(config)
     tempos["calculos_locais_s"] += time.perf_counter() - inicio_calculos
     tempos["total_s"] = time.perf_counter() - inicio_execucao
@@ -307,6 +308,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                  "coletas_incompletas": sum(r["coleta_incompleta"] for r in dados["workflow_runs"]["repositorios"]),
                  "metricas": [m for m in metricas.METRICAS if m not in pendentes],
                  "dependencias_pendentes": ["CFR (b) #161"] if "cfr_b" in pendentes else [],
+                 "validacao_heuristica_pendente": True,
                  "repositorios_com_lead_time_release": validacao_lt["repositorios_com_lead_time"],
                  "total_comparacoes": sum(r["total_comparacoes"] for r in comparacoes),
                  "releases_compare_ignoradas": sum(r["total_releases_ignoradas"] for r in comparacoes),
