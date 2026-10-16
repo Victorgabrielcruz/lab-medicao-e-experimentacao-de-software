@@ -1,0 +1,25 @@
+{
+  "proposta_C_repositorios.csv": {
+    "linhas": 60,
+    "sha256": "995218cbe34fd5cf8f6decbb71dad4bed102060a925ce0df16e62386be381d6d",
+    "colunas_fixas_preservadas": true,
+    "ids_unicos": true,
+    "ids_correspondem_ao_sorteio": true,
+    "observacoes_em_todas_as_linhas": true,
+    "oficial_preservada_em_branco": true
+  },
+  "proposta_C_releases.csv": {
+    "linhas": 300,
+    "sha256": "be23733340ef59b2c8490199d5490f9dba074cfc1ac216c5fc0ac7332ea56ca1",
+    "colunas_fixas_preservadas": true,
+    "ids_unicos": true,
+    "ids_correspondem_ao_sorteio": true,
+    "observacoes_em_todas_as_linhas": true,
+    "oficial_preservada_em_branco": true,
+    "rotulos": {
+      "pendente": 51,
+      "nao": 42,
+      "sim": 207
+    }
+  }
+}
