@@ -739,6 +739,21 @@ da configurada; nesses casos nada é gravado. Se alguma planilha já existir,
 ele também recusa, para não apagar rótulos preenchidos. `--sobrescrever`
 regrava todas as planilhas em branco.
 
+O sorteio oficial foi feito sobre a população encerrada de 255 repositórios
+(`docs/decisao-encerramento-255.md`), a partir dos consolidados reconstruídos
+do snapshot publicado em `entregas/dados-brutos-255/`:
+
+```bash
+python -m pipeline.amostra_ouro --config config.yaml \
+  --amostra data/processed/amostra-publicada-255/processed/deployment_frequency.json \
+  --releases data/processed/amostra-publicada-255/raw/releases.json
+```
+
+Resultado: 60 repositórios e 300 releases, `total_populacao=255` e
+`populacao_sha256=26b74c8b41531edf6a0b5fe6702d8856f2a5b0a2e0d1171c75e5c2be9f98e4e6`.
+Em 34 das 300 releases a release sorteada é a primeira elegível do
+repositório na janela, então `compare_url` fica vazio.
+
 ## Estrutura
 
 ```text
