@@ -25,9 +25,12 @@ A coleta retoma exatamente de onde parou, sem nova busca de candidatos:
 - depois da seleção, o pipeline integrado coleta os compares de **todos** os
   elegíveis. Isso amplia o lead time (RQ02), hoje restrito a 9 repositórios.
 
-Execução, a partir de `Lab03`, com os checkpoints do snapshot copiados para
-`data/raw/amostra-final-500/checkpoints/` e uma cópia de `config.yaml` com os
-caminhos `raw`/`processed` em `amostra-final-500`:
+A coleta é executada pelo Victor (Victorgabrielcruz) no checkout original da
+coleta, onde `data/raw/amostra-final-500/` já contém os checkpoints, a fonte e
+o cache HTTP. Em outra máquina, restaure o snapshot de `entregas/dados-brutos-255/`,
+copie `snapshot/checkpoints/` e `snapshot/candidatos-prioridade-leves.json` para
+`data/raw/amostra-final-500/` e use uma cópia de `config.yaml` com os caminhos
+`raw`/`processed` em `amostra-final-500`. Execução, a partir de `Lab03`:
 
 ```powershell
 $env:GITHUB_TOKEN = gh auth token
@@ -48,10 +51,10 @@ alguns dias. Interrupções são retomadas pelo mesmo comando.
 ### Amostra-ouro (#155)
 
 O sorteio oficial (60 repositórios e 300 releases, `random_state=42`) foi feito
-sobre os 255 e já foi rotulado por A, B e C. **Proposta:** manter esse sorteio
-e declarar no artigo que ele foi feito sobre os primeiros 255 elegíveis. A
-amostra-ouro valida a heurística de release corretiva (CFR b), e um novo sorteio
-descartaria a rotulagem das três pessoas. A proposta depende de aceite do grupo.
+sobre os 255 e já foi rotulado por A, B e C. **Decisão:** o sorteio é mantido,
+sem novo sorteio, e o artigo declara que ele foi feito sobre os primeiros 255
+elegíveis da coleta. A amostra-ouro valida a heurística de release corretiva
+(CFR b), e um novo sorteio descartaria a rotulagem das três pessoas.
 
 ## Ainda vale
 
