@@ -1,0 +1,1111 @@
+{
+  "issue": 157,
+  "data": "2026-10-15",
+  "estado": "rascunho_IA_pendente_revisao_humana",
+  "autoria_das_sugestoes": "Codex/IA, por solicitação expressa do responsável",
+  "avaliacao_humana_independente": false,
+  "revisao_humana_realizada": false,
+  "contexto_conhecia_heuristica_161": true,
+  "rotulos_A_C_consultados": false,
+  "previsoes_heuristica_executadas_ou_consultadas_nesta_rotulagem": false,
+  "observacao_independencia": "O mesmo chat implementou a heurística #161. O usuário informou que C será preenchido em grupo; isso não representa três avaliações independentes para Fleiss.",
+  "criterio_corretiva": "Livro #155: ao menos uma correção de defeito; difere do objetivo principal no enunciado.",
+  "total_repositorios": 60,
+  "tipos_preenchidos": 60,
+  "entregas_reais_preenchidas": 60,
+  "total_releases": 300,
+  "decisoes_IA_releases": 288,
+  "releases_pendentes": [
+    {
+      "repo_id": 234798675,
+      "full_name": "bevyengine/bevy",
+      "release_id": 251319318,
+      "tag_name": "v0.17.1",
+      "motivo": "Notas só apontam para o diff; falta examinar a alteração concreta.",
+      "url": "https://github.com/bevyengine/bevy/releases/tag/v0.17.1"
+    },
+    {
+      "repo_id": 60246359,
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": 317982524,
+      "tag_name": "v26.4.1.1141-stable",
+      "motivo": "Sem notas; resposta de compare veio como HTML, não como patch. Pendente de changelog válido.",
+      "url": "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.4.1.1141-stable"
+    },
+    {
+      "repo_id": 331107018,
+      "full_name": "FuelLabs/sway",
+      "release_id": 253555837,
+      "tag_name": "v0.70.1",
+      "motivo": "Há revert de recurso, mas as notas não explicam o defeito; confirmar PR 7451.",
+      "url": "https://github.com/FuelLabs/sway/releases/tag/v0.70.1"
+    },
+    {
+      "repo_id": 679506386,
+      "full_name": "janhq/jan",
+      "release_id": 251666490,
+      "tag_name": "v0.7.0",
+      "motivo": "Notas incluem serviços web e traduções, mas o trecho examinado não demonstra defeito concreto. Pendente de revisão.",
+      "url": "https://github.com/janhq/jan/releases/tag/v0.7.0"
+    },
+    {
+      "repo_id": 1644196,
+      "full_name": "JuliaLang/julia",
+      "release_id": 252875506,
+      "tag_name": "v1.12.0",
+      "motivo": "Notas remetem a NEWS.md; conferir a seção específica da versão.",
+      "url": "https://github.com/JuliaLang/julia/releases/tag/v1.12.0"
+    },
+    {
+      "repo_id": 3214406,
+      "full_name": "meteor/meteor",
+      "release_id": 384693385,
+      "tag_name": "release/METEOR@3.0",
+      "motivo": "Lançamento amplo de recursos; revisar notas integrais antes de decidir.",
+      "url": "https://github.com/meteor/meteor/releases/tag/release/METEOR%403.0"
+    },
+    {
+      "repo_id": 7691631,
+      "full_name": "moby/moby",
+      "release_id": 261265152,
+      "tag_name": "docker-v29.0.0",
+      "motivo": "Release ampla; selecionar correção funcional concreta nas notas.",
+      "url": "https://github.com/moby/moby/releases/tag/docker-v29.0.0"
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": 345115694,
+      "tag_name": "v2.8.8",
+      "motivo": "Notas classificam como Bug Fix a publicação sob pacote npm alternativo, mas não descrevem o defeito; revisar PR 393.",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.8.8"
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": 345573538,
+      "tag_name": "v2.9.0",
+      "motivo": "Nota contém apenas cabeçalho de versão; pendente por evidência insuficiente.",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.9.0"
+    },
+    {
+      "repo_id": 1024554267,
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": 371876201,
+      "tag_name": "v2026.8.16.2",
+      "motivo": "Resumo adia notas detalhadas e lista grande volume de PRs; falta evidência específica de correção examinada.",
+      "url": "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2"
+    },
+    {
+      "repo_id": 725205304,
+      "full_name": "unslothai/unsloth",
+      "release_id": 389862460,
+      "tag_name": "Windows-ARM64",
+      "motivo": "Release Windows-ARM64 sem notas; inspecionar diff ou changelog.",
+      "url": "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64"
+    },
+    {
+      "repo_id": 1086419061,
+      "full_name": "vectorize-io/hindsight",
+      "release_id": 267408243,
+      "tag_name": "v0.0.16",
+      "motivo": "Nota de instalação sem alterações funcionais descritas; diff necessário.",
+      "url": "https://github.com/vectorize-io/hindsight/releases/tag/v0.0.16"
+    }
+  ],
+  "releases_sim": 240,
+  "releases_nao": 48,
+  "hashes_antes": {
+    "rotulador_B_repositorios.csv": "ebc04308575e377b988e26ddebde2b759c98d646e4c289a3297937d39e7f9c9a",
+    "rotulador_B_releases.csv": "f6ba41a30b6f989677e543a15e7fe2e64b282ac8e014a6c2b81a4716cbba8933"
+  },
+  "hashes_depois": {
+    "rotulador_B_repositorios.csv": "a220c3488d9ca44c574960f61c0a349eacfdf08545d29ed7b40f1c7be8722b5e",
+    "rotulador_B_releases.csv": "bb6bc7e1a137b90fb5979cec5d168609b4e511a30acc51c1671bb5cfaec77e46"
+  },
+  "manifesto_amostra_sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
+  "livro_codigos_sha256": "e3471a9f6b15543e1b835441c93967b6dbc6fe72d5084a4465c58f8ebbfd26bb",
+  "fontes_notas_snapshot": [
+    {
+      "repo_id": 1024554267,
+      "full_name": "NousResearch/hermes-agent",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1024554267.json",
+      "sha256": "e557d232bedafd2f04116f8c59a7967a73a836641408d404c70cdc4eadf923dd"
+    },
+    {
+      "repo_id": 1054793726,
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1054793726.json",
+      "sha256": "6a05880793ea3ae7940c1cb9cb45027d9082f958c719c0af4f06b7b3bead4012"
+    },
+    {
+      "repo_id": 10744183,
+      "full_name": "netdata/netdata",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/10744183.json",
+      "sha256": "f32e38548f516b9d82de96c9255c7d437a41cdd696d5f34d82621ea37bf1ef7d"
+    },
+    {
+      "repo_id": 1086419061,
+      "full_name": "vectorize-io/hindsight",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1086419061.json",
+      "sha256": "b269ab32051c848c9152aabf4654849171ad23502ac363500e7a55718fe8fda3"
+    },
+    {
+      "repo_id": 1103012935,
+      "full_name": "openclaw/openclaw",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1103012935.json",
+      "sha256": "562d31004a678c1ef937c06e25a13f7ca4806feb52406e22dff2fd33b0d53b53"
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1106996539.json",
+      "sha256": "632c3b0811f7c75b0a5d2546809f01fe7c514644619562b70b36332ca9418a29"
+    },
+    {
+      "repo_id": 1135212071,
+      "full_name": "coreyhaines31/marketingskills",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1135212071.json",
+      "sha256": "1fdfc68c701e6dad9dd6bd96a761524e9b3670007779893df3d0a1a065ccd561"
+    },
+    {
+      "repo_id": 1144520675,
+      "full_name": "Alishahryar1/free-claude-code",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1144520675.json",
+      "sha256": "bd234618f7527a267149a522fc457064946bf190fecebbb904c3e3aaf3614a14"
+    },
+    {
+      "repo_id": 1165277268,
+      "full_name": "Panniantong/Agent-Reach",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1165277268.json",
+      "sha256": "2dfeda914d9c620ebb21b3ceba8d36f2febfbeebe68ecb4b349276548b2350a5"
+    },
+    {
+      "repo_id": 1182081931,
+      "full_name": "Egonex-AI/Understand-Anything",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1182081931.json",
+      "sha256": "94da2b9da03e206107787445b93fa7ed3e4ec996f390d3405b425488d882e3d2"
+    },
+    {
+      "repo_id": 1223170290,
+      "full_name": "nexu-io/open-design",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1223170290.json",
+      "sha256": "774807986c03a8a3682f9946f9112cb6e3bd80f7d22b8f74df07a32a921d56a8"
+    },
+    {
+      "repo_id": 12256376,
+      "full_name": "ionic-team/ionic-framework",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/12256376.json",
+      "sha256": "50cba8f798d5d86ec59dd136db622785777bb7dc6b4bf1b7fd825d6acb60e88d"
+    },
+    {
+      "repo_id": 133442384,
+      "full_name": "denoland/deno",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/133442384.json",
+      "sha256": "164ec96bb7ee6ff1ecaeee9055f0a2e64fcee26879222dacee8d31c4c128a284"
+    },
+    {
+      "repo_id": 134017286,
+      "full_name": "jesseduffield/lazygit",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/134017286.json",
+      "sha256": "ec61de5a7acc45a1347508cc7cde8f70fe45bc18bd1be94df75ed1bfc83b7160"
+    },
+    {
+      "repo_id": 14747598,
+      "full_name": "typicode/json-server",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/14747598.json",
+      "sha256": "37134f58c58bf83e48dbbcb00b463c567352496bce563a88695e3ba3f6c8195f"
+    },
+    {
+      "repo_id": 1644196,
+      "full_name": "JuliaLang/julia",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1644196.json",
+      "sha256": "a5a6892ca12ce4985281cb516fd3b6c2e39c27b3fafb9b403d1ec29c91cca545"
+    },
+    {
+      "repo_id": 1663468,
+      "full_name": "mozilla/pdf.js",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/1663468.json",
+      "sha256": "d60d0b1fce6f15f3d256bb92c65bef7db804de73e7fd65c29f11f810063169c5"
+    },
+    {
+      "repo_id": 172953845,
+      "full_name": "coder/code-server",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/172953845.json",
+      "sha256": "d1ded26dcb97ac990d363b985eb6296f5ed49adbcee93ba5da07edc3ac9881bd"
+    },
+    {
+      "repo_id": 17728164,
+      "full_name": "hashicorp/terraform",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/17728164.json",
+      "sha256": "9b84b2a1b373a6ed26b332fc9122d20a3835b91b52401e2bf988e6715b90beb0"
+    },
+    {
+      "repo_id": 207645083,
+      "full_name": "TanStack/query",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/207645083.json",
+      "sha256": "03280c77cc71a6f3baa469b4b5391f64958e3f72112ef52dda8edb5d0a5a006a"
+    },
+    {
+      "repo_id": 212613049,
+      "full_name": "cli/cli",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/212613049.json",
+      "sha256": "1e713e08f40fc04b43360b893593f1bddd871b53123e45798b90b85f93227f32"
+    },
+    {
+      "repo_id": 234798675,
+      "full_name": "bevyengine/bevy",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/234798675.json",
+      "sha256": "d7fcad999c7579d8ed4283d546330234a68ceccad3f6dbe73af71cd883174150"
+    },
+    {
+      "repo_id": 257485422,
+      "full_name": "vitejs/vite",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/257485422.json",
+      "sha256": "e599337479bd5de1171e6e06291bb4eee04523e6a9a19044f6755d39a79470b7"
+    },
+    {
+      "repo_id": 27193779,
+      "full_name": "nodejs/node",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/27193779.json",
+      "sha256": "c155215464e5a0277679a09e465a1cc6606e666c53cbbeded3e95907e5332f1a"
+    },
+    {
+      "repo_id": 3214406,
+      "full_name": "meteor/meteor",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/3214406.json",
+      "sha256": "f021d56b5da368c8a0798368a159fdb0a3e24a4d7d854e4a3ee564e372f1b856"
+    },
+    {
+      "repo_id": 327089870,
+      "full_name": "payloadcms/payload",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/327089870.json",
+      "sha256": "dd1c59ac522c95c1d08db7c80b419588c852fbd7ceabcd964fd03e5ddb40a744"
+    },
+    {
+      "repo_id": 331107018,
+      "full_name": "FuelLabs/sway",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/331107018.json",
+      "sha256": "0726dfb959b9744f7c9c97097056b8a4444546d3737ccce9684c1dc5ea90fe6c"
+    },
+    {
+      "repo_id": 33884891,
+      "full_name": "apache/airflow",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/33884891.json",
+      "sha256": "92676804def8cc789d6a4db207b14fbf45f5204a4576a78144de2cd209a697f8"
+    },
+    {
+      "repo_id": 340547520,
+      "full_name": "zed-industries/zed",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/340547520.json",
+      "sha256": "c399d6391013391ea99d02d6ab28b3a31ec92169a0be052114d4bfb5de155553"
+    },
+    {
+      "repo_id": 361044034,
+      "full_name": "slidevjs/slidev",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/361044034.json",
+      "sha256": "ba347be464484018eb3ca267144dbd55bc176534d5b5a5128f5a8bda3afbd896"
+    },
+    {
+      "repo_id": 3678731,
+      "full_name": "webpack/webpack",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/3678731.json",
+      "sha256": "ed3ad6b30e3cd610190b519bc6a3ce30ae01616f30d07ecf8253255bcb759340"
+    },
+    {
+      "repo_id": 42408804,
+      "full_name": "traefik/traefik",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/42408804.json",
+      "sha256": "8485f2cbd85559e1cd9d3bfd57e39298171805b86068c9503deb8586f018c916"
+    },
+    {
+      "repo_id": 43441403,
+      "full_name": "strapi/strapi",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/43441403.json",
+      "sha256": "8df47d286bf7119126b2ede02723bda54e8ddfd9395c59409e9799e05db97c40"
+    },
+    {
+      "repo_id": 458648791,
+      "full_name": "paperless-ngx/paperless-ngx",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/458648791.json",
+      "sha256": "63047acbed55b78b41e81b7af73c8af4be1529791833aec9d8d396500389c118"
+    },
+    {
+      "repo_id": 48378947,
+      "full_name": "fatedier/frp",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/48378947.json",
+      "sha256": "8ab69be36b32a78e1d4a290ad3373f334e83d4726f8deb53f4b7d7097d1718e9"
+    },
+    {
+      "repo_id": 522158088,
+      "full_name": "zhayujie/CowAgent",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/522158088.json",
+      "sha256": "9eb821fec7c2982b5b1c0260151b5c0bc114b049f08ef46f64c0fee36656b1e9"
+    },
+    {
+      "repo_id": 571770,
+      "full_name": "jgm/pandoc",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/571770.json",
+      "sha256": "eff5395fd4a7420df1ab76d0d16e27a3482e4b9fbfc0edc25c2b11e56dd3a948"
+    },
+    {
+      "repo_id": 572984571,
+      "full_name": "twentyhq/twenty",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/572984571.json",
+      "sha256": "1bef0f186ec6f35cf1de3ff50de36631b4ee14901e70875ef0deff3b5a868e6e"
+    },
+    {
+      "repo_id": 594155488,
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/594155488.json",
+      "sha256": "2a80c5bafeb7b00380b8134dc2cf0e06e2346c029c00b125689ce67eb6837304"
+    },
+    {
+      "repo_id": 60246359,
+      "full_name": "ClickHouse/ClickHouse",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/60246359.json",
+      "sha256": "83d52d6068cac30ac084f42e5dd7efbf432bc94f271f9da63fd811ead7bd56d6"
+    },
+    {
+      "repo_id": 649170660,
+      "full_name": "Mintplex-Labs/anything-llm",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/649170660.json",
+      "sha256": "6e779f462c4acce5e0810b5b421d75531fe187611aa8a0af7642de78002c26a7"
+    },
+    {
+      "repo_id": 656099147,
+      "full_name": "mem0ai/mem0",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/656099147.json",
+      "sha256": "98dbc03fa3a0db0a3110a0647c5ad54b7b3556ada75252c3f94c97bbdf182bbd"
+    },
+    {
+      "repo_id": 679506386,
+      "full_name": "janhq/jan",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/679506386.json",
+      "sha256": "8c703cdad2ade21f9664a30105fbfa46879731475c3155ec99fc7caad8002172"
+    },
+    {
+      "repo_id": 699532645,
+      "full_name": "astral-sh/uv",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/699532645.json",
+      "sha256": "154acde4b1860208e5e615ccf56563c41d8f4e29b002c0f28f52fb51c9ab5e42"
+    },
+    {
+      "repo_id": 70107786,
+      "full_name": "vercel/next.js",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/70107786.json",
+      "sha256": "984bdd3793b54d027b088e660813d096185982a91915d599c33ba5813dfe2466"
+    },
+    {
+      "repo_id": 721767116,
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/721767116.json",
+      "sha256": "2e0c483c59f9061a3ae51b48266d503e65ad8db2cce80573782065f19c184289"
+    },
+    {
+      "repo_id": 724712,
+      "full_name": "rust-lang/rust",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/724712.json",
+      "sha256": "1e5da5269b38a11c449c23c7aa444100083b0a7b19e2cc504b3108e39dac7d93"
+    },
+    {
+      "repo_id": 725205304,
+      "full_name": "unslothai/unsloth",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/725205304.json",
+      "sha256": "5d306c6ce905b38f4092aaf9d9242b62a665099025a22a27fa85158a8b36db36"
+    },
+    {
+      "repo_id": 74627617,
+      "full_name": "commaai/openpilot",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/74627617.json",
+      "sha256": "67f89672395f357da037fa7852afedf4ec1cbb77b79a4120635ce30c9a76ec51"
+    },
+    {
+      "repo_id": 7691631,
+      "full_name": "moby/moby",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/7691631.json",
+      "sha256": "c913d242bd6358b28377cef0a32681c9f203d97d7a2060f5f7de73a3b390da63"
+    },
+    {
+      "repo_id": 77213120,
+      "full_name": "Eugeny/tabby",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/77213120.json",
+      "sha256": "1a5f014d62a92589a20804f157cb15467396d8d5d8d8e5009456c94dfc753987"
+    },
+    {
+      "repo_id": 7741856,
+      "full_name": "pixijs/pixijs",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/7741856.json",
+      "sha256": "2fecb5fa181a3bdbf28b43d226948753bf868a32847efea7b0d3ad8d529d6685"
+    },
+    {
+      "repo_id": 778556932,
+      "full_name": "zen-browser/desktop",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/778556932.json",
+      "sha256": "ff6bdfeec5a967f8916e3f97cbc692016b9c9687f6b1050a36c6c6d77ce1e102"
+    },
+    {
+      "repo_id": 826168160,
+      "full_name": "docling-project/docling",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/826168160.json",
+      "sha256": "553047d5be44e85bd0891664fea3d98a923f78f848abd7498331bee3bcce1952"
+    },
+    {
+      "repo_id": 858127,
+      "full_name": "pandas-dev/pandas",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/858127.json",
+      "sha256": "3774cf54fdc1c72c399803bfc293d98d20965c2390d962783ee96a2b8032775e"
+    },
+    {
+      "repo_id": 881458615,
+      "full_name": "browser-use/browser-use",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/881458615.json",
+      "sha256": "b79e603ff9d5bdce3f18bad024b4ff00abf2489c3ea31f9e42154fc0afda5f99"
+    },
+    {
+      "repo_id": 896924279,
+      "full_name": "moeru-ai/airi",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/896924279.json",
+      "sha256": "a708e10afc8526e2ab230decf82881d882503f9e893b5f890d9551ddf33cd8ff"
+    },
+    {
+      "repo_id": 955620917,
+      "full_name": "upstash/context7",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/955620917.json",
+      "sha256": "825974867088402850af5ee08761bd6bf34194f7b6a8ad921d94207c7fca87d5"
+    },
+    {
+      "repo_id": 975734319,
+      "full_name": "anomalyco/opencode",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/975734319.json",
+      "sha256": "e83ac50a1e28845e2377811b76e68fc76883e037355fe3a5d2f7d31dcfef2847"
+    },
+    {
+      "repo_id": 993475914,
+      "full_name": "apple/container",
+      "fonte": "snapshot/checkpoints/efc8b16132452557c7fd291b70cef74d2c97e7dd53b0b36dce76db5a17362609/993475914.json",
+      "sha256": "de68e5d5a8543e2dcc8ae6b644fe9dbefe0246958cc5942eee4f6870a5901fbb"
+    }
+  ],
+  "fontes_readme": [
+    {
+      "repo_id": 1144520675,
+      "full_name": "Alishahryar1/free-claude-code",
+      "url": "https://raw.githubusercontent.com/Alishahryar1/free-claude-code/HEAD/README.md",
+      "sha256": "ecf522beeb649bd9d6a64541d5f51bc14a5b3572407f4ecca506793322b93703",
+      "caracteres": 27582
+    },
+    {
+      "repo_id": 975734319,
+      "full_name": "anomalyco/opencode",
+      "url": "https://raw.githubusercontent.com/anomalyco/opencode/HEAD/README.md",
+      "sha256": "e3dececf8d5d381b3f3055e27b23c0e13393365f07ed1b0ec4550fe6f3a11111",
+      "caracteres": 5321
+    },
+    {
+      "repo_id": 33884891,
+      "full_name": "apache/airflow",
+      "url": "https://raw.githubusercontent.com/apache/airflow/HEAD/README.md",
+      "sha256": "ed42ef8038420c3e20116e40cb38751989aa90fd69632e200d3766e21aab00a0",
+      "caracteres": 41613
+    },
+    {
+      "repo_id": 993475914,
+      "full_name": "apple/container",
+      "url": "https://raw.githubusercontent.com/apple/container/HEAD/README.md",
+      "sha256": "e139019fdc5c1e828bea3cb9ff477685ced6163691ac1107afdb01bf5d7e8bb7",
+      "caracteres": 4853
+    },
+    {
+      "repo_id": 699532645,
+      "full_name": "astral-sh/uv",
+      "url": "https://raw.githubusercontent.com/astral-sh/uv/HEAD/README.md",
+      "sha256": "57a84a5a635f30e3a26541ebc16ca690944a7750f05713b1af92d3170b58f704",
+      "caracteres": 9853
+    },
+    {
+      "repo_id": 234798675,
+      "full_name": "bevyengine/bevy",
+      "url": "https://raw.githubusercontent.com/bevyengine/bevy/HEAD/README.md",
+      "sha256": "dd2327c348fe01e66f585fd00f8cf06b07396afaf9194c228a6291b87a314c2f",
+      "caracteres": 7650
+    },
+    {
+      "repo_id": 881458615,
+      "full_name": "browser-use/browser-use",
+      "url": "https://raw.githubusercontent.com/browser-use/browser-use/HEAD/README.md",
+      "sha256": "4001472513d2ac2529424849af9633d2b78240b4d6a421abb1314af415314d7a",
+      "caracteres": 17333
+    },
+    {
+      "repo_id": 1054793726,
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "url": "https://raw.githubusercontent.com/ChromeDevTools/chrome-devtools-mcp/HEAD/README.md",
+      "sha256": "059a0349daaef6bda98eae6d9384ed349ac94b8033b18be817c317a01b472024",
+      "caracteres": 6445
+    },
+    {
+      "repo_id": 721767116,
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "url": "https://raw.githubusercontent.com/clash-verge-rev/clash-verge-rev/HEAD/README.md",
+      "sha256": "d2a8171e5c7f7c62efa2d1a6412baff680fefdfa851f945143c5d7fe66fd49d2",
+      "caracteres": 5114
+    },
+    {
+      "repo_id": 212613049,
+      "full_name": "cli/cli",
+      "url": "https://raw.githubusercontent.com/cli/cli/HEAD/README.md",
+      "sha256": "5816da6f27253e6e5544e9c8d7b0f652e03200a0345fae1693e50d72fabb8cc4",
+      "caracteres": 6282
+    },
+    {
+      "repo_id": 60246359,
+      "full_name": "ClickHouse/ClickHouse",
+      "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/HEAD/README.md",
+      "sha256": "b4375e81937ae0daf57e32a166d319357d4fd5dcf713a1f7806bedaeff00a34d",
+      "caracteres": 5804
+    },
+    {
+      "repo_id": 172953845,
+      "full_name": "coder/code-server",
+      "erro": "README não encontrado"
+    },
+    {
+      "repo_id": 74627617,
+      "full_name": "commaai/openpilot",
+      "url": "https://raw.githubusercontent.com/commaai/openpilot/HEAD/README.md",
+      "sha256": "341ddeb74fc41bf14296cd25cce9047f0e00d5e5ad4bff7c1ad6cdc61aee034b",
+      "caracteres": 8301
+    },
+    {
+      "repo_id": 1135212071,
+      "full_name": "coreyhaines31/marketingskills",
+      "url": "https://raw.githubusercontent.com/coreyhaines31/marketingskills/HEAD/README.md",
+      "sha256": "3a5a8aae62fa83e5b1948f9d2855a57b7ecff9814f0c0e47c75ea7518e681f4d",
+      "caracteres": 23094
+    },
+    {
+      "repo_id": 133442384,
+      "full_name": "denoland/deno",
+      "url": "https://raw.githubusercontent.com/denoland/deno/HEAD/README.md",
+      "sha256": "83a959d62dea940f94ce1b50024928e34afb447de35197b7ea1d944fd6dbbcf7",
+      "caracteres": 3804
+    },
+    {
+      "repo_id": 826168160,
+      "full_name": "docling-project/docling",
+      "url": "https://raw.githubusercontent.com/docling-project/docling/HEAD/README.md",
+      "sha256": "ce605634509dc87d79182131ad001e5fddf6053963b9045b971c6e87e6b9bfa1",
+      "caracteres": 8504
+    },
+    {
+      "repo_id": 1182081931,
+      "full_name": "Egonex-AI/Understand-Anything",
+      "url": "https://raw.githubusercontent.com/Egonex-AI/Understand-Anything/HEAD/README.md",
+      "sha256": "babfbcec859e8c92dba5afa54e688feceec6051fefa184dad9a11277f737bc1a",
+      "caracteres": 20395
+    },
+    {
+      "repo_id": 77213120,
+      "full_name": "Eugeny/tabby",
+      "url": "https://raw.githubusercontent.com/Eugeny/tabby/HEAD/README.md",
+      "sha256": "afda31192ba70317f3a167ef9cb7efcd53226e127c503ddd9f6b6d248133a834",
+      "caracteres": 61477
+    },
+    {
+      "repo_id": 48378947,
+      "full_name": "fatedier/frp",
+      "url": "https://raw.githubusercontent.com/fatedier/frp/HEAD/README.md",
+      "sha256": "313012eaf06b1d28602131331202c5242e52789a1c3c3a269165ae9c4d649d16",
+      "caracteres": 44524
+    },
+    {
+      "repo_id": 331107018,
+      "full_name": "FuelLabs/sway",
+      "url": "https://raw.githubusercontent.com/FuelLabs/sway/HEAD/README.md",
+      "sha256": "5649a9af7cbf89eb4558d394cfa7b2a16c80c66ae0ebf6eebc1e42bd3606fbe0",
+      "caracteres": 3669
+    },
+    {
+      "repo_id": 17728164,
+      "full_name": "hashicorp/terraform",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform/HEAD/README.md",
+      "sha256": "d40d35d459d5590bf6cc94559ea65e6f55c2e034b9f5fb9cadf16fc0b224f79a",
+      "caracteres": 3935
+    },
+    {
+      "repo_id": 12256376,
+      "full_name": "ionic-team/ionic-framework",
+      "url": "https://raw.githubusercontent.com/ionic-team/ionic-framework/HEAD/README.md",
+      "sha256": "7f870261157f65cb4b8d3ea0752511ee1571e58c8e12f6b33270752424e2914d",
+      "caracteres": 6152
+    },
+    {
+      "repo_id": 679506386,
+      "full_name": "janhq/jan",
+      "url": "https://raw.githubusercontent.com/janhq/jan/HEAD/README.md",
+      "sha256": "297a156f1747488b907a98fb9182027ba3c535386b6827195528925abba80998",
+      "caracteres": 7163
+    },
+    {
+      "repo_id": 134017286,
+      "full_name": "jesseduffield/lazygit",
+      "url": "https://raw.githubusercontent.com/jesseduffield/lazygit/HEAD/README.md",
+      "sha256": "19f542934547f49ec0a1f1a33e0ef413ced3e7c7427380801ba8e50ea624f34a",
+      "caracteres": 40153
+    },
+    {
+      "repo_id": 571770,
+      "full_name": "jgm/pandoc",
+      "url": "https://raw.githubusercontent.com/jgm/pandoc/HEAD/README.md",
+      "sha256": "4375d3060e00abfa1ec0013bfef122f1e678ad40013a7a18e4e4214d4f0c427d",
+      "caracteres": 13778
+    },
+    {
+      "repo_id": 1644196,
+      "full_name": "JuliaLang/julia",
+      "url": "https://raw.githubusercontent.com/JuliaLang/julia/HEAD/README.md",
+      "sha256": "917d955497a6cdfcdc9d22dda17b2955ad220d27067a406990b7f44421b5ca47",
+      "caracteres": 8301
+    },
+    {
+      "repo_id": 656099147,
+      "full_name": "mem0ai/mem0",
+      "url": "https://raw.githubusercontent.com/mem0ai/mem0/HEAD/README.md",
+      "sha256": "f72db3426438dbdf6879a2b50583fbee8e7e2dde5d01308c6295bcd09fd3db86",
+      "caracteres": 12261
+    },
+    {
+      "repo_id": 3214406,
+      "full_name": "meteor/meteor",
+      "url": "https://raw.githubusercontent.com/meteor/meteor/HEAD/README.md",
+      "sha256": "4a0554e6f769f4724d023a37ea17b508caeca6b426b8253c9314ee93e6a58105",
+      "caracteres": 4600
+    },
+    {
+      "repo_id": 649170660,
+      "full_name": "Mintplex-Labs/anything-llm",
+      "url": "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/HEAD/README.md",
+      "sha256": "88174db2f05effe59f122a9f2b9729b840d14bbd137323f2c5c499be78e9ceff",
+      "caracteres": 26870
+    },
+    {
+      "repo_id": 7691631,
+      "full_name": "moby/moby",
+      "url": "https://raw.githubusercontent.com/moby/moby/HEAD/README.md",
+      "sha256": "97dff8df1c816b0c115f7fcd976bbaaf9106edc0f5d8c8559c74a6bcac285b04",
+      "caracteres": 5487
+    },
+    {
+      "repo_id": 896924279,
+      "full_name": "moeru-ai/airi",
+      "url": "https://raw.githubusercontent.com/moeru-ai/airi/HEAD/README.md",
+      "sha256": "cb3bd22b7f6ca63f3e009933f117611857f5e1f9cbe253d86ef74b8038498b17",
+      "caracteres": 27172
+    },
+    {
+      "repo_id": 1663468,
+      "full_name": "mozilla/pdf.js",
+      "url": "https://raw.githubusercontent.com/mozilla/pdf.js/HEAD/README.md",
+      "sha256": "cf672f85411575de7e6996f11bf300f0c747749f0c6a288b0c931af0c324655c",
+      "caracteres": 9830
+    },
+    {
+      "repo_id": 10744183,
+      "full_name": "netdata/netdata",
+      "url": "https://raw.githubusercontent.com/netdata/netdata/HEAD/README.md",
+      "sha256": "e78af62f9af72ef9a0fa0cf46a8b0252af185b5a7d94aeaf40325a8b213cd4c8",
+      "caracteres": 26186
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "url": "https://raw.githubusercontent.com/nextlevelbuilder/ui-ux-pro-max-skill/HEAD/README.md",
+      "sha256": "a12a95b7ce7d4ea88908e1ccf09b16a8a16d851d267228e954d1981da9c3dde2",
+      "caracteres": 36649
+    },
+    {
+      "repo_id": 1223170290,
+      "full_name": "nexu-io/open-design",
+      "url": "https://raw.githubusercontent.com/nexu-io/open-design/HEAD/README.md",
+      "sha256": "dbd9cd62043f52a7c38af33b10dc6dd66f7c01a88211d2a3ce8dbfd5a00ed74a",
+      "caracteres": 53955
+    },
+    {
+      "repo_id": 27193779,
+      "full_name": "nodejs/node",
+      "url": "https://raw.githubusercontent.com/nodejs/node/HEAD/README.md",
+      "sha256": "86dfc824b89a2ae1d900bd4fa942b2c4d537747df4e3c47ed6eb3ef6995c80c8",
+      "caracteres": 42510
+    },
+    {
+      "repo_id": 1024554267,
+      "full_name": "NousResearch/hermes-agent",
+      "url": "https://raw.githubusercontent.com/NousResearch/hermes-agent/HEAD/README.md",
+      "sha256": "c8c3009b1cf6e8d6e48e96a9b4c549d9ab0c86fdaffd91b19f3e9d9b37d93d9d",
+      "caracteres": 16818
+    },
+    {
+      "repo_id": 1103012935,
+      "full_name": "openclaw/openclaw",
+      "url": "https://raw.githubusercontent.com/openclaw/openclaw/HEAD/README.md",
+      "sha256": "d82fbca82ec05d132e0dbbb2c98763fcea56a0f0ce818768b1a9a94776a06411",
+      "caracteres": 113117
+    },
+    {
+      "repo_id": 858127,
+      "full_name": "pandas-dev/pandas",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/HEAD/README.md",
+      "sha256": "66a8868c35a849f12a218d19aebb172faf673153d31a22e9217c6899576e7c51",
+      "caracteres": 11247
+    },
+    {
+      "repo_id": 1165277268,
+      "full_name": "Panniantong/Agent-Reach",
+      "url": "https://raw.githubusercontent.com/Panniantong/Agent-Reach/HEAD/README.md",
+      "sha256": "7b723bcd4e5992c37ad1c25c3a2badd89c723a105b787fde9d1aa19a215f7ff7",
+      "caracteres": 15038
+    },
+    {
+      "repo_id": 458648791,
+      "full_name": "paperless-ngx/paperless-ngx",
+      "url": "https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/HEAD/README.md",
+      "sha256": "57aadae7f68c77d36a3ed5b2954129e8675b7e63c2453bf16c93bce774cdb7ec",
+      "caracteres": 6607
+    },
+    {
+      "repo_id": 327089870,
+      "full_name": "payloadcms/payload",
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/HEAD/README.md",
+      "sha256": "54bcaba223f7894a070d982e4bd92f6e9978d9acbe4b3e81db7d6e3278f7491a",
+      "caracteres": 8193
+    },
+    {
+      "repo_id": 7741856,
+      "full_name": "pixijs/pixijs",
+      "url": "https://raw.githubusercontent.com/pixijs/pixijs/HEAD/README.md",
+      "sha256": "b3cb23be81679ac800387f85ed094131addf9226136a2133dbdd7c8922e6e088",
+      "caracteres": 4965
+    },
+    {
+      "repo_id": 724712,
+      "full_name": "rust-lang/rust",
+      "url": "https://raw.githubusercontent.com/rust-lang/rust/HEAD/README.md",
+      "sha256": "b3f6ef2fef88b98cb9ec013a5c86213095e53e40eb228679574e4d06517f33c8",
+      "caracteres": 3304
+    },
+    {
+      "repo_id": 361044034,
+      "full_name": "slidevjs/slidev",
+      "url": "https://raw.githubusercontent.com/slidevjs/slidev/HEAD/README.md",
+      "sha256": "77ecf5c459f086b84db30ae36065470c9bf018524f19b8b1f3c1ec915b517e0e",
+      "caracteres": 5339
+    },
+    {
+      "repo_id": 594155488,
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "url": "https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/HEAD/README.md",
+      "sha256": "0539da44759af7d1c3da8d76b00b892d9ebda4c82f9e161f01658f188a66ed86",
+      "caracteres": 3193
+    },
+    {
+      "repo_id": 43441403,
+      "full_name": "strapi/strapi",
+      "url": "https://raw.githubusercontent.com/strapi/strapi/HEAD/README.md",
+      "sha256": "cbc029a16a9d8cb0df0857f8a59001d70792f432cf40c1c5c9c2fa6d653829ea",
+      "caracteres": 8866
+    },
+    {
+      "repo_id": 207645083,
+      "full_name": "TanStack/query",
+      "url": "https://raw.githubusercontent.com/TanStack/query/HEAD/README.md",
+      "sha256": "8b48efd96b0760eb8001b16ae4cbabd812ee050b22d13e3eca3a42daaf28a03b",
+      "caracteres": 5448
+    },
+    {
+      "repo_id": 42408804,
+      "full_name": "traefik/traefik",
+      "url": "https://raw.githubusercontent.com/traefik/traefik/HEAD/README.md",
+      "sha256": "a0d231580233fd3096498e738578e222c2fb524e6aaa84723357f846ed440634",
+      "caracteres": 7864
+    },
+    {
+      "repo_id": 572984571,
+      "full_name": "twentyhq/twenty",
+      "url": "https://raw.githubusercontent.com/twentyhq/twenty/HEAD/README.md",
+      "sha256": "5c8dc531b01f1bedddb73acba2181252042d0fc663595bda9214c447617627bb",
+      "caracteres": 11978
+    },
+    {
+      "repo_id": 14747598,
+      "full_name": "typicode/json-server",
+      "url": "https://raw.githubusercontent.com/typicode/json-server/HEAD/README.md",
+      "sha256": "38ef834447dc93033ed80cbc578cdad8de63eb62a32d282edfd82c109d313b5d",
+      "caracteres": 8189
+    },
+    {
+      "repo_id": 725205304,
+      "full_name": "unslothai/unsloth",
+      "url": "https://raw.githubusercontent.com/unslothai/unsloth/HEAD/README.md",
+      "sha256": "a18295739665a3f44a282b8200d063dfd8f702ac76cd13a68d9583f9174c5a18",
+      "caracteres": 23675
+    },
+    {
+      "repo_id": 955620917,
+      "full_name": "upstash/context7",
+      "url": "https://raw.githubusercontent.com/upstash/context7/HEAD/README.md",
+      "sha256": "51a768b6bdfdb3e343df90be27a2db4cebc7a560d83516cdfd8fe9d7cef109a0",
+      "caracteres": 9542
+    },
+    {
+      "repo_id": 1086419061,
+      "full_name": "vectorize-io/hindsight",
+      "url": "https://raw.githubusercontent.com/vectorize-io/hindsight/HEAD/README.md",
+      "sha256": "a3e2745dedec4f9e0d4452857ef054699e60414740f5d8f12d41bd42711d476a",
+      "caracteres": 24805
+    },
+    {
+      "repo_id": 70107786,
+      "full_name": "vercel/next.js",
+      "url": "https://raw.githubusercontent.com/vercel/next.js/HEAD/readme.md",
+      "sha256": "86fa4cae97d711fd7d23ac4189750e63011f2cf7fca8f844d4caa4a5484a8e3d",
+      "caracteres": 23
+    },
+    {
+      "repo_id": 257485422,
+      "full_name": "vitejs/vite",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/HEAD/README.md",
+      "sha256": "588718673f32a3691b8e75b93fb4c2f8e8bc9a6dc0bf61794ba7b6c006594111",
+      "caracteres": 3392
+    },
+    {
+      "repo_id": 3678731,
+      "full_name": "webpack/webpack",
+      "url": "https://raw.githubusercontent.com/webpack/webpack/HEAD/README.md",
+      "sha256": "0b959a147e8b875e42f77fa5804c8d4e70f86b3399d4baba9d90d2f756dd2e0f",
+      "caracteres": 79624
+    },
+    {
+      "repo_id": 340547520,
+      "full_name": "zed-industries/zed",
+      "url": "https://raw.githubusercontent.com/zed-industries/zed/HEAD/README.md",
+      "sha256": "0a1b8417d31d53dfd6b4f1c5cc1a1a6f7ae6d3ac044bdb1938bd49cbd09d8198",
+      "caracteres": 2852
+    },
+    {
+      "repo_id": 778556932,
+      "full_name": "zen-browser/desktop",
+      "url": "https://raw.githubusercontent.com/zen-browser/desktop/HEAD/README.md",
+      "sha256": "cfaafd510af24e2f0f344ff4d710431b525288529886212894311548264ed2d0",
+      "caracteres": 2015
+    },
+    {
+      "repo_id": 522158088,
+      "full_name": "zhayujie/CowAgent",
+      "url": "https://raw.githubusercontent.com/zhayujie/CowAgent/HEAD/README.md",
+      "sha256": "9e0f6b6f23bdb85ef02c544169932be15cfff7ace94f154271b0880d38d77cc4",
+      "caracteres": 20485
+    }
+  ],
+  "fontes_apoio": [
+    {
+      "chave": "252169671",
+      "url": "https://github.com/bevyengine/bevy/compare/v0.17.1...v0.17.2.patch",
+      "sha256": "5d3e5b79ad524b33336cceaaa26e7a347542e9efd4ecd90bfe599178494c5a92",
+      "bytes": 132195
+    },
+    {
+      "chave": "263106890",
+      "url": "https://github.com/bevyengine/bevy/compare/v0.17.2...v0.17.3.patch",
+      "sha256": "ad84df0ea8bb6f59017dcb50dd0c8d18d7a11043d4e39fcde13b387aef84de60",
+      "bytes": 199010
+    },
+    {
+      "chave": "291876022",
+      "url": "https://github.com/bevyengine/bevy/compare/v0.18.0...v0.18.1.patch",
+      "sha256": "193ccf428efcfd8469842995402da8c69ede8f98bcba72496818f4c53bd92c26",
+      "bytes": 127102
+    },
+    {
+      "chave": "341118668",
+      "url": "https://github.com/bevyengine/bevy/compare/v0.18.1...v0.19.0.patch",
+      "sha256": "ecc0b96d425aa2f0824c0e39abb8b7fcabd627ab8bf4b196d4922c76d2c956c6",
+      "bytes": 18899626
+    },
+    {
+      "chave": "265166206",
+      "url": "https://github.com/ClickHouse/ClickHouse/compare/v25.10.3.100-stable...v25.8.12.129-lts.patch",
+      "sha256": "4b8ec729d057df986601a6e7d3c57f8204e82226410c41504f19ef25175eed97",
+      "bytes": 1926331
+    },
+    {
+      "chave": "274542497",
+      "url": "https://github.com/ClickHouse/ClickHouse/compare/v25.11.6.11-stable...v25.3.12.8-lts.patch",
+      "sha256": "405d58db67d976ff8e526cfe1e7fe04766d0df8d45da39f1ba79a54d037bd541",
+      "bytes": 3549701
+    },
+    {
+      "chave": "317982524",
+      "url": "https://github.com/ClickHouse/ClickHouse/compare/v25.8.23.13-lts...v26.4.1.1141-stable.patch",
+      "sha256": "e4913ccf30df90361c2226e27e147d6e9112dd8c5fd362bb18d0a77ba4caf8d2",
+      "bytes": 176725
+    },
+    {
+      "chave": "364963961",
+      "url": "https://github.com/ClickHouse/ClickHouse/compare/v26.5.6.113-stable...v26.6.2.158-stable.patch",
+      "sha256": "51113082f4460eb449fa3a053211b8e824a41a9cefda08f2f764ff9cd9715d56",
+      "bytes": 176754
+    },
+    {
+      "chave": "383238566",
+      "url": "https://github.com/ClickHouse/ClickHouse/compare/v26.3.30.9-lts...v26.3.31.5-lts.patch",
+      "sha256": "6c4a0b39ca07bf604ad57c4ef4c3cffc355c507e42040e811eac42995300176a",
+      "bytes": 33526
+    },
+    {
+      "chave": "252875506",
+      "url": "https://raw.githubusercontent.com/JuliaLang/julia/v1.12.0/NEWS.md",
+      "sha256": "b63d6826221cf4931edd527065c7239717fc8c66736a6e9f913ab8184e037975",
+      "bytes": 17974
+    },
+    {
+      "chave": "274974003",
+      "url": "https://github.com/JuliaLang/julia/compare/v1.12.3...v1.12.4.patch",
+      "sha256": "e19c8c4b1c5095d5eb2c60aef885b761afcbf10a433bae782cfc0150a882beb0",
+      "bytes": 54355
+    },
+    {
+      "chave": "307322022",
+      "url": "https://github.com/JuliaLang/julia/compare/v1.12.5...v1.12.6.patch",
+      "sha256": "137cc262679be6549f077fec46c61e845843358652518055f9e87863c3f5e19c",
+      "bytes": 120145
+    },
+    {
+      "chave": "371337204",
+      "url": "https://github.com/JuliaLang/julia/compare/v1.10.11...v1.10.12.patch",
+      "sha256": "a17c0f476199233a0525b8978718732d326e00a171af76eafb6229925db64540",
+      "bytes": 265331
+    },
+    {
+      "chave": "386139815",
+      "url": "https://raw.githubusercontent.com/JuliaLang/julia/v1.13.0/NEWS.md",
+      "sha256": "6417bc9ed9f901a60c703ef18197983af52c30df69692b395bffb51bf5438de4",
+      "bytes": 12086
+    },
+    {
+      "chave": "256498490",
+      "url": "https://github.com/upstash/context7/compare/v1.0.24...v1.0.25.patch",
+      "sha256": "189be6f700b1bfed5c22a0f0056a1cecdb67edefa9fe4b0b1c6c364c413861b4",
+      "bytes": 744
+    },
+    {
+      "chave": "269208665",
+      "url": "https://github.com/vectorize-io/hindsight/compare/v0.1.0...v0.1.1.patch",
+      "sha256": "ee67c5fb4a0bd66dcbf5e027b671d3ec8f8a019b45065580fd0626f2ceaa835f",
+      "bytes": 3625225
+    },
+    {
+      "chave": "251633628",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.0.2/packages/create-vite/CHANGELOG.md",
+      "sha256": "53565ef8198cd722c42e9f70edcf65d7d0cad1aa105f216339039b00763540e2",
+      "bytes": 111347
+    },
+    {
+      "chave": "263887784",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.2.0/packages/create-vite/CHANGELOG.md",
+      "sha256": "8543e25584cf80e90d5f7a27725db359bced9e9b46ec0d5c0a42ff0721406c09",
+      "bytes": 115736
+    },
+    {
+      "chave": "270318867",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/v7.3.0/packages/vite/CHANGELOG.md",
+      "sha256": "e5ff276ada385c461741acaeb9187f6c8445e3d55d21576b8604fb0506145c5d",
+      "bytes": 171557
+    },
+    {
+      "chave": "298781657",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/v8.0.1/packages/vite/CHANGELOG.md",
+      "sha256": "2fef9f997295d329edb256e7ed3c5aec6cd3d43a611cb70db8ddc260de2850c7",
+      "bytes": 207161
+    },
+    {
+      "chave": "298781798",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@9.0.3/packages/create-vite/CHANGELOG.md",
+      "sha256": "8ae67a97bb06ffab3f0115f567237bac6af888ca6960f79b1f1c40e2275f7780",
+      "bytes": 126733
+    },
+    {
+      "chave": "1914",
+      "url": "https://github.com/Alishahryar1/free-claude-code/pull/1914.patch",
+      "sha256": "f25ef05c29a2b30960de996c9d3bc0ca353db7d77426702c9d132bf15f44e50c",
+      "bytes": 25243
+    },
+    {
+      "chave": "1923",
+      "url": "https://github.com/Alishahryar1/free-claude-code/pull/1923.patch",
+      "sha256": "03f219c6fa24509c6a9c6f895cd726c75fbed820a0fc2e215388d710af48f9bd",
+      "bytes": 127992
+    },
+    {
+      "chave": "1929",
+      "url": "https://github.com/Alishahryar1/free-claude-code/pull/1929.patch",
+      "sha256": "c746f6c8230af1fd2646152f9398fa24ab1dd71dafa5c7f12c406d51e2717c7d",
+      "bytes": 178576
+    },
+    {
+      "chave": "7451",
+      "url": "https://github.com/FuelLabs/sway/pull/7451.patch",
+      "sha256": "0ba5c37250f4fa10e903a57cb482870d23a0357cee64249b7b797a98e3fc3b63",
+      "bytes": 24511
+    },
+    {
+      "chave": "next-readme",
+      "url": "https://raw.githubusercontent.com/vercel/next.js/HEAD/packages/next/README.md",
+      "sha256": "63db2890be2ea3ccd65c358e57f9177d568e237aace2164a3d28c1258d070bfa",
+      "bytes": 3104
+    },
+    {
+      "chave": "251319318",
+      "url": "https://github.com/bevyengine/bevy/compare/v0.17.0...v0.17.1.patch",
+      "sha256": "fecaa32067a3101011bc7755fe6bff7df90319ab4ce4c8cbc7ad031c29231519",
+      "bytes": 144950
+    },
+    {
+      "chave": "267408243",
+      "url": "https://github.com/vectorize-io/hindsight/compare/v0.0.15...v0.0.16.patch",
+      "sha256": "def21dbd1f68b07f08bb24252910710e9396fa77d904feedeed9fc1de294da61",
+      "bytes": 182891
+    },
+    {
+      "chave": "395553114",
+      "url": "https://github.com/NousResearch/hermes-agent/compare/v2026.9.21...v2026.9.24.patch",
+      "sha256": "43caa553ddd2427302a4072669b7d759970662f2ae0c9052f6a823bc31acde20",
+      "bytes": 26048250
+    },
+    {
+      "chave": "317982524-changelog",
+      "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/v26.4.1.1141-stable/docs/changelogs/2026.md",
+      "erro": "404 Client Error: Not Found for url: https://raw.githubusercontent.com/ClickHouse/ClickHouse/v26.4.1.1141-stable/docs/changelogs/2026.md"
+    }
+  ],
+  "fontes_web_adicionais": [
+    {
+      "repo": "coder/code-server",
+      "url": "https://github.com/coder/code-server",
+      "uso": "Descrição oficial VS Code no navegador."
+    },
+    {
+      "release_id": 364963961,
+      "url": "https://github.com/ClickHouse/ClickHouse/issues/112659",
+      "uso": "Issue declara backport da correção Parquet DECIMAL para 26.6.2.158."
+    }
+  ],
+  "limites": [
+    "Nenhum rótulo apresentado como decisão humana ou independente.",
+    "Ausências permanecem vazias; não são negativas.",
+    "Notas sem defeito identificado não demonstram ausência de defeitos nos commits não examinados.",
+    "READMEs atuais não reconstroem necessariamente o estado ao fim da janela.",
+    "Diffs entre séries divergentes exigem revisão de atribuição.",
+    "Não houve retomada da coleta, API, geração de consenso, Fleiss ou métricas de validação."
+  ]
+}
