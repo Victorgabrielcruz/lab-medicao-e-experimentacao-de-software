@@ -1,23 +1,29 @@
 # Proposta de preenchimento C — revisão da #158
 
 Esta pasta contém **sugestões de análise assistida por IA (Codex)**. Não é uma
-rotulagem humana independente e não conclui a #158. As duas planilhas oficiais
-`../rotulador_C_repositorios.csv` e `../rotulador_C_releases.csv` permanecem
-intactas e em branco. Os arquivos desta pasta não devem entrar como rótulos
+rotulagem humana independente e não conclui a #158. Na preparação desta
+proposta, as duas planilhas oficiais estavam em branco. Posteriormente, o
+responsável declarou ter conferido os 60 projetos e 249 releases e solicitou
+a transferência: os valores conferidos estão nos arquivos oficiais, enquanto
+os 51 casos não decididos continuam vazios. Os arquivos desta pasta preservam
+a proposta original e não devem entrar como rótulos
 de consenso, referência de avaliação ou observações independentes no Kappa.
 
 ## Material preparado
 
 - `proposta_C_repositorios.csv`: 60 sugestões de tipo de projeto e de uso das
   releases como entregas, todas com observações. São hipóteses baseadas nas
-  descrições públicas cacheadas e nas notas de releases; o README de cada
-  projeto ainda precisa ser conferido pelo responsável.
+  descrições públicas cacheadas e nas notas de releases. O responsável informou
+  sua conferência antes da transferência para os arquivos oficiais.
 - `proposta_C_releases.csv`: mesmas 300 releases do sorteio oficial, com 207
   sugestões `sim`, 42 `nao` e 51 células de julgamento vazias por evidência
   insuficiente. Todas têm observações; as sugestões `sim` incluem um trecho
   das notas que motivou a interpretação.
 - `evidencias.json`: origem, hashes, decisões propostas e fontes textuais.
-- `validacao.json`: contagens, IDs únicos, colunas fixas e hashes dos CSVs.
+- `validacao.json`: contagens, IDs únicos, colunas fixas e hashes dos CSVs na
+  preparação da proposta, quando os oficiais ainda estavam em branco. A
+  transferência posterior está documentada em
+  [158-transferencia-c.json](../../../docs/evidencias/158-transferencia-c.json).
 
 O sorteio é o oficial da #155: 60 repositórios, cinco releases por repositório,
 `random_state=42`, população encerrada de 255 IDs. Janela:
@@ -47,15 +53,13 @@ alterados para resolver essas diferenças.
 
 ## Próxima etapa da #158
 
-O responsável deve fazer o julgamento de cada projeto e release conforme
-o protocolo e registrar seus rótulos nos arquivos oficiais, com observações
-nos casos necessários. As 51 pendências precisam de leitura das notas
-externas/compare ou devem continuar explicitamente pendentes. Aceitar os
-valores da proposta em lote não comprova julgamento independente.
+Os 60 projetos e os 249 rótulos conferidos foram transferidos para os arquivos
+oficiais, com referência ao apoio desta proposta nas observações. Os CSVs desta
+pasta não mudaram: mantêm a versão que o responsável informou ter conferido.
 
-O livro de códigos requer declarar ferramentas de apoio nas observações ou
-na metodologia #165. O uso destas sugestões deve ser registrado como análise
-assistida; não pode ser apresentado como rotulagem humana cega. A validação
-final precisa conferir 60 tipos, 60 avaliações de entregas e 300 rótulos de
-releases, sem ausências, duplicatas ou alterações de IDs/links. Somente então
-cabe solicitar o aceite da #158. Nenhuma issue foi fechada por esta proposta.
+Falta julgar os 51 casos em branco, a partir das notas externas/changelog ou
+compare, e validar os 300 rótulos completos. Até isso ocorrer, o resultado é
+parcial e as ausências não podem ser tratadas como `nao`. O protocolo de
+independência entre integrantes e a declaração de ferramentas de apoio
+continuam aplicáveis; a revisão informada não foi apresentada como cega.
+Nenhuma issue foi fechada por esta transferência.
