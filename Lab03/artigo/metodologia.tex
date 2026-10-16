@@ -73,6 +73,36 @@ não assegura completude das comparações de commits, tratadas separadamente.
 Os resultados do piloto apresentados nas demais seções não são resultados
 da amostra encerrada.
 
+\paragraph{Funil de seleção.}
+A Tabela~\ref{tab:funil} resume o funil. A busca, dividida em 57 faixas de
+estrelas sem nenhuma truncada, devolveu 37.383 candidatos distintos. Os
+36.822 não avaliados até o encerramento não foram processados; não são
+exclusões. Entre os 561 avaliados, cada etapa só recebe os que passaram pela
+anterior. O pré-filtro de releases evita coletar runs de quem já não atinge
+cinco releases estáveis; o critério de runs e a exigência de coleta completa
+vêm em seguida.
+
+\begin{table}[ht]
+\centering
+\caption{Funil de seleção da amostra encerrada}
+\label{tab:funil}
+\small
+\begin{tabular}{lrr}
+\hline
+Etapa & Descartados & Restantes \\
+\hline
+Candidatos da Search API & -- & 37.383 \\
+Avaliados até o encerramento & 36.822$^{*}$ & 561 \\
+Com workflows próprios do GitHub Actions & 74 & 487 \\
+Metadados acessíveis & 1 & 486 \\
+Ao menos cinco releases estáveis na janela & 198 & 288 \\
+Ao menos cinquenta runs válidos na janela & 32 & 256 \\
+Coleta de runs completa & 1 & 255 \\
+\hline
+\multicolumn{3}{l}{\footnotesize $^{*}$Não processados por causa do encerramento; não são exclusões.} \\
+\end{tabular}
+\end{table}
+
 \subsection{Metadados e unidade de análise}
 A unidade do dataset é o repositório, identificado pelo ID do GitHub;
 metadados e métricas são associados por esse ID. Estrelas e linguagem
