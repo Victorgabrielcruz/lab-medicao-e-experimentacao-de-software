@@ -762,6 +762,34 @@ pendentes. Os arquivos identificam o apoio de IA e a revisão humana ainda
 necessária. Esta preparação não equivale à rotulagem humana independente
 concluída; fontes, limites e pendências estão documentados.
 
+### Kappa de Fleiss entre os rotuladores (S02-09 — #159)
+
+`pipeline/kappa.py` mede a concordância entre A, B e C **antes do consenso**
+(#160), separadamente para `tipo_projeto`, `releases_sao_entregas_reais` e
+`corretiva`. A partir de `Lab03`:
+
+```bash
+python -m pipeline.kappa
+```
+
+O comando é local e lê `validacao/amostra-ouro/`: o manifesto
+`amostra_ouro.json` e as seis planilhas `rotulador_<X>_*.csv`. Ele recusa
+itens fora do sorteio, chaves repetidas e valores fora do
+[livro de códigos](validacao/amostra-ouro/LIVRO-CODIGOS.md). Células vazias
+são ausências: o item só entra no cálculo da dimensão com os três julgamentos.
+
+O kappa usa `aggregate_raters` e `fleiss_kappa(method="fleiss")` do
+statsmodels, com categorias nominais. Sem itens completos, ou com todos os
+julgamentos na mesma categoria (P_e = 1), a dimensão fica não estimável, com
+motivo. A interpretação segue Landis e Koch (1977): pobre (< 0), leve (até
+0,20), razoável (até 0,40), moderada (até 0,60), substancial (até 0,80) e
+quase perfeita.
+
+Saídas em `validacao/amostra-ouro/`: `kappa.json`, com itens completos,
+ausências por rotulador, distribuição das categorias, itens unânimes, P_o,
+P_e, kappa e SHA-256 das entradas, e `kappa.md`, com a tabela resumida.
+`--pasta` e `--saida` trocam os caminhos de entrada e saída.
+
 ## Estrutura
 
 ```text
