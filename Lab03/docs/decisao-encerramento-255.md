@@ -1,5 +1,9 @@
 # Encerramento humano da extração e amostra revisada — #151
 
+> **Atualização 16/10/2026:** esta decisão foi substituída pela
+> [retomada da coleta até 500](decisao-retomada-500.md). O texto abaixo
+> registra o estado em 15/10/2026.
+
 Em 15/10/2026, o responsável solicitou encerrar a extração e trabalhar com
 os dados obtidos. As coletas principal e auxiliar foram encerradas. O
 progresso oficial continha **561 candidatos avaliados e 255 repositórios

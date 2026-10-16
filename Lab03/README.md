@@ -607,6 +607,8 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 A [decisão de priorizar candidatos até 300 elegíveis e depois retomar os grandes](docs/decisoes-coleta-final.md)
 registra a justificativa, regra de agendamento e consequências metodológicas
 do replanejamento autorizado da #151. A meta final permanece em 500.
+O encerramento em 255 de 15/10/2026 foi revertido: a coleta foi
+[retomada até 500](docs/decisao-retomada-500.md).
 
 Durante uma coleta integrada, a [instância auxiliar](docs/coleta-auxiliar.md)
 prioriza filtros/releases/runs dos próximos candidatos e deixa compares dos
