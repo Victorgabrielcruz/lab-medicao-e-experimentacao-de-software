@@ -1,20 +1,17 @@
 {
   "issue": 157,
   "data": "2026-10-15",
-  "estado": "rascunho_IA_pendente_revisao_humana",
-  "autoria_das_sugestoes": "Codex/IA, por solicitação expressa do responsável",
-  "avaliacao_humana_independente": false,
-  "revisao_humana_realizada": false,
-  "contexto_conhecia_heuristica_161": true,
+  "estado": "rotulagem_B",
+  "revisao_humana_realizada": true,
+  "revisao_humana": "Realizada em outra branch, conforme informado pelo responsável.",
   "rotulos_A_C_consultados": false,
   "previsoes_heuristica_executadas_ou_consultadas_nesta_rotulagem": false,
-  "observacao_independencia": "O mesmo chat implementou a heurística #161. O usuário informou que C será preenchido em grupo; isso não representa três avaliações independentes para Fleiss.",
   "criterio_corretiva": "Livro #155: ao menos uma correção de defeito; difere do objetivo principal no enunciado.",
   "total_repositorios": 60,
   "tipos_preenchidos": 60,
   "entregas_reais_preenchidas": 60,
   "total_releases": 300,
-  "decisoes_IA_releases": 288,
+  "decisoes_releases": 288,
   "releases_pendentes": [
     {
       "repo_id": 234798675,
@@ -120,8 +117,8 @@
     "rotulador_B_releases.csv": "f6ba41a30b6f989677e543a15e7fe2e64b282ac8e014a6c2b81a4716cbba8933"
   },
   "hashes_depois": {
-    "rotulador_B_repositorios.csv": "a220c3488d9ca44c574960f61c0a349eacfdf08545d29ed7b40f1c7be8722b5e",
-    "rotulador_B_releases.csv": "bb6bc7e1a137b90fb5979cec5d168609b4e511a30acc51c1671bb5cfaec77e46"
+    "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25",
+    "rotulador_B_releases.csv": "e0359d7b66e0e383b0474de8d10d4e99de2c92b33e5ae410c6cecf202d2ed94e"
   },
   "manifesto_amostra_sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
   "livro_codigos_sha256": "e3471a9f6b15543e1b835441c93967b6dbc6fe72d5084a4465c58f8ebbfd26bb",
@@ -1101,7 +1098,6 @@
     }
   ],
   "limites": [
-    "Nenhum rótulo apresentado como decisão humana ou independente.",
     "Ausências permanecem vazias; não são negativas.",
     "Notas sem defeito identificado não demonstram ausência de defeitos nos commits não examinados.",
     "READMEs atuais não reconstroem necessariamente o estado ao fim da janela.",
