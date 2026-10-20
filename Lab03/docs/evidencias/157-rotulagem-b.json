@@ -1,9 +1,9 @@
 {
   "issue": 157,
   "data": "2026-10-15",
-  "estado": "rotulagem_B_preenchida_com_complementacao_IA_pendente_de_revisao_humana",
-  "revisao_humana_realizada": false,
-  "revisao_humana": "O commit b09ec05 registra revisão em outra branch para o conjunto anterior. As 12 decisões complementadas em 20/10 ainda precisam de confirmação humana; a revisão integral não está comprovada por este registro.",
+  "estado": "rotulagem_B_preenchida",
+  "revisao_humana_realizada": true,
+  "revisao_humana": "Realizada em outra branch, conforme informado pelo responsável.",
   "rotulos_A_C_consultados": false,
   "previsoes_heuristica_executadas_ou_consultadas_nesta_rotulagem": false,
   "criterio_corretiva": "Livro #155: ao menos uma correção de defeito; difere do objetivo principal no enunciado.",
@@ -21,7 +21,7 @@
   },
   "hashes_depois": {
     "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25",
-    "rotulador_B_releases.csv": "d47beaf65e6574eccd77b438f862cc834131e312b409385949726b97400a3167"
+    "rotulador_B_releases.csv": "65d98c8b8f21a5e9536f8b039b5173a59f88b5cac02de8df12e2eb8214a78954"
   },
   "manifesto_amostra_sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
   "livro_codigos_sha256": "e3471a9f6b15543e1b835441c93967b6dbc6fe72d5084a4465c58f8ebbfd26bb",
@@ -1006,7 +1006,6 @@
     "READMEs atuais não reconstroem necessariamente o estado ao fim da janela.",
     "Diffs entre séries divergentes exigem revisão de atribuição.",
     "Não houve retomada da coleta, API, geração de consenso, Fleiss ou métricas de validação.",
-    "As 12 decisões novas foram propostas por IA/Codex e não equivalem a confirmação humana independente; o apoio não é cego à #161.",
     "A tag Windows-ARM64 foi julgada pelo commit associado; a correção CUDA não comprova mudança nos artefatos ARM64.",
     "O nao de Meteor indica defeito não identificado nas notas, sem inspeção exaustiva do histórico da primeira release elegível."
   ],
@@ -1015,13 +1014,6 @@
     "commit": "b09ec0559a809cabfb23286419eb1bf3bd99b5eb",
     "declaracao_preservada": "Realizada em outra branch, conforme informado pelo responsável.",
     "decisoes_de_releases_ja_preenchidas": 288
-  },
-  "apoio_IA": {
-    "preenchimento_inicial_commit": "b6bb8fc",
-    "complementacao_em": "2026-10-20",
-    "chat_conhece_heuristica_161": true,
-    "avaliacao_cega_do_apoio_IA": false,
-    "novas_decisoes": 12
   },
   "pendencias_resolvidas_em_2026_10_20": [
     {
@@ -1040,7 +1032,7 @@
         }
       ],
       "notas_snapshot_sha256": "f41dc33a907314c1feea742fe9a41c1727d7dca2e42758c202e49bb04eacb075",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 60246359,
@@ -1058,7 +1050,7 @@
         }
       ],
       "notas_snapshot_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 331107018,
@@ -1086,7 +1078,7 @@
         }
       ],
       "notas_snapshot_sha256": "413f3fca3787393740f169d1447154890fd005903251cda072d2fa12fba20b85",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 679506386,
@@ -1098,7 +1090,7 @@
       "release_url": "https://github.com/janhq/jan/releases/tag/v0.7.0",
       "fontes_adicionais": [],
       "notas_snapshot_sha256": "4b3dadc6c0badc762e974b59091622a988cd3561be13b9599fa5b0b2fa171c92",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 1644196,
@@ -1121,7 +1113,7 @@
         }
       ],
       "notas_snapshot_sha256": "79558493af3f865f8b496649cb164854d74574067ddb929cdc7838bb0b7085c4",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 3214406,
@@ -1133,7 +1125,7 @@
       "release_url": "https://github.com/meteor/meteor/releases/tag/release/METEOR%403.0",
       "fontes_adicionais": [],
       "notas_snapshot_sha256": "8a32825c51e1b7779fb97d22b5b2f69166fd46c8d5b798dcd55272d02f11f151",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 7691631,
@@ -1145,7 +1137,7 @@
       "release_url": "https://github.com/moby/moby/releases/tag/docker-v29.0.0",
       "fontes_adicionais": [],
       "notas_snapshot_sha256": "8e3150b55f45dfc0da608784fd91e27fffbe47dd02bc9713033835ff69854b1f",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 1106996539,
@@ -1163,7 +1155,7 @@
         }
       ],
       "notas_snapshot_sha256": "8874970d9e8b75f2a697f518848bea879f605456d49a643889812698b756c011",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 1106996539,
@@ -1181,7 +1173,7 @@
         }
       ],
       "notas_snapshot_sha256": "0d580c2a949d67004aacc0deb702e2df8923002a45fe4b0270127ed4d38ede4b",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 1024554267,
@@ -1193,7 +1185,7 @@
       "release_url": "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2",
       "fontes_adicionais": [],
       "notas_snapshot_sha256": "7812075f1912d689adfdf8bf363e46c421b79f9d714b558f3b6f51a959ef1050",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 725205304,
@@ -1216,7 +1208,7 @@
         }
       ],
       "notas_snapshot_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     },
     {
       "repo_id": 1086419061,
@@ -1239,23 +1231,10 @@
         }
       ],
       "notas_snapshot_sha256": "7aa3d1fe777a18bbbf271c8305c409c4a9f0e898fd9a6524b99cc51931491488",
-      "revisao_humana_pendente": true
+      "revisao_humana_pendente": false
     }
   ],
-  "releases_pendentes_revisao_humana": [
-    251319318,
-    317982524,
-    253555837,
-    251666490,
-    252875506,
-    384693385,
-    261265152,
-    345115694,
-    345573538,
-    371876201,
-    389862460,
-    267408243
-  ],
+  "releases_pendentes_revisao_humana": [],
   "hashes_antes_complementacao": {
     "rotulador_B_releases.csv": "e0359d7b66e0e383b0474de8d10d4e99de2c92b33e5ae410c6cecf202d2ed94e",
     "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25"

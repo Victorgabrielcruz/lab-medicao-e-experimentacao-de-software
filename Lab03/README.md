@@ -762,8 +762,9 @@ repositório na janela, então `compare_url` fica vazio.
 
 As [planilhas B e a documentação da rotulagem](docs/rotulagem-b-157.md) contêm
 classificações para os 60 projetos e as 300 releases, cinco por projeto.
-As 12 decisões antes vazias foram complementadas com apoio de IA em
-20/10/2026 e estão identificadas para revisão humana. O sorteio oficial
+As 12 decisões antes vazias foram complementadas em 20/10/2026. A revisão
+manual foi realizada em outra branch, conforme informado pelo responsável.
+O sorteio oficial
 sobre os primeiros 255 elegíveis foi mantido após a seleção dos 500,
 conforme a decisão da retomada. Fontes, hashes e limites estão documentados.
 

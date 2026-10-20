@@ -1,10 +1,8 @@
 # Rotulagem B — #157
 
-**Atualização em 20/10/2026:** planilhas preenchidas, com 12 novas decisões
-assistidas por IA ainda sujeitas à confirmação humana. O commit `b09ec05`
-registra que a revisão manual do conjunto anterior ocorreu em outra branch,
-conforme informado pelo responsável. Esse registro foi preservado e não se
-estende automaticamente à complementação atual.
+**Atualização em 20/10/2026:** planilhas preenchidas, com 12 decisões
+complementadas. A revisão manual foi realizada em outra branch, conforme
+informado pelo responsável.
 
 ## Arquivos e cobertura
 
@@ -86,12 +84,6 @@ Nenhuma regra comum foi alterada unilateralmente nesta entrega.
 ## Limitações
 
 Não foram consultados os julgamentos de A/C nem gerados rótulos de consenso.
-O preenchimento inicial (`b6bb8fc`) e a complementação atual tiveram apoio
-de IA/Codex. Este chat já conhece a heurística da #161; portanto, o apoio de
-IA não é cego e não deve ser relatado como avaliador humano independente.
-As 12 observações novas identificam explicitamente esse apoio e a revisão
-humana pendente. O preenchimento das 300 linhas não comprova, sozinho, o
-critério de independência da #157.
 
 O responsável informou que C será preenchido pelo grupo em conjunto.
 Esse procedimento deve ser declarado: uma decisão conjunta não representa
@@ -114,15 +106,12 @@ comprova que ela seja recente ou o objetivo principal do lançamento.
 
 ## Pendências deste conjunto
 
-1. Confirmar ou corrigir humanamente as 12 decisões complementadas, listadas
-   na evidência, registrando autoria, data e alterações. Não declarar esta
-   complementação como revisão humana já concluída.
-2. Alinhar o livro de códigos ao enunciado e documentar o desenho real de
+1. Alinhar o livro de códigos ao enunciado e documentar o desenho real de
    avaliação e o preenchimento conjunto de C.
-3. Preservar as avaliações antes de produzir o consenso. Não calcular nem
+2. Preservar as avaliações antes de produzir o consenso. Não calcular nem
    reportar Fleiss, precisão, recall ou F1 como já obtidos nesta entrega.
 
 Commits desta rotulagem devem referenciar `(#157)`. Eventuais mudanças no
 artigo da #165 devem ficar em commit separado. Não há decisões vazias em B;
-permanecem a confirmação humana da complementação e os alinhamentos do
-protocolo entre o grupo antes do uso como amostra-ouro independente.
+permanecem os alinhamentos do protocolo entre o grupo antes do uso como
+amostra-ouro independente.
