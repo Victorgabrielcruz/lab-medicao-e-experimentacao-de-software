@@ -1,0 +1,31 @@
+{
+  "testes_aprovados": 104,
+  "csv_reexportado_identico": true,
+  "ids_unicos": 500,
+  "colunas": 28,
+  "rotulagem_c": {
+    "repositorios": {
+      "linhas": 60,
+      "preenchidos": {
+        "tipo_projeto": 60,
+        "releases_sao_entregas_reais": 60
+      },
+      "sha256": "5957f8953f7b0908c515f55ded252b7170598b4debbf17ef25524b359266ad89"
+    },
+    "releases": {
+      "linhas": 300,
+      "preenchidos": {
+        "corretiva": 249
+      },
+      "sha256": "d5ec248d7b1007e980d550c9e6070bc1873dca5a161d3c18b6b48d284d43fe03"
+    }
+  },
+  "compilacao_artigo_integral": "success",
+  "compilador": "desktop editor",
+  "fontes_sha256": {
+    "artigo/metodologia.tex": "8c8274d121dda1994f41b9de04dd41a9ffc6c75e29a2fb75c0a55ca2c32350ca",
+    "artigo/main.tex": "8e4141cad5dd3dc3d553a598bab4cbc82339fc26f23d583e51eb00287017aa59",
+    "docs/dicionario-dados.md": "ebbf33549186bde83e9887a560b8dffd94b1da6269e2a8e1c4857212afcd6e77",
+    "pipeline/amostra_capturada.py": "e2bfd7eaf5c9d51eb06f28a1e31bf1a2f01ffd5740f2469a27166637f4400c77"
+  }
+}

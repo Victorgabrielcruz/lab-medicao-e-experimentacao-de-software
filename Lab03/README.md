@@ -8,6 +8,8 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 
 | Documento | Conteúdo |
 |---|---|
+| [`entregas/s02-03-dataset-500/README.md`](entregas/s02-03-dataset-500/README.md) | CSV offline atualizado para 500, hashes e cobertura parcial das métricas |
+| [`docs/atualizacao-sprint02-victor-500.md`](docs/atualizacao-sprint02-victor-500.md) | Revisão das cinco tarefas de Victor na Sprint 02 e responsabilidades consultadas no GitHub |
 | [`entregas/dados-brutos-500/README.md`](entregas/dados-brutos-500/README.md) | Base capturada de 500 elegíveis, cache completo e restauração com verificação de hashes; compares ainda parciais |
 | [`docs/coleta-tres-sessoes.md`](docs/coleta-tres-sessoes.md) | Retomada até 500 com três tokens, sem prioridade por tamanho, status no terminal e recuperação de rede |
 | [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs, critério de inclusão, filtro de Actions, metadados e tabela de classificação DORA (C1) |

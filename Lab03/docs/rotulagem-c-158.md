@@ -2,6 +2,15 @@
 
 ## Situação da população e dependência
 
+Atualização de 20/10/2026: a seleção chegou a 500 elegíveis entre 1.064
+candidatos, com processamento final parcial. Conforme a
+[decisão de retomada](decisao-retomada-500.md), o sorteio oficial permanece
+sobre os primeiros 255 elegíveis: 60 projetos e 300 releases, sem novo sorteio.
+A conferência dos arquivos C mantém 60 tipos, 60 decisões de entregas e
+249 decisões de releases; **51 releases continuam pendentes**. A assistência
+de IA já registrada deve acompanhar a avaliação do requisito de independência.
+Os parágrafos abaixo documentam a origem do instrumento em 15/10/2026.
+
 A extração foi encerrada por instrução humana em 15/10/2026, às 18:09:11 UTC,
 com **255 repositórios elegíveis** entre 561 candidatos avaliados. A meta
 anterior de 500 e o marco de 300 não impedem trabalhar com essa população

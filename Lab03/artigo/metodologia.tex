@@ -35,71 +35,56 @@ O paralelismo respeita o limite global de requisições simultâneas e a ordem
 da fila configurada, inclusive a política de adiamento; os critérios de
 inclusão e a janela não foram relaxados para acelerar a execução.
 
-\paragraph{Replanejamento e encerramento da extração.}
-Em 14 de outubro de 2026, após preservar 102 elegíveis entre 211 candidatos
-avaliados, o responsável autorizou adiar candidatos pendentes com alto volume
-de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
-único mês. O custo se refere a runs coletados, não a tamanho em disco;
-custo desconhecido não classifica um projeto como pequeno. O único candidato
-identificado e adiado foi \texttt{grafana/grafana}, ID 15111821, com 107.617
-runs em sete meses. Os projetos grandes já concluídos permaneceram na amostra,
-e os demais candidatos mantiveram sua ordem relativa.
+\paragraph{Replanejamento e captura da base.}
+Em 14 de outubro de 2026, foi autorizada a priorização por custo observado
+de runs, com adiamento de candidatos de alto volume. Em 15 de outubro, a
+extração foi interrompida com 255 elegíveis entre 561 candidatos; esse corte
+foi preservado com hashes e deu origem à primeira consolidação offline.
+Em 16 de outubro, o grupo autorizou retomar a seleção até 500, conforme a
+decisão versionada em \texttt{Lab03/docs/decisao-retomada-500.md}.
+Posteriormente, a execução passou a usar a fonte sem prioridade por tamanho,
+cuja identidade é registrada no contexto do manifesto da captura. Não se
+presume que a ordem efetivamente consumida seja estritamente por estrelas.
 
-O plano era priorizar os demais até 300 elegíveis e então liberar os adiados
-nas próximas vagas, mantendo a meta operacional de 500 da S02-01 (\#151).
-Em 15 de outubro de 2026, às 15h09min11s de America/Sao\_Paulo
-(18h09min11s UTC), uma nova instrução do responsável encerrou a extração e
-autorizou trabalhar somente com os dados obtidos. Foram congelados
-\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}.
-Não se atingiu o mínimo original de 300, nem a meta de 500; o pipeline
-original foi interrompido antes de concluir todas as etapas. Como o marco
-não foi alcançado, Grafana não foi liberado nem incluído nessa população.
+Em 20 de outubro de 2026, foi publicada a captura de
+\textbf{500 repositórios elegíveis entre 1.064 candidatos avaliados}, na
+mesma janela e com os mesmos critérios de inclusão. A meta numérica foi
+atingida; o processamento final parou nos compares após HTTP 403.
+A seleção com runs completos não implica que todas as métricas e variantes
+tenham cobertura em 500 projetos. A consolidação desta revisão é offline,
+confere os hashes do manifesto público e usa somente compares compatíveis
+já capturados. Compares ausentes mantêm lead times e classes ausentes,
+com indicadores de coleta incompleta e cálculo parcial. A CFR (b) usa a
+heurística v1, cuja validação humana na \#162 continua pendente.
 
-A população congelada contém os IDs elegíveis dos checkpoints já consumidos
-pelo progresso oficial no momento da parada. Checkpoints auxiliares ainda
-não consumidos, resultados parciais de candidatos e duplicatas não ampliam
-essa população. Configuração, fonte de candidatos, progresso e checkpoints
-foram preservados com hashes. A consolidação posterior é local, sem novas
-consultas à API, e corresponde à amostra encerrada de 255, sem simular a
-conclusão da execução original de 500.
-
-Essa priorização condiciona a seleção ao custo observado de coleta. A parada
-antes da retomada dos adiados mantém essa preferência e limita a validade
-externa; não se presume que os 255 sejam representativos de todos os
-candidatos, nem que a ausência de Grafana seja aleatória. A ordem efetiva e
-os descartes devem acompanhar o funil, sem transformar candidatos não
-processados em exclusões científicas. Completude de runs dos incluídos
-não assegura completude das comparações de commits, tratadas separadamente.
-Os resultados do piloto apresentados nas demais seções não são resultados
-da amostra encerrada.
+A priorização histórica por custo, o recorte de projetos populares e a
+cobertura parcial de compares limitam a generalização. Não se assume que
+as ausências sejam aleatórias. Os resultados do piloto nas demais seções
+continuam sendo históricos e não descrevem a população de 500.
 
 \paragraph{Funil de seleção.}
-A Tabela~\ref{tab:funil} resume o funil. A busca, dividida em 57 faixas de
-estrelas sem nenhuma truncada, devolveu 37.383 candidatos distintos. Os
-36.822 não avaliados até o encerramento não foram processados; não são
-exclusões. Entre os 561 avaliados, cada etapa só recebe os que passaram pela
-anterior. O pré-filtro de releases evita coletar runs de quem já não atinge
-cinco releases estáveis; o critério de runs e a exigência de coleta completa
-vêm em seguida.
+A Tabela~\ref{tab:funil} resume os candidatos efetivamente avaliados na
+captura de 20 de outubro. Candidatos ainda não processados não são exclusões.
+O funil publicado inclui 501 projetos que atendem ao critério quantitativo;
+um tem runs incompletos e é excluído pelo requisito explícito de completude,
+reproduzindo os 500 IDs do manifesto oficial.
 
 \begin{table}[ht]
 \centering
-\caption{Funil de seleção da amostra encerrada}
+\caption{Funil da captura de 20/10/2026}
 \label{tab:funil}
 \small
 \begin{tabular}{lrr}
 \hline
 Etapa & Descartados & Restantes \\
 \hline
-Candidatos da Search API & -- & 37.383 \\
-Avaliados até o encerramento & 36.822$^{*}$ & 561 \\
-Com workflows próprios do GitHub Actions & 74 & 487 \\
-Metadados acessíveis & 1 & 486 \\
-Ao menos cinco releases estáveis na janela & 198 & 288 \\
-Ao menos cinquenta runs válidos na janela & 32 & 256 \\
-Coleta de runs completa & 1 & 255 \\
+Candidatos avaliados & -- & 1.064 \\
+Com workflows próprios do GitHub Actions & 131 & 933 \\
+Metadados acessíveis & 1 & 932 \\
+Ao menos cinco releases estáveis na janela & 363 & 569 \\
+Ao menos cinquenta runs válidos na janela & 68 & 501 \\
+Coleta de runs completa & 1 & 500 \\
 \hline
-\multicolumn{3}{l}{\footnotesize $^{*}$Não processados por causa do encerramento; não são exclusões.} \\
 \end{tabular}
 \end{table}
 
@@ -317,14 +302,16 @@ releases corretivas sustenta a heurística; não mede diretamente incidentes
 em produção nem equivale ao valor da CFR (b).
 
 \paragraph{Situação nesta revisão.}
-Em 15 de outubro de 2026, a base versionada consultada disponibiliza o
-gerador da \#155 e a preparação documental de C (\#158), que registra
-dependência do sorteio oficial. Não há manifesto desse sorteio, planilhas
-humanas completas, resultados de Fleiss, consenso ou avaliação da heurística
-nesta base. Portanto, 60 repositórios e 300 releases são tamanhos previstos,
-e kappa, precisão, recall e F1 permanecem pendentes, sem valores numéricos
-atribuídos. Esta seção reporta o protocolo; sua execução e os resultados
-deverão ser incorporados com os respectivos artefatos de evidência.
+O sorteio oficial da \#155 contém 60 repositórios e 300 releases,
+com semente 42, selecionados sobre os primeiros 255 elegíveis.
+A decisão de 16 de outubro mantém esse sorteio após a ampliação para 500,
+sem substituir as planilhas nem repetir a seleção. Na versão conferida em
+20 de outubro, C tem 60 classificações de tipo de projeto, 60 decisões
+sobre entregas reais e 249 decisões sobre releases; faltam 51 julgamentos.
+A assistência de IA já registrada acompanha a avaliação da independência.
+Não se presume rotulagem completa a partir da decisão de manter o sorteio.
+Kappa, consenso e avaliação da heurística exigem seus próprios artefatos
+de evidência; esta revisão não lhes atribui resultados novos.
 
 \subsection{Classificação e dicionário de dados}
 Usamos os cortes fixos do enunciado da disciplina, contrato
@@ -343,10 +330,10 @@ O dicionário versionado da S02-04 (\#154) está em
 \texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
 identidade, janela, metadados, valores e classes das seis métricas/variantes,
 indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
-tipo, unidade e fórmula ou origem. A exportação do CSV da amostra encerrada
-é a entrega separada S02-03 (\#153); documentar o procedimento não implica
-que essa consolidação já esteja pronta. O contrato mantém uma linha por
-ID dos 255 repositórios congelados e preserva nulos como células vazias;
+tipo, unidade e fórmula ou origem. A exportação offline da S02-03 (\#153) tem uma entrega histórica de 255
+e uma nova entrega de 500 em \texttt{Lab03/entregas/s02-03-dataset-500/}.
+O contrato mantém uma linha por ID do manifesto da captura e preserva
+nulos como células vazias;
 diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
 
 \subsection{Artefatos e rastreabilidade}

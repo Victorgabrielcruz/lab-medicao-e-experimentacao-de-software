@@ -1,5 +1,15 @@
 # Agentes recorrentes da Sprint 02 — amostra encerrada
 
+## Situação em 20/10/2026
+
+Este plano de recorrência é histórico. As automações foram removidas por
+solicitação humana, conforme a documentação da #158. A
+[retomada em 16/10](decisao-retomada-500.md) substituiu o encerramento como
+escopo final, e a [captura de 20/10](../entregas/dados-brutos-500/README.md)
+tem 500 elegíveis entre 1.064 candidatos, com processamento final parcial.
+A [revisão atual das tarefas de Victor](atualizacao-sprint02-victor-500.md)
+usa somente dados locais, sem reativar agentes ou iniciar coletores.
+
 ## Revisão humana de 15/10/2026
 
 O responsável determinou parar a extração e trabalhar com os dados já obtidos.

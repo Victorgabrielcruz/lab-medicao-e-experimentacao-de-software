@@ -1,5 +1,25 @@
 # Validação da revisão metodológica — S02-16 (#166)
 
+## Atualização de 20/10/2026
+
+`metodologia.tex` incorpora a decisão de retomada, a captura pública de
+500 elegíveis em 1.064 candidatos e o funil 1064 → 933 → 932 → 569 → 501 → 500.
+O requisito quantitativo e o de completude de runs são etapas distintas.
+Compares e processamento final continuam parciais; a validação humana da
+heurística CFR(b) continua pendente. O sorteio de 60 projetos/300 releases
+é mantido sobre 255, e as 51 decisões ausentes de C permanecem explícitas.
+A evidência de compilação e os hashes abaixo pertencem à revisão de 15/10;
+não comprovam a compilação desta versão. A validação atual e a lista das
+issues estão em [atualizacao-sprint02-victor-500.md](../docs/atualizacao-sprint02-victor-500.md).
+
+O compilador do editor desktop confirmou **sucesso do artigo integral**
+`main.tex` nesta revisão de 20/10/2026. Isso valida a compilação da fonte;
+resumos e resultados históricos do piloto continuam preservados e exigem
+integração científica posterior. Hashes atuais e validação do CSV estão em
+[`validacao.json`](../entregas/s02-03-dataset-500/validacao.json).
+
+## Evidência histórica de 15/10/2026
+
 Revisão de 15/10/2026 na branch `feat/s02-16-metodologia-166`, a partir de
 `11b08425d494943790d89020b670e15da4eba722`. Escopo: [metodologia.tex](metodologia.tex),
 [README.md](README.md) e esta evidência. Nenhuma alteração nos coletores,
