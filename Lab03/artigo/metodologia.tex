@@ -8,9 +8,10 @@ sem restrição de linguagem e com atividade desde o início da janela.
 O recorte temporal é UTC: de 1 de outubro de 2025, inclusive, a 1 de outubro
 de 2026, exclusive, abrangendo doze meses civis completos. As faixas da busca
 são subdivididas para contornar o teto de resultados, e IDs são deduplicados.
-A ordem inicial dos candidatos da busca prioriza estrelas. Durante a coleta,
-foi aplicada a política de adiamento por custo observado descrita abaixo;
-assim, a ordem efetivamente consumida não é estritamente a ordem por estrelas.
+A ordem inicial dos candidatos da busca prioriza estrelas. Na primeira etapa
+da coleta, foi aplicada a política de adiamento por custo observado descrita
+abaixo; assim, a ordem efetivamente consumida não é estritamente a ordem por
+estrelas.
 A amostra não é aleatória e as conclusões se restringem a esse recorte de
 projetos populares, condicionado também pela disponibilidade de coleta.
 
@@ -35,7 +36,7 @@ O paralelismo respeita o limite global de requisições simultâneas e a ordem
 da fila configurada, inclusive a política de adiamento; os critérios de
 inclusão e a janela não foram relaxados para acelerar a execução.
 
-\paragraph{Replanejamento e encerramento da extração.}
+\paragraph{Replanejamento, encerramento e retomada da extração.}
 Em 14 de outubro de 2026, após preservar 102 elegíveis entre 211 candidatos
 avaliados, o responsável autorizou adiar candidatos pendentes com alto volume
 de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
@@ -43,48 +44,43 @@ de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
 custo desconhecido não classifica um projeto como pequeno. O único candidato
 identificado e adiado foi \texttt{grafana/grafana}, ID 15111821, com 107.617
 runs em sete meses. Os projetos grandes já concluídos permaneceram na amostra,
-e os demais candidatos mantiveram sua ordem relativa.
+e os demais candidatos mantiveram sua ordem relativa. O plano era priorizar
+os demais até 300 elegíveis e então liberar os adiados.
 
-O plano era priorizar os demais até 300 elegíveis e então liberar os adiados
-nas próximas vagas, mantendo a meta operacional de 500 da S02-01 (\#151).
-Em 15 de outubro de 2026, às 15h09min11s de America/Sao\_Paulo
-(18h09min11s UTC), uma nova instrução do responsável encerrou a extração e
-autorizou trabalhar somente com os dados obtidos. Foram congelados
-\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}.
-Não se atingiu o mínimo original de 300, nem a meta de 500; o pipeline
-original foi interrompido antes de concluir todas as etapas. Como o marco
-não foi alcançado, Grafana não foi liberado nem incluído nessa população.
+Em 15 de outubro de 2026, às 18h09min11s UTC, a extração foi encerrada com
+\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}, antes do
+marco de 300. Em 16 de outubro, o grupo decidiu retomar a coleta até a meta
+original de 500 elegíveis, preservando configuração, janela, critérios e os
+checkpoints dos 561 avaliados. Na retomada, os candidatos pendentes passaram
+a seguir a ordem original da busca, sem adiamento por volume de runs; Grafana
+voltou à sua posição nessa ordem e foi incluído. Assim, a preferência por
+custo de coleta ficou restrita aos 561 primeiros avaliados. A seleção
+terminou com \textbf{500 repositórios elegíveis entre 1.064 candidatos
+avaliados}, que correspondem exatamente aos 1.064 primeiros da fonte, sem
+lacunas, e incluem os 255 da primeira etapa.
 
-A população congelada contém os IDs elegíveis dos checkpoints já consumidos
-pelo progresso oficial no momento da parada. Checkpoints auxiliares ainda
-não consumidos, resultados parciais de candidatos e duplicatas não ampliam
-essa população. Configuração, fonte de candidatos, progresso e checkpoints
-foram preservados com hashes. A consolidação posterior é local, sem novas
-consultas à API, e corresponde à amostra encerrada de 255, sem simular a
-conclusão da execução original de 500.
-
-Essa priorização condiciona a seleção ao custo observado de coleta. A parada
-antes da retomada dos adiados mantém essa preferência e limita a validade
-externa; não se presume que os 255 sejam representativos de todos os
-candidatos, nem que a ausência de Grafana seja aleatória. A ordem efetiva e
-os descartes devem acompanhar o funil, sem transformar candidatos não
-processados em exclusões científicas. Completude de runs dos incluídos
-não assegura completude das comparações de commits, tratadas separadamente.
+Configuração, fonte de candidatos, progresso, checkpoints e cache foram
+preservados com hashes. A completude de runs dos incluídos não assegura a
+completude das comparações de commits, tratadas separadamente; ausências
+de métricas permanecem nulas, sem imputação por zero. A amostra não é
+aleatória e não se presume que represente todos os candidatos da busca.
 Os resultados do piloto apresentados nas demais seções não são resultados
-da amostra encerrada.
+da amostra final.
 
 \paragraph{Funil de seleção.}
 A Tabela~\ref{tab:funil} resume o funil. A busca, dividida em 57 faixas de
 estrelas sem nenhuma truncada, devolveu 37.383 candidatos distintos. Os
-36.822 não avaliados até o encerramento não foram processados; não são
-exclusões. Entre os 561 avaliados, cada etapa só recebe os que passaram pela
-anterior. O pré-filtro de releases evita coletar runs de quem já não atinge
-cinco releases estáveis; o critério de runs e a exigência de coleta completa
-vêm em seguida.
+36.319 não avaliados após a amostra atingir 500 elegíveis não foram
+processados; não são exclusões. Entre os 1.064 avaliados, cada etapa só
+recebe os que passaram pela anterior. O pré-filtro de releases evita coletar
+runs de quem já não atinge cinco releases estáveis; o critério de runs e a
+exigência de coleta completa vêm em seguida. O único descarte nesta última
+etapa, \texttt{dbeaver/dbeaver}, atinge os critérios quantitativos, mas
+tem a coleta de runs incompleta.
 
 \begin{table}[ht]
 \centering
-\caption{Funil de seleção da amostra encerrada}
+\caption{Funil de seleção da amostra final}
 \label{tab:funil}
 \small
 \begin{tabular}{lrr}
@@ -92,14 +88,14 @@ vêm em seguida.
 Etapa & Descartados & Restantes \\
 \hline
 Candidatos da Search API & -- & 37.383 \\
-Avaliados até o encerramento & 36.822$^{*}$ & 561 \\
-Com workflows próprios do GitHub Actions & 74 & 487 \\
-Metadados acessíveis & 1 & 486 \\
-Ao menos cinco releases estáveis na janela & 198 & 288 \\
-Ao menos cinquenta runs válidos na janela & 32 & 256 \\
-Coleta de runs completa & 1 & 255 \\
+Avaliados até atingir 500 elegíveis & 36.319$^{*}$ & 1.064 \\
+Com workflows próprios do GitHub Actions & 131 & 933 \\
+Metadados acessíveis & 1 & 932 \\
+Ao menos cinco releases estáveis na janela & 363 & 569 \\
+Ao menos cinquenta runs válidos na janela & 68 & 501 \\
+Coleta de runs completa & 1 & 500 \\
 \hline
-\multicolumn{3}{l}{\footnotesize $^{*}$Não processados por causa do encerramento; não são exclusões.} \\
+\multicolumn{3}{l}{\footnotesize $^{*}$Não processados porque a meta foi atingida; não são exclusões.} \\
 \end{tabular}
 \end{table}
 
@@ -222,9 +218,12 @@ de uma estimativa parcial não elimina o diagnóstico de incompletude.
 \label{sec:validacao-manual}
 
 \paragraph{Amostra-ouro e instrumento.}
-O protocolo da \#155 prevê sortear, sem reposição, 60 dos 255 repositórios
-da população encerrada e cinco releases estáveis de cada um, totalizando
-300 pares repositório--release. O gerador usa
+O protocolo da \#155 sorteou, sem reposição, 60 dos 255 repositórios
+elegíveis da primeira etapa da coleta, encerrada em 15 de outubro, e cinco
+releases estáveis de cada um, totalizando 300 pares repositório--release.
+O sorteio foi mantido após a retomada: os 60 repositórios pertencem à
+amostra final de 500, mas foram sorteados entre os 255 primeiros elegíveis,
+não entre os 500. O gerador usa
 \texttt{DataFrame.sample} com \texttt{random\_state=42} nos dois sorteios;
 ordena previamente os repositórios por ID e as releases por publicação/ID.
 O mesmo manifesto oficial deve orientar os três avaliadores, sem sorteios
