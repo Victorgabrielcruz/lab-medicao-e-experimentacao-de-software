@@ -5,6 +5,7 @@ import json
 import logging
 import sys
 import time
+from contextlib import nullcontext
 from pathlib import Path
 import requests
 from pipeline import actions, auditoria, candidatos, cfr, cfr_b, compare, funil, lead_time_commit, lead_time_release, metadados, metricas, releases, tempo_recuperacao
@@ -12,7 +13,7 @@ from pipeline import workflow_runs_completos as completos
 from pipeline.cache import CacheDisco, gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_frequencia
 from pipeline.config import ConfigError, janela_utc, load_config, read_token
-from pipeline.concorrencia import mapear_ordenado
+from pipeline.concorrencia import mapear_ordenado, mapear_concluidos
 from pipeline import consolidado, agendamento
 from pipeline.github_api import GitHubClient
 from pipeline.workflow_runs import _iso
@@ -39,6 +40,13 @@ def _runs_dos_checkpoints(pasta, repos):
 
 def _identidade(a, b):
     return a["id"] == b["id"] and a["full_name"].lower() == b["full_name"].lower()
+
+
+def _atualizar_etapa(raw, etapa):
+    caminho = raw / "progresso.json"
+    if caminho.is_file():
+        gravar_json(caminho, {**_ler(caminho), "etapa": etapa})
+    log.info("Etapa: %s", etapa)
 
 
 def _workers(config):
@@ -136,13 +144,15 @@ def _coletar_compares(config, client, rels, inicio, fim):
         if caminho.is_file():
             registro = _ler(caminho)
         else:
-            registro = compare.coletar_repositorio(client, repo, inicio, fim)
+            with (client.sessao(repo) if hasattr(client, "sessao") else nullcontext(client)) as sessao:
+                registro = compare.coletar_repositorio(sessao, repo, inicio, fim)
             gravar_json(caminho, registro, compacto=True)
         if not _identidade(registro, repo):
             raise ConfigError("Identidade divergente no checkpoint de compare")
         return registro
 
-    with mapear_ordenado(buscar, rels, _workers(config)) as registros:
+    mapear = mapear_concluidos if hasattr(client, "sessao") else mapear_ordenado
+    with mapear(buscar, rels, _workers(config)) as registros:
         for registro in registros:
             lista.append(registro)
             log.info("Compare integrado: %d/%d repositórios; %d releases ignoradas",
@@ -200,11 +210,13 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     inicio_selecao = time.perf_counter()
 
     def buscar(repo):
-        return _coletar_candidato(config, client, repo, pasta, anteriores, inicio, fim)
+        with (client.sessao(repo) if hasattr(client, "sessao") else nullcontext(client)) as sessao:
+            return _coletar_candidato(config, sessao, repo, pasta, anteriores, inicio, fim)
 
     fila = agendamento.iterar(todos, politica, lambda: len(amostra))
     from itertools import islice
-    with mapear_ordenado(buscar, islice(fila, max_candidatos), workers,
+    mapear = mapear_concluidos if hasattr(client, "sessao") else mapear_ordenado
+    with mapear(buscar, islice(fila, max_candidatos), workers,
                          limite=lambda: alvo - len(amostra)) as registros:
         for registro in registros:
             repo = registro["candidato"]
@@ -226,6 +238,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
             if len(amostra) >= alvo:
                 break
     tempos = {"selecao_coleta_s": time.perf_counter() - inicio_selecao}
+    _atualizar_etapa(raw, "calculos_locais")
     inicio_calculos = time.perf_counter()
     for nome, _, arquivo, _ in ETAPAS:
         if nome == "workflow_runs":
@@ -263,8 +276,10 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     rels = {r["id"]: r for r in dados["releases"]["repositorios"]}
     tempos["calculos_locais_s"] = time.perf_counter() - inicio_calculos
     inicio_compare = time.perf_counter()
+    _atualizar_etapa(raw, "compare")
     comparacoes = _coletar_compares(config, client, [rels[r["id"]] for r in selecionados], inicio, fim)
     tempos["compare_s"] = time.perf_counter() - inicio_compare
+    _atualizar_etapa(raw, "metricas_e_auditoria")
     inicio_calculos = time.perf_counter()
     entrada_compare = raw / compare.ARQUIVO_SAIDA
     saida_lead_time = processed / lead_time_release.ARQUIVO_SAIDA
@@ -318,6 +333,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
                                 "repositorios_paralelos": workers,
                                 "limite_requisicoes_simultaneas": getattr(client, "paralelismo", 1)}}
     gravar_json(processed / "execucao.json", resultado)
+    _atualizar_etapa(raw, "concluido" if resultado["execucao_completa"] else "amostra_insuficiente")
     return resultado
 
 

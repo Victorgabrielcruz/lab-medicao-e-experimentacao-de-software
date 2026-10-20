@@ -8,11 +8,25 @@ anterior de 500 e o marco de 300 não impedem trabalhar com essa população
 encerrada. A decisão local é `data/processed/sprint02-agentes/encerramento-amostra.json`;
 o snapshot é `data/raw/amostra-encerrada-255-20261015T180911Z/`.
 
-Esta preparação aguarda o **sorteio oficial da #155**. Não foi encontrado
-`amostra_ouro.json` em `Lab03/validacao/` ou `Lab03/data/processed/` na verificação
-registrada na [evidência](evidencias/158-preparacao-c.json). Não há planilhas C
-publicadas ou rótulos preenchidos por esta entrega. A consolidação offline da
-população e o sorteio oficial são etapas distintas.
+O **sorteio oficial da #155** foi publicado em `validacao/amostra-ouro/`
+e validado contra a população encerrada: 60 repositórios, cinco releases por
+repositório, `random_state=42`, 300 pares de IDs únicos e janela correspondente.
+A [evidência inicial](evidencias/158-preparacao-c.json) preserva o registro
+histórico da preparação anterior à disponibilidade do sorteio.
+
+O responsável declarou ter conferido as propostas para os 60 projetos e
+249 releases e solicitou sua transferência aos arquivos oficiais C, informando
+que os 51 casos em branco ainda não foram decididos. Foram transferidos
+60 tipos, 60 avaliações de entregas, 207 rótulos `sim` e 42 `nao` de releases.
+Os 51 julgamentos restantes continuam vazios, com a explicação da pendência.
+A conferência informada foi assistida pela proposta-C; essa origem consta
+nas observações e na documentação da proposta.
+
+A [validação da transferência](evidencias/158-transferencia-c.json) confere
+IDs, códigos, hashes e colunas fixas preservadas. As planilhas oficiais são
+[projetos](../validacao/amostra-ouro/rotulador_C_repositorios.csv) e
+[releases](../validacao/amostra-ouro/rotulador_C_releases.csv).
+A #158 permanece parcial: falta decidir os 51 casos e validar a completude.
 
 ## Receber o instrumento oficial
 
@@ -86,9 +100,9 @@ fixas não foram alteradas e que os valores pertencem ao catálogo/codificação
 acordado. Células vazias, dúvidas sem decisão e valores inválidos continuam
 pendências explícitas; não são negativos e não contam como julgamento completo.
 
-Somente após receber e validar os rótulos independentes é possível demonstrar
-a entrega da #158. A preparação documental não conclui a issue. Enquanto o
-sorteio oficial estiver ausente, o acompanhamento permanece ativo e silencioso;
-quando faltar apenas o preenchimento humano, informar uma vez e pausar em
-`aguardando_rotulagem_humana`, preservando os arquivos para retomada autorizada.
-A CFR(b) continua pendente da #161 e de sua validação, sem valores fabricados.
+A transferência é uma entrega parcial e não conclui a issue. Para finalizar,
+o responsável precisa decidir os 51 casos restantes a partir de notas,
+changelog ou compare e validar a completude dos 300 rótulos, mantendo o
+procedimento e a assistência utilizados explícitos. Nenhuma ausência vira `nao`.
+As automações dos agentes foram removidas por solicitação humana; esta
+transferência pontual não reinicia acompanhamento nem coleta.

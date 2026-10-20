@@ -8,6 +8,8 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 
 | Documento | Conteúdo |
 |---|---|
+| [`entregas/dados-brutos-500/README.md`](entregas/dados-brutos-500/README.md) | Base capturada de 500 elegíveis, cache completo e restauração com verificação de hashes; compares ainda parciais |
+| [`docs/coleta-tres-sessoes.md`](docs/coleta-tres-sessoes.md) | Retomada até 500 com três tokens, sem prioridade por tamanho, status no terminal e recuperação de rede |
 | [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs, critério de inclusão, filtro de Actions, metadados e tabela de classificação DORA (C1) |
 | [`artigo/README.md`](artigo/README.md) | Organização do artigo em LaTeX, hipóteses informais das RQ01 a RQ07 e registro de sua cronologia; RQ05 a RQ07 na S01-15 (#143) |
 
@@ -607,6 +609,8 @@ fora da janela podem estar no arquivo: o funil os filtra de novo.
 A [decisão de priorizar candidatos até 300 elegíveis e depois retomar os grandes](docs/decisoes-coleta-final.md)
 registra a justificativa, regra de agendamento e consequências metodológicas
 do replanejamento autorizado da #151. A meta final permanece em 500.
+O encerramento em 255 de 15/10/2026 foi revertido: a coleta foi
+[retomada até 500](docs/decisao-retomada-500.md).
 
 Durante uma coleta integrada, a [instância auxiliar](docs/coleta-auxiliar.md)
 prioriza filtros/releases/runs dos próximos candidatos e deixa compares dos
@@ -761,6 +765,34 @@ classificações para os 60 projetos e 288 das 300 releases; 12 decisões
 permanecem pendentes nesta branch. A revisão manual foi realizada em outra
 branch, conforme informado pelo responsável. Fontes, limites e pendências
 estão documentados.
+
+### Kappa de Fleiss entre os rotuladores (S02-09 — #159)
+
+`pipeline/kappa.py` mede a concordância entre A, B e C **antes do consenso**
+(#160), separadamente para `tipo_projeto`, `releases_sao_entregas_reais` e
+`corretiva`. A partir de `Lab03`:
+
+```bash
+python -m pipeline.kappa
+```
+
+O comando é local e lê `validacao/amostra-ouro/`: o manifesto
+`amostra_ouro.json` e as seis planilhas `rotulador_<X>_*.csv`. Ele recusa
+itens fora do sorteio, chaves repetidas e valores fora do
+[livro de códigos](validacao/amostra-ouro/LIVRO-CODIGOS.md). Células vazias
+são ausências: o item só entra no cálculo da dimensão com os três julgamentos.
+
+O kappa usa `aggregate_raters` e `fleiss_kappa(method="fleiss")` do
+statsmodels, com categorias nominais. Sem itens completos, ou com todos os
+julgamentos na mesma categoria (P_e = 1), a dimensão fica não estimável, com
+motivo. A interpretação segue Landis e Koch (1977): pobre (< 0), leve (até
+0,20), razoável (até 0,40), moderada (até 0,60), substancial (até 0,80) e
+quase perfeita.
+
+Saídas em `validacao/amostra-ouro/`: `kappa.json`, com itens completos,
+ausências por rotulador, distribuição das categorias, itens unânimes, P_o,
+P_e, kappa e SHA-256 das entradas, e `kappa.md`, com a tabela resumida.
+`--pasta` e `--saida` trocam os caminhos de entrada e saída.
 
 ## Estrutura
 
