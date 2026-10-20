@@ -7,6 +7,7 @@ import logging
 import statistics
 import sys
 from pathlib import Path
+from pipeline import consolidado
 
 from pipeline.cache import gravar_json
 from pipeline.classificacao import VERSAO_REFERENCIA, classificar_metrica
@@ -136,14 +137,14 @@ def executar(config, entrada=None, saida=None):
         raise ConfigError("A saída de lead time deve ser diferente do arquivo de compare.")
     if not entrada.is_file():
         raise FileNotFoundError(f"{entrada} não encontrado; execute antes a etapa compare (S01-12).")
-    dados = json.loads(entrada.read_text(encoding="utf-8"))
+    dados = consolidado.cabecalho(entrada)
     inicio, fim = janela_utc(config)
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     if dados.get("janela") != janela:
         raise ConfigError("A janela do compare não corresponde à janela configurada para o lead time.")
     if dados.get("definicao_deploy") != "release_estavel":
         raise ConfigError("RQ02a exige compare com definicao_deploy=release_estavel.")
-    lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
+    lista = [calcular_repositorio(repo, inicio, fim) for repo in consolidado.repositorios(entrada)]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "origem": str(entrada), "janela": janela, "variante": "a", "versao_classificacao": VERSAO_REFERENCIA, "unidade": "horas",

@@ -25,7 +25,6 @@ def gravar(caminho, cabecalho, repositorios, rodape=None):
     caminho = Path(caminho)
     caminho.parent.mkdir(parents=True, exist_ok=True)
     antes = json.dumps(cabecalho, ensure_ascii=False)[1:-1]
-    depois = json.dumps(rodape or {}, ensure_ascii=False)[1:-1]
     temporario, total = None, 0
     try:
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", dir=caminho.parent,
@@ -35,6 +34,7 @@ def gravar(caminho, cabecalho, repositorios, rodape=None):
             for repo in repositorios:
                 arquivo.write((",\n" if total else "") + json.dumps(repo, ensure_ascii=False))
                 total += 1
+            depois = json.dumps((rodape() if callable(rodape) else rodape) or {}, ensure_ascii=False)[1:-1]
             arquivo.write(("\n" if total else "") + "]" + (", " if depois else "") + depois + "}\n")
         substituir_atomico(temporario, caminho)
     finally:

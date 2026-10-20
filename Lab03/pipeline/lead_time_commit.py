@@ -7,6 +7,7 @@ import logging
 import statistics
 import sys
 from pathlib import Path
+from pipeline import consolidado
 
 from pipeline.cache import gravar_json
 from pipeline.classificacao import classificar_metrica
@@ -142,7 +143,7 @@ def calcular_repositorio(repo, inicio, fim):
     }
 
 
-def executar(config, entrada=None, saida=None):
+def executar(config, entrada=None, saida=None, resumir=False):
     """Lê compare local e grava os intervalos e sua mediana por repositório."""
     entrada = Path(entrada) if entrada is not None else Path(config["caminhos"]["raw"]) / ARQUIVO_ENTRADA
     saida = Path(saida) if saida is not None else Path(config["caminhos"]["processed"]) / ARQUIVO_SAIDA
@@ -150,23 +151,29 @@ def executar(config, entrada=None, saida=None):
         raise ConfigError("A saída de lead time deve ser diferente do arquivo de compare.")
     if not entrada.is_file():
         raise FileNotFoundError(f"{entrada} não encontrado; execute antes a etapa compare (S01-12).")
-    dados = json.loads(entrada.read_text(encoding="utf-8"))
+    dados = consolidado.cabecalho(entrada)
     inicio, fim = janela_utc(config)
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     if dados.get("janela") != janela:
         raise ConfigError("A janela do compare não corresponde à janela configurada para o lead time.")
     if dados.get("definicao_deploy") != "release_estavel":
         raise ConfigError("RQ02b exige compare com definicao_deploy=release_estavel.")
-    lista = [calcular_repositorio(repo, inicio, fim) for repo in dados["repositorios"]]
     contagens = ("total_releases", "releases_com_lead_time", "releases_ignoradas", "total_commits", "commits_com_lead_time", "commits_ignorados")
-    gravar_json(saida, {
+    lista = []
+    def registros():
+        for repo in consolidado.repositorios(entrada):
+            resultado = calcular_repositorio(repo, inicio, fim)
+            lista.append({k: v for k, v in resultado.items() if k != "releases"} if resumir else resultado)
+            yield resultado
+    consolidado.gravar(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "origem": str(entrada),
         "janela": janela, "variante": "b", "unidade": "horas", "definicao_deploy": "release_estavel",
-        "formula": "published_at - commit.author.date", "total_repositorios": len(lista),
+        "formula": "published_at - commit.author.date",
+    }, registros(), lambda: {"total_repositorios": len(lista),
         "repositorios_com_lead_time": sum(r["lead_time_horas"] is not None for r in lista),
         **{campo: sum(r[campo] for r in lista) for campo in contagens},
         "repositorios_com_coleta_incompleta": sum(r["coleta_incompleta"] for r in lista),
-        "repositorios_com_calculo_parcial": sum(r["calculo_parcial"] for r in lista), "repositorios": lista,
+        "repositorios_com_calculo_parcial": sum(r["calculo_parcial"] for r in lista),
     })
     return saida, lista
 
