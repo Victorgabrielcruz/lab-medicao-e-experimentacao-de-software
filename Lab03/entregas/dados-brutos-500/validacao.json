@@ -1,0 +1,137 @@
+{
+  "total_amostra": 500,
+  "candidatos_avaliados": 1064,
+  "verificacao_streaming_integral": true,
+  "restauracao_integral_em_disco_executada": false,
+  "arquivos_verificados": 90087,
+  "bytes_verificados": 38319130964,
+  "tokens_reais_encontrados": 0,
+  "padroes_de_token_remanescentes": 0,
+  "ocorrencias_redigidas": 12,
+  "testes_automatizados_aprovados": 104,
+  "processamento_final_completo": false,
+  "novas_consultas_api": 0,
+  "pacotes": [
+    {
+      "nome": "cache-500-001",
+      "manifesto_sha256": "1ecc416387d903558ec08cbcc7b804c7a4827b2443d543cb9d3f2ea12f8ae5d1",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1188310434
+    },
+    {
+      "nome": "cache-500-002",
+      "manifesto_sha256": "261c07bdb26e67a44afb7f8470090f9fa3455f2181af10059133561d981b4963",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 703480663
+    },
+    {
+      "nome": "cache-500-003",
+      "manifesto_sha256": "a593e8efcc4d277ea0d1e3b16a48c165f0252cae140a9a17ce52552ecd0a2714",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 219138523
+    },
+    {
+      "nome": "cache-500-004",
+      "manifesto_sha256": "6816e11b146a8675e109b012906988374134c74d8239b61af145554b534836b7",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 592315786
+    },
+    {
+      "nome": "snapshot-500",
+      "manifesto_sha256": "7d02ef0ea18e2dee9c2fface949ae75d5063f4b522c5ea21b969dc0fe9b401e9",
+      "arquivos_verificados": 1243,
+      "bytes_verificados": 7642103144
+    },
+    {
+      "nome": "cache-500-005",
+      "manifesto_sha256": "443f9e9566a8f6c05e88f63b1c1883de314e3d4957a1be7b66b63485c40e843a",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1255979547
+    },
+    {
+      "nome": "cache-500-006",
+      "manifesto_sha256": "5843337078919c4e69f54c6492af77a1e0140e51bb63e0a5545264b286e184e8",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 872897418
+    },
+    {
+      "nome": "cache-500-007",
+      "manifesto_sha256": "65e9c70aa34d30aaf2aa0460673eb9f0cb919c336c66764b961cc8df40aebd13",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1503692296
+    },
+    {
+      "nome": "cache-500-009",
+      "manifesto_sha256": "91b8c59fb19b3828a2ef631550435ba0ed488e0c390abed100a4993a6d1831e1",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 945131080
+    },
+    {
+      "nome": "cache-500-008",
+      "manifesto_sha256": "24ff5da0a37b0327748406044f45a56951275fa6a68e9c5b7d2c7ad24faf81d3",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1253860839
+    },
+    {
+      "nome": "cache-500-010",
+      "manifesto_sha256": "11d4dd2a89c82dbb8434ea653a97dcd1f18d9087a77341b9a76a83aaee32012c",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1248323468
+    },
+    {
+      "nome": "cache-500-011",
+      "manifesto_sha256": "112d0f369a11981a9195eba91755b406ce7b04393868b4c8f40ce43a173da7f0",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1946555945
+    },
+    {
+      "nome": "cache-500-012",
+      "manifesto_sha256": "15e0edc85b80c5a505447dbfb0b031d0dd5926043e9becf68774a616d865c24e",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 2246567217
+    },
+    {
+      "nome": "cache-500-015",
+      "manifesto_sha256": "f3d557c32e2d24d9d9e0f41720a9a8334734e4d8b955a956272a0996e72b1293",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 835274111
+    },
+    {
+      "nome": "cache-500-013",
+      "manifesto_sha256": "8ada7fc55d0c02fc682b93af284e1ddbdf493c5e36b8167fa85e242a662ed2a8",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 6786283295
+    },
+    {
+      "nome": "cache-500-014",
+      "manifesto_sha256": "840345bc67532d5f0344b733e37253071e6d1a0f2d57da84fd5435dc7b88e05b",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 5906648024
+    },
+    {
+      "nome": "cache-500-016",
+      "manifesto_sha256": "935e91b06f727d81761d171747111636fc8fcf923738517a46055055ff360fc7",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 698554476
+    },
+    {
+      "nome": "cache-500-018",
+      "manifesto_sha256": "25901135a0821ca3f4388dd5e2f2ab9df51f0c55af4c3d066c98e77fc11d6c1c",
+      "arquivos_verificados": 3844,
+      "bytes_verificados": 863477239
+    },
+    {
+      "nome": "cache-500-017",
+      "manifesto_sha256": "e47c05bcda08f99fbf1c5dbcea54b74fda01aa9a95478727db19ec5cf0530905",
+      "arquivos_verificados": 5000,
+      "bytes_verificados": 1610537459
+    }
+  ],
+  "comando_entregue_verificado": true,
+  "resultado_comando_entregue": {
+    "arquivos_verificados": 90087,
+    "elegiveis": 500,
+    "processamento_final_completo": false,
+    "consultas_api": 0
+  }
+}

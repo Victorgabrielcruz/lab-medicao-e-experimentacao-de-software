@@ -14,15 +14,24 @@ Ausências de métricas não equivalem a zero.
 As partes `snapshot-500.tar.gz.partNNN` contêm a fonte de candidatos, configuração,
 progresso, estado da execução, os checkpoints do contexto atual, checkpoints de
 compare e auxiliares, todos os consolidados produzidos e as saídas processadas
-existentes. As partes `cache-500.tar.gz.partNNN` preservam **todo o cache HTTP local**,
+existentes. As partes `cache-500-XXX.tar.gz.partNNN` preservam **todo o cache HTTP local**,
 incluindo páginas de coletas parciais. Assim, o material já capturado pode ser
 reaproveitado em outra máquina sem recomeçar as requisições concluídas.
 
 Cada parte tem no máximo 40 MiB e é versionada como binário diretamente no Git.
+São **90.087 arquivos em 117 partes**, com aproximadamente **4,19 GiB compactados**
+e **35,69 GiB descompactados**. Todos os hashes foram verificados em streaming;
+o relatório está em `validacao.json`.
 O manifesto registra os 500 IDs, contexto, quantidade de candidatos, arquivos,
 tamanhos e SHA-256 de cada parte e arquivo restaurado. Não inclui `.env`, tokens,
 ambiente virtual, logs ou backups duplicados de contextos antigos. O snapshot de
 255 publicado anteriormente permanece disponível em `../dados-brutos-255/`.
+
+Textos com formato de token GitHub encontrados em conteúdo público de commits
+são substituídos por `[TOKEN_GITHUB_REMOVIDO]` na cópia publicada. O manifesto
+registra, para cada arquivo afetado, o hash/tamanho original e o hash/tamanho
+publicado, além da contagem de ocorrências removidas. Os arquivos locais da coleta
+permanecem intactos. Datas, IDs e os demais campos usados nos cálculos são preservados.
 
 ## Verificar ou restaurar
 
