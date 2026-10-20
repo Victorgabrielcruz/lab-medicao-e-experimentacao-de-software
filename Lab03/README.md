@@ -758,13 +758,15 @@ Resultado: 60 repositórios e 300 releases, `total_populacao=255` e
 Em 34 das 300 releases a release sorteada é a primeira elegível do
 repositório na janela, então `compare_url` fica vazio.
 
-### Rascunho B assistido por IA (S02-07 — #157)
+### Rotulagem B (S02-07 — #157)
 
-As [planilhas B e a orientação de revisão](docs/rotulagem-b-157.md) contêm
-sugestões para os 60 projetos e 288 das 300 releases; 12 decisões permanecem
-pendentes. Os arquivos identificam o apoio de IA e a revisão humana ainda
-necessária. Esta preparação não equivale à rotulagem humana independente
-concluída; fontes, limites e pendências estão documentados.
+As [planilhas B e a documentação da rotulagem](docs/rotulagem-b-157.md) contêm
+classificações para os 60 projetos e as 300 releases, cinco por projeto.
+As 12 decisões antes vazias foram complementadas em 20/10/2026. A revisão
+manual foi realizada em outra branch, conforme informado pelo responsável.
+O sorteio oficial
+sobre os primeiros 255 elegíveis foi mantido após a seleção dos 500,
+conforme a decisão da retomada. Fontes, hashes e limites estão documentados.
 
 ### Kappa de Fleiss entre os rotuladores (S02-09 — #159)
 
