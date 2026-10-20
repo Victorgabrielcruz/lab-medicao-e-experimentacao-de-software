@@ -6,47 +6,53 @@ e seguir até a meta original de **500 elegíveis com coleta completa**. Esta
 decisão substitui o encerramento em 255 como escopo final. Os artefatos da
 população de 255 continuam válidos como registro do estado em 15/10/2026.
 
-## Como a coleta continua
+## Como a coleta foi retomada
 
-A coleta retoma exatamente de onde parou, sem nova busca de candidatos:
+A retomada foi executada pelo Victor (Victorgabrielcruz), com três sessões
+autenticadas em paralelo ([coleta-tres-sessoes.md](coleta-tres-sessoes.md)),
+sem nova busca de candidatos:
 
-- mesma fonte `candidatos-prioridade-leves.json` do snapshot publicado em
-  `entregas/dados-brutos-255/` (SHA-256 `c1cf8800…d94382`, igual ao registrado
-  no `progresso.json` da coleta original) e mesma ordem dos 561 candidatos já
-  avaliados;
 - mesma janela (01/10/2025 inclusive a 01/10/2026 exclusive, UTC), mesmos
   critérios de inclusão (5 releases estáveis e 50 runs válidos, evento push,
-  branch padrão) e mesma versão do coletor. O contexto gera o mesmo digest de
-  checkpoints (`efc8b161…`), então os 561 checkpoints são reaproveitados sem
-  novas chamadas e a coleta segue a partir do candidato 562;
-- a regra de [decisoes-coleta-final.md](decisoes-coleta-final.md) volta a valer:
-  ao atingir 300 elegíveis, o adiado `grafana/grafana` é liberado na próxima
-  vaga, e a coleta continua pela ordem da fonte até 500;
-- depois da seleção, o pipeline integrado coleta os compares de **todos** os
-  elegíveis. Isso amplia o lead time (RQ02), hoje restrito a 9 repositórios.
+  branch padrão) e mesma versão do coletor;
+- os 561 candidatos já avaliados até 15/10, com seus 255 elegíveis, foram
+  preservados como prefixo confirmado, e seus checkpoints foram reaproveitados;
+- **mudança de ordem:** os candidatos pendentes passaram a seguir a ordem
+  original da busca, sem adiamento por volume de runs. Isso substitui a regra
+  de [decisoes-coleta-final.md](decisoes-coleta-final.md), que liberaria os
+  adiados só após 300 elegíveis. O `grafana/grafana` voltou à sua posição na
+  ordem e foi incluído. A nova fonte é `candidatos-sem-prioridade-tamanho.json`
+  (SHA-256 `9e876ef8…756adf`), com os mesmos 37.383 candidatos da busca;
+- depois da seleção, o pipeline coleta os compares de **todos** os elegíveis,
+  o que amplia o lead time (RQ02), restrito a 9 repositórios na amostra de 255.
 
-A coleta é executada pelo Victor (Victorgabrielcruz) no checkout original da
-coleta, onde `data/raw/amostra-final-500/` já contém os checkpoints, a fonte e
-o cache HTTP. Em outra máquina, restaure o snapshot de `entregas/dados-brutos-255/`,
-copie `snapshot/checkpoints/` e `snapshot/candidatos-prioridade-leves.json` para
-`data/raw/amostra-final-500/` e use uma cópia de `config.yaml` com os caminhos
-`raw`/`processed` em `amostra-final-500`. Execução, a partir de `Lab03`:
+## Situação em 20/10/2026
 
-```powershell
-$env:GITHUB_TOKEN = gh auth token
-python -m pipeline.integrado --config data/raw/amostra-final-500/config-500.yaml --alvo 500 --max-candidatos 37383 --candidatos data/raw/amostra-final-500/candidatos-prioridade-leves.json
-```
+- **Seleção concluída:** 500 elegíveis entre 1.064 candidatos avaliados, que
+  são exatamente os 1.064 primeiros da fonte, sem lacunas. Os 255 da primeira
+  etapa e os 60 da amostra-ouro estão todos entre os 500. O funil está na
+  metodologia do artigo (#164).
+- **Compares incompletos:** a execução parou com HTTP 403 (cota esgotada)
+  durante os compares, com 51 repositórios processados. As métricas finais dos
+  500 ainda não existem.
+- O estado capturado está publicado em `entregas/dados-brutos-500/`, com as
+  instruções para restaurar e retomar.
 
-A coleta é limitada pela cota da API (5.000 requisições/hora) e deve levar
-alguns dias. Interrupções são retomadas pelo mesmo comando.
+Próximos passos, nesta ordem:
+
+1. Retomar os compares até `execucao_completa=true` em
+   `processed/amostra-final-500/execucao.json`.
+2. Exportar o `dataset-500.csv` com o contrato `lab03-dataset-v1` e validar o
+   dicionário de dados.
+3. Reexecutar as análises e atualizar os números do artigo.
 
 ## Impacto nas tarefas
 
 | Situação | Issues | O que fazer |
 |---|---|---|
 | Não depende da população | #156, #157, #158, #159, #160, #161, #162, #163 | Seguir normalmente (ver amostra-ouro abaixo). |
-| Código vale; números mudam | #152, #153, #154, #167, #168, #169, #170–#175 | Desenvolver sobre o CSV de 255 e reexecutar com o CSV de 500. |
-| Texto a atualizar | #164, #165, #166, #176–#179, #183–#186 | Atualizar funil, tamanho da amostra e números quando o CSV de 500 sair. |
+| Código vale; números mudam | #152, #153, #154, #167, #168, #169, #170–#175 | Reexecutar com o CSV de 500 depois dos compares. |
+| Texto a atualizar | #164, #165, #166, #176–#179, #183–#186 | Funil já atualizado; tamanho da amostra e números quando o CSV de 500 sair. |
 
 ### Amostra-ouro (#155)
 
@@ -56,9 +62,9 @@ sem novo sorteio, e o artigo declara que ele foi feito sobre os primeiros 255
 elegíveis da coleta. A amostra-ouro valida a heurística de release corretiva
 (CFR b), e um novo sorteio descartaria a rotulagem das três pessoas.
 
-## Ainda vale
+## Limitações
 
-As limitações registradas em 15/10/2026 continuam: a ordem da fonte prioriza
-custo observado e não é estritamente por estrelas. Ausências continuam nulas,
-sem imputação por zero. Os 255 publicados em `entregas/` não são alterados;
-a população de 500 terá entrega própria quando a coleta terminar.
+A preferência por menor custo de coleta ficou restrita aos 561 primeiros
+avaliados; depois deles, a ordem é a da busca. A amostra não é aleatória.
+Ausências continuam nulas, sem imputação por zero. Os 255 publicados em
+`entregas/` não são alterados.
