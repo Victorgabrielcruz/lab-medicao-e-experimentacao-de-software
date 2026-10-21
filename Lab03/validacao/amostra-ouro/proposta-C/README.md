@@ -1,6 +1,6 @@
 # Proposta de preenchimento C — revisão da #158
 
-Esta pasta contém **sugestões de análise assistida por IA (Codex)**. Não é uma
+Esta pasta contém **sugestões de análise**. Não é uma
 rotulagem humana independente e não conclui a #158. Na preparação desta
 proposta, as duas planilhas oficiais estavam em branco. Posteriormente, o
 responsável declarou ter conferido os 60 projetos e 249 releases e solicitou

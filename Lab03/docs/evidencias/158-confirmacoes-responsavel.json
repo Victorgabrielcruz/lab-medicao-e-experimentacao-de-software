@@ -1,0 +1,491 @@
+{
+  "issue": 158,
+  "data": "2026-10-21",
+  "metodo": "Concordância do responsável com as decisões após apresentação de resumos das evidências e sugestões em lotes.",
+  "escopo_confirmacao": "Não registra consulta direta das fontes pelo responsável nem comprova avaliação independente ou cega.",
+  "lotes": [
+    {
+      "lote": 1,
+      "casos": "1-10",
+      "resposta_responsavel": "concordo com essas decisões",
+      "decisoes": [
+        {
+          "numero": 1,
+          "repo_id": "1144520675",
+          "full_name": "Alishahryar1/free-claude-code",
+          "release_id": "397445365",
+          "tag_name": "v6.3.2",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 2,
+          "repo_id": "1144520675",
+          "full_name": "Alishahryar1/free-claude-code",
+          "release_id": "397790106",
+          "tag_name": "v6.4.4",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 3,
+          "repo_id": "1144520675",
+          "full_name": "Alishahryar1/free-claude-code",
+          "release_id": "397898184",
+          "tag_name": "v6.4.8",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 4,
+          "repo_id": "234798675",
+          "full_name": "bevyengine/bevy",
+          "release_id": "251319318",
+          "tag_name": "v0.17.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 5,
+          "repo_id": "234798675",
+          "full_name": "bevyengine/bevy",
+          "release_id": "252169671",
+          "tag_name": "v0.17.2",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 6,
+          "repo_id": "234798675",
+          "full_name": "bevyengine/bevy",
+          "release_id": "263106890",
+          "tag_name": "v0.17.3",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 7,
+          "repo_id": "234798675",
+          "full_name": "bevyengine/bevy",
+          "release_id": "291876022",
+          "tag_name": "v0.18.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 8,
+          "repo_id": "234798675",
+          "full_name": "bevyengine/bevy",
+          "release_id": "341118668",
+          "tag_name": "v0.19.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 9,
+          "repo_id": "881458615",
+          "full_name": "browser-use/browser-use",
+          "release_id": "355488872",
+          "tag_name": "0.13.6",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 10,
+          "repo_id": "1054793726",
+          "full_name": "ChromeDevTools/chrome-devtools-mcp",
+          "release_id": "276959733",
+          "tag_name": "chrome-devtools-mcp-v0.13.0",
+          "corretiva": "sim"
+        }
+      ]
+    },
+    {
+      "lote": 2,
+      "casos": "11-20",
+      "resposta_responsavel": "concordo",
+      "decisoes": [
+        {
+          "numero": 11,
+          "repo_id": "60246359",
+          "full_name": "ClickHouse/ClickHouse",
+          "release_id": "265166206",
+          "tag_name": "v25.8.12.129-lts",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 12,
+          "repo_id": "60246359",
+          "full_name": "ClickHouse/ClickHouse",
+          "release_id": "274542497",
+          "tag_name": "v25.3.12.8-lts",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 13,
+          "repo_id": "60246359",
+          "full_name": "ClickHouse/ClickHouse",
+          "release_id": "317982524",
+          "tag_name": "v26.4.1.1141-stable",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 14,
+          "repo_id": "60246359",
+          "full_name": "ClickHouse/ClickHouse",
+          "release_id": "364963961",
+          "tag_name": "v26.6.2.158-stable",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 15,
+          "repo_id": "60246359",
+          "full_name": "ClickHouse/ClickHouse",
+          "release_id": "383238566",
+          "tag_name": "v26.3.31.5-lts",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 16,
+          "repo_id": "826168160",
+          "full_name": "docling-project/docling",
+          "release_id": "251963275",
+          "tag_name": "v2.55.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 17,
+          "repo_id": "826168160",
+          "full_name": "docling-project/docling",
+          "release_id": "281601754",
+          "tag_name": "v2.71.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 18,
+          "repo_id": "826168160",
+          "full_name": "docling-project/docling",
+          "release_id": "308366558",
+          "tag_name": "v2.88.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 19,
+          "repo_id": "331107018",
+          "full_name": "FuelLabs/sway",
+          "release_id": "253555837",
+          "tag_name": "v0.70.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 20,
+          "repo_id": "1644196",
+          "full_name": "JuliaLang/julia",
+          "release_id": "252875506",
+          "tag_name": "v1.12.0",
+          "corretiva": "sim"
+        }
+      ]
+    },
+    {
+      "lote": 3,
+      "casos": "21-30",
+      "resposta_responsavel": "Concorda",
+      "decisoes": [
+        {
+          "numero": 21,
+          "repo_id": "1644196",
+          "full_name": "JuliaLang/julia",
+          "release_id": "274974003",
+          "tag_name": "v1.12.4",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 22,
+          "repo_id": "1644196",
+          "full_name": "JuliaLang/julia",
+          "release_id": "307322022",
+          "tag_name": "v1.12.6",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 23,
+          "repo_id": "1644196",
+          "full_name": "JuliaLang/julia",
+          "release_id": "371337204",
+          "tag_name": "v1.10.12",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 24,
+          "repo_id": "1644196",
+          "full_name": "JuliaLang/julia",
+          "release_id": "386139815",
+          "tag_name": "v1.13.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 25,
+          "repo_id": "3214406",
+          "full_name": "meteor/meteor",
+          "release_id": "384693385",
+          "tag_name": "release/METEOR@3.0",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 26,
+          "repo_id": "1106996539",
+          "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+          "release_id": "345115694",
+          "tag_name": "v2.8.8",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 27,
+          "repo_id": "1106996539",
+          "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+          "release_id": "345573538",
+          "tag_name": "v2.9.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 28,
+          "repo_id": "1223170290",
+          "full_name": "nexu-io/open-design",
+          "release_id": "345343782",
+          "tag_name": "open-design-v0.12.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 29,
+          "repo_id": "1223170290",
+          "full_name": "nexu-io/open-design",
+          "release_id": "385495816",
+          "tag_name": "open-design-v0.22.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 30,
+          "repo_id": "1024554267",
+          "full_name": "NousResearch/hermes-agent",
+          "release_id": "395553114",
+          "tag_name": "v2026.9.24",
+          "corretiva": "sim"
+        }
+      ]
+    },
+    {
+      "lote": 4,
+      "casos": "31-40",
+      "resposta_responsavel": "Concorda",
+      "decisoes": [
+        {
+          "numero": 31,
+          "repo_id": "1103012935",
+          "full_name": "openclaw/openclaw",
+          "release_id": "265823021",
+          "tag_name": "v1.2.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 32,
+          "repo_id": "858127",
+          "full_name": "pandas-dev/pandas",
+          "release_id": "278660115",
+          "tag_name": "v3.0.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 33,
+          "repo_id": "858127",
+          "full_name": "pandas-dev/pandas",
+          "release_id": "287437031",
+          "tag_name": "v3.0.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 34,
+          "repo_id": "858127",
+          "full_name": "pandas-dev/pandas",
+          "release_id": "303390234",
+          "tag_name": "v3.0.2",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 35,
+          "repo_id": "858127",
+          "full_name": "pandas-dev/pandas",
+          "release_id": "345930477",
+          "tag_name": "v3.0.4",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 36,
+          "repo_id": "858127",
+          "full_name": "pandas-dev/pandas",
+          "release_id": "358342712",
+          "tag_name": "v3.0.5",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 37,
+          "repo_id": "361044034",
+          "full_name": "slidevjs/slidev",
+          "release_id": "285548093",
+          "tag_name": "v52.12.0",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 38,
+          "repo_id": "43441403",
+          "full_name": "strapi/strapi",
+          "release_id": "304108689",
+          "tag_name": "v5.41.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 39,
+          "repo_id": "725205304",
+          "full_name": "unslothai/unsloth",
+          "release_id": "389862460",
+          "tag_name": "Windows-ARM64",
+          "corretiva": "",
+          "estado": "pendente",
+          "motivo": "Confirmar se a correção do compare pertence aos binários publicados na tag Windows-ARM64."
+        },
+        {
+          "numero": 40,
+          "repo_id": "955620917",
+          "full_name": "upstash/context7",
+          "release_id": "256498490",
+          "tag_name": "v1.0.25",
+          "corretiva": "nao"
+        }
+      ]
+    },
+    {
+      "lote": 5,
+      "casos": "41-50",
+      "resposta_responsavel": "Concorda",
+      "decisoes": [
+        {
+          "numero": 41,
+          "repo_id": "1086419061",
+          "full_name": "vectorize-io/hindsight",
+          "release_id": "267408243",
+          "tag_name": "v0.0.16",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 42,
+          "repo_id": "1086419061",
+          "full_name": "vectorize-io/hindsight",
+          "release_id": "269208665",
+          "tag_name": "v0.1.1",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 43,
+          "repo_id": "70107786",
+          "full_name": "vercel/next.js",
+          "release_id": "267155199",
+          "tag_name": "v15.1.9",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 44,
+          "repo_id": "70107786",
+          "full_name": "vercel/next.js",
+          "release_id": "267156324",
+          "tag_name": "v15.3.6",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 45,
+          "repo_id": "70107786",
+          "full_name": "vercel/next.js",
+          "release_id": "280066005",
+          "tag_name": "v15.3.9",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 46,
+          "repo_id": "70107786",
+          "full_name": "vercel/next.js",
+          "release_id": "280066109",
+          "tag_name": "v15.4.11",
+          "corretiva": "sim"
+        },
+        {
+          "numero": 47,
+          "repo_id": "257485422",
+          "full_name": "vitejs/vite",
+          "release_id": "251633628",
+          "tag_name": "create-vite@8.0.2",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 48,
+          "repo_id": "257485422",
+          "full_name": "vitejs/vite",
+          "release_id": "263887784",
+          "tag_name": "create-vite@8.2.0",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 49,
+          "repo_id": "257485422",
+          "full_name": "vitejs/vite",
+          "release_id": "270318867",
+          "tag_name": "v7.3.0",
+          "corretiva": "nao"
+        },
+        {
+          "numero": 50,
+          "repo_id": "257485422",
+          "full_name": "vitejs/vite",
+          "release_id": "298781657",
+          "tag_name": "v8.0.1",
+          "corretiva": "sim"
+        }
+      ]
+    },
+    {
+      "lote": 6,
+      "casos": "51",
+      "resposta_responsavel": "Concordo",
+      "decisoes": [
+        {
+          "numero": 51,
+          "repo_id": "257485422",
+          "full_name": "vitejs/vite",
+          "release_id": "298781798",
+          "tag_name": "create-vite@9.0.3",
+          "corretiva": "nao"
+        }
+      ]
+    }
+  ],
+  "confirmados": 51,
+  "restantes": 0,
+  "issue_concluida": false,
+  "casos_examinados": 51,
+  "nao_examinados": 0,
+  "pendentes_revisados": [],
+  "resolucoes": [
+    {
+      "numero": 39,
+      "release_id": "389862460",
+      "corretiva": "sim",
+      "resposta_responsavel": "Concorda",
+      "fundamento": "Correção de PDFs digitalizados identificada no compare da tag; critério aceita evidência no compare sem execução de binários.",
+      "evidencia": "158-investigacao-caso-39.json"
+    }
+  ],
+  "declaracao_conferencia_anterior": {
+    "data_declaracao": "2026-10-21",
+    "data_conferencia": null,
+    "declarante": "responsável pela rotulagem C nesta conversa",
+    "escopo": {
+      "projetos": 60,
+      "julgamentos_anteriores_releases": 249
+    },
+    "rotulos_A_B_consultados": false,
+    "resultados_heuristica_consultados": false,
+    "pergunta": "Você conferiu os 60 projetos e os 249 julgamentos anteriores sem consultar as classificações de A/B ou os resultados da heurística?",
+    "resposta": "Sim",
+    "natureza": "Declaração do responsável; data original da conferência não informada.",
+    "limite": "Refere-se aos 60 projetos e 249 julgamentos anteriores. Os 51 casos complementares seguem o procedimento de revisão por resumos registrado nos lotes."
+  }
+}

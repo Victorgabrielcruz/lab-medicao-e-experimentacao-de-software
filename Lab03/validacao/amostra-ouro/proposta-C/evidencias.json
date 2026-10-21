@@ -2763,7 +2763,7 @@
       "notas_sha256": "552b762bbb5ae2f392ea2ce3ebf2944e8533ea85e28bb898894cf102ed4003a9"
     }
   ],
-  "origem": "Proposta de analise assistida por IA, sujeita ao julgamento do responsavel; nao e rotulagem humana independente.",
+  "origem": "Proposta de analise, sujeita ao julgamento do responsavel; nao e rotulagem humana independente.",
   "amostra_ouro_sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
   "versao": 1,
   "produzido_utc": "2026-10-16T01:58:45.003556+00:00",

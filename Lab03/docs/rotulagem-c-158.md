@@ -1,117 +1,96 @@
-# Rotulagem independente C — #158
+# Rotulagem C — #158
 
-## Situação da população e dependência
+## Estado da entrega local
 
-Atualização de 20/10/2026: a seleção chegou a 500 elegíveis entre 1.064
-candidatos, com processamento final parcial. Conforme a
-[decisão de retomada](decisao-retomada-500.md), o sorteio oficial permanece
-sobre os primeiros 255 elegíveis: 60 projetos e 300 releases, sem novo sorteio.
-A conferência dos arquivos C mantém 60 tipos, 60 decisões de entregas e
-249 decisões de releases; **51 releases continuam pendentes**. A assistência
-de IA já registrada deve acompanhar a avaliação do requisito de independência.
-Os parágrafos abaixo documentam a origem do instrumento em 15/10/2026.
+Em 21/10/2026, foram analisados os 51 julgamentos ainda vazios, na branch
+`feat/158-rotulagem-c`, sem push. A issue não foi alterada ou fechada.
 
-A extração foi encerrada por instrução humana em 15/10/2026, às 18:09:11 UTC,
-com **255 repositórios elegíveis** entre 561 candidatos avaliados. A meta
-anterior de 500 e o marco de 300 não impedem trabalhar com essa população
-encerrada. A decisão local é `data/processed/sprint02-agentes/encerramento-amostra.json`;
-o snapshot é `data/raw/amostra-encerrada-255-20261015T180911Z/`.
+- **60 tipos de projeto** e **60 decisões de entregas reais**, preservados;
+- **300 releases**: **250 `sim` e 50 `nao`**, cinco por projeto;
+- **51 casos complementares**: 43 `sim` e 8 `nao`, confirmados pelo responsável;
+- **249 decisões anteriores preservadas**, inclusive suas observações.
 
-O **sorteio oficial da #155** foi publicado em `validacao/amostra-ouro/`
-e validado contra a população encerrada: 60 repositórios, cinco releases por
-repositório, `random_state=42`, 300 pares de IDs únicos e janela correspondente.
-A [evidência inicial](evidencias/158-preparacao-c.json) preserva o registro
-histórico da preparação anterior à disponibilidade do sorteio.
+Arquivos oficiais: [repositórios C](../validacao/amostra-ouro/rotulador_C_repositorios.csv)
+e [releases C](../validacao/amostra-ouro/rotulador_C_releases.csv).
 
-O responsável declarou ter conferido as propostas para os 60 projetos e
-249 releases e solicitou sua transferência aos arquivos oficiais C, informando
-que os 51 casos em branco ainda não foram decididos. Foram transferidos
-60 tipos, 60 avaliações de entregas, 207 rótulos `sim` e 42 `nao` de releases.
-Os 51 julgamentos restantes continuam vazios, com a explicação da pendência.
-A conferência informada foi assistida pela proposta-C; essa origem consta
-nas observações e na documentação da proposta.
+O sorteio da #155 permanece sobre os primeiros **255 elegíveis**:
+60 projetos, 300 releases, `random_state=42`, janela UTC
+`[2025-10-01T00:00:00Z, 2026-10-01T00:00:00Z)`. A captura de 500 não alterou
+esse sorteio, conforme a [decisão de retomada](decisao-retomada-500.md).
 
-A [validação da transferência](evidencias/158-transferencia-c.json) confere
-IDs, códigos, hashes e colunas fixas preservadas. As planilhas oficiais são
-[projetos](../validacao/amostra-ouro/rotulador_C_repositorios.csv) e
-[releases](../validacao/amostra-ouro/rotulador_C_releases.csv).
-A #158 permanece parcial: falta decidir os 51 casos e validar a completude.
+## Evidências e validação
 
-## Receber o instrumento oficial
+Em 21/10/2026, o responsável confirmou os 51 casos após apresentação
+dos resumos das evidências: 43 `sim` e oito `nao`. O caso 39 foi resolvido
+como `sim` após investigação adicional do compare da tag Windows-ARM64.
+O [registro dos lotes](evidencias/158-confirmacoes-responsavel.json) descreve
+o alcance dessa concordância; ela não comprova consulta direta das fontes
+pelo responsável nem avaliação independente ou cega.
 
-O protocolo existente em [pipeline/amostra_ouro.py](../pipeline/amostra_ouro.py)
-usa 60 repositórios, 5 releases por repositório e `random_state=42`, sem reposição.
-A #155 deve aplicar esse protocolo à população encerrada de 255, preservando
-seu manifesto oficial. A #158 não executa um segundo sorteio.
+A [lista de revisão](revisao-c-158.md) apresenta os 51 casos, IDs, decisões,
+justificativas e fontes. O [relatório desta etapa](evidencias/158-revisao-c.json)
+registra limitações, contagens e hashes antes/depois. As respostas
+públicas e seu índice estão em [158-fontes-publicas.zip](evidencias/158-fontes-publicas.zip).
 
-Antes de preparar ou reutilizar C, conferir no manifesto:
+A [cópia anterior do CSV](evidencias/158-rotulador_C_releases-antes.csv)
+preserva os 249 julgamentos e 51 vazios recebidos. A
+[transferência anterior](evidencias/158-transferencia-c.json) e a
+[proposta-C](../validacao/amostra-ouro/proposta-C/README.md) permanecem históricas:
+suas contagens descrevem as etapas anteriores, sem substituírem esta revisão.
 
-- `total_populacao=255` e `populacao_sha256` correspondente aos IDs completos
-  da população encerrada, ordenados numericamente e serializados por
-  `json.dumps(ids)` antes do SHA-256, conforme o gerador existente;
-- janela `[2025-10-01T00:00:00Z, 2026-10-01T00:00:00Z)`,
-  `random_state=42` e `incluir_prereleases=false`;
-- 60 `repo_id` distintos pertencentes à população e 5 releases distintas
-  por repositório, totalizando 300 pares `(repo_id, release_id)`;
-- nomes, IDs, datas, tags e links coerentes com o manifesto e as entradas
-  locais consolidadas; releases estáveis, publicadas na janela e sem drafts;
-- hashes das entradas e do manifesto iguais antes e depois da leitura.
+Foram conferidos os 60 IDs e 300 pares contra o manifesto, cinco releases
+por projeto, ausência de duplicatas, códigos válidos, cabeçalhos, ordem,
+campos fixos e UTF-8 com BOM. Campos `null` do manifesto correspondem a
+células vazias do CSV. O manifesto e o CSV de repositórios C ficaram idênticos
+aos recebidos. A validação estrutural não substitui a revisão dos julgamentos.
 
-Reutilizar somente `rotulador_C_repositorios.csv` e
-`rotulador_C_releases.csv` vinculados ao sorteio oficial. Se C ainda não existir,
-preparar apenas C a partir dos IDs oficiais, sem sortear novamente e sem usar
-`--sobrescrever`. O gerador geral cria também A/B: ele não deve ser chamado
-pela #158 para contornar a dependência. Preservar qualquer preenchimento já
-existente; divergências de identidade exigem revisão, nunca substituição silenciosa.
+## Procedimento e limites
 
-## Preenchimento pelo responsável C
+Seguiu-se o [livro de códigos #155](../validacao/amostra-ouro/LIVRO-CODIGOS.md):
+`sim` exige ao menos uma correção de defeito, inclusive em release mista.
+Dependências, documentação e funcionalidades isoladas não bastam. `nao`
+significa nenhuma correção identificada no material examinado, sem provar
+ausência em commits não examinados. Não houve classificação por SemVer ou
+palavra-chave isolada.
 
-Trabalhar individualmente, sem consultar planilhas A/B, avaliações dos demais
-integrantes ou resultados da heurística CFR(b). O agente não substitui o
-julgamento do responsável. Usar o material já disponível e os links de apoio
-para leitura humana; esta entrega não autoriza nova extração por API.
+Usaram-se notas dos checkpoints congelados e consultas pontuais a changelogs,
+PRs e compares públicos. Nenhum coletor foi reiniciado, nenhum dado bruto
+foi alterado e nenhum sorteio foi refeito. Em Julia/ClickHouse usaram-se
+fontes da própria série quando identificadas; em create-vite, apenas a seção
+da versão/subpacote correspondente. Compares da API podem ser parciais:
+uma correção concreta basta para `sim`, mas não prova inspeção exaustiva.
 
-Na planilha de repositórios, manter `repo_id`, `full_name`, `repositorio_url`
-e `releases_url`. Preencher:
+As observações dos 51 casos registram a confirmação pelo responsável
+após apresentação dos resumos das evidências. A análise inicial e a
+confirmação posterior estão registradas separadamente. Não foram lidos
+CSVs A/B nem executada/consultada a heurística CFR(b). No levantamento
+foram abertos a documentação e o relatório histórico de B (#157), incluindo
+suas pendências; portanto esta sessão **não comprova avaliação cega**.
+As decisões complementares foram fundamentadas nas próprias fontes das
+releases. O desenho real deve acompanhar a análise de
+independência e eventual cálculo de concordância.
 
-| Campo | Orientação |
-|---|---|
-| `tipo_projeto` | Descrever a função principal com evidência do README/documentação. Usar o catálogo do instrumento oficial, quando fornecido; não converter dúvidas em uma classe arbitrária. Registrar casos híbridos ou categoria indefinida em observações. |
-| `releases_sao_entregas_reais` | Julgar se as releases representam versões/entregas do software estudado. Distinguir publicação de conteúdo ou marcação administrativa quando a evidência permitir. Registrar a justificativa. |
-| `observacoes` | Registrar evidência consultada, justificativa, limitações e dúvidas. Não copiar o julgamento de outro rotulador. |
+## Situação após a revisão em lotes
 
-Na planilha de releases, manter `repo_id`, `full_name`, `release_id`, `tag_name`,
-`nome`, `published_at`, `release_url` e `compare_url`. Preencher:
+Os 51 casos complementares foram confirmados pelo responsável. Não há
+células de julgamento vazias no CSV C de releases. As contagens são
+250 `sim` e 50 `nao`; IDs, campos fixos, ordem e cinco releases por
+projeto foram conferidos contra o manifesto oficial.
 
-| Campo | Orientação |
-|---|---|
-| `corretiva` | Julgar se a release inclui correção de defeito, usando as notas e o compare. Não inferir apenas por número de versão, palavra-chave ou resultado automático. Documentar o raciocínio em releases mistas ou ambíguas. |
-| `observacoes` | Registrar trechos/referências de evidência e incertezas. Um compare ausente pode ocorrer para a primeira release elegível e não significa ausência de correções. |
+Os 60 projetos e os 249 julgamentos anteriores foram preservados nesta
+revisão. O requisito de independência e o aceite final da #158 continuam
+separados da confirmação das decisões. A entrega foi publicada na branch
+`feat/158-rotulagem-c` e no [PR #233](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/pull/233).
+A issue não foi fechada por esta revisão.
 
-Nos campos de decisão binária, seguir a codificação do instrumento oficial;
-na ausência de uma codificação definida, usar `sim` e `nao` de forma consistente,
-sem transformar célula vazia em `nao`. Quando a evidência for insuficiente,
-deixar a decisão pendente e explicar nas observações. Não forçar consenso
-antes da conclusão independente. A taxonomia de `tipo_projeto`, se ainda não
-fixada pela #155, precisa ser confirmada no instrumento antes da validação final.
+## Declaração do responsável sobre a conferência anterior
 
-Salvar os CSVs preservando UTF-8 com BOM, cabeçalhos, IDs e links. Editar
-somente colunas de julgamento e observações. Guardar uma cópia da versão
-recebida e registrar hashes antes e depois do preenchimento, sem apagar a original.
+Em 21/10/2026, o responsável declarou ter conferido os 60 projetos e os
+249 julgamentos anteriores sem consultar as classificações de A/B nem os
+resultados da heurística CFR(b). Esta é a data da declaração; a data
+original da conferência não foi informada.
 
-## Validação depois do preenchimento
-
-Conferir igualdade exata dos conjuntos de IDs com o sorteio oficial, sem IDs
-extras, omissões ou duplicatas. Exigir 60 classificações de `tipo_projeto`,
-60 decisões de `releases_sao_entregas_reais` e 300 decisões de `corretiva`,
-com exatamente 5 releases de cada repositório. Verificar também que as colunas
-fixas não foram alteradas e que os valores pertencem ao catálogo/codificação
-acordado. Células vazias, dúvidas sem decisão e valores inválidos continuam
-pendências explícitas; não são negativos e não contam como julgamento completo.
-
-A transferência é uma entrega parcial e não conclui a issue. Para finalizar,
-o responsável precisa decidir os 51 casos restantes a partir de notas,
-changelog ou compare e validar a completude dos 300 rótulos, mantendo o
-procedimento e a assistência utilizados explícitos. Nenhuma ausência vira `nao`.
-As automações dos agentes foram removidas por solicitação humana; esta
-transferência pontual não reinicia acompanhamento nem coleta.
+A declaração refere-se à conferência anterior. Os 51 casos complementares
+foram confirmados após apresentação de resumos das evidências, conforme o
+registro dos lotes. O aceite do requisito de independência deve considerar
+o procedimento de cada etapa.

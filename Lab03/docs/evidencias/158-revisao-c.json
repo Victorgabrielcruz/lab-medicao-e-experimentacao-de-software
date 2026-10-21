@@ -1,0 +1,983 @@
+{
+  "issue": 158,
+  "data_utc": "2026-10-21T03:56:58.719830+00:00",
+  "branch": "feat/158-rotulagem-c",
+  "estado": "preenchimento_completo_pendente_validacao_humana",
+  "criterio": "Livro de códigos #155: pelo menos uma correção de defeito, inclusive em release mista.",
+  "limitacao_independencia": "Não foram lidos CSVs A/B nem executada/consultada a heurística CFR(b). No levantamento documental foram abertos a documentação e o relatório histórico de B (#157), incluindo suas pendências; portanto esta sessão não comprova avaliação cega. As decisões complementares foram fundamentadas nas fontes das próprias releases, sem copiar rótulos B.",
+  "coleta": "Consultas pontuais de fontes públicas para análise dos 51 casos; nenhum coletor/dataset reiniciado e nenhum novo sorteio.",
+  "validacao": {
+    "repositorios": 60,
+    "tipos_preenchidos": 60,
+    "entregas_preenchidas": 60,
+    "releases": 300,
+    "releases_por_repositorio": 5,
+    "contagens": {
+      "sim": 250,
+      "nao": 50
+    },
+    "pendentes": 0,
+    "novas_decisoes": 51,
+    "julgamentos_anteriores_preservados": 249,
+    "colunas_fixas_preservadas": true,
+    "ids_e_campos_conferidos_com_manifesto": true,
+    "bom_utf8_preservado": true,
+    "repositorios_C_preservados": true,
+    "manifesto_preservado": true
+  },
+  "hashes": {
+    "manifesto": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
+    "repositorios_C": "5957f8953f7b0908c515f55ded252b7170598b4debbf17ef25524b359266ad89",
+    "releases_antes": "d5ec248d7b1007e980d550c9e6070bc1873dca5a161d3c18b6b48d284d43fe03",
+    "releases_depois": "f32368640c4b03dad277ff0f18a6625094cde64e929bd6178b355489d1c211d0"
+  },
+  "copia_anterior": "Lab03/docs/evidencias/158-rotulador_C_releases-antes.csv",
+  "revisao_humana_realizada_nesta_etapa": false,
+  "independencia_validada": false,
+  "issue_fechada": false,
+  "push_realizado": false,
+  "decisoes": [
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397445365",
+      "tag_name": "v6.3.2",
+      "corretiva": "sim",
+      "justificativa": "PR 1914 explica que budgets numéricos causavam erros HTTP 500 no NVIDIA NIM; a mudança envia o esforço nominal aceito pelo provedor.",
+      "fontes": [
+        "https://github.com/Alishahryar1/free-claude-code/releases/tag/v6.3.2",
+        "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1914"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "397445365-detalhe",
+          "url": "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1914",
+          "sha256": "1ab217b574aefaad1d062c467d423470de4ae9272da848db4b45619b09733b10"
+        }
+      ],
+      "notas_sha256": "80ebb125ed0f3853d710a220d03b8a6a2831f3153393750b660f741b740bc2ef"
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397790106",
+      "tag_name": "v6.4.4",
+      "corretiva": "sim",
+      "justificativa": "PR 1923 corrige a perda do histórico de limites e concorrência ao aplicar configurações, que permitia sobreposição de clientes com orçamentos independentes.",
+      "fontes": [
+        "https://github.com/Alishahryar1/free-claude-code/releases/tag/v6.4.4",
+        "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1923"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "397790106-detalhe",
+          "url": "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1923",
+          "sha256": "9fd023253aa9403a4e6a6d9f52493eb61a673881041011e39711a42716b76c1c"
+        }
+      ],
+      "notas_sha256": "d0ba5ccd24a75fa64f100300e73dce89c3b5850a2ab1fc8273d9d13f127ca33e"
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397898184",
+      "tag_name": "v6.4.8",
+      "corretiva": "sim",
+      "justificativa": "PR 1929 corrige perda de saída e de chamadas nativas de ferramentas durante tradução e replay de argumentos.",
+      "fontes": [
+        "https://github.com/Alishahryar1/free-claude-code/releases/tag/v6.4.8",
+        "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1929"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "397898184-detalhe",
+          "url": "https://api.github.com/repos/Alishahryar1/free-claude-code/pulls/1929",
+          "sha256": "6ca99dd4c7e87ca9ff40b50de12b4b11175ec47a985efb10fa2bc6d96af9e300"
+        }
+      ],
+      "notas_sha256": "a40bb0cbb74988499906c00205f1ae9810ef0360ddbc3bc156b2d7525476d099"
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "251319318",
+      "tag_name": "v0.17.1",
+      "corretiva": "sim",
+      "justificativa": "O compare inclui PR 21298: o tipo unitário () não era registrado automaticamente no TypeRegistry; passa a ser registrado com os demais primitivos.",
+      "fontes": [
+        "https://github.com/bevyengine/bevy/releases/tag/v0.17.1",
+        "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.0...v0.17.1"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "251319318",
+          "url": "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.0...v0.17.1",
+          "sha256": "f3cc7fb123b600a5c4278e095544975738975d673a08e5d1cb01a09766faeaba"
+        }
+      ],
+      "notas_sha256": "f41dc33a907314c1feea742fe9a41c1727d7dca2e42758c202e49bb04eacb075"
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "252169671",
+      "tag_name": "v0.17.2",
+      "corretiva": "sim",
+      "justificativa": "O compare inclui PR 21348: a ordem dos passes usava light tiles do frame anterior, perdendo contribuição de iluminação dinâmica; a ordem foi corrigida.",
+      "fontes": [
+        "https://github.com/bevyengine/bevy/releases/tag/v0.17.2",
+        "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.1...v0.17.2"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "252169671",
+          "url": "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.1...v0.17.2",
+          "sha256": "a98c6e47939284478eb1758a6ef30700f2a48d4559f66bef89c4efc083bf8164"
+        }
+      ],
+      "notas_sha256": "a7beaa884e66b4b4064f6c7c44c468b58bbc0c240d38b7ee1772f974bbe7ebf4"
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "263106890",
+      "tag_name": "v0.17.3",
+      "corretiva": "sim",
+      "justificativa": "O compare inclui PR 21365: redimensionar a janela provocava overflow de u32 e panic no exemplo 2d_viewport_to_world.",
+      "fontes": [
+        "https://github.com/bevyengine/bevy/releases/tag/v0.17.3",
+        "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.2...v0.17.3"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "263106890",
+          "url": "https://api.github.com/repos/bevyengine/bevy/compare/v0.17.2...v0.17.3",
+          "sha256": "bcb26f56a6095b78096491d0c73998433781ae0f4695563e75867b0b700cf23a"
+        }
+      ],
+      "notas_sha256": "4879f12639dce33ec057d99297e90124cf2468d3556fbbb4cfc39586081ba8c2"
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "291876022",
+      "tag_name": "v0.18.1",
+      "corretiva": "sim",
+      "justificativa": "PR 22785 corrige off-by-one em alloc_many: spawn_batch alocava índices novos em vez de reutilizar os liberados.",
+      "fontes": [
+        "https://github.com/bevyengine/bevy/releases/tag/v0.18.1",
+        "https://api.github.com/repos/bevyengine/bevy/compare/v0.18.0...v0.18.1"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "291876022",
+          "url": "https://api.github.com/repos/bevyengine/bevy/compare/v0.18.0...v0.18.1",
+          "sha256": "52c7f110d7e132768581de7f959608db22e293fc42ddfd6c78053abc6011dc85"
+        }
+      ],
+      "notas_sha256": "ba0ed833c45bd31ed79ac85a4919c24e76b01c28d3b3e3fe720a1ffaadb3ad0c"
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "341118668",
+      "tag_name": "v0.19.0",
+      "corretiva": "sim",
+      "justificativa": "PR 23948 corrige a BRDF Solari usando TBN local; a implementação anterior produzia costuras nas esferas do teste de iluminação.",
+      "fontes": [
+        "https://github.com/bevyengine/bevy/releases/tag/v0.19.0",
+        "https://api.github.com/repos/bevyengine/bevy/compare/v0.18.1...v0.19.0"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "341118668",
+          "url": "https://api.github.com/repos/bevyengine/bevy/compare/v0.18.1...v0.19.0",
+          "sha256": "772f3defc1ed13d312064d5084f6ed939eca9955f56b599349dd8f2e8933b6f8"
+        }
+      ],
+      "notas_sha256": "cf5e202b66ab538523710be0b03eca16686fdf74d80dbbe7f4186a139c3f9310"
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "355488872",
+      "tag_name": "0.13.6",
+      "corretiva": "nao",
+      "justificativa": "PR 5245 detalha bump de versão, pin de browser-harness e documentação de gravação/vídeo. Não identifica defeito corrigido nesta release; dependência isolada não basta.",
+      "fontes": [
+        "https://github.com/browser-use/browser-use/releases/tag/0.13.6",
+        "https://api.github.com/repos/browser-use/browser-use/pulls/5245"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "355488872-detalhe",
+          "url": "https://api.github.com/repos/browser-use/browser-use/pulls/5245",
+          "sha256": "dd2a48136370b75fe53eb39fcf050b05c6a4138ff053cef84a1a8c74aef97a43"
+        }
+      ],
+      "notas_sha256": "2506ec65adf0c2e88d436374d920e73d8aa53e87017eeea8c1b3f276ec98176c"
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "276959733",
+      "tag_name": "chrome-devtools-mcp-v0.13.0",
+      "corretiva": "sim",
+      "justificativa": "As notas corrigem resize_page quando a janela está maximizada ou em tela cheia; também corrigem o caminho relativo do plugin. A decisão usa o comportamento afetado, não o título Fixes.",
+      "fontes": [
+        "https://github.com/ChromeDevTools/chrome-devtools-mcp/releases/tag/chrome-devtools-mcp-v0.13.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "bc2ecafd371092c46506b2152b310a94d7b2587ed2965b3f7f290d18c0e9dcda"
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "265166206",
+      "tag_name": "v25.8.12.129-lts",
+      "corretiva": "sim",
+      "justificativa": "O changelog específico desta versão corrige métricas incorretas FilesystemCacheBytes (PR 89640, backport 90070), evitando atribuir alterações de outra série à release.",
+      "fontes": [
+        "https://github.com/ClickHouse/ClickHouse/releases/tag/v25.8.12.129-lts",
+        "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v25.8.12.129-lts.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "265166206",
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v25.8.12.129-lts.md",
+          "sha256": "3ccc55f30506da9b2792b2f1b1a91cdd1be9841dc6f06ce4bbf21d64df8f6595"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "274542497",
+      "tag_name": "v25.3.12.8-lts",
+      "corretiva": "sim",
+      "justificativa": "O changelog específico registra correção de erro lógico na leitura de subcolunas pelo Log engine (PR 91711, backport 92689).",
+      "fontes": [
+        "https://github.com/ClickHouse/ClickHouse/releases/tag/v25.3.12.8-lts",
+        "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v25.3.12.8-lts.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "274542497",
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v25.3.12.8-lts.md",
+          "sha256": "10c3b49b16aefc925bdb632cc6418e41e2bbdccfdcfcd0c0643ca43f0097e17d"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "317982524",
+      "tag_name": "v26.4.1.1141-stable",
+      "corretiva": "sim",
+      "justificativa": "O changelog da versão corrige IN com Bool: valores numéricos acima de 255 eram convertidos incorretamente em true (PR 93115). Release mista conta pelo livro de códigos.",
+      "fontes": [
+        "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.4.1.1141-stable",
+        "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.4.1.1141-stable.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "317982524",
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.4.1.1141-stable.md",
+          "sha256": "0456669f73b902ebd94635989bfd493a889b488bad353a97947b84055aaec7b7"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "364963961",
+      "tag_name": "v26.6.2.158-stable",
+      "corretiva": "sim",
+      "justificativa": "O changelog específico registra regressão que desativava prefetch e tornava síncrona a leitura de muitos arquivos pequenos de object storage (PR 108872, backport 109124).",
+      "fontes": [
+        "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.6.2.158-stable",
+        "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.6.2.158-stable.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "364963961",
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.6.2.158-stable.md",
+          "sha256": "014ef9221d393dd8e71c7ebf8daed8e10021dfda11cd35af91be2646dccfd45e"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "383238566",
+      "tag_name": "v26.3.31.5-lts",
+      "corretiva": "sim",
+      "justificativa": "O changelog específico corrige erro de cast/abort ao aplicar groupConcat a Tuple com String esparsa (PR 108790, backport 117568).",
+      "fontes": [
+        "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.3.31.5-lts",
+        "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.3.31.5-lts.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "383238566",
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.3.31.5-lts.md",
+          "sha256": "8280cd7ee4d0dcf69dc4c517719f0fd3c54c2cf640f30682f12ddd5e6d441f59"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "251963275",
+      "tag_name": "v2.55.1",
+      "corretiva": "sim",
+      "justificativa": "As notas registram tratamento de tabelas vazias (PR 2365) na seção de correções; a correção da ingestão é distinta da mera mudança de esquema de cores da documentação.",
+      "fontes": [
+        "https://github.com/docling-project/docling/releases/tag/v2.55.1"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "96e05c51172b66f844030e85913f6db8c0d26f3247efd7a6681cc76e3583e764"
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "281601754",
+      "tag_name": "v2.71.0",
+      "corretiva": "sim",
+      "justificativa": "As notas substituem os links dos modelos RapidOCR (PR 2928), reparando a obtenção dos modelos; a decisão não se baseia na atualização de typer.",
+      "fontes": [
+        "https://github.com/docling-project/docling/releases/tag/v2.71.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "c1ec668035af9664786a2b9494a719bc02fa446daf01611d9cdd4a15958ef97c"
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "308366558",
+      "tag_name": "v2.88.0",
+      "corretiva": "sim",
+      "justificativa": "As notas adaptam OCR aos nomes dos modelos mobile do rapidocr 3.8 (PR 3277), corrigindo compatibilidade de resolução dos modelos.",
+      "fontes": [
+        "https://github.com/docling-project/docling/releases/tag/v2.88.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "fa76d3184ad2ad521ea97d9873f69a008893610534a5eba291e70b6a7beb4c55"
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "253555837",
+      "tag_name": "v0.70.1",
+      "corretiva": "sim",
+      "justificativa": "PR 7451 informa explicitamente que reverte a telemetria por causar os problemas 7449 e 7450; trata-se de reversão motivada por defeito.",
+      "fontes": [
+        "https://github.com/FuelLabs/sway/releases/tag/v0.70.1",
+        "https://api.github.com/repos/FuelLabs/sway/pulls/7451"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "253555837-detalhe",
+          "url": "https://api.github.com/repos/FuelLabs/sway/pulls/7451",
+          "sha256": "110d2fbd45cf23f4b2a5974e2ff8b9ba118760ded5a6aaadc8e1bfe04cd49707"
+        }
+      ],
+      "notas_sha256": "413f3fca3787393740f169d1447154890fd005903251cda072d2fa12fba20b85"
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "252875506",
+      "tag_name": "v1.12.0",
+      "corretiva": "sim",
+      "justificativa": "O compare da série inclui correção do passe de lowering tardio do GC para intrínsecos vetoriais (PR 55864), além das funcionalidades da versão principal.",
+      "fontes": [
+        "https://github.com/JuliaLang/julia/releases/tag/v1.12.0",
+        "https://api.github.com/repos/JuliaLang/julia/compare/v1.11.0...v1.12.0"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "252875506-compare",
+          "url": "https://api.github.com/repos/JuliaLang/julia/compare/v1.11.0...v1.12.0",
+          "sha256": "2d374697fd31f7371f1c066aee376c53e1cf9aebff2053c846810c1f67d3d0d2"
+        }
+      ],
+      "notas_sha256": "79558493af3f865f8b496649cb164854d74574067ddb929cdc7838bb0b7085c4"
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "274974003",
+      "tag_name": "v1.12.4",
+      "corretiva": "sim",
+      "justificativa": "O compare específico 1.12.3 para 1.12.4 inclui correção de buffer overflow em jloptions (PR 60299).",
+      "fontes": [
+        "https://github.com/JuliaLang/julia/releases/tag/v1.12.4",
+        "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.3...v1.12.4"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "274974003",
+          "url": "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.3...v1.12.4",
+          "sha256": "f643a161d487bfb6a4fa3146c712b45cf5611fce4fb143eb76cb3d5f7db9e261"
+        }
+      ],
+      "notas_sha256": "0b3c1fa03e8e02a9dde4067b90546bf15d03dc77cebe4802d685835d728943af"
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "307322022",
+      "tag_name": "v1.12.6",
+      "corretiva": "sim",
+      "justificativa": "O compare 1.12.5 para 1.12.6 corrige a invocação xcrun para usar --sdk; a opção anterior falhava com o script do BinaryBuilder (PR 61040).",
+      "fontes": [
+        "https://github.com/JuliaLang/julia/releases/tag/v1.12.6",
+        "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.5...v1.12.6"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "307322022",
+          "url": "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.5...v1.12.6",
+          "sha256": "8aa7b19d1ecf744d751d31284e4bc613f7d6e7896f821882cbe8824431f89b60"
+        }
+      ],
+      "notas_sha256": "b7b8ae43b488462e767b4a1161bfd05ae46b49f8c4322570c20cd84230f26eb5"
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "371337204",
+      "tag_name": "v1.10.12",
+      "corretiva": "sim",
+      "justificativa": "O compare 1.10.11 para 1.10.12 troca o endereço de download do GMP porque o bloqueio ao GitHub Actions quebrava o build. Não foi usado o compare entre séries do CSV.",
+      "fontes": [
+        "https://github.com/JuliaLang/julia/releases/tag/v1.10.12",
+        "https://api.github.com/repos/JuliaLang/julia/compare/v1.10.11...v1.10.12"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "371337204",
+          "url": "https://api.github.com/repos/JuliaLang/julia/compare/v1.10.11...v1.10.12",
+          "sha256": "2bd834f0c304e6abd1c1808a24460b718da355653479909122ffad002e30d0ec"
+        }
+      ],
+      "notas_sha256": "313beb6a2fa83b6f59aadd2ec432d4ab6e7755a7055dcf217848525d4aa9f0bb"
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "386139815",
+      "tag_name": "v1.13.0",
+      "corretiva": "sim",
+      "justificativa": "O compare da série inclui PR 61680: bits de CPU privilegiados variavam entre núcleos Arrow Lake e eram usados indevidamente para selecionar imagens/codegen; passam a ser ignorados.",
+      "fontes": [
+        "https://github.com/JuliaLang/julia/releases/tag/v1.13.0",
+        "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.0...v1.13.0"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "386139815-compare",
+          "url": "https://api.github.com/repos/JuliaLang/julia/compare/v1.12.0...v1.13.0",
+          "sha256": "793ef1dc14a3e90ae93a034bbb37bd4ec704f426c2a804b15311df7266f4d6da"
+        }
+      ],
+      "notas_sha256": "703b914169d472e315437bf96b3bf5b8a27df450cd022ef1ca5a9c8b1c3e1ade"
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384693385",
+      "tag_name": "release/METEOR@3.0",
+      "corretiva": "nao",
+      "justificativa": "Leitura das notas integrais: migração para APIs async, remoção de fibers, mudanças incompatíveis e atualizações de pacotes; nenhum defeito corrigido identificado nesse material. Não equivale a auditoria de todos os commits.",
+      "fontes": [
+        "https://github.com/meteor/meteor/releases/tag/release/METEOR%403.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "8a32825c51e1b7779fb97d22b5b2f69166fd46c8d5b798dcd55272d02f11f151"
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "345115694",
+      "tag_name": "v2.8.8",
+      "corretiva": "sim",
+      "justificativa": "PR 393 explica que a conta do token não podia publicar uipro-cli; usa pacote alternativo e corrige uipro update para instalar a identidade publicável. Corrige a distribuição/atualização da CLI.",
+      "fontes": [
+        "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.8.8",
+        "https://api.github.com/repos/nextlevelbuilder/ui-ux-pro-max-skill/pulls/393"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "345115694-detalhe",
+          "url": "https://api.github.com/repos/nextlevelbuilder/ui-ux-pro-max-skill/pulls/393",
+          "sha256": "1eb49f535192da98a3c9cd65344fede492108c6423e16cd11970631f2b93f5a4"
+        }
+      ],
+      "notas_sha256": "8874970d9e8b75f2a697f518848bea879f605456d49a643889812698b756c011"
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "345573538",
+      "tag_name": "v2.9.0",
+      "corretiva": "sim",
+      "justificativa": "O compare exato 2.8.8 para 2.9.0 contém PR 346: o gerador emitia configuração Tailwind inválida por faltar vírgula antes de plugins.",
+      "fontes": [
+        "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.9.0",
+        "https://api.github.com/repos/nextlevelbuilder/ui-ux-pro-max-skill/compare/v2.8.8...v2.9.0"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "345573538",
+          "url": "https://api.github.com/repos/nextlevelbuilder/ui-ux-pro-max-skill/compare/v2.8.8...v2.9.0",
+          "sha256": "567baa7d131ec82e3dea6781d2b5cc557cf037e261fe6101b9cdf4d65731b7a5"
+        }
+      ],
+      "notas_sha256": "0d580c2a949d67004aacc0deb702e2df8923002a45fe4b0270127ed4d38ede4b"
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "345343782",
+      "tag_name": "open-design-v0.12.0",
+      "corretiva": "sim",
+      "justificativa": "As notas descrevem login que ficava preso por cinco minutos quando falhava o handoff ao navegador; agora expõe URL e código para completar a autenticação (PRs 4402/4513/4419).",
+      "fontes": [
+        "https://github.com/nexu-io/open-design/releases/tag/open-design-v0.12.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "825085171b268f039160a70b9a5cadccb33a855ead108d686ff82593e170a175"
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "385495816",
+      "tag_name": "open-design-v0.22.1",
+      "corretiva": "sim",
+      "justificativa": "As notas corrigem perda da resposta de esclarecimento quando o envio falha: a resposta fica na conversa e pode ser reenviada (PR 7900).",
+      "fontes": [
+        "https://github.com/nexu-io/open-design/releases/tag/open-design-v0.22.1"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "a53bc5c9836b5754d2295494bbd62fd16b4feac2e99e9a9521c93d929ecdd814"
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "395553114",
+      "tag_name": "v2026.9.24",
+      "corretiva": "sim",
+      "justificativa": "O compare inclui correção de SIGSEGV causado por escrita concorrente em os.environ e getenv em glibc anterior a 2.41; não se inferiu correção apenas do termo patch nas notas.",
+      "fontes": [
+        "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.24",
+        "https://api.github.com/repos/NousResearch/hermes-agent/compare/v2026.9.21...v2026.9.24"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "395553114",
+          "url": "https://api.github.com/repos/NousResearch/hermes-agent/compare/v2026.9.21...v2026.9.24",
+          "sha256": "b4ae799175f1126047712914505f5c1928bc326cf1a284ecb0d7f41d9839250d"
+        }
+      ],
+      "notas_sha256": "eddee3cf56b9ca2d1d0e96a08724c0283460edea4782b01a33b97dd7b2591f6a"
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "265823021",
+      "tag_name": "v1.2.0",
+      "corretiva": "sim",
+      "justificativa": "As notas dizem que heartbeats de fallback deixam de criar sessões novas, corrigindo comportamento de ciclo de sessão; incluem ainda guardas para erros WebSocket.",
+      "fontes": [
+        "https://github.com/openclaw/openclaw/releases/tag/v1.2.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "014cde1659981faa64649d9d339d4c6821c7a8b8a11c64eb3038cdf5e22d60e1"
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "278660115",
+      "tag_name": "v3.0.0",
+      "corretiva": "sim",
+      "justificativa": "O whatsnew da versão registra valores incorretos em DataFrameGroupBy.sum com múltiplos agrupamentos, grupos não observados e dados não numéricos (issue 43891).",
+      "fontes": [
+        "https://github.com/pandas-dev/pandas/releases/tag/v3.0.0",
+        "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.0/doc/source/whatsnew/v3.0.0.rst"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "278660115",
+          "url": "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.0/doc/source/whatsnew/v3.0.0.rst",
+          "sha256": "b9d35ef57c058a69e7e6b5d595bbd059d95763465dd65dd365efe5e815af7bf2"
+        }
+      ],
+      "notas_sha256": "6effa0bf14eb0fbd9621f470beffbd32d4be60eed0212c6479cd263f7a90f338"
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "287437031",
+      "tag_name": "v3.0.1",
+      "corretiva": "sim",
+      "justificativa": "O whatsnew corrige regressão em read_hdf ao ler datetime64 gravado por pandas 2.2 ou anterior (issue 64006).",
+      "fontes": [
+        "https://github.com/pandas-dev/pandas/releases/tag/v3.0.1",
+        "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.1/doc/source/whatsnew/v3.0.1.rst"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "287437031",
+          "url": "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.1/doc/source/whatsnew/v3.0.1.rst",
+          "sha256": "c903bd0c56e3d4c2ba81593b2b1962f57578adb8b5ab3bf6e1699e4ccbd5b061"
+        }
+      ],
+      "notas_sha256": "95586b0303be3921478511d77f5583d5e0874cc6fc63669d477ed522ab4b1699"
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "303390234",
+      "tag_name": "v3.0.2",
+      "corretiva": "sim",
+      "justificativa": "O whatsnew corrige TypeError em json_normalize para entradas ausentes no nível superior, novamente tratadas como registros vazios (issue 64188).",
+      "fontes": [
+        "https://github.com/pandas-dev/pandas/releases/tag/v3.0.2",
+        "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.2/doc/source/whatsnew/v3.0.2.rst"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "303390234",
+          "url": "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.2/doc/source/whatsnew/v3.0.2.rst",
+          "sha256": "177c3b7b139fe493fd8d350541b662dbd069516050740504ac8f3f61f0c45e6b"
+        }
+      ],
+      "notas_sha256": "16cd7bc3e2eaee1aca1a74ba7b67dcb2fbc74fd0272a9422244610c871d239ff"
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "345930477",
+      "tag_name": "v3.0.4",
+      "corretiva": "sim",
+      "justificativa": "O whatsnew corrige regressão que fazia isin lançar erro com pd.NA e ArrowDtype, afetando também drop (issue 63304).",
+      "fontes": [
+        "https://github.com/pandas-dev/pandas/releases/tag/v3.0.4",
+        "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.4/doc/source/whatsnew/v3.0.4.rst"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "345930477",
+          "url": "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.4/doc/source/whatsnew/v3.0.4.rst",
+          "sha256": "a1885c41a0f0a7e77ef4711b624767f3246ce462abd1b76cdcbf9481c4341f47"
+        }
+      ],
+      "notas_sha256": "0eeae6215308fc54c5ebf05675a5b3db2253093badd39e31c9bc10dd3d5fb2aa"
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "358342712",
+      "tag_name": "v3.0.5",
+      "corretiva": "sim",
+      "justificativa": "O whatsnew corrige segmentation fault dos wheels 3.0.4 no Python 3.14 e caminhos datetime por compilação com numpy incompatível (issue 66086).",
+      "fontes": [
+        "https://github.com/pandas-dev/pandas/releases/tag/v3.0.5",
+        "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.5/doc/source/whatsnew/v3.0.5.rst"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "358342712",
+          "url": "https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.5/doc/source/whatsnew/v3.0.5.rst",
+          "sha256": "db7d14efcdce6c85b68e77ff194db8e95a13b714b12773ac6ac292c26dc328e4"
+        }
+      ],
+      "notas_sha256": "881ee785e3d3e936cf62a099bf043d3cf70d96c930fd34bb82c76d7f98458151"
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "285548093",
+      "tag_name": "v52.12.0",
+      "corretiva": "sim",
+      "justificativa": "As notas corrigem a ordem de imports com import.meta.glob (PR 2457), alteração funcional distinta do novo preloading de imagens.",
+      "fontes": [
+        "https://github.com/slidevjs/slidev/releases/tag/v52.12.0"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "f5f0859fa375917b646e7d6644d82a68092043a34c58bdaf9b879761dd4564b7"
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "304108689",
+      "tag_name": "v5.41.1",
+      "corretiva": "sim",
+      "justificativa": "O diff troca import estático de Inquirer v9 por import dinâmico assíncrono compatível com CommonJS nos comandos da CLI, corrigindo o carregamento do módulo.",
+      "fontes": [
+        "https://github.com/strapi/strapi/releases/tag/v5.41.1",
+        "https://api.github.com/repos/strapi/strapi/commits/043798dbe8"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "304108689-detalhe",
+          "url": "https://api.github.com/repos/strapi/strapi/commits/043798dbe8",
+          "sha256": "8f8bf0c32b90d9e772a61cfec6dde3c095f7a43d6fe44fa40fb477237191b190"
+        }
+      ],
+      "notas_sha256": "47d47fa61eecfa3fe1873c42c29b8fad3ee9de6a58e2431e7573df3caa091217"
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "389862460",
+      "tag_name": "Windows-ARM64",
+      "corretiva": "sim",
+      "justificativa": "O compare oficial inclui PR 10620: uploads de PDFs digitalizados passam a usar fallback OCR local, corrigindo classificação e recuperação da ingestão. Notas vazias não foram tratadas como negativo; conferir a atribuição à tag de binários ARM64 na revisão.",
+      "fontes": [
+        "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64",
+        "https://api.github.com/repos/unslothai/unsloth/compare/v0.1.808-beta...Windows-ARM64"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "389862460-compare",
+          "url": "https://api.github.com/repos/unslothai/unsloth/compare/v0.1.808-beta...Windows-ARM64",
+          "sha256": "30b339b8f7502e235369f73929f43439bb54467167cd9072684e70a9206ce471"
+        }
+      ],
+      "notas_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "256498490",
+      "tag_name": "v1.0.25",
+      "corretiva": "nao",
+      "justificativa": "O compare completo contém um único commit que atualiza a versão do schema de 2025-10-11 para 2025-10-17; não descreve defeito nem correção funcional.",
+      "fontes": [
+        "https://github.com/upstash/context7/releases/tag/v1.0.25",
+        "https://api.github.com/repos/upstash/context7/compare/v1.0.24...v1.0.25"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "256498490",
+          "url": "https://api.github.com/repos/upstash/context7/compare/v1.0.24...v1.0.25",
+          "sha256": "97e4fe1225db208970536c31d561e5b81e7bd4967243c1b7f16fef9479d28087"
+        }
+      ],
+      "notas_sha256": "359785988d062668ddc7f42914179aae00aa575e3ecca030c5663351158e9f8a"
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "267408243",
+      "tag_name": "v0.0.16",
+      "corretiva": "nao",
+      "justificativa": "O compare 0.0.15 para 0.0.16 contém licença, links/imagens do README, publicação de arquivos e quick start, e bump dos componentes. Nenhuma correção de defeito de software identificada; correções só de documentação não contam.",
+      "fontes": [
+        "https://github.com/vectorize-io/hindsight/releases/tag/v0.0.16",
+        "https://api.github.com/repos/vectorize-io/hindsight/compare/v0.0.15...v0.0.16"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "267408243",
+          "url": "https://api.github.com/repos/vectorize-io/hindsight/compare/v0.0.15...v0.0.16",
+          "sha256": "aea61ade66c8b3ad1eb745b60589383a83e9d90312cda93bb289452783629d7d"
+        }
+      ],
+      "notas_sha256": "7aa3d1fe777a18bbbf271c8305c409c4a9f0e898fd9a6524b99cc51931491488"
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "269208665",
+      "tag_name": "v0.1.1",
+      "corretiva": "sim",
+      "justificativa": "O compare 0.1.0 para 0.1.1 inclui PR 23 para fazer o provedor OpenAI funcionar, além de tags OpenAPI e documentação.",
+      "fontes": [
+        "https://github.com/vectorize-io/hindsight/releases/tag/v0.1.1",
+        "https://api.github.com/repos/vectorize-io/hindsight/compare/v0.1.0...v0.1.1"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "269208665",
+          "url": "https://api.github.com/repos/vectorize-io/hindsight/compare/v0.1.0...v0.1.1",
+          "sha256": "112769223c2ad1cfaf1393c8edd9a2d21d52638c40c347b38244fc463939f00a"
+        }
+      ],
+      "notas_sha256": "9f2cdd7952a5d37bedf12d2b553310cd0b17e1d203b38e7624d1a8d9faeb61d8"
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "267155199",
+      "tag_name": "v15.1.9",
+      "corretiva": "sim",
+      "justificativa": "As notas vinculam esta versão ao aviso CVE-2025-66478, uma correção de vulnerabilidade; o livro de códigos inclui falhas de segurança.",
+      "fontes": [
+        "https://github.com/vercel/next.js/releases/tag/v15.1.9"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "a20ee816ac0ec49fb204cb59f2b251578f03312031b438f462efc6a53c47d69d"
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "267156324",
+      "tag_name": "v15.3.6",
+      "corretiva": "sim",
+      "justificativa": "As notas vinculam esta versão ao aviso CVE-2025-66478, uma correção de vulnerabilidade; o livro de códigos inclui falhas de segurança.",
+      "fontes": [
+        "https://github.com/vercel/next.js/releases/tag/v15.3.6"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "a20ee816ac0ec49fb204cb59f2b251578f03312031b438f462efc6a53c47d69d"
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "280066005",
+      "tag_name": "v15.3.9",
+      "corretiva": "sim",
+      "justificativa": "As notas identificam explicitamente esta versão como security patch e remetem ao aviso CVE-2026-23864; falha de segurança conta como defeito.",
+      "fontes": [
+        "https://github.com/vercel/next.js/releases/tag/v15.3.9"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "9cb7382ae1804d64a071bdc5db9dd30596413415c63656940a9048d6a0b3b41b"
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "280066109",
+      "tag_name": "v15.4.11",
+      "corretiva": "sim",
+      "justificativa": "As notas identificam explicitamente esta versão como security patch e remetem ao aviso CVE-2026-23864; falha de segurança conta como defeito.",
+      "fontes": [
+        "https://github.com/vercel/next.js/releases/tag/v15.4.11"
+      ],
+      "respostas_consultadas": [],
+      "notas_sha256": "9cb7382ae1804d64a071bdc5db9dd30596413415c63656940a9048d6a0b3b41b"
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "251633628",
+      "tag_name": "create-vite@8.0.2",
+      "corretiva": "nao",
+      "justificativa": "Somente a seção create-vite 8.0.2: inclusão de @types/node, TS 5.9, atualização de dependências e documentação. Não há defeito descrito; não foram importadas as correções da seção anterior 8.0.1.",
+      "fontes": [
+        "https://github.com/vitejs/vite/releases/tag/create-vite%408.0.2",
+        "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.0.2/packages/create-vite/CHANGELOG.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "251633628",
+          "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.0.2/packages/create-vite/CHANGELOG.md",
+          "sha256": "53565ef8198cd722c42e9f70edcf65d7d0cad1aa105f216339039b00763540e2"
+        }
+      ],
+      "notas_sha256": "2f996db4ac4b88a7075e1583773d5e7ea39142348bed44fe28adb57adeed78d9"
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "263887784",
+      "tag_name": "create-vite@8.2.0",
+      "corretiva": "nao",
+      "justificativa": "Somente a seção create-vite 8.2.0: novo suporte Vike e atualizações de dependências. A seção Bug Fixes contém apenas dependências, insuficiente para identificar defeito corrigido.",
+      "fontes": [
+        "https://github.com/vitejs/vite/releases/tag/create-vite%408.2.0",
+        "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.2.0/packages/create-vite/CHANGELOG.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "263887784",
+          "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@8.2.0/packages/create-vite/CHANGELOG.md",
+          "sha256": "8543e25584cf80e90d5f7a27725db359bced9e9b46ec0d5c0a42ff0721406c09"
+        }
+      ],
+      "notas_sha256": "e0aef99d45446841e9be0b63ae59e4b61ff2b65e119cf0d61c464c16b0956138"
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "270318867",
+      "tag_name": "v7.3.0",
+      "corretiva": "nao",
+      "justificativa": "Somente a seção Vite 7.3.0: atualização do esbuild 0.25 para 0.27. As correções listadas abaixo pertencem a 7.2.7 e anteriores, não a esta versão.",
+      "fontes": [
+        "https://github.com/vitejs/vite/releases/tag/v7.3.0",
+        "https://raw.githubusercontent.com/vitejs/vite/v7.3.0/packages/vite/CHANGELOG.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "270318867",
+          "url": "https://raw.githubusercontent.com/vitejs/vite/v7.3.0/packages/vite/CHANGELOG.md",
+          "sha256": "e5ff276ada385c461741acaeb9187f6c8445e3d55d21576b8604fb0506145c5d"
+        }
+      ],
+      "notas_sha256": "19134e2311925cf0fbe2c23187dc391edb6b6147441927265a066bbe604626c7"
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "298781657",
+      "tag_name": "v8.0.1",
+      "corretiva": "sim",
+      "justificativa": "Na seção 8.0.1, PR 21933 corrige falha da minificação lightningcss quando build.target era es6, além de outras correções da versão.",
+      "fontes": [
+        "https://github.com/vitejs/vite/releases/tag/v8.0.1",
+        "https://raw.githubusercontent.com/vitejs/vite/v8.0.1/packages/vite/CHANGELOG.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "298781657",
+          "url": "https://raw.githubusercontent.com/vitejs/vite/v8.0.1/packages/vite/CHANGELOG.md",
+          "sha256": "2fef9f997295d329edb256e7ed3c5aec6cd3d43a611cb70db8ddc260de2850c7"
+        }
+      ],
+      "notas_sha256": "d58efeb4947a7517ec884cedcc4e4249c2b83f0df7ac86061f810bb9a19b3a93"
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "298781798",
+      "tag_name": "create-vite@9.0.3",
+      "corretiva": "nao",
+      "justificativa": "Somente a seção create-vite 9.0.3: atualizações de dependências. A correção do template Vue TypeScript é da seção 9.0.2 e não foi atribuída a 9.0.3.",
+      "fontes": [
+        "https://github.com/vitejs/vite/releases/tag/create-vite%409.0.3",
+        "https://raw.githubusercontent.com/vitejs/vite/create-vite@9.0.3/packages/create-vite/CHANGELOG.md"
+      ],
+      "respostas_consultadas": [
+        {
+          "id": "298781798",
+          "url": "https://raw.githubusercontent.com/vitejs/vite/create-vite@9.0.3/packages/create-vite/CHANGELOG.md",
+          "sha256": "8ae67a97bb06ffab3f0115f567237bac6af888ca6960f79b1f1c40e2275f7780"
+        }
+      ],
+      "notas_sha256": "ec8f8ee731957ac3ba409d2774f50d6e60b44d1587534c152ded0115e6251dfc"
+    }
+  ],
+  "fontes_arquivo": "Lab03/docs/evidencias/158-fontes-publicas.zip",
+  "confirmacao_posterior": {
+    "data": "2026-10-21",
+    "confirmados": 51,
+    "sim": 43,
+    "nao": 8,
+    "pendentes": 0,
+    "registro": "158-confirmacoes-responsavel.json",
+    "hash_csv_atual": "61fb81b81efb6ab1baf2876e97a3fdc8d7c54a5ac60d4bab7c391705c92ed07b",
+    "limite": "Concordância após apresentação de resumos; independência e aceite da issue não comprovados.",
+    "hashes_anteriores": "Os hashes no bloco hashes preservam o estado da análise inicial, anterior às confirmações.",
+    "metodo_hash_csv_atual": "SHA-256 dos bytes do CSV versionado no Git (LF), independente da conversão de linhas do checkout."
+  }
+}
