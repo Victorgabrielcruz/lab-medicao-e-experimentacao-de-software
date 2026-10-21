@@ -8,6 +8,7 @@ Notebooks que leem o dataset final de 500 repositórios
 | Notebook | Issue | Conteúdo |
 |---|---|---|
 | [s03-01-rq01-rq02.ipynb](s03-01-rq01-rq02.ipynb) | #167 | Mediana e IQR da DF e das variantes (a) e (b) do lead time, comparação pareada das variantes e gráficos. |
+| [s03-03-classificacao-dora.ipynb](s03-03-classificacao-dora.ipynb) | #169 | Distribuição das classes DORA de referência (C1) por métrica e geral (LT b + CFR a), com sensibilidade às outras combinações de variantes. |
 | [s03-02-rq03-rq04.ipynb](s03-02-rq03-rq04.ipynb) | #168 | Mediana e IQR da CFR (a) e (b) e do tempo de recuperação, comparação das variantes e das classes, percentual de episódios censurados e gráficos. |
 
 `dados/rq04_episodios_500.csv` traz os episódios de recuperação por repositório,
