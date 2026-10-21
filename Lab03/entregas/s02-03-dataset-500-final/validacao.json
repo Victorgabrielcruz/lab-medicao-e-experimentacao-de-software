@@ -1,0 +1,175 @@
+{
+  "validado_em_utc": "2026-10-21T04:42:43.406080+00:00",
+  "codigo_retorno_coleta_observado": 0,
+  "execucao_completa": true,
+  "total_amostra": 500,
+  "repositorios_com_compare": 500,
+  "ids_iguais_captura_original": true,
+  "csv_reexportado_identico": true,
+  "consultas_api_na_exportacao": 0,
+  "testes_aprovados": 365,
+  "commit_ajuste_memoria_carregado_na_coleta": "76ea2ce",
+  "commit_exportacao": "6dd65cb0a06d5e8bb19db553901683e6a799f9f5",
+  "fontes_sha256": {
+    "raw/metadados.json": "dbd4eff698d0129ae1e9f872ebdb6d841c929108ce9e256d342d8f940595c2aa",
+    "raw/compare.json": "90a8d95da2e775bc139d14f72fd909adbe5cfaa5485b29af412b62528d474d26",
+    "processed/metricas.json": "14fa1585ba9c6d7d88f38a86c45c4c5d0455b57761e69990630f2afb19c06a60",
+    "processed/deployment_frequency.json": "419832617c147dfbde8f8ac1534b8be079c628f5e86d46b167658891fcd3e142",
+    "processed/execucao.json": "ec02e2d5eddf1644473a85e51f13119b9424989f2bcf665b5935ccb5ac8b014e",
+    "processed/auditoria.json": "ef3c3464b4aac5dc2b30522957636a78c8252c76b93fc83dcd87c2bba082aa77",
+    "processed/auditoria_lead_time.json": "7b5363b43b5655bf9b6d3becf1627e048d94d3592ddd7fb66cbd96667d224805"
+  },
+  "execucao": {
+    "contexto": {
+      "janela": {
+        "inicio": "2025-10-01T00:00:00Z",
+        "fim_exclusivo": "2026-10-01T00:00:00Z"
+      },
+      "inclusao": {
+        "min_releases": 5,
+        "min_runs_validos": 50,
+        "incluir_prereleases": false
+      },
+      "runs": {
+        "evento": "push",
+        "somente_default_branch": true,
+        "conclusoes_sucesso": [
+          "success"
+        ],
+        "conclusoes_falha": [
+          "failure",
+          "timed_out",
+          "startup_failure"
+        ]
+      },
+      "api": "https://api.github.com",
+      "fonte_sha256": "9e876ef8b7c0205332f5876be10a2abc4298f719b195c5c786e6156dfe756adf",
+      "versao": 2,
+      "versao_coletor_runs": 2
+    },
+    "agendamento": {},
+    "alvo": 500,
+    "total_amostra_completa": 500,
+    "candidatos_avaliados": 1064,
+    "execucao_completa": true,
+    "coletas_incompletas": 1,
+    "metricas": [
+      "deployment_frequency",
+      "lead_time_a",
+      "lead_time_b",
+      "cfr_a",
+      "cfr_b",
+      "tempo_recuperacao"
+    ],
+    "dependencias_pendentes": [],
+    "validacao_heuristica_pendente": true,
+    "repositorios_com_lead_time_release": 499,
+    "total_comparacoes": 34151,
+    "releases_compare_ignoradas": 104,
+    "coletas_compare_incompletas": 11,
+    "raw": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\raw\\amostra-final-500",
+    "processed": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\amostra-final-500",
+    "desempenho": {
+      "tempos": {
+        "selecao_coleta_s": 29.355166899971664,
+        "calculos_locais_s": 941.1342084000353,
+        "compare_s": 2583.116389999981,
+        "total_s": 3556.162955000007
+      },
+      "http": {
+        "cache_hits": 10619,
+        "requisicoes": 9527,
+        "repeticoes_limite": 0,
+        "repeticoes_5xx": 0,
+        "espera_rate_limit_s": 0.0,
+        "espera_backoff_s": 0.0
+      },
+      "repositorios_paralelos": 3,
+      "limite_requisicoes_simultaneas": 6
+    }
+  },
+  "auditoria_runs": {
+    "validado": true,
+    "versao_recuperacao": "rq04-updated-at-run-started-at-v2",
+    "sequencias_com_censura_esquerda": 683,
+    "repositorios_com_dados_temporais_incompletos": 6,
+    "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\raw\\amostra-final-500\\amostra_workflow_runs.json",
+    "entrada_sha256": "694ff2660a2f3f9ea354918edb32e1e4f477a6846d5397474b5fe7020235587c",
+    "total_repositorios": 500,
+    "runs_no_recorte_deduplicados": 4765758,
+    "falhas": 328182,
+    "sucessos": 3682553,
+    "runs_validos": 4010735,
+    "repositorios_com_cfr": 500,
+    "repositorios_com_recuperacao": 469,
+    "coletas_incompletas": 0,
+    "episodios_recuperados": 92560,
+    "episodios_censurados": 330
+  },
+  "auditoria_lead_time": {
+    "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\raw\\amostra-final-500\\compare.json",
+    "entrada_semantica_sha256": "4784674ce05ef8ea7e95ee4f2f510d5103791541f415c5e3b6b1febd13423843",
+    "versao_classificacao": "lab03-enunciado-cortes-v2",
+    "total_repositorios": 500,
+    "releases_com_lead_time": 28760,
+    "repositorios_com_lead_time": 499,
+    "coletas_incompletas": 11
+  },
+  "exportacao": {
+    "contrato": "lab03-dataset-v1",
+    "colunas": [
+      "id",
+      "full_name",
+      "janela_inicio",
+      "janela_fim_exclusivo",
+      "estrelas",
+      "linguagem",
+      "created_at",
+      "idade_dias",
+      "idade_anos",
+      "default_branch",
+      "contribuidores",
+      "contribuidores_obs",
+      "coletado_em",
+      "deployment_frequency",
+      "classe_deployment_frequency",
+      "lead_time_a",
+      "classe_lead_time_a",
+      "lead_time_b",
+      "classe_lead_time_b",
+      "cfr_a",
+      "classe_cfr_a",
+      "cfr_b",
+      "classe_cfr_b",
+      "tempo_recuperacao",
+      "classe_tempo_recuperacao",
+      "coleta_incompleta",
+      "calculo_parcial",
+      "metricas_ausentes"
+    ],
+    "total_repositorios": 500,
+    "janela": {
+      "inicio": "2025-10-01T00:00:00Z",
+      "fim_exclusivo": "2026-10-01T00:00:00Z"
+    },
+    "entradas_sha256": {
+      "metadados.json": "dbd4eff698d0129ae1e9f872ebdb6d841c929108ce9e256d342d8f940595c2aa",
+      "deployment_frequency.json": "419832617c147dfbde8f8ac1534b8be079c628f5e86d46b167658891fcd3e142",
+      "metricas.json": "14fa1585ba9c6d7d88f38a86c45c4c5d0455b57761e69990630f2afb19c06a60"
+    },
+    "csv_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+    "ordem": "id crescente",
+    "nulos": "celula vazia; zero observado preservado",
+    "listas": "JSON",
+    "metricas_disponiveis": {
+      "deployment_frequency": 500,
+      "lead_time_a": 499,
+      "lead_time_b": 499,
+      "cfr_a": 500,
+      "cfr_b": 498,
+      "tempo_recuperacao": 469
+    },
+    "coleta_incompleta": 13,
+    "calculo_parcial": 52
+  }
+}
