@@ -1,0 +1,610 @@
+{
+  "capturado_em_utc": "2026-10-20T11:34:10.434719+00:00",
+  "manifesto_origem_sha256": "873e5329acb35c713302ed1dec3c5e4119c37e2ebe2e091119e8dbe3b331bdb4",
+  "entradas_sha256": {
+    "raw/amostra-final-500/progresso.json": "4fbdafff58493327037d85d73219caff283ff0e69c4214a67668ec1316bf18f7",
+    "raw/amostra-final-500/config.yaml": "fd3e947ff4a03abe0da5704c1fbe6131ba265f1b5c5c1aa9cf61b1ea2a2f9f43",
+    "raw/amostra-final-500/metadados.json": "dd08dd57d4a2e1e62a62b359dc25acbad602babc5b7db81ed9bf08152555c810",
+    "raw/amostra-final-500/releases.json": "025cf9511710ac5e5edbbf4dc2a9f766ec3305107c1af49eaa340aad9bb6a434",
+    "processed/amostra-final-500/cfr.json": "217c21be597ff58f5c344fbaee91c19a87acddc257c35ca31428b301db413a2f",
+    "processed/amostra-final-500/tempo_recuperacao.json": "4923305b69ced461a7782c1e136dd22dd442463e1bc530efbbac0d67e2c05b95",
+    "processed/amostra-final-500/auditoria.json": "67489e99914b9c62f0fb3512be67c4a2dce7b6c372760e14236266ac9221edc5",
+    "raw/amostra-final-500/amostra_workflow_runs.json": "4d639dcbbdbed20f8e52938b2c639990e5cebcfcc2208a68194fc45d492d70ec",
+    "processed/amostra-final-500/funil.json": "f39eea5b1e48b72e85f009323e36c1815b221fda06f53ef790313e9618a99830",
+    "raw/amostra-final-500/checkpoints/compare/79f741c313be4d0c237ee8fcc78aa8455886bf1a639ebe0e026aa4403e66aa7a/1148788086.json": "821c0bf29eb2048a973924b6bfad950ff315ff1a932378d89c658d95ecb4ecf7",
+    "raw/amostra-final-500/checkpoints/compare/1cf37942f1b06f1e4e5b36fff71e7af0cdfa0f49ca76ab4c65e9249bdfe6540e/1136590548.json": "daa6982df0aa8ce4396c97a35a46597324602a68fc7fc6b11f8d168e9fd7dac1",
+    "raw/amostra-final-500/checkpoints/compare/b283c59d7c81bd221fddbcfc50564a1e71f65f55f1a548fec63e6da424780d80/10270250.json": "1bac9eccd33766a1311271f77ef08df479bf5fa03a518bfd719710633171be0f",
+    "raw/amostra-final-500/checkpoints/compare/cc7f9498c337c642e41bb0251c40d03040f0aeba3c39398fbee00b3ed749bdb1/1024554267.json": "a83c097fb4e12e8f13464dfa6322b3fb84540f36259506e3dd3ff3918afb0c97",
+    "raw/amostra-final-500/checkpoints/compare/e07f1a70e165b7d139ab12fbd381c21e4673c2383217e3822743e713ec2c594c/1103012935.json": "cbeaa3338f4e896a08a4170978dab2a93dd951e4c9719feb09f0064c7eadf98f",
+    "raw/amostra-final-500/checkpoints/compare/eac6eeda5de103e22597f3283b85d389c83b796fc3057cbfab142f083814b95c/193215554.json": "0a7e830d45a6258d9e76037eabbcfdca3d993037a8c3d523db9399ed9de8fa06",
+    "raw/amostra-final-500/checkpoints/compare/6ebd925dd183149d3951ece89a88a717234e52976735fd02a39545d81f31e69f/975734319.json": "544a72a621bf89823eae46e1746da7877ed4b230f3950af9b43f5beaf84da03c",
+    "raw/amostra-final-500/checkpoints/compare/bd0ba182ea55a286fbcaa2c8a0d5af2bd5182c8bf6a157230902cd69c174a4fa/307260205.json": "fde13d27894aff761a86d74e59a8488bdf1ff87336b13b57e09282f068dd4b7b",
+    "raw/amostra-final-500/checkpoints/compare/7a53bbdd6898c2d111f17bfa6c73551f3fb5a1bc7c745ab231dc8c3726bc6a41/787076358.json": "f37a1b1e1abedae84cae6dc78125877f1316e9ba3dce74b7bf0f4a31b9255d25",
+    "raw/amostra-final-500/checkpoints/compare/d95ea28794754c5e10563c9be190155d3a38697b1aab0d7d8a9d537736223fc4/41881900.json": "3d9f7ee691df3ffc717a008bcbc8ea631f7924878ac4e8c0a9add8280ee83f87",
+    "raw/amostra-final-500/checkpoints/compare/f968b48beee55269097b3392e0ac6989919f96ee77cb86caf185b96a66506923/614765452.json": "c4214fbb3b2bcda289c2dd0855edf84470e76f99396574587c0925eb427b7aa6",
+    "raw/amostra-final-500/checkpoints/compare/10bc2e8ccee4d011e8943185dfffbe89685b7fc813b973412b279e1d2202e492/155220641.json": "04d893075025cb7dc6efdbfd2fa421b6164428ddeb390c9e18a138a6b8921652",
+    "raw/amostra-final-500/checkpoints/compare/738376a356873ce7262650ccccd0805df9b98af09a83cc442cd7cc0d0c2351c1/1266797999.json": "363e36f2254bfdae8e46135ddd117185ec1c6c295dd0856d91a9f798f41f2582",
+    "raw/amostra-final-500/checkpoints/compare/e017ee9ce2dd2e27039c93c9bd263c267b905bff6f0b382254c7b2b560c0e787/599320067.json": "5698de97790e65b6fe1d39554589efc12dcfc7b8c6cdf26e4660d49aafad9b8a",
+    "raw/amostra-final-500/checkpoints/compare/6fa27407df90cff3aa7616e1944fb69b7f0702d1f7f57fbeb74385d131a50bdd/701547123.json": "d3f1dd5ccd41242a04dd0df8b7202a58c97924d5c5249551f1f8ff148cded3e4",
+    "raw/amostra-final-500/checkpoints/compare/b815142105051452b27de8f621429f8afb0357cd555df3fefc369a67792ab97d/626805178.json": "02360c973b62af8d5dc0e9b884ef897abacd9e5a95abc21959f3f2af9ba2f0f2",
+    "raw/amostra-final-500/checkpoints/compare/5e49c99a79fda97e59fea416e4d38c103a61b07450c737072b114136136417cc/721767116.json": "3168d6d5a365de555cbb34eccf07d4aea8c3a05c9dffb49d2d8933ff5a3f406b",
+    "raw/amostra-final-500/checkpoints/compare/0496730faba324b7b6837071896c6882e6b8e1a01379ae7b573e6aff0f488a02/552661142.json": "87d6c644e06814b766d235188547e97e46bce953395e6086ee4464591d4eda17",
+    "raw/amostra-final-500/checkpoints/compare/83b24a4e31e212e7999fa9be1596f8c61071b2d18c481faf7fc9d84b90c491ce/70107786.json": "658c18f1b0d5bb63973c492a27a632ec3c4222e5f5992403e221e438bd5057dc",
+    "raw/amostra-final-500/checkpoints/compare/302e2da689d2f57180eba6da297d12a1a0928aaaf783f945fbbff5b65d7c0c57/1031912724.json": "8dd2813c52b2506966b2453a5ffe246bdd8f74ff6027fd921657462796d83bdf",
+    "raw/amostra-final-500/checkpoints/compare/637e959a5b918c0661888bf90fb3bec31fe652a877646f315ba8f8325a652bf3/1042367133.json": "1cf38b5ea97281827f96a20e2b68db0458fea53bfef530512b911ff1434d0b6d",
+    "raw/amostra-final-500/checkpoints/compare/2d98eb0df1a544397d170f54ea41169e539bbf16f420e556d5f2b46affa53ba4/184456251.json": "3df09b5f3578dd781a55097421bfb1c54c1c3c91acc27086f3cd6a70e648d8b7",
+    "raw/amostra-final-500/checkpoints/compare/38aaa631c165941ccc9acc9fd0b388233624a5ccce0461c39e9f95075b5cfd68/589831718.json": "a3f3af75e8ce846ee9bcae0eb2b8f24e844a8e33c8cadf00b732b2b8506a57ab",
+    "raw/amostra-final-500/checkpoints/compare/98b6999de18a187c1c25247f1a00128fc2a7cf41c3582358f260989ba586a9cd/1106996539.json": "6f72fb31521c42ae9f05857b6182829dd3adc64b564f06e2f8b6f3955807fb6e",
+    "raw/amostra-final-500/checkpoints/compare/7d6f1326f449b28e1b23dd5b485f33beb62761175737e9045baddd066b8ed353/770153867.json": "999e70b21605c2d3912b38ae1d67770f2294cef6809f4f3dbbba5e87746b384a",
+    "raw/amostra-final-500/checkpoints/compare/28a5f0025e043e005eb1725ed5177ac8e7c77ec547c12bef167afc4dd8739bf8/965415649.json": "bd1ae91a5960defd62d02429f815302386c328722a967d5b93a02ea1544ee002",
+    "raw/amostra-final-500/checkpoints/compare/fa82d5d4ad5695a7e93d54ca87cc5d07e2ab2222430907e8fb895fa8fb4e20bd/299354207.json": "49ae3cf5fe3c7dc48a3b8f891caf757493d934ebb164e791c22925035a90b08a",
+    "raw/amostra-final-500/checkpoints/compare/2d9b95e0873e6c2b3b81c8eaf4c43cd3a8d35f64d0fe1f4671b6213b0b4cd3bf/29028775.json": "b4a1e89e17c480c25c4b285857c0c6e298fbb7e881c3fbe9475465893be2013a",
+    "raw/amostra-final-500/checkpoints/compare/cfbcbb5e79190f447b29aa9a75ff63880a5a050f0b8b8af23ce85f5526838254/585146387.json": "2885c06560c47a00ce3edddf2f35af7e7d53f03c613a179c3cc2d0f0e07a2009",
+    "raw/amostra-final-500/checkpoints/compare/0c1f8e0a35438c607ed75b6ab9bdc9026889c0557e92fab36083a9ba374267b7/1200597263.json": "e866a88bc95ca83818f13a516fd73597f0e5d0a84f297d4aed0a33157de34023",
+    "raw/amostra-final-500/checkpoints/compare/d6f7b3f7986708140f4efaa5139865b6094e527440b9b782522f05b45543c94b/9384267.json": "30d721a1b54a79934d7c974b8cf7fb65660b6747553e6306de0317a287424947",
+    "raw/amostra-final-500/checkpoints/compare/17c16ace92931d816673dbc78f9f0451ae2bde8f44204fb8c9cab12c8c19ec18/27193779.json": "b0a1c94bed44810cec4c66131a2d61aee045b3fd6fbc2228ca0ebb4db4d55894",
+    "raw/amostra-final-500/checkpoints/compare/e95b360a0aafafeffd1ea2f662a1a1a0fb358759ee71184242fcb91c1c6d92a8/724712.json": "facd33d3acea6c5eaed5b48459342f7d1466373a66ff8f201f66a2cef2136772",
+    "raw/amostra-final-500/checkpoints/compare/352c56d7fe68886e376e8ddd9c26f4ced30b6b3b7960349246c17252cd680cb9/199570071.json": "8775d084674254714ab8ea243e01582b5a53d7263acdc962cbc50d4ce90a8ee4",
+    "raw/amostra-final-500/checkpoints/compare/00e917bb8d397f163e2a6c410b059e70b621d976ddc5401c49ee4133650f8f0d/15634981.json": "ea3680d32f4b2667099b78f8889f6aca8f400444a48b8e86770fe5c98d23ccf7",
+    "raw/amostra-final-500/checkpoints/compare/7a829f1fbe803547ba7206315108840bae608208b75e83a4839f28216e2bf825/576201.json": "9fbdddaa317f2febc843e0f7653393da31a77498597dc28eebdf7cd502b92d8f",
+    "raw/amostra-final-500/checkpoints/compare/9ce5d9f6a5ef31d36ef2fb830f38be9a3d52c8ebe9e3b1a19819120b381f8c2c/881458615.json": "d114ad3711ef010ca08aaaebb2ede3ea1fe5ca9d4e92b1b4ddcecefd128645c4",
+    "raw/amostra-final-500/checkpoints/compare/7b85282ea1a10f2ebc03cfefe38e14c4891ea87d0d6ed6afa6b3ba6ffc390716/1035029907.json": "c38df19cbe186cd5c84a0d9b999875348ec6d6ea49fb2d959658e09a10299529",
+    "raw/amostra-final-500/checkpoints/compare/6d4af61d837b8124114227036d3963d609069c71f746e13bd56ca4fc8a774ba8/196701619.json": "ac1621cf1a0d074554843833a88defc6b970253e4ca8408c6e68a5fafd060b82",
+    "raw/amostra-final-500/checkpoints/compare/0508f38c06ce0c511be8dafb5c08d87e8460475ccee0748af05aff01e2495ed4/20929025.json": "c5cdedc08dca4ba62c4116879894fde7495c301a7ea4aafe7f914d3216389c6d",
+    "raw/amostra-final-500/checkpoints/compare/3bbb68f39a4a376e87c2ca42f03b3586105e905d27750c7f87fd0a1f698f0f8a/1201173969.json": "d4fff0f191e11c5b1a0122a26cfd86d92c6fa6b72d8d0398d1613dcbb8f4f0b3",
+    "raw/amostra-final-500/checkpoints/compare/2893cf757e2631332693326bdf31790e7795058929fd4a2e1481a50d41a9c06f/214587193.json": "15208eb97cbac7189f6aa3b8325114ee7ec9ef7f1283b8d85a9fa18e1c947bc9",
+    "raw/amostra-final-500/checkpoints/compare/2378556554d938205c0268c4010f3b23620562b226ab95f3f1b881eea5a6955e/455229168.json": "cc261b79cba6c534d142303db2cd80ffca73a82c7b6347285a2d2b5e4ed99603",
+    "raw/amostra-final-500/checkpoints/compare/6f749a550fdfb0fcbddf8de291d12192dfc1fc9b07dacd6418b78243e828c747/48378947.json": "32181178a46ab48cd3c594a99299bb3c3dff73b79e42fe8c2d381a96a28ba688",
+    "raw/amostra-final-500/checkpoints/compare/6f383f3dafc10bd14c5515b13a82ca72402fa4956fa05b2eed7243578058ceef/133442384.json": "bf7fa4cab4f037385d4fb89fe54a98411cddb4564d0b662a85243ccbb52e6583",
+    "raw/amostra-final-500/checkpoints/compare/58e36e02e5c0464313ae38d799533582f73957067587ea40cecb619afe8b8dd9/968197216.json": "d0e68dfedd5d3b94c1b2d860b64d7bb1428f2455c4bf4f5da02ca818ce5c95cf",
+    "raw/amostra-final-500/checkpoints/compare/c17aa47d099667d65baea18a38758d2e77e480541272c2d7fbdeef2b99f2a2bb/16408992.json": "104842cb6ea7e98cccf958a0e94d5d420596846724428a7ac19a5629b6764e28",
+    "raw/amostra-final-500/checkpoints/compare/71323fbce1014b484d84d73e3b7850120ace1f071909e45b53c18cb0103069b4/612230.json": "40e605d88acb69549f3b75d96997d0b94283f36f61aba2085982aeb6ae068dec",
+    "raw/amostra-final-500/checkpoints/compare/d7f5180ccb71e53be5e79906347ea9682d9e94c627f4e082b218bef10590cb03/1165277268.json": "33b2d91932d25f265d22eb912f37ab1d57b19421388ac3e5cd8585464bda1cbc",
+    "raw/amostra-final-500/checkpoints/compare/d7978474967a639ac710e1f12cf9b61e56791225bea9c1494dc0104cb4b046f3/890668799.json": "15c02e316de3425b8c45ff3eac384d69202b7bc4cbab76f84c376b8280635a96",
+    "raw/amostra-final-500/checkpoints/compare/1d7c14bf796fc7334d599d9047af63a98ba56c400b4a5ac48aff613a8adbd9c2/1182081931.json": "77471dc86d4355bf211cd8158898c431c12e699df7bbcc5e66d06f2fc4f53f38"
+  },
+  "total_amostra": 500,
+  "candidatos_avaliados": 1064,
+  "novas_consultas_api": 0,
+  "processamento_final_completo": false,
+  "consolidacao_offline_completa": true,
+  "repositorios_com_compare_local": 51,
+  "repositorios_sem_compare": 449,
+  "auditoria_runs_publicada": {
+    "validado": true,
+    "versao_recuperacao": "rq04-updated-at-run-started-at-v2",
+    "sequencias_com_censura_esquerda": 683,
+    "repositorios_com_dados_temporais_incompletos": 6,
+    "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\raw\\amostra-final-500\\amostra_workflow_runs.json",
+    "entrada_sha256": "4d639dcbbdbed20f8e52938b2c639990e5cebcfcc2208a68194fc45d492d70ec",
+    "total_repositorios": 500,
+    "runs_no_recorte_deduplicados": 4765758,
+    "falhas": 328182,
+    "sucessos": 3682553,
+    "runs_validos": 4010735,
+    "repositorios_com_cfr": 500,
+    "repositorios_com_recuperacao": 469,
+    "coletas_incompletas": 0,
+    "episodios_recuperados": 92560,
+    "episodios_censurados": 330
+  },
+  "auditorias_lead_time_por_compare": [
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "68d30a760fcdc859c8203378fb815a7db3f6348fb55421276651ab02c7711fae",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 6,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "b46444cce56151f166f39ab46fb1b3755849340b6bcfd7c18f35fd0cc5d17bf9",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 16,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "3b546896493ab7e5d476693a10b5b200f23d5efeefc1432b92c0165f431acbe2",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 28,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "53b040ce7a6b6b1a12915ad51fb4562b855e4b91c3d0492e3bfe7870b387d7f6",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 34,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 1
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "013f04e7287cb4e32685f2939a4ff7d18b412897d42e9b03b36e68cb3e28605c",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 121,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "cd7c61b5a5e41b07f31d789c2d55513986e46b0cd9e0634e69c3f04411554125",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 257,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "7e33faba9acd9a6fed060754c27f3faa019e2e332b631468e81ac8044031025b",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 468,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "ae3b34211bd03a6fb1845c03522acb585c0aeb37034790cbea609234ef4b2630",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 14,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "4e251bb0606bb0fe82d65131d81f0e1f8f5fbc4d70b7c4db6c2d5b81ef04c83a",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 8,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "15b4a3e1f1b7a6f21e06543b2405487304885e50c01462ccf1bcb01d411c76f5",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 63,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "91b36d00e073bb0d4020accf52ee761d7a2584b631e01616ee407b62c6218c26",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 48,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "bbff3ef57090a780955f4e4df90e452b3fb82978406afda9a5157a0874a5dae9",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 40,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "ba817f2dbd200b76d263969d3c0ccf0e4d055822188c3286f818a483e0d5749a",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 15,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "49531de67d8c3cc91e03b919c0f4b9de97ba2835fff5869334477b343b7e3867",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 40,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "68e86de26c4874db398eb764970ed33429b6d6ffcdc16eee8e5cce68c6db6479",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 42,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "7432e6bfac951beaa12836b3b7f7dbf57c2f371690e74b2ab48fdb5f866ff999",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 23,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "6b31019a5d51d71e038dd9b11cd6d95f9d26abebaafa7b581bc5d74957cf98fe",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 10,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "4ad8d0078161bc1df4bc5b90cfdbfaee4955096dab951873f6f18059fc7a2c84",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 359,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "6b643bf034dbce86a3e69281d14d3b34c5d1219ce7f21c801b9ddb6ed3f929e4",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 78,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "4d7388ce43ae76210e8fe174f47e237b6d1737e1b927bf7bc4722b77e83c1114",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 44,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "01f8f0bc98b23a2fdb85585029118422e738d34c15fa64af18f6e02e099a6a0a",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 173,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "70a8bff3238195834db8f266511fb1898654e16986585a96bf8f99d7ecc4c682",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 15,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "5450abc397f34ebb2bb5af19f18be84159dc873fee4d1e9070cba9d59aec767c",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 74,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "0a1463c96fe46b58e8bf026fa47605b33d110f1d240376831f37e53134616d9d",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 40,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "06ae018e7da8fe5a8800830730f8d4f83a95f9cc602bb9f35ed8a2e970307f3e",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 11,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "9143401c99fa0aeae04073cb101514000c50007955adc8e420d9a3ea6692812b",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 131,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "845f0e632c5384d2480e2984aea2b2b52e500bd64e32a2a04179f326e6dce06c",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 8,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "b7a7d6d46cff58a5f79ca682887b9948ce336e45d918826926476a0791252e5f",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 28,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "9e18ca7a1962bdc749a91a9520423ef55b37f623fb69ff2b321ec03a8a23cd5e",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 62,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "1ede86794045a300908f3d338220240320a1a06f5d3f7342089518f34cd6264e",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 199,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "d48b5f4e0080e0c6b243cd0ef1d786385ae992d43ab7a5d662286b952c496d21",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 184,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "ef59eb300945ece9aea8d0103ad22f354bc9fafdb4ac1f22e5596898645c06a2",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 59,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "726c5013580093a5b2a29edb94573fbdc0b4582430ab3fa8d2c905a39532af05",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 14,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "05bdfef961bbc3adedb57cd93f6b4988ec273549f93a4deb11c3bda3b9a400ef",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 29,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "8207f33d3c080950e1d8b91ad416b38da86f6bce8e0aefd013fb96febad6e1d0",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 11,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "a14c8ed5381101c1e013592dd8f1b7ff5a080f26895da5d8c3a1b9f0d3d246b1",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 6,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "ff5f17bb263516fcb768074f355623d2c08ce85b9eaf3db9fc653c5081991535",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 50,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "d0b4d6b200f4d0fd0fde380b9f5b211e04e852238ace7a6170d56b48c13b0a69",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 265,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "41a6d451f37c0f151f7efd9c7ab1fb64c0b588e9f821f6805b59be7176537a85",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 32,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "2646afdfabce85c69c49a2b29de43d158789ece6c930cdce0453f1c1d85a8111",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 7,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "25e46c41cf437ed5025c859daa3fd6d1e7eb81f974d6eefbca37e47a9476c2c3",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 32,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "207d64e9a697ddfd1485d03f00eba53896614c36f816d519c1eea6083f76f71e",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 8,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "d4c95885ef554aef866c406d8db425667ad952685f5d0887d5bbd13240ea50ea",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 34,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "8788c836e6982290dab273c7c0563be01f335e36b91bd55959483bb0fba1e4b4",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 9,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "a853c0318e2774bc14ed110db4e0d942392323d5f3de652492b9db68d1844c91",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 44,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "05ee99e4930681fba896d4a2c49912f3f1da7121cf5cac7b3f66c922742a064d",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 218,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "dc766480ee6f51d324537f46bf79a717675cacf75f94b3476ca59b798ad2bac5",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 9,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "1548418d9f0c7ee8e9509e5ef3a3eb58e7c57ceda12b5fff98a6d400b3a91ed1",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 5,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "060e7222f2a0727b5cf2af0c59af84fd0fa0be8f0efe80387644edffb4ec0942",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 6,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "6bb45ba240a7b86550ac2e7d75c794401a0a1377ad94492cc43e2540e83bfecf",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 8,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    },
+    {
+      "origem": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\Lab03\\data\\processed\\consolidacao-captura-500-20261020-v3\\raw\\compare.json",
+      "entrada_semantica_sha256": "7b0548e7ff6805d7d9ac70cb942f73f7f18abf8f5bf5e330754c77f6fabc2305",
+      "versao_classificacao": "lab03-enunciado-cortes-v2",
+      "total_repositorios": 1,
+      "releases_com_lead_time": 7,
+      "repositorios_com_lead_time": 1,
+      "coletas_incompletas": 0
+    }
+  ],
+  "validacao_manual_cfr_b_pendente": true,
+  "exportacao": {
+    "contrato": "lab03-dataset-v1",
+    "colunas": [
+      "id",
+      "full_name",
+      "janela_inicio",
+      "janela_fim_exclusivo",
+      "estrelas",
+      "linguagem",
+      "created_at",
+      "idade_dias",
+      "idade_anos",
+      "default_branch",
+      "contribuidores",
+      "contribuidores_obs",
+      "coletado_em",
+      "deployment_frequency",
+      "classe_deployment_frequency",
+      "lead_time_a",
+      "classe_lead_time_a",
+      "lead_time_b",
+      "classe_lead_time_b",
+      "cfr_a",
+      "classe_cfr_a",
+      "cfr_b",
+      "classe_cfr_b",
+      "tempo_recuperacao",
+      "classe_tempo_recuperacao",
+      "coleta_incompleta",
+      "calculo_parcial",
+      "metricas_ausentes"
+    ],
+    "total_repositorios": 500,
+    "janela": {
+      "inicio": "2025-10-01T00:00:00Z",
+      "fim_exclusivo": "2026-10-01T00:00:00Z"
+    },
+    "entradas_sha256": {
+      "metadados.json": "8a4bad51df3bc7da0a517e0b2f14e53be8efea7615355aa0dd06c37d5586baaa",
+      "deployment_frequency.json": "638c7e7e24803c0681a76cdbe2986d59b5817008c343614932a3deedba5291a2",
+      "metricas.json": "bd3416b58370cf729c41aface4bae83bf9ed5b4ebec24dc1a82e468e67bf67d2"
+    },
+    "csv_sha256": "472eec7ee58d8d361e0911d9b9c9356aaf2d203f7beea9c85d01e89e67a35979",
+    "ordem": "id crescente",
+    "nulos": "celula vazia; zero observado preservado",
+    "listas": "JSON",
+    "metricas_disponiveis": {
+      "deployment_frequency": 500,
+      "lead_time_a": 51,
+      "lead_time_b": 51,
+      "cfr_a": 500,
+      "cfr_b": 497,
+      "tempo_recuperacao": 469
+    },
+    "coleta_incompleta": 450,
+    "calculo_parcial": 459
+  }
+}

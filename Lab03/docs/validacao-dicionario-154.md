@@ -1,5 +1,17 @@
 # Conferência do dicionário com a exportação offline (#154)
 
+## Revisão de 20/10/2026
+
+O contrato v1 e as 28 colunas são mantidos na
+[entrega de 500](../entregas/s02-03-dataset-500/README.md). O manifesto e as
+evidências dessa entrega registram a população, hashes e cobertura real por
+variante. A seleção atingiu 500; o processamento final da coleta continua
+parcial. Nulos e classes nulas permanecem explícitos; CFR(b) é a saída da
+heurística v1, com validação humana #162 pendente. Os números abaixo são a
+conferência histórica de 255 e não descrevem a cobertura atual.
+
+## Conferência histórica de 15/10/2026
+
 A revisão mantém o contrato `lab03-dataset-v1` e suas 28 colunas. A população
 foi encerrada por instrução humana em 15/10/2026 com 255 IDs elegíveis entre
 561 candidatos avaliados. Não se afirma atendimento ao mínimo original de

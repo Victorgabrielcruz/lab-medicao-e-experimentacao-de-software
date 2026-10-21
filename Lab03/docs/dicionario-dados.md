@@ -6,22 +6,23 @@ Este documento versiona o contrato **`lab03-dataset-v1`**: uma linha por
 repositório incluído na amostra final, com metadados e as seis métricas/variantes
 produzidas por [`pipeline/metricas.py`](../pipeline/metricas.py).
 O formato tabular corresponde às 28 colunas do exportador local da **#153**,
-`pipeline/dataset_csv.py`, na branch `feat/s02-03-dataset-153`. Esta revisão
-mantém o contrato v1 e documenta a amostra encerrada por decisão humana em
-15/10/2026: **255 repositórios elegíveis entre 561 candidatos avaliados**.
+`pipeline/dataset_csv.py`. A revisão de 20/10/2026 mantém o contrato v1 e
+documenta a base capturada de **500 elegíveis entre 1.064 candidatos avaliados**.
 A janela permanece de `2025-10-01T00:00:00Z` (inclusivo) a
-`2026-10-01T00:00:00Z` (exclusivo). O mínimo planejado de 300 e a meta de 500
-não foram atingidos; a autorização para usar os dados obtidos não equivale
-à conclusão do pipeline de coleta originalmente planejado.
+`2026-10-01T00:00:00Z` (exclusivo). A seleção atingiu a meta de 500; os compares
+e o processamento final permanecem parciais. A entrega de 255 da revisão
+de 15/10/2026 continua preservada como registro histórico.
 
-A consolidação offline usa o snapshot congelado identificado pelo manifesto
-privado `encerramento-amostra.json`; não consulta a API nem amplia a amostra.
+A consolidação offline atual usa o manifesto público de
+[`dados-brutos-500`](../entregas/dados-brutos-500/README.md), conferindo hashes
+e população; não consulta a API. O comando `pipeline.amostra_capturada`
+gera a [nova entrega](../entregas/s02-03-dataset-500/README.md).
 As evidências da conferência estão em
 [validacao-dicionario-154.md](validacao-dicionario-154.md).
 
 O dicionário descreve o significado dos campos; os resultados da coleta #151 e
-os rótulos humanos da #158 não são presumidos. A CFR (b) depende da heurística
-validada na #161. Ausência dessa variante deve permanecer explícita.
+os rótulos humanos da #158 não são presumidos. A CFR (b) usa a heurística implementada na #161, com validação humana
+na #162 ainda pendente. Ausência dessa variante deve permanecer explícita.
 
 ## Grão, seleção e convenções
 
@@ -34,8 +35,8 @@ validada na #161. Ausência dessa variante deve permanecer explícita.
   que o integrado gera para os elegíveis com coleta completa de runs. A união
   de IDs feita por `metricas.consolidar` não substitui esse filtro: saídas
   avulsas podem conter repositórios fora da amostra final. Nesta entrega,
-  essa população reproduz exatamente os 255 IDs elegíveis dos checkpoints
-  consumidos pelo progresso oficial no instante do encerramento. Checkpoints
+  essa população reproduz exatamente os 500 IDs do manifesto capturado em
+  20/10/2026, conferidos contra o progresso e as fontes. Checkpoints
   auxiliares ainda não consumidos não ampliam a população.
 - Cada ID deve ocorrer uma vez nas fontes e no CSV. IDs/nome divergentes,
   janela incompatível e metadados ausentes para um ID selecionado devem causar

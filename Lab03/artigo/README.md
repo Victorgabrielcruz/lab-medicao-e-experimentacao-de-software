@@ -48,6 +48,15 @@ Overleaf nem atualização dos resultados/resumos históricos do piloto.
 
 ## Revisão da metodologia — S02-16 (#166)
 
+**Atualização de 20/10/2026:** a metodologia agora registra a retomada de
+16/10, a captura de **500 elegíveis entre 1.064 candidatos**, o funil com
+exclusão explícita de um candidato com runs incompletos e o processamento
+final parcial após HTTP 403 nos compares. A amostra-ouro de 60 projetos e
+300 releases permanece sorteada sobre os primeiros 255. C tem 51 julgamentos
+de releases pendentes. O contrato do dataset continua com 28 colunas, na
+[nova entrega offline](../entregas/s02-03-dataset-500/README.md).
+Os parágrafos seguintes e os hashes da validação anterior são históricos.
+
 A revisão de 15/10/2026 de `metodologia.tex` registra o encerramento humano
 da extração da #151 com **255 elegíveis entre 561 candidatos avaliados**,
 às **15h09min11s (America/Sao_Paulo)**, conforme a

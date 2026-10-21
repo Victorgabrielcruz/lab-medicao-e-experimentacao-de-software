@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from pipeline import cfr, cfr_b, lead_time_commit, lead_time_release, tempo_recuperacao
+from pipeline import consolidado
 from pipeline.cache import gravar_json
 from pipeline.config import ConfigError, janela_utc, load_config
 
@@ -77,7 +78,7 @@ def executar(config, saida=None):
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
     lead_b = processed / lead_time_commit.ARQUIVO_SAIDA
     if not lead_b.is_file() and (raw / lead_time_commit.ARQUIVO_ENTRADA).is_file():
-        lead_time_commit.executar(config)
+        lead_time_commit.executar(config, resumir=True)
     fontes, origens, pendentes = {}, {}, []
     for metrica, arquivo, *_ in FONTES:
         caminho = processed / arquivo
@@ -88,7 +89,9 @@ def executar(config, saida=None):
                 raise FileNotFoundError(f"{caminho} não encontrado; calcule antes a métrica {metrica}.")
             pendentes.append(metrica)
             continue
-        fontes[metrica] = _ler(caminho, janela)["repositorios"]
+        if consolidado.cabecalho(caminho).get("janela") != janela:
+            raise ConfigError(f"A janela de {caminho.name} não corresponde à janela configurada.")
+        fontes[metrica] = consolidado.repositorios(caminho)
         origens[metrica] = str(caminho)
     lista = consolidar(fontes)
     if pendentes:

@@ -149,16 +149,15 @@ def _coletar_compares(config, client, rels, inicio, fim):
             gravar_json(caminho, registro, compacto=True)
         if not _identidade(registro, repo):
             raise ConfigError("Identidade divergente no checkpoint de compare")
-        return registro
+        return caminho, registro["total_releases_ignoradas"]
 
     mapear = mapear_concluidos if hasattr(client, "sessao") else mapear_ordenado
     with mapear(buscar, rels, _workers(config)) as registros:
-        for registro in registros:
-            lista.append(registro)
+        for caminho, ignoradas in registros:
+            lista.append(caminho)
             log.info("Compare integrado: %d/%d repositórios; %d releases ignoradas",
-                     len(lista), len(rels), registro["total_releases_ignoradas"])
-    compare.gravar_consolidado(config, lista, inicio, fim)
-    return lista
+                     len(lista), len(rels), ignoradas)
+    return compare.gravar_consolidado(config, lista, inicio, fim)[1]
 
 
 def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutilizar_runs=None):
@@ -286,7 +285,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     audit_lead_time = processed / "auditoria_lead_time.json"
     audit_lt_anterior = _ler(audit_lead_time) if audit_lead_time.is_file() else {}
     mesma_entrada_lt = (audit_lt_anterior.get("origem") == str(entrada_compare.resolve())
-                       and audit_lt_anterior.get("entrada_semantica_sha256") == auditoria.hash_compare(_ler(entrada_compare))
+                       and audit_lt_anterior.get("entrada_semantica_sha256") == auditoria.hash_compare_arquivo(entrada_compare)
                        and saida_lead_time.is_file())
     if not mesma_entrada_lt:
         lead_time_release.executar(config, entrada_compare, saida_lead_time)
@@ -297,7 +296,7 @@ def executar(config, client, alvo=100, max_candidatos=1000, fonte=None, reutiliz
     validacao_lt = auditoria.validar_lead_time(config, entrada_compare, saida_lead_time)
     gravar_json(audit_lead_time, validacao_lt)
     # A variante por commit (#142) é recalculada do compare local a cada execução.
-    lead_time_commit.executar(config, entrada_compare)
+    lead_time_commit.executar(config, entrada_compare, resumir=True)
     frequencias = []
     for r in selecionados:
         quantidade = funil.contar_releases(rels[r["id"]], inicio, fim,

@@ -1,5 +1,10 @@
 # Auditoria da amostra encerrada de 255 — #151
 
+**Registro histórico de 15/10/2026.** A seleção posterior atingiu 500 elegíveis
+entre 1.064 candidatos. O processamento final continua parcial; a revisão
+atual está em [atualizacao-sprint02-victor-500.md](../../atualizacao-sprint02-victor-500.md).
+As contagens e a auditoria abaixo pertencem exclusivamente ao corte de 255.
+
 A extração principal e auxiliar foi encerrada por instrução humana em 15/10/2026.
 A amostra congelada contém **255 elegíveis entre 561 candidatos**; a consolidação
 offline foi validada, sem novas consultas à API. Os critérios originais de

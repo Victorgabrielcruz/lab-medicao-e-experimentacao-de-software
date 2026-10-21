@@ -1,5 +1,9 @@
 # Dataset da amostra encerrada — #153
 
+**Registro histórico de 15/10/2026.** A atualização para a captura de 500
+elegíveis em 20/10/2026 está em [s02-03-dataset-500](../s02-03-dataset-500/README.md).
+Os arquivos e hashes desta entrega de 255 permanecem preservados.
+
 Entrega offline de **255 repositórios**, autorizada pelo usuário após encerrar
 as consultas externas em 2026-10-15T18:09:11Z. Foram consumidos 561 candidatos.
 O mínimo original de 300 e a meta de 500 não foram atingidos. Esta entrega não

@@ -158,6 +158,22 @@ def gravar_consolidado(config, lista, inicio, fim):
     """Consolida também registros retomados sem repetir a coleta por repositório."""
     saida = Path(config["caminhos"]["raw"]) / ARQUIVO_SAIDA
     contagens = ("total_releases", "total_comparacoes", "total_releases_ignoradas", "total_releases_ignoradas_404", "comparacoes_acima_250")
+    if lista and isinstance(lista[0], Path):
+        from pipeline import consolidado
+        resumos = []
+        def registros():
+            for caminho in lista:
+                registro = json.loads(caminho.read_text(encoding="utf-8"))
+                resumos.append({k: v for k, v in registro.items() if k != "comparacoes"})
+                yield registro
+        consolidado.gravar(saida, {
+            "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "janela": {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)},
+            "definicao_deploy": "release_estavel", "limite_sem_paginacao": LIMITE_SEM_PAGINACAO,
+        }, registros(), lambda: {"total_repositorios": len(resumos),
+            **{campo: sum(r[campo] for r in resumos) for campo in contagens},
+            "repositorios_com_coleta_incompleta": sum(r["coleta_incompleta"] for r in resumos)})
+        return saida, resumos
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "janela": {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}, "definicao_deploy": "release_estavel",

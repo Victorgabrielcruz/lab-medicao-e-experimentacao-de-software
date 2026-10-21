@@ -196,6 +196,31 @@ def hash_compare(dados):
     return hashlib.sha256(json.dumps(conteudo, sort_keys=True).encode()).hexdigest()
 
 
+def hash_compare_arquivo(caminho):
+    """Mesmo hash semântico de hash_compare, mantendo um repositório em memória."""
+    cabecalho = consolidado.cabecalho(caminho)
+    cabecalho.pop("gerado_em", None)
+    resumo = hashlib.sha256()
+    def escrever(texto):
+        resumo.update(texto.encode())
+    encoder = json.JSONEncoder(sort_keys=True)
+    escrever("{")
+    for pos, chave in enumerate(sorted([*cabecalho, "repositorios"])):
+        escrever((", " if pos else "") + json.dumps(chave) + ": ")
+        if chave == "repositorios":
+            escrever("[")
+            for n, repo in enumerate(consolidado.repositorios(caminho)):
+                escrever(", " if n else "")
+                for bloco in encoder.iterencode(repo):
+                    escrever(bloco)
+            escrever("]")
+        else:
+            for bloco in encoder.iterencode(cabecalho[chave]):
+                escrever(bloco)
+    escrever("}")
+    return resumo.hexdigest()
+
+
 def _horas_release(comparacao):
     if (comparacao.get("ignorada") or comparacao.get("coleta_incompleta")
             or comparacao.get("release_anterior") is None):
@@ -226,7 +251,7 @@ def validar_lead_time(config, entrada, saida, conferir_classificacao=True):
     """Confere RQ02a com os commits de origem, sem chamar o cálculo de produção."""
     from pipeline.classificacao import classificar_metrica
     entrada = Path(entrada)
-    dados = json.loads(entrada.read_text(encoding="utf-8"))
+    dados = consolidado.cabecalho(entrada)
     metrica = json.loads(Path(saida).read_text(encoding="utf-8"))
     inicio, fim = janela_utc(config)
     janela = {"inicio": _iso(inicio), "fim_exclusivo": _iso(fim)}
@@ -237,12 +262,12 @@ def validar_lead_time(config, entrada, saida, conferir_classificacao=True):
     if conferir_classificacao:
         _exigir(metrica.get("versao_classificacao") == "lab03-enunciado-cortes-v2", "versão de classificação divergente")
     _exigir(metrica["variante"] == "a" and metrica["unidade"] == "horas", "variante/unidade divergente")
-    identidades = [(r["id"], r["full_name"], r.get("default_branch")) for r in dados["repositorios"]]
+    identidades = [(r["id"], r["full_name"], r.get("default_branch")) for r in consolidado.repositorios(entrada)]
     _exigir(len({r[0] for r in identidades}) == len(identidades), "IDs de compare duplicados")
     _exigir([(r["id"], r["full_name"], r.get("default_branch")) for r in metrica["repositorios"]]
             == identidades, "identidades de lead time divergentes")
     totais = valores = incompletas = calculados = 0
-    for repo, resultado in zip(dados["repositorios"], metrica["repositorios"]):
+    for repo, resultado in zip(consolidado.repositorios(entrada), metrica["repositorios"]):
         comparacoes, ids = [], set()
         for c in repo["comparacoes"]:
             r = c["release"]
@@ -279,7 +304,7 @@ def validar_lead_time(config, entrada, saida, conferir_classificacao=True):
                          ("releases_com_lead_time", valores), ("releases_ignoradas", totais-valores),
                          ("repositorios_com_coleta_incompleta", incompletas), ("repositorios_com_lead_time", calculados)):
         _exigir(metrica[campo] == valor, f"total de lead time divergente: {campo}")
-    return {"origem": str(entrada.resolve()), "entrada_semantica_sha256": hash_compare(dados),
+    return {"origem": str(entrada.resolve()), "entrada_semantica_sha256": hash_compare_arquivo(entrada),
             "versao_classificacao": metrica.get("versao_classificacao"),
             "total_repositorios": len(identidades), "releases_com_lead_time": valores,
             "repositorios_com_lead_time": calculados, "coletas_incompletas": incompletas}

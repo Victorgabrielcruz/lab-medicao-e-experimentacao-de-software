@@ -191,13 +191,25 @@ def executar(config, entrada=None, compares=None, saida=None, ids=None, amostra=
         if not set(ids) <= releases.keys():
             raise ConfigError("Repositório selecionado ausente nas releases da CFR(b).")
         releases = {i: r for i, r in releases.items() if i in ids}
+    from pipeline import consolidado
     dados_compare = None
     if caminho_compare.is_file() or compares is not None:
-        dados_compare = ler(caminho_compare)
+        dados_compare = consolidado.cabecalho(caminho_compare)
+        if dados_compare.get("janela") != janela:
+            raise ConfigError(f"Janela divergente em {caminho_compare.name} para a CFR(b).")
         if dados_compare.get("definicao_deploy") != "release_estavel":
             raise ConfigError("A CFR(b) exige compare com definicao_deploy=release_estavel.")
-    por_id = _indice(dados_compare["repositorios"], "id", "compare") if dados_compare else {}
-    lista = [calcular_repositorio(repo, inicio, fim, por_id.get(i)) for i, repo in releases.items()]
+    calculados, vistos = {}, set()
+    if dados_compare:
+        for cp in consolidado.repositorios(caminho_compare):
+            i = cp.get("id")
+            if i is None or i in vistos:
+                raise ConfigError("ID ausente ou duplicado em compare.")
+            vistos.add(i)
+            if i in releases:
+                calculados[i] = calcular_repositorio(releases[i], inicio, fim, cp)
+    lista = [calculados[i] if i in calculados else calcular_repositorio(repo, inicio, fim)
+             for i, repo in releases.items()]
     gravar_json(saida, {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "origens": {"releases": str(entrada), "compare": str(caminho_compare) if dados_compare else None,

@@ -105,7 +105,10 @@ def test_integrado_existente_reutiliza_checkpoint_auxiliar_sem_chamar_api(tmp_pa
     def proibido(*args):
         pytest.fail("Compare já antecipado foi consultado novamente")
     monkeypatch.setattr(aux.compare, "coletar_repositorio", proibido)
-    assert integrado._coletar_compares(cfg, object(), [repo()], inicio, fim) == [registro]
+    resumo = integrado._coletar_compares(cfg, object(), [repo()], inicio, fim)
+    assert resumo == [{k: v for k, v in registro.items() if k != "comparacoes"}]
+    consolidado = json.loads((principal.raw / "compare.json").read_text(encoding="utf-8"))
+    assert consolidado["repositorios"] == [registro]
     assert destino.read_bytes() == antes
     assert aux.antecipar(cfg, principal, object(), repo(), tmp_path / "aux") == "reutilizado"
 

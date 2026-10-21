@@ -59,6 +59,17 @@ terminou com \textbf{500 repositórios elegíveis entre 1.064 candidatos
 avaliados}, que correspondem exatamente aos 1.064 primeiros da fonte, sem
 lacunas, e incluem os 255 da primeira etapa.
 
+A captura publicada em 20 de outubro preservou o estado após uma interrupção
+por HTTP 403 nos compares. Em 21 de outubro, a retomada processou os compares
+dos 500 projetos e encerrou com código zero e
+\texttt{execucao\_completa=true}, sem alterar a população selecionada.
+Foram processadas 34.151 comparações, com 104 releases ignoradas e
+diagnósticos de compare incompleto em 11 projetos. Os lead times (a) e (b)
+têm estimativa em 499 projetos; ausência e incompletude permanecem explícitas,
+sem imputação por zero. A CFR (b) usa a heurística v1, com validação humana
+na \#162 ainda pendente. A exportação final é local, confere hashes e
+reproduz o CSV byte a byte; concluir a execução não elimina os diagnósticos.
+
 Configuração, fonte de candidatos, progresso, checkpoints e cache foram
 preservados com hashes. A completude de runs dos incluídos não assegura a
 completude das comparações de commits, tratadas separadamente; ausências
@@ -316,14 +327,16 @@ releases corretivas sustenta a heurística; não mede diretamente incidentes
 em produção nem equivale ao valor da CFR (b).
 
 \paragraph{Situação nesta revisão.}
-Em 15 de outubro de 2026, a base versionada consultada disponibiliza o
-gerador da \#155 e a preparação documental de C (\#158), que registra
-dependência do sorteio oficial. Não há manifesto desse sorteio, planilhas
-humanas completas, resultados de Fleiss, consenso ou avaliação da heurística
-nesta base. Portanto, 60 repositórios e 300 releases são tamanhos previstos,
-e kappa, precisão, recall e F1 permanecem pendentes, sem valores numéricos
-atribuídos. Esta seção reporta o protocolo; sua execução e os resultados
-deverão ser incorporados com os respectivos artefatos de evidência.
+O sorteio oficial da \#155 contém 60 repositórios e 300 releases,
+com semente 42, selecionados sobre os primeiros 255 elegíveis.
+A decisão de 16 de outubro mantém esse sorteio após a ampliação para 500,
+sem substituir as planilhas nem repetir a seleção. Na versão conferida em
+20 de outubro, C tem 60 classificações de tipo de projeto, 60 decisões
+sobre entregas reais e 249 decisões sobre releases; faltam 51 julgamentos.
+A assistência de IA já registrada acompanha a avaliação da independência.
+Não se presume rotulagem completa a partir da decisão de manter o sorteio.
+Kappa, consenso e avaliação da heurística exigem seus próprios artefatos
+de evidência; esta revisão não lhes atribui resultados novos.
 
 \subsection{Classificação e dicionário de dados}
 Usamos os cortes fixos do enunciado da disciplina, contrato
@@ -342,10 +355,10 @@ O dicionário versionado da S02-04 (\#154) está em
 \texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
 identidade, janela, metadados, valores e classes das seis métricas/variantes,
 indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
-tipo, unidade e fórmula ou origem. A exportação do CSV da amostra encerrada
-é a entrega separada S02-03 (\#153); documentar o procedimento não implica
-que essa consolidação já esteja pronta. O contrato mantém uma linha por
-ID dos 255 repositórios congelados e preserva nulos como células vazias;
+tipo, unidade e fórmula ou origem. A exportação offline da S02-03 (\#153) preserva a entrega histórica de 255,
+o corte parcial de 500 e a entrega final em \texttt{Lab03/entregas/s02-03-dataset-500-final/}.
+O contrato mantém uma linha por ID do manifesto da captura e preserva
+nulos como células vazias;
 diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
 
 \subsection{Artefatos e rastreabilidade}
