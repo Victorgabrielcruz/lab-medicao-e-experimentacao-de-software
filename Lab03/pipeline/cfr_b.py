@@ -202,9 +202,9 @@ def executar(config, entrada=None, compares=None, saida=None, ids=None, amostra=
     calculados, vistos = {}, set()
     if dados_compare:
         for cp in consolidado.repositorios(caminho_compare):
-            i = cp["id"]
-            if i in vistos:
-                raise ConfigError("ID duplicado em compare")
+            i = cp.get("id")
+            if i is None or i in vistos:
+                raise ConfigError("ID ausente ou duplicado em compare.")
             vistos.add(i)
             if i in releases:
                 calculados[i] = calcular_repositorio(releases[i], inicio, fim, cp)

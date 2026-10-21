@@ -975,8 +975,9 @@
     "nao": 8,
     "pendentes": 0,
     "registro": "158-confirmacoes-responsavel.json",
-    "hash_csv_atual": "6e6d3d14d490e166a0cedb6d60570b9a7c4be2b9bdbf06cdd2f5967f9d59018e",
+    "hash_csv_atual": "61fb81b81efb6ab1baf2876e97a3fdc8d7c54a5ac60d4bab7c391705c92ed07b",
     "limite": "Concordância após apresentação de resumos; independência e aceite da issue não comprovados.",
-    "hashes_anteriores": "Os hashes no bloco hashes preservam o estado da análise inicial, anterior às confirmações."
+    "hashes_anteriores": "Os hashes no bloco hashes preservam o estado da análise inicial, anterior às confirmações.",
+    "metodo_hash_csv_atual": "SHA-256 dos bytes do CSV versionado no Git (LF), independente da conversão de linhas do checkout."
   }
 }

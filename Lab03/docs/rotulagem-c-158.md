@@ -79,8 +79,9 @@ projeto foram conferidos contra o manifesto oficial.
 
 Os 60 projetos e os 249 julgamentos anteriores foram preservados nesta
 revisão. O requisito de independência e o aceite final da #158 continuam
-separados da confirmação das decisões. A issue não foi fechada, e nenhum
-push foi realizado nesta revisão.
+separados da confirmação das decisões. A entrega foi publicada na branch
+`feat/158-rotulagem-c` e no [PR #233](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/pull/233).
+A issue não foi fechada por esta revisão.
 
 ## Declaração do responsável sobre a conferência anterior
 

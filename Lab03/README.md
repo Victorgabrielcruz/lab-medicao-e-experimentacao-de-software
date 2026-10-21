@@ -8,6 +8,7 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 
 | Documento | Conteúdo |
 |---|---|
+| [`entregas/s02-03-dataset-500-final/README.md`](entregas/s02-03-dataset-500-final/README.md) | CSV final após processar os 500 compares, código 0, auditorias e cobertura real das métricas |
 | [`entregas/s02-03-dataset-500/README.md`](entregas/s02-03-dataset-500/README.md) | CSV offline atualizado para 500, hashes e cobertura parcial das métricas |
 | [`docs/atualizacao-sprint02-victor-500.md`](docs/atualizacao-sprint02-victor-500.md) | Revisão das cinco tarefas de Victor na Sprint 02 e responsabilidades consultadas no GitHub |
 | [`entregas/dados-brutos-500/README.md`](entregas/dados-brutos-500/README.md) | Base capturada de 500 elegíveis, cache completo e restauração com verificação de hashes; compares ainda parciais |
@@ -760,13 +761,15 @@ Resultado: 60 repositórios e 300 releases, `total_populacao=255` e
 Em 34 das 300 releases a release sorteada é a primeira elegível do
 repositório na janela, então `compare_url` fica vazio.
 
-### Rascunho da rotulagem B (S02-07 — #157)
+### Rotulagem B (S02-07 — #157)
 
-As [planilhas B e a orientação de revisão](docs/rotulagem-b-157.md) contêm
-sugestões para os 60 projetos e 288 das 300 releases; 12 decisões permanecem
-pendentes. Os arquivos identificam a revisão humana ainda
-necessária. Esta preparação não equivale à rotulagem humana independente
-concluída; fontes, limites e pendências estão documentados.
+As [planilhas B e a documentação da rotulagem](docs/rotulagem-b-157.md) contêm
+classificações para os 60 projetos e as 300 releases, cinco por projeto.
+As 12 decisões antes vazias foram complementadas em 20/10/2026. A revisão
+manual foi realizada em outra branch, conforme informado pelo responsável.
+O sorteio oficial
+sobre os primeiros 255 elegíveis foi mantido após a seleção dos 500,
+conforme a decisão da retomada. Fontes, hashes e limites estão documentados.
 
 ### Kappa de Fleiss entre os rotuladores (S02-09 — #159)
 

@@ -8,9 +8,10 @@ sem restrição de linguagem e com atividade desde o início da janela.
 O recorte temporal é UTC: de 1 de outubro de 2025, inclusive, a 1 de outubro
 de 2026, exclusive, abrangendo doze meses civis completos. As faixas da busca
 são subdivididas para contornar o teto de resultados, e IDs são deduplicados.
-A ordem inicial dos candidatos da busca prioriza estrelas. Durante a coleta,
-foi aplicada a política de adiamento por custo observado descrita abaixo;
-assim, a ordem efetivamente consumida não é estritamente a ordem por estrelas.
+A ordem inicial dos candidatos da busca prioriza estrelas. Na primeira etapa
+da coleta, foi aplicada a política de adiamento por custo observado descrita
+abaixo; assim, a ordem efetivamente consumida não é estritamente a ordem por
+estrelas.
 A amostra não é aleatória e as conclusões se restringem a esse recorte de
 projetos populares, condicionado também pela disponibilidade de coleta.
 
@@ -35,56 +36,77 @@ O paralelismo respeita o limite global de requisições simultâneas e a ordem
 da fila configurada, inclusive a política de adiamento; os critérios de
 inclusão e a janela não foram relaxados para acelerar a execução.
 
-\paragraph{Replanejamento e captura da base.}
-Em 14 de outubro de 2026, foi autorizada a priorização por custo observado
-de runs, com adiamento de candidatos de alto volume. Em 15 de outubro, a
-extração foi interrompida com 255 elegíveis entre 561 candidatos; esse corte
-foi preservado com hashes e deu origem à primeira consolidação offline.
-Em 16 de outubro, o grupo autorizou retomar a seleção até 500, conforme a
-decisão versionada em \texttt{Lab03/docs/decisao-retomada-500.md}.
-Posteriormente, a execução passou a usar a fonte sem prioridade por tamanho,
-cuja identidade é registrada no contexto do manifesto da captura. Não se
-presume que a ordem efetivamente consumida seja estritamente por estrelas.
+\paragraph{Replanejamento, encerramento e retomada da extração.}
+Em 14 de outubro de 2026, após preservar 102 elegíveis entre 211 candidatos
+avaliados, o responsável autorizou adiar candidatos pendentes com alto volume
+de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
+único mês. O custo se refere a runs coletados, não a tamanho em disco;
+custo desconhecido não classifica um projeto como pequeno. O único candidato
+identificado e adiado foi \texttt{grafana/grafana}, ID 15111821, com 107.617
+runs em sete meses. Os projetos grandes já concluídos permaneceram na amostra,
+e os demais candidatos mantiveram sua ordem relativa. O plano era priorizar
+os demais até 300 elegíveis e então liberar os adiados.
 
-Em 20 de outubro de 2026, foi publicada a captura de
-\textbf{500 repositórios elegíveis entre 1.064 candidatos avaliados}, na
-mesma janela e com os mesmos critérios de inclusão. A meta numérica foi
-atingida; o processamento final parou nos compares após HTTP 403.
-A seleção com runs completos não implica que todas as métricas e variantes
-tenham cobertura em 500 projetos. A consolidação desta revisão é offline,
-confere os hashes do manifesto público e usa somente compares compatíveis
-já capturados. Compares ausentes mantêm lead times e classes ausentes,
-com indicadores de coleta incompleta e cálculo parcial. A CFR (b) usa a
-heurística v1, cuja validação humana na \#162 continua pendente.
+Em 15 de outubro de 2026, às 18h09min11s UTC, a extração foi encerrada com
+\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}, antes do
+marco de 300. Em 16 de outubro, o grupo decidiu retomar a coleta até a meta
+original de 500 elegíveis, preservando configuração, janela, critérios e os
+checkpoints dos 561 avaliados. Na retomada, os candidatos pendentes passaram
+a seguir a ordem original da busca, sem adiamento por volume de runs; Grafana
+voltou à sua posição nessa ordem e foi incluído. Assim, a preferência por
+custo de coleta ficou restrita aos 561 primeiros avaliados. A seleção
+terminou com \textbf{500 repositórios elegíveis entre 1.064 candidatos
+avaliados}, que correspondem exatamente aos 1.064 primeiros da fonte, sem
+lacunas, e incluem os 255 da primeira etapa.
 
-A priorização histórica por custo, o recorte de projetos populares e a
-cobertura parcial de compares limitam a generalização. Não se assume que
-as ausências sejam aleatórias. Os resultados do piloto nas demais seções
-continuam sendo históricos e não descrevem a população de 500.
+A captura publicada em 20 de outubro preservou o estado após uma interrupção
+por HTTP 403 nos compares. Em 21 de outubro, a retomada processou os compares
+dos 500 projetos e encerrou com código zero e
+\texttt{execucao\_completa=true}, sem alterar a população selecionada.
+Foram processadas 34.151 comparações, com 104 releases ignoradas e
+diagnósticos de compare incompleto em 11 projetos. Os lead times (a) e (b)
+têm estimativa em 499 projetos; ausência e incompletude permanecem explícitas,
+sem imputação por zero. A CFR (b) usa a heurística v1, com validação humana
+na \#162 ainda pendente. A exportação final é local, confere hashes e
+reproduz o CSV byte a byte; concluir a execução não elimina os diagnósticos.
+
+Configuração, fonte de candidatos, progresso, checkpoints e cache foram
+preservados com hashes. A completude de runs dos incluídos não assegura a
+completude das comparações de commits, tratadas separadamente; ausências
+de métricas permanecem nulas, sem imputação por zero. A amostra não é
+aleatória e não se presume que represente todos os candidatos da busca.
+Os resultados do piloto apresentados nas demais seções não são resultados
+da amostra final.
 
 \paragraph{Funil de seleção.}
-A Tabela~\ref{tab:funil} resume os candidatos efetivamente avaliados na
-captura de 20 de outubro. Candidatos ainda não processados não são exclusões.
-O funil publicado inclui 501 projetos que atendem ao critério quantitativo;
-um tem runs incompletos e é excluído pelo requisito explícito de completude,
-reproduzindo os 500 IDs do manifesto oficial.
+A Tabela~\ref{tab:funil} resume o funil. A busca, dividida em 57 faixas de
+estrelas sem nenhuma truncada, devolveu 37.383 candidatos distintos. Os
+36.319 não avaliados após a amostra atingir 500 elegíveis não foram
+processados; não são exclusões. Entre os 1.064 avaliados, cada etapa só
+recebe os que passaram pela anterior. O pré-filtro de releases evita coletar
+runs de quem já não atinge cinco releases estáveis; o critério de runs e a
+exigência de coleta completa vêm em seguida. O único descarte nesta última
+etapa, \texttt{dbeaver/dbeaver}, atinge os critérios quantitativos, mas
+tem a coleta de runs incompleta.
 
 \begin{table}[ht]
 \centering
-\caption{Funil da captura de 20/10/2026}
+\caption{Funil de seleção da amostra final}
 \label{tab:funil}
 \small
 \begin{tabular}{lrr}
 \hline
 Etapa & Descartados & Restantes \\
 \hline
-Candidatos avaliados & -- & 1.064 \\
+Candidatos da Search API & -- & 37.383 \\
+Avaliados até atingir 500 elegíveis & 36.319$^{*}$ & 1.064 \\
 Com workflows próprios do GitHub Actions & 131 & 933 \\
 Metadados acessíveis & 1 & 932 \\
 Ao menos cinco releases estáveis na janela & 363 & 569 \\
 Ao menos cinquenta runs válidos na janela & 68 & 501 \\
 Coleta de runs completa & 1 & 500 \\
 \hline
+\multicolumn{3}{l}{\footnotesize $^{*}$Não processados porque a meta foi atingida; não são exclusões.} \\
 \end{tabular}
 \end{table}
 
@@ -207,9 +229,12 @@ de uma estimativa parcial não elimina o diagnóstico de incompletude.
 \label{sec:validacao-manual}
 
 \paragraph{Amostra-ouro e instrumento.}
-O protocolo da \#155 prevê sortear, sem reposição, 60 dos 255 repositórios
-da população encerrada e cinco releases estáveis de cada um, totalizando
-300 pares repositório--release. O gerador usa
+O protocolo da \#155 sorteou, sem reposição, 60 dos 255 repositórios
+elegíveis da primeira etapa da coleta, encerrada em 15 de outubro, e cinco
+releases estáveis de cada um, totalizando 300 pares repositório--release.
+O sorteio foi mantido após a retomada: os 60 repositórios pertencem à
+amostra final de 500, mas foram sorteados entre os 255 primeiros elegíveis,
+não entre os 500. O gerador usa
 \texttt{DataFrame.sample} com \texttt{random\_state=42} nos dois sorteios;
 ordena previamente os repositórios por ID e as releases por publicação/ID.
 O mesmo manifesto oficial deve orientar os três avaliadores, sem sorteios
@@ -330,8 +355,8 @@ O dicionário versionado da S02-04 (\#154) está em
 \texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
 identidade, janela, metadados, valores e classes das seis métricas/variantes,
 indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
-tipo, unidade e fórmula ou origem. A exportação offline da S02-03 (\#153) tem uma entrega histórica de 255
-e uma nova entrega de 500 em \texttt{Lab03/entregas/s02-03-dataset-500/}.
+tipo, unidade e fórmula ou origem. A exportação offline da S02-03 (\#153) preserva a entrega histórica de 255,
+o corte parcial de 500 e a entrega final em \texttt{Lab03/entregas/s02-03-dataset-500-final/}.
 O contrato mantém uma linha por ID do manifesto da captura e preserva
 nulos como células vazias;
 diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
