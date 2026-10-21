@@ -1,0 +1,27 @@
+{
+  "data": "2026-10-21",
+  "release_id": "389862460",
+  "tag": "Windows-ARM64",
+  "commit_tag": "39268d393918b1a85fda43f5b18f9cd4ed7f821d",
+  "commit_correcao": "ab6960778477dd1e05e4f35078d75a056b469001",
+  "pr": 10620,
+  "evidencia_local": "158-fontes-publicas.zip / 389862460-compare.json",
+  "achados": [
+    "A página pública da release identifica a tag Windows-ARM64 no commit 39268d3.",
+    "O compare arquivado para essa tag inclui a correção de PDFs digitalizados do PR 10620.",
+    "O PR público confirma falha na ingestão de PDFs digitalizados e sua correção com OCR local."
+  ],
+  "criterio": "O livro de códigos aceita pelo menos uma correção identificada nas notas ou no compare; não exige execução dos binários.",
+  "limites": [
+    "Binários não executados nem verificados individualmente.",
+    "Compare da API informa 258 commits; a resposta arquivada contém 250. A correção concreta está entre os commits retornados."
+  ],
+  "sugestao": "sim",
+  "decisao_responsavel": "sim",
+  "fontes": [
+    "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64",
+    "https://github.com/unslothai/unsloth/pull/10620",
+    "https://github.com/unslothai/unsloth/compare/v0.1.808-beta...Windows-ARM64"
+  ],
+  "resposta_responsavel": "Concorda"
+}

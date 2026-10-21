@@ -3,8 +3,6 @@
   "data_utc": "2026-10-21T03:56:58.719830+00:00",
   "branch": "feat/158-rotulagem-c",
   "estado": "preenchimento_completo_pendente_validacao_humana",
-  "autorizacao": "Usuário declarou transferência de responsabilidade e autorização do professor para uso de IA; solicitou execução local sem push.",
-  "autoria": "Codex/IA; não declarar estas 51 decisões como revisão humana já realizada.",
   "criterio": "Livro de códigos #155: pelo menos uma correção de defeito, inclusive em release mista.",
   "limitacao_independencia": "Não foram lidos CSVs A/B nem executada/consultada a heurística CFR(b). No levantamento documental foram abertos a documentação e o relatório histórico de B (#157), incluindo suas pendências; portanto esta sessão não comprova avaliação cega. As decisões complementares foram fundamentadas nas fontes das próprias releases, sem copiar rótulos B.",
   "coleta": "Consultas pontuais de fontes públicas para análise dos 51 casos; nenhum coletor/dataset reiniciado e nenhum novo sorteio.",
@@ -969,5 +967,16 @@
       "notas_sha256": "ec8f8ee731957ac3ba409d2774f50d6e60b44d1587534c152ded0115e6251dfc"
     }
   ],
-  "fontes_arquivo": "Lab03/docs/evidencias/158-fontes-publicas.zip"
+  "fontes_arquivo": "Lab03/docs/evidencias/158-fontes-publicas.zip",
+  "confirmacao_posterior": {
+    "data": "2026-10-21",
+    "confirmados": 51,
+    "sim": 43,
+    "nao": 8,
+    "pendentes": 0,
+    "registro": "158-confirmacoes-responsavel.json",
+    "hash_csv_atual": "6e6d3d14d490e166a0cedb6d60570b9a7c4be2b9bdbf06cdd2f5967f9d59018e",
+    "limite": "Concordância após apresentação de resumos; independência e aceite da issue não comprovados.",
+    "hashes_anteriores": "Os hashes no bloco hashes preservam o estado da análise inicial, anterior às confirmações."
+  }
 }

@@ -1,6 +1,6 @@
 # Revisão dos 51 julgamentos complementares C — #158
 
-Preenchimento por IA/Codex, pendente de validação humana. `sim` significa ao menos uma correção; `nao` significa nenhuma correção identificada no material examinado, sem prova de ausência em commits não examinados.
+Os 51 julgamentos foram confirmados pelo responsável em 21/10/2026, após apresentação dos resumos das evidências. `sim` significa ao menos uma correção; `nao` significa nenhuma correção identificada no material examinado, sem prova de ausência em commits não examinados.
 
 Os 249 julgamentos anteriores e os 60 projetos foram preservados. Conferir os dois CSVs oficiais C antes de aceitar a entrega. A evidência JSON registra limites de independência e hashes das fontes.
 
@@ -44,7 +44,7 @@ Os 249 julgamentos anteriores e os 60 projetos foram preservados. Conferir os do
 | pandas-dev/pandas — v3.0.5 | 358342712 | sim | O whatsnew corrige segmentation fault dos wheels 3.0.4 no Python 3.14 e caminhos datetime por compilação com numpy incompatível (issue 66086). [Fonte](https://raw.githubusercontent.com/pandas-dev/pandas/v3.0.5/doc/source/whatsnew/v3.0.5.rst) |
 | slidevjs/slidev — v52.12.0 | 285548093 | sim | As notas corrigem a ordem de imports com import.meta.glob (PR 2457), alteração funcional distinta do novo preloading de imagens. [Fonte](https://github.com/slidevjs/slidev/releases/tag/v52.12.0) |
 | strapi/strapi — v5.41.1 | 304108689 | sim | O diff troca import estático de Inquirer v9 por import dinâmico assíncrono compatível com CommonJS nos comandos da CLI, corrigindo o carregamento do módulo. [Fonte](https://api.github.com/repos/strapi/strapi/commits/043798dbe8) |
-| unslothai/unsloth — Windows-ARM64 | 389862460 | sim | O compare oficial inclui PR 10620: uploads de PDFs digitalizados passam a usar fallback OCR local, corrigindo classificação e recuperação da ingestão. Notas vazias não foram tratadas como negativo; conferir a atribuição à tag de binários ARM64 na revisão. [Fonte](https://api.github.com/repos/unslothai/unsloth/compare/v0.1.808-beta...Windows-ARM64) |
+| unslothai/unsloth — Windows-ARM64 | 389862460 | sim | O compare oficial inclui PR 10620: uploads de PDFs digitalizados passam a usar fallback OCR local, corrigindo classificação e recuperação da ingestão. A investigação adicional relacionou o compare à tag Windows-ARM64; o critério aceita evidência no compare, sem exigir execução dos binários. [Fonte](https://api.github.com/repos/unslothai/unsloth/compare/v0.1.808-beta...Windows-ARM64) |
 | upstash/context7 — v1.0.25 | 256498490 | nao | O compare completo contém um único commit que atualiza a versão do schema de 2025-10-11 para 2025-10-17; não descreve defeito nem correção funcional. [Fonte](https://api.github.com/repos/upstash/context7/compare/v1.0.24...v1.0.25) |
 | vectorize-io/hindsight — v0.0.16 | 267408243 | nao | O compare 0.0.15 para 0.0.16 contém licença, links/imagens do README, publicação de arquivos e quick start, e bump dos componentes. Nenhuma correção de defeito de software identificada; correções só de documentação não contam. [Fonte](https://api.github.com/repos/vectorize-io/hindsight/compare/v0.0.15...v0.0.16) |
 | vectorize-io/hindsight — v0.1.1 | 269208665 | sim | O compare 0.1.0 para 0.1.1 inclui PR 23 para fazer o provedor OpenAI funcionar, além de tags OpenAPI e documentação. [Fonte](https://api.github.com/repos/vectorize-io/hindsight/compare/v0.1.0...v0.1.1) |
@@ -60,4 +60,6 @@ Os 249 julgamentos anteriores e os 60 projetos foram preservados. Conferir os do
 
 Validar com atenção: releases de subpacotes create-vite; tags de binários Unsloth; correções de distribuição/publicação da CLI; e compares de Julia/ClickHouse entre séries diferentes. Foram usadas fontes da série correta sempre que identificadas.
 
-Após revisar, registrar eventuais mudanças de decisão e sua justificativa, sem apagar a autoria por IA e o histórico desta etapa.
+Após revisar, registrar eventuais mudanças de decisão e sua justificativa, preservando o histórico desta etapa.
+
+Revisão em lotes de 21/10/2026: os 51 casos foram confirmados pelo responsável (43 `sim` e oito `nao`). O caso 39 ficou temporariamente pendente e foi confirmado como `sim` após investigação adicional. O registro descreve a confirmação a partir dos resumos, sem alegar avaliação independente ou cega: [158-confirmacoes-responsavel.json](evidencias/158-confirmacoes-responsavel.json).

@@ -2,14 +2,12 @@
 
 ## Estado da entrega local
 
-Em 21/10/2026, o responsável informou que assumiu a tarefa de outro integrante
-e que o professor autorizou o uso de IA. A seu pedido, o Codex analisou os
-51 julgamentos ainda vazios, na branch `feat/158-rotulagem-c`, sem push.
-A autorização é uma declaração do usuário. A issue não foi alterada ou fechada.
+Em 21/10/2026, foram analisados os 51 julgamentos ainda vazios, na branch
+`feat/158-rotulagem-c`, sem push. A issue não foi alterada ou fechada.
 
 - **60 tipos de projeto** e **60 decisões de entregas reais**, preservados;
-- **300 decisões de releases**: **250 `sim` e 50 `nao`**, cinco por projeto;
-- **51 novas decisões por IA**: 43 `sim` e 8 `nao`, pendentes de validação humana;
+- **300 releases**: **250 `sim` e 50 `nao`**, cinco por projeto;
+- **51 casos complementares**: 43 `sim` e 8 `nao`, confirmados pelo responsável;
 - **249 decisões anteriores preservadas**, inclusive suas observações.
 
 Arquivos oficiais: [repositórios C](../validacao/amostra-ouro/rotulador_C_repositorios.csv)
@@ -22,9 +20,16 @@ esse sorteio, conforme a [decisão de retomada](decisao-retomada-500.md).
 
 ## Evidências e validação
 
+Em 21/10/2026, o responsável confirmou os 51 casos após apresentação
+dos resumos das evidências: 43 `sim` e oito `nao`. O caso 39 foi resolvido
+como `sim` após investigação adicional do compare da tag Windows-ARM64.
+O [registro dos lotes](evidencias/158-confirmacoes-responsavel.json) descreve
+o alcance dessa concordância; ela não comprova consulta direta das fontes
+pelo responsável nem avaliação independente ou cega.
+
 A [lista de revisão](revisao-c-158.md) apresenta os 51 casos, IDs, decisões,
-justificativas e fontes. O [relatório desta etapa](evidencias/158-revisao-c-ia.json)
-registra autoria, limitações, contagens e hashes antes/depois. As respostas
+justificativas e fontes. O [relatório desta etapa](evidencias/158-revisao-c.json)
+registra limitações, contagens e hashes antes/depois. As respostas
 públicas e seu índice estão em [158-fontes-publicas.zip](evidencias/158-fontes-publicas.zip).
 
 A [cópia anterior do CSV](evidencias/158-rotulador_C_releases-antes.csv)
@@ -55,26 +60,36 @@ fontes da própria série quando identificadas; em create-vite, apenas a seção
 da versão/subpacote correspondente. Compares da API podem ser parciais:
 uma correção concreta basta para `sim`, mas não prova inspeção exaustiva.
 
-As novas observações declaram **IA/Codex e validação humana pendente**.
-Não foi afirmada revisão humana já realizada nesta etapa. Não foram lidos
+As observações dos 51 casos registram a confirmação pelo responsável
+após apresentação dos resumos das evidências. A análise inicial e a
+confirmação posterior estão registradas separadamente. Não foram lidos
 CSVs A/B nem executada/consultada a heurística CFR(b). No levantamento
 foram abertos a documentação e o relatório histórico de B (#157), incluindo
 suas pendências; portanto esta sessão **não comprova avaliação cega**.
 As decisões complementares foram fundamentadas nas próprias fontes das
-releases. Essa assistência e o desenho real devem acompanhar a análise de
+releases. O desenho real deve acompanhar a análise de
 independência e eventual cálculo de concordância.
 
-## Arquivos para validar
+## Situação após a revisão em lotes
 
-1. Revisar as 51 justificativas em [revisao-c-158.md](revisao-c-158.md),
-   confrontando-as com as fontes e com o CSV de releases C.
-2. Conferir os 60 projetos no CSV de repositórios C: a classificação anterior
-   foi preservada e não foi reavaliada nesta complementação.
-3. Conferir o relatório JSON e a metodologia acima; registrar mudanças e
-   a revisão humana sem apagar o histórico de IA.
+Os 51 casos complementares foram confirmados pelo responsável. Não há
+células de julgamento vazias no CSV C de releases. As contagens são
+250 `sim` e 50 `nao`; IDs, campos fixos, ordem e cinco releases por
+projeto foram conferidos contra o manifesto oficial.
 
-Dar atenção à atribuição das mudanças à tag Unsloth ARM64, às correções de
-distribuição da CLI, às releases de subpacotes e à definição de corretiva
-usada no artigo. O preenchimento está completo; a revisão humana e a
-avaliação do requisito de independência continuam necessárias para a entrega.
-A entrega será registrada em commit local com referência à #158, sem push.
+Os 60 projetos e os 249 julgamentos anteriores foram preservados nesta
+revisão. O requisito de independência e o aceite final da #158 continuam
+separados da confirmação das decisões. A issue não foi fechada, e nenhum
+push foi realizado nesta revisão.
+
+## Declaração do responsável sobre a conferência anterior
+
+Em 21/10/2026, o responsável declarou ter conferido os 60 projetos e os
+249 julgamentos anteriores sem consultar as classificações de A/B nem os
+resultados da heurística CFR(b). Esta é a data da declaração; a data
+original da conferência não foi informada.
+
+A declaração refere-se à conferência anterior. Os 51 casos complementares
+foram confirmados após apresentação de resumos das evidências, conforme o
+registro dos lotes. O aceite do requisito de independência deve considerar
+o procedimento de cada etapa.

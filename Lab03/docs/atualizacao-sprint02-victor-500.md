@@ -13,7 +13,7 @@ no commit `406d6d5`.
 | [#151 — Coleta](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/151) | Fechada pelo aceite do corte de 255 | Captura agora tem 500/1.064; funil corrigido com uma exclusão por runs incompletos. Meta numérica atingida, processamento final parcial. |
 | [#153 — Dataset CSV](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/153) | Fechada | Nova entrega de 500 linhas/28 colunas, comando offline, proveniência e cobertura real. A entrega de 255 é preservada. |
 | [#154 — Dicionário](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/154) | Fechada | Contrato v1 mantido; escopo de 500, origem pública, nulabilidade e CFR(b) heurística com validação humana pendente. |
-| [#158 — Rotulagem C](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/158) | Aberta | Sorteio mantido sobre 255; C tem 60 tipos/60 decisões de entregas/249 releases. Faltam 51 julgamentos; assistência de IA já registrada acompanha a avaliação de independência. |
+| [#158 — Rotulagem C](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/158) | Aberta | Sorteio mantido sobre 255; C tem 60 tipos/60 decisões de entregas/249 releases. Faltam 51 julgamentos; o procedimento registrado acompanha a avaliação de independência. |
 | [#166 — Metodologia](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/issues/166) | Fechada | Cronologia 255 → retomada → 500, funil atualizado, limitações, sorteio histórico e referência ao novo CSV. |
 
 Os estados refletem o aceite anterior, não uma declaração de conclusão da

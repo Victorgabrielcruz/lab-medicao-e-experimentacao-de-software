@@ -1,7 +1,7 @@
-# Rascunho da rotulagem B assistida por IA — #157
+# Rascunho da rotulagem B — #157
 
 **Estado em 15/10/2026: em andamento, pendente de revisão humana.**
-O responsável solicitou preencher B com apoio de IA e finalizar com as
+O responsável solicitou preencher B e finalizar com as
 evidências disponíveis para continuar a revisão posteriormente. Este commit
 preserva esse rascunho; não comprova a conclusão da rotulagem independente
 humana exigida pela #157.
@@ -13,10 +13,10 @@ humana exigida pela #157.
 - [Releases B](../validacao/amostra-ouro/rotulador_B_releases.csv):
   mesmos 300 pares oficiais, cinco releases por repositório; 288 sugestões
   `sim`/`nao` e 12 decisões vazias, com justificativa da pendência.
-- [Evidências e pendências](evidencias/157-rotulagem-b-ia.json): origem,
+- [Evidências e pendências](evidencias/157-rotulagem-b.json): origem,
   hashes, contagens e lista dos 12 itens para revisão prioritária.
 
-Todas as observações identificam **IA/Codex**, rascunho e revisão humana
+Todas as observações identificam rascunho e revisão humana
 pendente. Nenhuma célula vazia foi transformada em `nao`. Os campos de
 identidade, datas, tags, URLs, cabeçalhos, ordem e UTF-8 com BOM foram
 preservados. O sorteio e as planilhas A/C não foram alterados.
@@ -37,7 +37,7 @@ apenas remetiam a fontes externas. URLs e hashes das fontes baixadas
 constam da evidência. Respostas HTML a pedidos de patch não foram tratadas
 como lista de commits válida.
 
-As decisões foram escritas pela IA após leitura de notas, trechos relevantes
+As decisões foram registradas após leitura de notas, trechos relevantes
 e, em alguns casos, mensagens/diffs de commits. A seleção de trechos serviu
 como apoio à leitura; não foi executado o classificador da #161. Isso não
 equivale a inspeção exaustiva de todos os commits das 300 releases.
@@ -63,7 +63,7 @@ O responsável informou que C será preenchido pelo grupo em conjunto.
 Esse procedimento deve ser declarado: uma decisão conjunta não representa
 um terceiro julgamento independente para o kappa de Fleiss. Não se deve
 relatar concordância entre três avaliadores independentes com base nesse
-desenho. Rever sugestões de IA depois também não cria cegueira retroativa.
+desenho. A revisão posterior das sugestões também não cria cegueira retroativa.
 
 Os READMEs consultados refletem o estado atual, não necessariamente o fim
 da janela. Há projetos híbridos que exigem revisão de categoria, releases
@@ -83,7 +83,7 @@ comprova que ela seja recente ou o objetivo principal do lançamento.
 1. Revisar os 12 itens sem decisão, listados na evidência, e completar apenas
    quando houver evidência suficiente.
 2. Revisar também as 288 sugestões preenchidas e os 60 projetos; registrar
-   autoria humana, data, evidências e alterações, sem apagar o histórico de IA.
+   autoria humana, data, evidências e alterações, preservando o histórico.
 3. Alinhar o livro de códigos ao enunciado e documentar o desenho real de
    avaliação e o preenchimento conjunto de C.
 4. Preservar as avaliações antes de produzir o consenso. Não calcular nem

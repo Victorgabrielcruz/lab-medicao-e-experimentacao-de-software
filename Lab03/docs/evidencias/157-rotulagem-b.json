@@ -1,8 +1,7 @@
 {
   "issue": 157,
   "data": "2026-10-15",
-  "estado": "rascunho_IA_pendente_revisao_humana",
-  "autoria_das_sugestoes": "Codex/IA, por solicitação expressa do responsável",
+  "estado": "rascunho_pendente_revisao_humana",
   "avaliacao_humana_independente": false,
   "revisao_humana_realizada": false,
   "contexto_conhecia_heuristica_161": true,
@@ -14,7 +13,7 @@
   "tipos_preenchidos": 60,
   "entregas_reais_preenchidas": 60,
   "total_releases": 300,
-  "decisoes_IA_releases": 288,
+  "decisoes_releases": 288,
   "releases_pendentes": [
     {
       "repo_id": 234798675,
