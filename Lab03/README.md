@@ -799,6 +799,25 @@ ausências por rotulador, distribuição das categorias, itens unânimes, P_o,
 P_e, kappa e SHA-256 das entradas, e `kappa.md`, com a tabela resumida.
 `--pasta` e `--saida` trocam os caminhos de entrada e saída.
 
+
+### Consenso dos rótulos (S02-10 — #160)
+
+O [protocolo de consenso](validacao/amostra-ouro/PROTOCOLO-CONSENSO.md) é
+aplicado depois do kappa. Itens unânimes recebem o rótulo comum; cada item
+divergente tem uma decisão registrada em
+`validacao/amostra-ouro/decisoes-consenso.csv`, com justificativa,
+participantes e data. A partir de `Lab03`:
+
+```bash
+python -m pipeline.consenso
+```
+
+Saídas em `validacao/amostra-ouro/`: `consenso_repositorios.csv` e
+`consenso_releases.csv`, com o rótulo final e a origem de cada item
+(`unanime`, `maioria`, `discussao` ou `pendente`), e `consenso.json`, com os
+hashes das entradas e o registro de cada divergência. As planilhas
+independentes de A, B e C não são alteradas.
+
 ## Estrutura
 
 ```text
