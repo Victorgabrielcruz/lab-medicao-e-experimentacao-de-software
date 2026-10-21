@@ -1,21 +1,77 @@
 \section{Discussão e ameaças à validade}
 \label{sec:discussao}
 \subsection{Validade de construto}
-Uma release pública é uma aproximação de implantação, e falhas de workflows
-não identificam necessariamente incidentes em produção. Runs podem incluir
-testes instáveis, falhas de infraestrutura ou de configuração. Recuperação
-observada em CI não equivale à restauração de serviço percebida pelo usuário.
-As variantes operacionais e as classes fixadas pelo enunciado devem ser comparadas somente
-após integração e validação das métricas correspondentes.
+% FIN-04 (#183): ameaças de construto e internas, com mitigações.
+\paragraph{Release como implantação.} Uma release estável publicada é uma
+aproximação de implantação: bibliotecas não são implantadas pelos
+mantenedores, e serviços podem implantar sem publicar release. Para
+mitigar, a amostra-ouro julgou se as releases de cada projeto são entregas
+reais de software, e o consenso foi positivo em 59 dos 60 repositórios
+sorteados. Pré-releases e tags ficam como definições alternativas na RQ07.
+
+\paragraph{Lead time.} A data de autor do commit pode ser anterior ao
+trabalho efetivo ou ser reescrita por rebase e squash, e o intervalo até a
+release não inclui a espera até o usuário atualizar. A variante (a) depende
+do commit mais antigo de cada release; a (b), de todos os pares
+commit--release. Reportamos as duas variantes e sua comparação pareada.
+
+\paragraph{CFR.} Falhas de workflows não identificam necessariamente falhas
+em produção: incluem testes instáveis e erros de infraestrutura ou de
+configuração, e seu peso depende de quantos runs cada projeto dispara. A
+CFR (b) troca esse proxy por releases seguidas, em até sete dias, por uma
+release corretiva, identificada por uma heurística de versão patch e termos
+de commit. Como as duas medem construtos diferentes, apresentamos ambas, sem
+tratar uma como substituta da outra; a heurística é avaliada contra os
+rótulos de consenso da amostra-ouro, com precisão, recall e F1.
+
+\paragraph{Tempo de recuperação.} Medimos o tempo entre o primeiro run com
+falha e o sucesso seguinte no mesmo workflow do default branch, o que
+descreve a recuperação do CI, não a restauração de um serviço percebida
+pelo usuário.
+
+\paragraph{Classes DORA.} As classes dependem dos cortes fixos do enunciado
+e, na classe geral, da escolha das variantes. Mitigamos registrando o
+contrato dos cortes e reportando as distribuições por métrica e a
+sensibilidade da classe geral às quatro combinações de variantes, que
+altera a classe de até 37\% dos repositórios.
 
 \subsection{Validade interna e confiabilidade}
-Limites de paginação, indisponibilidade de repositórios e retenção ou remoção
-de históricos podem produzir dados incompletos mesmo numa janela fechada.
-Releases podem ser editadas ou publicadas posteriormente; uma janela fechada
-não garante imutabilidade dos registros. Cache preserva o snapshot observado,
-mas deve ser distinguido de uma consulta atual. O default branch é observado
-na coleta e pode ter sido diferente no passado. A censura e recuperações
-anteriores ao início da janela exigem cuidado ao interpretar as durações.
+\paragraph{Coleta.} Limites de paginação, repositórios inacessíveis,
+interrupções por cota e históricos removidos podem produzir dados
+incompletos. Mitigamos com coleta mensal de runs com subdivisão de
+intervalos saturados, checkpoints e cache para retomar sem repetir
+consultas, e diagnósticos explícitos: 13 repositórios têm alguma coleta
+marcada como incompleta, como a de comparações de commits, e 52 têm
+cálculo parcial em alguma métrica. Repositórios com
+coleta de runs incompleta não entram na amostra, métricas sem estimativa
+ficam nulas, nunca zero, e auditorias conferem contagens e hashes entre
+coleta, cálculo e exportação. Renomeações são associadas pelo ID do GitHub.
+
+\paragraph{Estado observado.} Releases podem ser editadas ou publicadas
+depois, e o default branch e os metadados são os observados na coleta, não
+uma reconstrução histórica. O cache preserva esse estado e permite
+reproduzir os cálculos sem novas consultas.
+
+\paragraph{Ordem da coleta.} Os 561 primeiros candidatos avaliados
+seguiram uma ordem que adiou projetos com alto volume de runs; os demais
+seguiram a ordem da busca. A ordem efetiva e os descartes estão no funil, e
+os critérios de inclusão não mudaram em nenhuma etapa.
+
+\paragraph{Heurística e rótulos.} A CFR (b) herda os erros da heurística
+de release corretiva. A referência humana é uma amostra-ouro de 60
+repositórios e 300 releases, sorteada entre os 255 primeiros elegíveis
+porque o sorteio antecedeu a retomada da coleta. A concordância entre os
+três rotuladores foi alta (kappa de Fleiss de 0,744 a 0,953 nas três
+dimensões), e as 15 divergências foram resolvidas por um protocolo de
+consenso registrado, sem usar a heurística como desempate. O mesmo
+consenso serve para ajustar e avaliar a heurística, o que pode
+superestimar seu desempenho.
+
+\paragraph{Censura.} Episódios de falha sem sucesso até o fim da janela
+(330, ou 0,36\%) e sequências sem sucesso anterior observado (683) ficam
+fora da mediana de recuperação, o que tende a subestimar recuperações
+longas. Ambos são contados e reportados, e as releases dos últimos sete
+dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
 
 \subsection{Validade externa}
 Repositórios populares, usuários de Actions e projetos com releases frequentes
