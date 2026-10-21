@@ -1,10 +1,11 @@
+import json
 import math
 
 import pandas as pd
 import pytest
 
-from pipeline.descritiva import (SEMANAS_POR_MES, carregar_dataset, comparar_variantes, pares_lead_time, resumo,
-                                 tabela_resumo)
+from pipeline.descritiva import (SEMANAS_POR_MES, carregar_dataset, comparar_variantes, episodios_recuperacao,
+                                 exportar_episodios, pares_lead_time, pares_variantes, resumo, tabela_resumo)
 
 
 def test_resumo_ignora_nulos_sem_imputar_zero():
@@ -62,3 +63,41 @@ def test_carregar_dataset_decodifica_listas(tmp_path):
 
 def test_semanas_por_mes():
     assert SEMANAS_POR_MES == pytest.approx(4.348, abs=1e-3)
+
+
+def test_pares_variantes_razao_nula_quando_b_zero():
+    dados = pd.DataFrame({"id": [1, 2, 3], "full_name": ["a/a", "b/b", "c/c"],
+                          "cfr_a": [0.2, 0.1, None], "cfr_b": [0.0, 0.4, 0.3]})
+    pares = pares_variantes(dados, "cfr_a", "cfr_b")
+    assert list(pares["id"]) == [1, 2]
+    assert pares["diferenca"].tolist() == pytest.approx([0.2, -0.3])
+    assert math.isnan(pares.loc[0, "razao"]) and pares.loc[1, "razao"] == pytest.approx(0.25)
+    assert comparar_variantes(pares)["mediana_razao"] == pytest.approx(0.25)
+
+
+def _tempo_recuperacao():
+    return {"repositorios": [
+        {"id": 20, "full_name": "b/b", "total_episodios": 4, "episodios_recuperados": 3, "episodios_censurados": 1,
+         "proporcao_censurados": 0.25, "historico_inicial_nao_observado": [{"workflow": 1}, {"workflow": 2}]},
+        {"id": 10, "full_name": "a/a", "total_episodios": 0, "episodios_recuperados": 0, "episodios_censurados": 0,
+         "proporcao_censurados": None, "historico_inicial_nao_observado": []},
+    ]}
+
+
+def test_episodios_recuperacao_conta_censura_a_esquerda_a_parte():
+    episodios = episodios_recuperacao(_tempo_recuperacao())
+    assert list(episodios["id"]) == [10, 20]
+    linha = episodios.set_index("id").loc[20]
+    assert (linha["episodios_censurados"], linha["sequencias_censura_esquerda"]) == (1, 2)
+    assert pd.isna(episodios.set_index("id").loc[10, "proporcao_censurados"])
+
+
+def test_exportar_episodios_registra_origem(tmp_path):
+    entrada = tmp_path / "tempo_recuperacao.json"
+    entrada.write_text(json.dumps(_tempo_recuperacao()), encoding="utf-8")
+    saida = tmp_path / "dados" / "episodios.csv"
+    exportar_episodios(entrada, saida)
+    assert pd.read_csv(saida)["total_episodios"].tolist() == [0, 4]
+    origem = json.loads(saida.with_suffix(".json").read_text(encoding="utf-8"))
+    assert origem["origem"] == "tempo_recuperacao.json" and origem["repositorios"] == 2
+    assert len(origem["origem_sha256"]) == 64
