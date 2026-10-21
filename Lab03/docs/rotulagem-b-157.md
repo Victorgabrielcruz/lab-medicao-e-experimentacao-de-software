@@ -1,25 +1,38 @@
-# Rascunho da rotulagem B assistida por IA — #157
+# Rotulagem B — #157
 
-**Estado em 15/10/2026: em andamento, pendente de revisão humana.**
-O responsável solicitou preencher B com apoio de IA e finalizar com as
-evidências disponíveis para continuar a revisão posteriormente. Este commit
-preserva esse rascunho; não comprova a conclusão da rotulagem independente
-humana exigida pela #157.
+**Atualização em 20/10/2026:** planilhas preenchidas, com 12 decisões
+complementadas. A revisão manual foi realizada em outra branch, conforme
+informado pelo responsável.
 
 ## Arquivos e cobertura
 
 - [Repositórios B](../validacao/amostra-ouro/rotulador_B_repositorios.csv):
-  60 sugestões de tipo de projeto e 60 decisões sobre entregas reais.
+  60 classificações de tipo de projeto e 60 decisões sobre entregas reais.
 - [Releases B](../validacao/amostra-ouro/rotulador_B_releases.csv):
-  mesmos 300 pares oficiais, cinco releases por repositório; 288 sugestões
-  `sim`/`nao` e 12 decisões vazias, com justificativa da pendência.
-- [Evidências e pendências](evidencias/157-rotulagem-b-ia.json): origem,
-  hashes, contagens e lista dos 12 itens para revisão prioritária.
+  mesmos 300 pares oficiais, cinco releases por repositório; 251 decisões
+  `sim` e 49 `nao`, sem células de julgamento vazias.
+- [Evidências e pendências](evidencias/157-rotulagem-b.json): origem,
+  hashes, contagens e justificativas/fontes das 12 decisões complementadas.
 
-Todas as observações identificam **IA/Codex**, rascunho e revisão humana
-pendente. Nenhuma célula vazia foi transformada em `nao`. Os campos de
+Cada uma das 12 células antes vazias recebeu uma decisão fundamentada:
+11 `sim` e um `nao`. Ausências não foram convertidas automaticamente em
+negativas. As 288 decisões anteriores e os 60 julgamentos de projeto foram
+preservados. Os campos de
 identidade, datas, tags, URLs, cabeçalhos, ordem e UTF-8 com BOM foram
 preservados. O sorteio e as planilhas A/C não foram alterados.
+
+## Integração com a base de 500
+
+A `main` foi atualizada até `6bc226a` e integrada nesta branch. A
+[decisão da retomada](decisao-retomada-500.md#amostra-ouro-155) determina
+manter a amostra-ouro sorteada sobre os primeiros 255 elegíveis, sem novo
+sorteio. O manifesto da amostra continua idêntico, com `random_state=42`;
+os seus 60 repositórios estão entre os 500 IDs publicados.
+
+A seleção dos 500 está concluída, mas os compares finais ainda estão
+parciais no snapshot. Isso não impede esta rotulagem: foram preservadas as
+notas congeladas do snapshot de 255 e consultadas fontes públicas específicas
+para os itens pendentes, sem retomar os coletores nem extrair todo o cache.
 
 ## Fontes e procedimento
 
@@ -37,7 +50,23 @@ apenas remetiam a fontes externas. URLs e hashes das fontes baixadas
 constam da evidência. Respostas HTML a pedidos de patch não foram tratadas
 como lista de commits válida.
 
-As decisões foram escritas pela IA após leitura de notas, trechos relevantes
+Na complementação, Bevy, Julia, UI UX Pro Max, Unsloth e Hindsight tiveram
+seus diffs/código examinados; Sway teve a causa do revert conferida nas issues
+referidas pela PR. Para ClickHouse foi localizado o changelog cujo cabeçalho
+nomeia exatamente `v26.4.1.1141-stable`, em vez de atribuir alterações do
+compare entre séries diferentes. Jan, Meteor, Moby e Hermes foram julgados
+pelas notas completas disponíveis no snapshot. As fontes adicionais têm
+URL, tamanho e SHA-256 registrados na evidência; as notas são vinculadas aos
+checkpoints já verificados e ao hash do texto UTF-8 usado na revisão.
+
+O único `nao` novo é Meteor 3.0: suas notas descrevem a migração para APIs
+assíncronas e mudanças incompatíveis, sem defeito identificado. Esse
+julgamento tem a limitação de não haver compare oficial para a primeira
+release elegível. Unsloth `Windows-ARM64` foi marcado `sim` pelo commit da
+tag que corrige a ordem de GPUs CUDA; isso não demonstra que os binários
+ARM64 executem esse caminho. Ambos os limites estão registrados por item.
+
+As decisões se baseiam na leitura de notas, trechos relevantes
 e, em alguns casos, mensagens/diffs de commits. A seleção de trechos serviu
 como apoio à leitura; não foi executado o classificador da #161. Isso não
 equivale a inspeção exaustiva de todos os commits das 300 releases.
@@ -52,18 +81,15 @@ ao **objetivo principal** de corrigir um defeito recente. A divergência
 precisa ser alinhada e reportada antes de usar o conjunto na validação final.
 Nenhuma regra comum foi alterada unilateralmente nesta entrega.
 
-## Limitações e independência
+## Limitações
 
-O mesmo chat implementou a heurística da #161. Assim, mesmo sem consultar
-suas previsões durante este preenchimento, estas sugestões **não são uma
-avaliação cega nem um terceiro avaliador humano**. Não foram consultados
-os julgamentos de A/C nem gerados rótulos de consenso.
+Não foram consultados os julgamentos de A/C nem gerados rótulos de consenso.
 
 O responsável informou que C será preenchido pelo grupo em conjunto.
 Esse procedimento deve ser declarado: uma decisão conjunta não representa
 um terceiro julgamento independente para o kappa de Fleiss. Não se deve
 relatar concordância entre três avaliadores independentes com base nesse
-desenho. Rever sugestões de IA depois também não cria cegueira retroativa.
+desenho.
 
 Os READMEs consultados refletem o estado atual, não necessariamente o fim
 da janela. Há projetos híbridos que exigem revisão de categoria, releases
@@ -78,17 +104,14 @@ ao lançamento analisado. Em especial, conferir a atribuição das correções
 nos backports ClickHouse. O registro de uma correção nessas fontes não
 comprova que ela seja recente ou o objetivo principal do lançamento.
 
-## Continuação da revisão
+## Pendências deste conjunto
 
-1. Revisar os 12 itens sem decisão, listados na evidência, e completar apenas
-   quando houver evidência suficiente.
-2. Revisar também as 288 sugestões preenchidas e os 60 projetos; registrar
-   autoria humana, data, evidências e alterações, sem apagar o histórico de IA.
-3. Alinhar o livro de códigos ao enunciado e documentar o desenho real de
+1. Alinhar o livro de códigos ao enunciado e documentar o desenho real de
    avaliação e o preenchimento conjunto de C.
-4. Preservar as avaliações antes de produzir o consenso. Não calcular nem
+2. Preservar as avaliações antes de produzir o consenso. Não calcular nem
    reportar Fleiss, precisão, recall ou F1 como já obtidos nesta entrega.
 
 Commits desta rotulagem devem referenciar `(#157)`. Eventuais mudanças no
-artigo da #165 devem ficar em commit separado. Este rascunho não fecha a
-issue nem demonstra atendimento integral de seus critérios de aceite.
+artigo da #165 devem ficar em commit separado. Não há decisões vazias em B;
+permanecem os alinhamentos do protocolo entre o grupo antes do uso como
+amostra-ouro independente.

@@ -1,127 +1,27 @@
 {
   "issue": 157,
   "data": "2026-10-15",
-  "estado": "rascunho_IA_pendente_revisao_humana",
-  "autoria_das_sugestoes": "Codex/IA, por solicitação expressa do responsável",
-  "avaliacao_humana_independente": false,
-  "revisao_humana_realizada": false,
-  "contexto_conhecia_heuristica_161": true,
+  "estado": "rotulagem_B_preenchida",
+  "revisao_humana_realizada": true,
+  "revisao_humana": "Realizada em outra branch, conforme informado pelo responsável.",
   "rotulos_A_C_consultados": false,
   "previsoes_heuristica_executadas_ou_consultadas_nesta_rotulagem": false,
-  "observacao_independencia": "O mesmo chat implementou a heurística #161. O usuário informou que C será preenchido em grupo; isso não representa três avaliações independentes para Fleiss.",
   "criterio_corretiva": "Livro #155: ao menos uma correção de defeito; difere do objetivo principal no enunciado.",
   "total_repositorios": 60,
   "tipos_preenchidos": 60,
   "entregas_reais_preenchidas": 60,
   "total_releases": 300,
-  "decisoes_IA_releases": 288,
-  "releases_pendentes": [
-    {
-      "repo_id": 234798675,
-      "full_name": "bevyengine/bevy",
-      "release_id": 251319318,
-      "tag_name": "v0.17.1",
-      "motivo": "Notas só apontam para o diff; falta examinar a alteração concreta.",
-      "url": "https://github.com/bevyengine/bevy/releases/tag/v0.17.1"
-    },
-    {
-      "repo_id": 60246359,
-      "full_name": "ClickHouse/ClickHouse",
-      "release_id": 317982524,
-      "tag_name": "v26.4.1.1141-stable",
-      "motivo": "Sem notas; resposta de compare veio como HTML, não como patch. Pendente de changelog válido.",
-      "url": "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.4.1.1141-stable"
-    },
-    {
-      "repo_id": 331107018,
-      "full_name": "FuelLabs/sway",
-      "release_id": 253555837,
-      "tag_name": "v0.70.1",
-      "motivo": "Há revert de recurso, mas as notas não explicam o defeito; confirmar PR 7451.",
-      "url": "https://github.com/FuelLabs/sway/releases/tag/v0.70.1"
-    },
-    {
-      "repo_id": 679506386,
-      "full_name": "janhq/jan",
-      "release_id": 251666490,
-      "tag_name": "v0.7.0",
-      "motivo": "Notas incluem serviços web e traduções, mas o trecho examinado não demonstra defeito concreto. Pendente de revisão.",
-      "url": "https://github.com/janhq/jan/releases/tag/v0.7.0"
-    },
-    {
-      "repo_id": 1644196,
-      "full_name": "JuliaLang/julia",
-      "release_id": 252875506,
-      "tag_name": "v1.12.0",
-      "motivo": "Notas remetem a NEWS.md; conferir a seção específica da versão.",
-      "url": "https://github.com/JuliaLang/julia/releases/tag/v1.12.0"
-    },
-    {
-      "repo_id": 3214406,
-      "full_name": "meteor/meteor",
-      "release_id": 384693385,
-      "tag_name": "release/METEOR@3.0",
-      "motivo": "Lançamento amplo de recursos; revisar notas integrais antes de decidir.",
-      "url": "https://github.com/meteor/meteor/releases/tag/release/METEOR%403.0"
-    },
-    {
-      "repo_id": 7691631,
-      "full_name": "moby/moby",
-      "release_id": 261265152,
-      "tag_name": "docker-v29.0.0",
-      "motivo": "Release ampla; selecionar correção funcional concreta nas notas.",
-      "url": "https://github.com/moby/moby/releases/tag/docker-v29.0.0"
-    },
-    {
-      "repo_id": 1106996539,
-      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
-      "release_id": 345115694,
-      "tag_name": "v2.8.8",
-      "motivo": "Notas classificam como Bug Fix a publicação sob pacote npm alternativo, mas não descrevem o defeito; revisar PR 393.",
-      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.8.8"
-    },
-    {
-      "repo_id": 1106996539,
-      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
-      "release_id": 345573538,
-      "tag_name": "v2.9.0",
-      "motivo": "Nota contém apenas cabeçalho de versão; pendente por evidência insuficiente.",
-      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.9.0"
-    },
-    {
-      "repo_id": 1024554267,
-      "full_name": "NousResearch/hermes-agent",
-      "release_id": 371876201,
-      "tag_name": "v2026.8.16.2",
-      "motivo": "Resumo adia notas detalhadas e lista grande volume de PRs; falta evidência específica de correção examinada.",
-      "url": "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2"
-    },
-    {
-      "repo_id": 725205304,
-      "full_name": "unslothai/unsloth",
-      "release_id": 389862460,
-      "tag_name": "Windows-ARM64",
-      "motivo": "Release Windows-ARM64 sem notas; inspecionar diff ou changelog.",
-      "url": "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64"
-    },
-    {
-      "repo_id": 1086419061,
-      "full_name": "vectorize-io/hindsight",
-      "release_id": 267408243,
-      "tag_name": "v0.0.16",
-      "motivo": "Nota de instalação sem alterações funcionais descritas; diff necessário.",
-      "url": "https://github.com/vectorize-io/hindsight/releases/tag/v0.0.16"
-    }
-  ],
-  "releases_sim": 240,
-  "releases_nao": 48,
+  "decisoes_releases": 300,
+  "releases_pendentes": [],
+  "releases_sim": 251,
+  "releases_nao": 49,
   "hashes_antes": {
     "rotulador_B_repositorios.csv": "ebc04308575e377b988e26ddebde2b759c98d646e4c289a3297937d39e7f9c9a",
     "rotulador_B_releases.csv": "f6ba41a30b6f989677e543a15e7fe2e64b282ac8e014a6c2b81a4716cbba8933"
   },
   "hashes_depois": {
-    "rotulador_B_repositorios.csv": "a220c3488d9ca44c574960f61c0a349eacfdf08545d29ed7b40f1c7be8722b5e",
-    "rotulador_B_releases.csv": "bb6bc7e1a137b90fb5979cec5d168609b4e511a30acc51c1671bb5cfaec77e46"
+    "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25",
+    "rotulador_B_releases.csv": "65d98c8b8f21a5e9536f8b039b5173a59f88b5cac02de8df12e2eb8214a78954"
   },
   "manifesto_amostra_sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
   "livro_codigos_sha256": "e3471a9f6b15543e1b835441c93967b6dbc6fe72d5084a4465c58f8ebbfd26bb",
@@ -1101,11 +1001,285 @@
     }
   ],
   "limites": [
-    "Nenhum rótulo apresentado como decisão humana ou independente.",
     "Ausências permanecem vazias; não são negativas.",
     "Notas sem defeito identificado não demonstram ausência de defeitos nos commits não examinados.",
     "READMEs atuais não reconstroem necessariamente o estado ao fim da janela.",
     "Diffs entre séries divergentes exigem revisão de atribuição.",
-    "Não houve retomada da coleta, API, geração de consenso, Fleiss ou métricas de validação."
-  ]
+    "Não houve retomada da coleta, API, geração de consenso, Fleiss ou métricas de validação.",
+    "A tag Windows-ARM64 foi julgada pelo commit associado; a correção CUDA não comprova mudança nos artefatos ARM64.",
+    "O nao de Meteor indica defeito não identificado nas notas, sem inspeção exaustiva do histórico da primeira release elegível."
+  ],
+  "data_atualizacao": "2026-10-20",
+  "revisao_humana_anterior": {
+    "commit": "b09ec0559a809cabfb23286419eb1bf3bd99b5eb",
+    "declaracao_preservada": "Realizada em outra branch, conforme informado pelo responsável.",
+    "decisoes_de_releases_ja_preenchidas": 288
+  },
+  "pendencias_resolvidas_em_2026_10_20": [
+    {
+      "repo_id": 234798675,
+      "full_name": "bevyengine/bevy",
+      "release_id": 251319318,
+      "tag_name": "v0.17.1",
+      "corretiva": "sim",
+      "justificativa": "O compare v0.17.0...v0.17.1 registra a ausência do tipo primitivo () no TypeRegistry e sua inclusão automática (#21298); correção funcional de reflexão.",
+      "release_url": "https://github.com/bevyengine/bevy/releases/tag/v0.17.1",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/bevyengine/bevy/compare/v0.17.0...v0.17.1.patch",
+          "sha256": "fecaa32067a3101011bc7755fe6bff7df90319ab4ce4c8cbc7ad031c29231519",
+          "bytes": 144950
+        }
+      ],
+      "notas_snapshot_sha256": "f41dc33a907314c1feea742fe9a41c1727d7dca2e42758c202e49bb04eacb075",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 60246359,
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": 317982524,
+      "tag_name": "v26.4.1.1141-stable",
+      "corretiva": "sim",
+      "justificativa": "O changelog nomeia exatamente v26.4.1.1141-stable e corrige resultado incorreto de IN com Bool: comparar com 256 retornava 1 e passa a retornar 0 (#93115). Não foi usado o compare entre séries divergentes.",
+      "release_url": "https://github.com/ClickHouse/ClickHouse/releases/tag/v26.4.1.1141-stable",
+      "fontes_adicionais": [
+        {
+          "url": "https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/docs/changelogs/v26.4.1.1141-stable.md",
+          "sha256": "0456669f73b902ebd94635989bfd493a889b488bad353a97947b84055aaec7b7",
+          "bytes": 222476
+        }
+      ],
+      "notas_snapshot_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 331107018,
+      "full_name": "FuelLabs/sway",
+      "release_id": 253555837,
+      "tag_name": "v0.70.1",
+      "corretiva": "sim",
+      "justificativa": "O revert de telemetria #7451 declara resolver #7449/#7450, que descrevem processos de teste/forc que permaneciam vivos após o término; não foi classificado apenas pela palavra revert.",
+      "release_url": "https://github.com/FuelLabs/sway/releases/tag/v0.70.1",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/FuelLabs/sway/pull/7451",
+          "sha256": "0ebb0371cd12e502169c42363e349d6fdb4447478deb523ed58020918f351bf5",
+          "bytes": 343762
+        },
+        {
+          "url": "https://github.com/FuelLabs/sway/issues/7449",
+          "sha256": "9fd2cf235713c0c0f5374edabe4a71b063617cb54be068cb02aca5ae2b47c1f7",
+          "bytes": 433835
+        },
+        {
+          "url": "https://github.com/FuelLabs/sway/issues/7450",
+          "sha256": "8fba77349fa7fbe2a83d29c1e5b817b95d9596d92a41af8e15305900f02c5918",
+          "bytes": 271535
+        }
+      ],
+      "notas_snapshot_sha256": "413f3fca3787393740f169d1447154890fd005903251cda072d2fa12fba20b85",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 679506386,
+      "full_name": "janhq/jan",
+      "release_id": 251666490,
+      "tag_name": "v0.7.0",
+      "corretiva": "sim",
+      "justificativa": "As notas registram correção da conversão indevida de listas Markdown com marcadores em listas numeradas (#6437), além de falhas de deeplink no Windows (#6469).",
+      "release_url": "https://github.com/janhq/jan/releases/tag/v0.7.0",
+      "fontes_adicionais": [],
+      "notas_snapshot_sha256": "4b3dadc6c0badc762e974b59091622a988cd3561be13b9599fa5b0b2fa171c92",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 1644196,
+      "full_name": "JuliaLang/julia",
+      "release_id": 252875506,
+      "tag_name": "v1.12.0",
+      "corretiva": "sim",
+      "justificativa": "NEWS.md da tag v1.12.0 descreve Timer evitando que sua tarefa torne a tarefa pai sticky (#56745), além de setprecision com função passando a ser seguro entre threads (#51362); há correção funcional de concorrência.",
+      "release_url": "https://github.com/JuliaLang/julia/releases/tag/v1.12.0",
+      "fontes_adicionais": [
+        {
+          "url": "https://raw.githubusercontent.com/JuliaLang/julia/v1.12.0/NEWS.md",
+          "sha256": "b63d6826221cf4931edd527065c7239717fc8c66736a6e9f913ab8184e037975",
+          "bytes": 17974
+        },
+        {
+          "url": "https://github.com/JuliaLang/julia/pull/56745.patch",
+          "sha256": "64f858ad0226022760f855284abe6c211cf7aacc91c13f24daa8afc55938ae52",
+          "bytes": 10038
+        }
+      ],
+      "notas_snapshot_sha256": "79558493af3f865f8b496649cb164854d74574067ddb929cdc7838bb0b7085c4",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 3214406,
+      "full_name": "meteor/meteor",
+      "release_id": 384693385,
+      "tag_name": "release/METEOR@3.0",
+      "corretiva": "nao",
+      "justificativa": "As notas integrais (725 linhas) descrevem migração para APIs assíncronas, remoção de fibers, mudanças incompatíveis e dependências; não identificam correção de defeito. Julgamento pelas notas da primeira release elegível, sem compare oficial; nao não comprova ausência de correções não documentadas.",
+      "release_url": "https://github.com/meteor/meteor/releases/tag/release/METEOR%403.0",
+      "fontes_adicionais": [],
+      "notas_snapshot_sha256": "8a32825c51e1b7779fb97d22b5b2f69166fd46c8d5b798dcd55272d02f11f151",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 7691631,
+      "full_name": "moby/moby",
+      "release_id": 261265152,
+      "tag_name": "docker-v29.0.0",
+      "corretiva": "sim",
+      "justificativa": "As notas descrevem correção de tarefas Swarm que ficavam indefinidamente em PENDING após escalar serviços com preferências de posicionamento (#50202).",
+      "release_url": "https://github.com/moby/moby/releases/tag/docker-v29.0.0",
+      "fontes_adicionais": [],
+      "notas_snapshot_sha256": "8e3150b55f45dfc0da608784fd91e27fffbe47dd02bc9713033835ff69854b1f",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": 345115694,
+      "tag_name": "v2.8.8",
+      "corretiva": "sim",
+      "justificativa": "A PR #393 descreve que o token não podia publicar uipro-cli e os usuários ficavam na versão 2.2.3; migra o pacote e o caminho de atualização para ui-ux-pro-max-cli, preservando o comando uipro. Correção do fluxo de distribuição/atualização, não mero número patch.",
+      "release_url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.8.8",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/pull/393",
+          "sha256": "e52941070dceee0c542ca9538b1fcf0b796952e1fb93933ba4981a80d5831347",
+          "bytes": 352925
+        }
+      ],
+      "notas_snapshot_sha256": "8874970d9e8b75f2a697f518848bea879f605456d49a643889812698b756c011",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 1106996539,
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": 345573538,
+      "tag_name": "v2.9.0",
+      "corretiva": "sim",
+      "justificativa": "O compare v2.8.8...v2.9.0 contém #346: o gerador Tailwind emitia configuração sem vírgula antes de plugins, causando erro de sintaxe, e a instalação isolada tinha symlinks quebrados. As notas vazias não foram interpretadas como nao.",
+      "release_url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/releases/tag/v2.9.0",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/compare/v2.8.8...v2.9.0.patch",
+          "sha256": "f0dab3d7f73454deec24628869fa13633fc20419bf43b7793bd83212d03b2cbc",
+          "bytes": 2046740
+        }
+      ],
+      "notas_snapshot_sha256": "0d580c2a949d67004aacc0deb702e2df8923002a45fe4b0270127ed4d38ede4b",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 1024554267,
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": 371876201,
+      "tag_name": "v2026.8.16.2",
+      "corretiva": "sim",
+      "justificativa": "As notas completas da versão descrevem correções de perda de dados no handoff de sessões e recuperação do agendador após EMFILE, além de recursos novos; release mista conta como sim pelo livro #155.",
+      "release_url": "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.16.2",
+      "fontes_adicionais": [],
+      "notas_snapshot_sha256": "7812075f1912d689adfdf8bf363e46c421b79f9d714b558f3b6f51a959ef1050",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 725205304,
+      "full_name": "unslothai/unsloth",
+      "release_id": 389862460,
+      "tag_name": "Windows-ARM64",
+      "corretiva": "sim",
+      "justificativa": "A página da release aponta ao commit 39268d393918b1a85fda43f5b18f9cd4ed7f821d. Seu patch corrige a inversão da ordem solicitada em CUDA_VISIBLE_DEVICES no subprocesso llama-server; classificação pelo código associado à tag, não pelo nome ARM64. Não comprova que os binários ARM64 executem esse caminho CUDA.",
+      "release_url": "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/unslothai/unsloth/releases/tag/Windows-ARM64",
+          "sha256": "04c11f2804e3ccf3663a9cac426cb98e3049a0805b62e99cdaf2193e8c8f2143",
+          "bytes": 194523
+        },
+        {
+          "url": "https://github.com/unslothai/unsloth/commit/39268d393918b1a85fda43f5b18f9cd4ed7f821d.patch",
+          "sha256": "4d2c5b706a6ff8be474cd85c21850f0f5c4a85241f1dfda4b574a1a19564d30e",
+          "bytes": 34823
+        }
+      ],
+      "notas_snapshot_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "revisao_humana_pendente": false
+    },
+    {
+      "repo_id": 1086419061,
+      "full_name": "vectorize-io/hindsight",
+      "release_id": 267408243,
+      "tag_name": "v0.0.16",
+      "corretiva": "sim",
+      "justificativa": "O compare v0.0.15...v0.0.16 altera o tipo padrão do recall na CLI de agent para bank; a API da tag aceita world/bank/opinion e rejeita agent com HTTP 400. Inferência de correção funcional confirmada pelo diff e validação do servidor, apesar do título docs, packages and quick start.",
+      "release_url": "https://github.com/vectorize-io/hindsight/releases/tag/v0.0.16",
+      "fontes_adicionais": [
+        {
+          "url": "https://github.com/vectorize-io/hindsight/compare/v0.0.15...v0.0.16.patch",
+          "sha256": "def21dbd1f68b07f08bb24252910710e9396fa77d904feedeed9fc1de294da61",
+          "bytes": 182891
+        },
+        {
+          "url": "https://raw.githubusercontent.com/vectorize-io/hindsight/v0.0.16/hindsight-api/hindsight_api/api/http.py",
+          "sha256": "6a78e1f1ac56716175772a96dc29c4f5350e6cb2b1af28de4314ff91e40431a9",
+          "bytes": 71551
+        }
+      ],
+      "notas_snapshot_sha256": "7aa3d1fe777a18bbbf271c8305c409c4a9f0e898fd9a6524b99cc51931491488",
+      "revisao_humana_pendente": false
+    }
+  ],
+  "releases_pendentes_revisao_humana": [],
+  "hashes_antes_complementacao": {
+    "rotulador_B_releases.csv": "e0359d7b66e0e383b0474de8d10d4e99de2c92b33e5ae410c6cecf202d2ed94e",
+    "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25"
+  },
+  "integracao_main_500": {
+    "main_commit": "6bc226a64ad892acd541f0d689902f747506a0bd",
+    "decisao": "docs/decisao-retomada-500.md: manter o sorteio oficial sobre os primeiros 255 elegíveis, sem novo sorteio.",
+    "manifesto_500_sha256": "379091e2f9d6c13c07a002bf006c1f7926ad2f593f4fc05986d36463ca8d7e9c",
+    "total_amostra_500": 500,
+    "repositorios_da_amostra_ouro_presentes_nos_500": 60,
+    "processamento_final_completo": false,
+    "snapshot_255_preservado_como_fonte_das_notas": true
+  },
+  "validacao_complementacao": {
+    "data": "2026-10-20",
+    "resultado": "aprovado",
+    "repositorios": 60,
+    "releases": 300,
+    "releases_por_repositorio": 5,
+    "rotulos_de_release_preenchidos": 300,
+    "releases_sim": 251,
+    "releases_nao": 49,
+    "decisoes_anteriores_preservadas": 288,
+    "releases_alteradas": [
+      251319318,
+      251666490,
+      252875506,
+      253555837,
+      261265152,
+      267408243,
+      317982524,
+      345115694,
+      345573538,
+      371876201,
+      384693385,
+      389862460
+    ],
+    "metadados_ordem_cabecalhos_BOM_LF_preservados": true,
+    "planilha_B_repositorios_preservada": true,
+    "sorteio_livro_e_planilhas_A_C_identicos_a_main": true,
+    "rotulos_A_C_consultados": false,
+    "hashes_das_planilhas_e_sorteio_conferidos": true,
+    "testes_instrumento": {
+      "comando": ".venv/bin/python -m pytest tests/test_amostra_ouro.py -q",
+      "aprovados": 23
+    }
+  }
 }

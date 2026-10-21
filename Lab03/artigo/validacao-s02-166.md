@@ -1,5 +1,21 @@
 # Validação da revisão metodológica — S02-16 (#166)
 
+## Integração do PR #232 — 21/10/2026
+
+O conflito com a `main` foi resolvido preservando sua cronologia da retomada,
+inclusão de Grafana e funil de 37.383 candidatos encontrados, 1.064 avaliados
+e 500 elegíveis. Foi acrescentado o encerramento real dos compares em
+21/10, com código 0, `execucao_completa=true`, 34.151 comparações e os
+diagnósticos de incompletude. A referência do artigo aponta agora para o
+CSV final, preservando os cortes históricos.
+
+O compilador do editor desktop confirmou sucesso de `main.tex` após essa
+resolução. A suíte completa passou no checkout isolado: 913 testes, com
+94,16% de cobertura de `pipeline` em Python 3.12. O teste do checkpoint
+auxiliar confere o retorno resumido e a preservação dos detalhes no disco. Os
+rótulos B e a decisão de retomada recebidos da `main` foram preservados;
+o CSV final não foi alterado pela resolução.
+
 ## Atualização de 20/10/2026
 
 `metodologia.tex` incorpora a decisão de retomada, a captura pública de
