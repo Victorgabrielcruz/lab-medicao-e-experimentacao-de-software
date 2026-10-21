@@ -12,7 +12,7 @@
     "rotulador_A_releases.csv": "4cd98237e0438aedc2e85b00cdd700284b543b0416f03311b0b0d7adaa23acd4",
     "rotulador_B_releases.csv": "65d98c8b8f21a5e9536f8b039b5173a59f88b5cac02de8df12e2eb8214a78954",
     "rotulador_C_releases.csv": "61fb81b81efb6ab1baf2876e97a3fdc8d7c54a5ac60d4bab7c391705c92ed07b",
-    "decisoes-consenso.csv": "6297a3e413fabe791d8ff869aa3b2ab4b852596159b711b36871fb013bcf6ed7"
+    "decisoes-consenso.csv": "774a72505364de8d15e164d029e9e52d6ed5dc6b6652c63489d56c5f907af78e"
   },
   "origens": {
     "tipo_projeto": {
@@ -41,7 +41,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -54,7 +54,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -67,7 +67,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -80,7 +80,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -93,7 +93,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -106,7 +106,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -119,7 +119,7 @@
       "origem": "discussao",
       "justificativa": "Sem maioria (A=aplicacao, B=biblioteca, C=ferramenta_dev). O grupo decidiu ferramenta_dev: o pandoc é usado principalmente como conversor de documentos pela linha de comando.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "tipo_projeto",
@@ -132,7 +132,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "releases_sao_entregas_reais",
@@ -145,7 +145,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -159,7 +159,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -173,7 +173,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -187,7 +187,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -201,7 +201,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -215,7 +215,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     },
     {
       "dimensao": "corretiva",
@@ -229,7 +229,7 @@
       "origem": "maioria",
       "justificativa": "Maioria simples aceita pelo grupo.",
       "participantes": "A, B, C",
-      "data": "2026-10-21"
+      "data": "2026-10-20"
     }
   ]
 }

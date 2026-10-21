@@ -37,7 +37,7 @@ O comando recusa item divergente sem decisão, decisão para item unânime,
 valor fora do livro de códigos, decisão fora da maioria sem justificativa e
 decisão sem participantes ou data.
 
-## Resultado (21/10/2026)
+## Resultado (reunião de 20/10/2026)
 
 Participantes: rotuladores A, B e C. Dos 420 itens, 405 foram unânimes e 15
 divergentes. Nenhum item ficou pendente.
