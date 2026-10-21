@@ -1,0 +1,235 @@
+{
+  "rotuladores": [
+    "A",
+    "B",
+    "C"
+  ],
+  "entradas_sha256": {
+    "amostra_ouro.json": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
+    "rotulador_A_repositorios.csv": "af1425e456aebac4a138d364c0954913c4d84f304e4d43d5c4a083125f14629f",
+    "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25",
+    "rotulador_C_repositorios.csv": "5957f8953f7b0908c515f55ded252b7170598b4debbf17ef25524b359266ad89",
+    "rotulador_A_releases.csv": "4cd98237e0438aedc2e85b00cdd700284b543b0416f03311b0b0d7adaa23acd4",
+    "rotulador_B_releases.csv": "65d98c8b8f21a5e9536f8b039b5173a59f88b5cac02de8df12e2eb8214a78954",
+    "rotulador_C_releases.csv": "61fb81b81efb6ab1baf2876e97a3fdc8d7c54a5ac60d4bab7c391705c92ed07b",
+    "decisoes-consenso.csv": "6297a3e413fabe791d8ff869aa3b2ab4b852596159b711b36871fb013bcf6ed7"
+  },
+  "origens": {
+    "tipo_projeto": {
+      "unanime": 52,
+      "maioria": 7,
+      "discussao": 1
+    },
+    "releases_sao_entregas_reais": {
+      "unanime": 59,
+      "maioria": 1
+    },
+    "corretiva": {
+      "unanime": 294,
+      "maioria": 6
+    }
+  },
+  "divergencias": [
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "133442384",
+      "A": "infraestrutura",
+      "B": "ferramenta_dev",
+      "C": "infraestrutura",
+      "maioria": "infraestrutura",
+      "decisao": "infraestrutura",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "1663468",
+      "A": "biblioteca",
+      "B": "aplicacao",
+      "C": "biblioteca",
+      "maioria": "biblioteca",
+      "decisao": "biblioteca",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "172953845",
+      "A": "aplicacao",
+      "B": "ferramenta_dev",
+      "C": "ferramenta_dev",
+      "maioria": "ferramenta_dev",
+      "decisao": "ferramenta_dev",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "27193779",
+      "A": "infraestrutura",
+      "B": "ferramenta_dev",
+      "C": "infraestrutura",
+      "maioria": "infraestrutura",
+      "decisao": "infraestrutura",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "340547520",
+      "A": "aplicacao",
+      "B": "ferramenta_dev",
+      "C": "ferramenta_dev",
+      "maioria": "ferramenta_dev",
+      "decisao": "ferramenta_dev",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "361044034",
+      "A": "aplicacao",
+      "B": "ferramenta_dev",
+      "C": "ferramenta_dev",
+      "maioria": "ferramenta_dev",
+      "decisao": "ferramenta_dev",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "571770",
+      "A": "aplicacao",
+      "B": "biblioteca",
+      "C": "ferramenta_dev",
+      "maioria": null,
+      "decisao": "ferramenta_dev",
+      "origem": "discussao",
+      "justificativa": "Sem maioria (A=aplicacao, B=biblioteca, C=ferramenta_dev). O grupo decidiu ferramenta_dev: o pandoc é usado principalmente como conversor de documentos pela linha de comando.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "tipo_projeto",
+      "repo_id": "993475914",
+      "A": "infraestrutura",
+      "B": "ferramenta_dev",
+      "C": "ferramenta_dev",
+      "maioria": "ferramenta_dev",
+      "decisao": "ferramenta_dev",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "releases_sao_entregas_reais",
+      "repo_id": "3214406",
+      "A": "nao",
+      "B": "sim",
+      "C": "sim",
+      "maioria": "sim",
+      "decisao": "sim",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "1086419061",
+      "release_id": "267408243",
+      "A": "nao",
+      "B": "sim",
+      "C": "nao",
+      "maioria": "nao",
+      "decisao": "nao",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "1103012935",
+      "release_id": "265823021",
+      "A": "nao",
+      "B": "sim",
+      "C": "sim",
+      "maioria": "sim",
+      "decisao": "sim",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "1144520675",
+      "release_id": "397445365",
+      "A": "nao",
+      "B": "sim",
+      "C": "sim",
+      "maioria": "sim",
+      "decisao": "sim",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "1182081931",
+      "release_id": "302704241",
+      "A": "nao",
+      "B": "nao",
+      "C": "sim",
+      "maioria": "nao",
+      "decisao": "nao",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "327089870",
+      "release_id": "268896852",
+      "A": "nao",
+      "B": "sim",
+      "C": "sim",
+      "maioria": "sim",
+      "decisao": "sim",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    },
+    {
+      "dimensao": "corretiva",
+      "repo_id": "881458615",
+      "release_id": "266163229",
+      "A": "nao",
+      "B": "sim",
+      "C": "nao",
+      "maioria": "nao",
+      "decisao": "nao",
+      "origem": "maioria",
+      "justificativa": "Maioria simples aceita pelo grupo.",
+      "participantes": "A, B, C",
+      "data": "2026-10-21"
+    }
+  ]
+}
