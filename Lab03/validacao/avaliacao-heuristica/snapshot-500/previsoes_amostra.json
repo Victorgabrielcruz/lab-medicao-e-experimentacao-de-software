@@ -15,8 +15,8 @@
       "sha256": "d7416f5b5de19ac7def65abac72cb4b11a80be32ef3e36eb3049e5aa3361c8f8"
     },
     "previsoes": {
-      "arquivo": "validacao/avaliacao-heuristica/snapshot-500/entrada_snapshot.json",
-      "sha256": "77e3e56f2b34c2fd41a356715b10baf6605ee03468a458be53a2c5e836a8b6c4"
+      "arquivo": "validacao/avaliacao-heuristica/snapshot-500/cfr_b.json",
+      "sha256": "0e20ab6fae43b857e5a0d353bf1a4b4b014a1833f564dbf4968b6273912a2acd"
     }
   },
   "repositorios": [
@@ -186,9 +186,11 @@
           "compare_completo": true,
           "motivo_corretiva": "patch_e_mensagem",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            351516957
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 1,
           "exemplos_commits_corretivos": [
             {
@@ -1181,9 +1183,11 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            254773105
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 9,
           "exemplos_commits_corretivos": [
             {
@@ -1253,9 +1257,12 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            276372944,
+            278002197
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 650,
           "exemplos_commits_corretivos": [
             {
@@ -1289,9 +1296,11 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            325960472
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 600,
           "exemplos_commits_corretivos": [
             {
@@ -1325,9 +1334,14 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            361799950,
+            361889268,
+            364250825,
+            364252140
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 606,
           "exemplos_commits_corretivos": [
             {
@@ -1872,7 +1886,11 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
+            267155334,
             267156324,
+            267156546,
+            267156702,
+            267156827,
             268473608
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
@@ -1911,6 +1929,9 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
+            267156546,
+            267156702,
+            267156827,
             268473608
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
@@ -1950,7 +1971,11 @@
           "falhou": true,
           "releases_corretivas_posteriores": [
             280066109,
-            280501199
+            280067130,
+            280067908,
+            280068655,
+            280501199,
+            280910195
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 132,
@@ -1988,7 +2013,11 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
-            280501199
+            280067130,
+            280067908,
+            280068655,
+            280501199,
+            280910195
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 363,
@@ -4906,6 +4935,7 @@
             285809926,
             285902370,
             285964601,
+            286328960,
             286335731,
             286415494,
             286456785,
@@ -5039,7 +5069,8 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
-            331225753
+            331225753,
+            331536993
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 768,
@@ -5113,6 +5144,7 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
+            372160932,
             374377893
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
@@ -5420,7 +5452,8 @@
           "falhou": true,
           "releases_corretivas_posteriores": [
             265906479,
-            265907450
+            265907450,
+            266718921
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 8,
@@ -5456,9 +5489,15 @@
           "compare_completo": true,
           "motivo_corretiva": "patch_e_mensagem",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            276286936,
+            276289351,
+            277017239,
+            277351058,
+            277615108
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 122,
           "exemplos_commits_corretivos": [
             {
@@ -5539,6 +5578,7 @@
             290148383,
             290708916,
             291156681,
+            291904614,
             292373048
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
@@ -5619,9 +5659,12 @@
           "compare_completo": true,
           "motivo_corretiva": "patch_semver",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            276777237,
+            277240601
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 0,
           "exemplos_commits_corretivos": []
         },
@@ -5744,9 +5787,9 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
+          "falhou": false,
           "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "motivo_avaliacao": "sem_corretiva_ate_7_dias",
           "total_commits_corretivos": 1,
           "exemplos_commits_corretivos": [
             {
@@ -6051,7 +6094,8 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
-            337079415
+            337079415,
+            337945536
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 8,
@@ -6087,9 +6131,11 @@
           "compare_completo": true,
           "motivo_corretiva": "patch_e_mensagem",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            337945536
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 6,
           "exemplos_commits_corretivos": [
             {
@@ -6149,7 +6195,8 @@
           "censurada": false,
           "falhou": true,
           "releases_corretivas_posteriores": [
-            302704241
+            302704241,
+            304927162
           ],
           "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 13,
@@ -6185,9 +6232,11 @@
           "compare_completo": true,
           "motivo_corretiva": "mensagem_commit",
           "censurada": false,
-          "falhou": null,
-          "releases_corretivas_posteriores": [],
-          "motivo_avaliacao": "evidencia_insuficiente",
+          "falhou": true,
+          "releases_corretivas_posteriores": [
+            304927162
+          ],
+          "motivo_avaliacao": "corretiva_ate_7_dias",
           "total_commits_corretivos": 3,
           "exemplos_commits_corretivos": [
             {

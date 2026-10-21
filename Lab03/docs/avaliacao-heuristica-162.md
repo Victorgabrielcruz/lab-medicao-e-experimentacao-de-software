@@ -99,6 +99,19 @@ Cada execução gera:
 | `avaliacao.md` | Resultado legível, orientação da matriz e limites de interpretação. |
 | `pares.csv` | Um registro por par sorteado, com consenso, previsão, VP/FP/FN/VN ou razões de exclusão. |
 | `previsoes_amostra.json` | Previsões utilizadas, restritas à amostra, reutilizáveis como entrada. |
+| `pendencias.csv` | Somente os pares excluídos, com IDs, URL oficial de compare, diagnóstico da evidência faltante e ação recomendada. |
+
+O avaliador v2 resume os sinais de commits no recorte de previsões, mantendo
+contagem e até cinco exemplos. A classificação já presente no arquivo de
+entrada é preservada, e o hash desse arquivo permite recuperar os sinais
+integrais. O recorte resumido pode ser reavaliado sem mudar os escores.
+
+O diagnóstico de pendências não altera rótulos. Ele distingue consenso ou
+previsão ausentes, falta de compare completo e falta da predecessora
+histórica para o sinal SemVer. Uma primeira release da janela pode ter
+predecessora anterior à janela, mesmo com `compare_url` vazio no sorteio.
+Se a predecessora não existir, a indeterminação da v1 é legítima; ela não
+deve ser resolvida inventando uma base ou preenchendo `nao`.
 
 As entradas são verificadas por hash antes e depois da leitura. Os relatórios
 não incluem horário de geração e são determinísticos para os mesmos arquivos,
@@ -123,7 +136,7 @@ versionados, foi implementado [avaliacao_snapshot.py](../pipeline/avaliacao_snap
 ```bash
 python -m pipeline.avaliacao_snapshot \
   --pacote entregas/dados-brutos-500 \
-  --saida validacao/avaliacao-heuristica/snapshot-500
+  --saida validacao/avaliacao-heuristica/reproducao-snapshot
 ```
 
 Esse comando verifica o hash e o tamanho das 20 partes do pacote
@@ -162,6 +175,21 @@ agregados de CFR(b) e os detalhes por release. Para reproduzi-la diretamente
 nesse local, use o mesmo comando com
 `--cfr-b validacao/avaliacao-heuristica/snapshot-500/cfr_b.json`.
 
+O relatório principal versionado é calculado **diretamente dessa cópia de
+`cfr_b.json`**, com seu SHA-256 registrado em `avaliacao.json`. Para
+reproduzir os cinco artefatos do relatório sem reabrir os pacotes:
+
+```bash
+python -m pipeline.avaliacao_heuristica \
+  --previsoes validacao/avaliacao-heuristica/snapshot-500/cfr_b.json \
+  --saida validacao/avaliacao-heuristica/snapshot-500 --exigir-completa
+```
+
+O retorno 3 é esperado enquanto houver pares indeterminados; os relatórios
+são gravados normalmente. `entrada_snapshot.json` preserva a extração
+intermediária anterior, cuja classificação dos pares sorteados concorda
+com a entrada completa. Ela não é a fonte atual do relatório principal.
+
 ### Resultado parcial em 21/10/2026
 
 O snapshot foi capturado em 20/10 antes da conclusão dos compares. Para a
@@ -184,6 +212,12 @@ reconhece patches sem compare, mas não nega sinais desconhecidos em commits.
 Precisão: **0,869863**; recall: **1,000000**; F1: **0,930403**.
 Os valores completos e os 300 pares estão nos
 [artefatos reproduzidos](../validacao/avaliacao-heuristica/snapshot-500/avaliacao.json).
+
+A [lista de pendências](../validacao/avaliacao-heuristica/snapshot-500/pendencias.csv)
+identifica 125 pares sem evidência completa dos commits e outros 29 que
+também precisam esclarecer a predecessora histórica. Essa lista orienta a
+disponibilização dos detalhes finais da #161; não é uma autorização para
+substituir as previsões pelos rótulos de consenso.
 
 **Esses escores não concluem a avaliação das 300 releases.** Todas as
 previsões conhecidas desse corte foram positivas; 122 corretivas e 32 não
@@ -208,9 +242,9 @@ python -m pytest tests/test_avaliacao_heuristica.py tests/test_avaliacao_snapsho
 python -m pytest --cov=pipeline --cov-report=term-missing --cov-fail-under=80
 ```
 
-Validação local em 21/10/2026, Python 3.14.3: **986 testes aprovados e
-2 ignorados**, com **94,26% de cobertura global**, acima dos 80% exigidos
-pela CI. São 59 casos novos; o avaliador tem 100% de cobertura de linhas e
+Validação local em 21/10/2026, Python 3.14.3: **992 testes aprovados e
+2 ignorados**, com **94,32% de cobertura global**, acima dos 80% exigidos
+pela CI. São 65 casos novos; o avaliador tem 100% de cobertura de linhas e
 a recuperação do snapshot, 99%. Isso não substitui a execução da CI em
 Python 3.11 e 3.13. A dependência adicionada `scikit-learn==1.9.1` declara
 compatibilidade com Python >= 3.11.

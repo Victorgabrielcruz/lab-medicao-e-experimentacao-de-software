@@ -837,7 +837,10 @@ recalcular a v1 com `--releases` e `--compare`, lendo somente dados locais.
 
 Há uma [execução histórica parcial](validacao/avaliacao-heuristica/snapshot-500/avaliacao.md)
 reproduzível pelo snapshot publicado: **146/300** releases, com 154
-previsões indeterminadas. Seus escores não validam o desempenho na amostra
+previsões indeterminadas. O relatório principal usa o `cfr_b.json` versionado
+e gera uma [lista das pendências](validacao/avaliacao-heuristica/snapshot-500/pendencias.csv),
+com a evidência faltante e a ação recomendada para cada par.
+Seus escores não validam o desempenho na amostra
 inteira. A [documentação da #162](docs/avaliacao-heuristica-162.md) explica
 os contratos, a reprodução offline e a substituição pela execução final.
 

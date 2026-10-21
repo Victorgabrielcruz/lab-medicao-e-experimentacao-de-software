@@ -12,7 +12,11 @@
     "consenso_positivo_total": 249,
     "consenso_negativo_total": 51,
     "consenso_positivo_excluido": 122,
-    "consenso_negativo_excluido": 32
+    "consenso_negativo_excluido": 32,
+    "pendencias_por_tipo": {
+      "commits_compare": 125,
+      "predecessora_historica+commits_compare": 29
+    }
   },
   "matriz_confusao": {
     "linhas_consenso": [
@@ -4262,7 +4266,7 @@
       "motivos_exclusao": []
     }
   ],
-  "versao_avaliador": 1,
+  "versao_avaliador": 2,
   "versao_heuristica": "corretiva-v1-patch-ou-mensagem",
   "bibliotecas": {
     "python": "3.14.3",
@@ -4279,8 +4283,8 @@
       "sha256": "d7416f5b5de19ac7def65abac72cb4b11a80be32ef3e36eb3049e5aa3361c8f8"
     },
     "previsoes": {
-      "arquivo": "validacao/avaliacao-heuristica/snapshot-500/entrada_snapshot.json",
-      "sha256": "77e3e56f2b34c2fd41a356715b10baf6605ee03468a458be53a2c5e836a8b6c4"
+      "arquivo": "validacao/avaliacao-heuristica/snapshot-500/cfr_b.json",
+      "sha256": "0e20ab6fae43b857e5a0d353bf1a4b4b014a1833f564dbf4968b6273912a2acd"
     }
   }
 }

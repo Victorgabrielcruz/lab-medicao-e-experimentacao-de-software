@@ -95,6 +95,8 @@ def test_execucao_por_id_inclui_censuradas_e_ignora_falhou(entradas, tmp_path, m
     with (out / "pares.csv").open() as f:
         assert [p["previsao"] for p in csv.DictReader(f)] == ["sim", "sim", "nao"]
     assert "**Completa:** 3/3" in (out / "avaliacao.md").read_text()
+    with (out / "pendencias.csv").open() as f:
+        assert list(csv.DictReader(f)) == []
     assert all(f.read_bytes() == b for f, b in antes.items())
     out2 = tmp_path / "saida2"
     av.executar(caminho, pasta=pasta, saida=out2)
@@ -118,6 +120,11 @@ def test_ausencias_explicitas_ou_por_linha_omitida_nunca_viram_negativos(entrada
         "consenso_ausente": 2, "previsao_ausente": 1, "previsao_indeterminada": 1}
     assert r["matriz_confusao"]["FP"] == 1
     assert r["f1"] == 0
+    with (tmp_path / "out/pendencias.csv").open() as f:
+        pendencias = list(csv.DictReader(f))
+    assert len(pendencias) == 2
+    assert pendencias[0]["tipo_pendencia"] == "consenso+evidencias_previsao"
+    assert pendencias[1]["tipo_pendencia"] == "consenso+previsao"
 
 
 def test_nenhuma_previsao_produz_matriz_zero_e_metricas_nulas(entradas, tmp_path):
@@ -128,6 +135,42 @@ def test_nenhuma_previsao_produz_matriz_zero_e_metricas_nulas(entradas, tmp_path
     assert r["cobertura"]["fracao_avaliada"] == 0
     assert r["f1"] is None and r["atinge_limiar_no_subconjunto"] is None
     assert r["matriz_confusao"]["valores"] == [[0, 0], [0, 0]]
+
+
+@pytest.mark.parametrize("patch,completo,tipo", [
+    (False, False, "commits_compare"), (None, False, "predecessora_historica+commits_compare"),
+    (None, True, "predecessora_historica"), (False, True, "evidencias_previsao"),
+])
+def test_diagnostico_de_pendencias_nao_altera_rotulos(entradas, tmp_path, patch, completo, tipo):
+    pasta, caminho, m, _, p = entradas
+    m["repositorios"][0]["releases"][0]["compare_url"] = "https://github.com/org/projeto/compare/v2.2.0...v2.3.0"
+    gravar_json(pasta / "amostra_ouro.json", m)
+    p["repositorios"][0]["releases"][0].update(corretiva=None, patch_semver=patch, compare_completo=completo)
+    gravar_json(caminho, p)
+    original = caminho.read_bytes()
+    r = av.executar(caminho, pasta=pasta, saida=tmp_path / "out")
+    assert r["cobertura"]["avaliadas"] == 2 and r["pares"][0]["previsao"] is None
+    assert r["cobertura"]["pendencias_por_tipo"] == {tipo: 1}
+    with (tmp_path / "out/pendencias.csv").open() as f:
+        linhas = list(csv.DictReader(f))
+    assert len(linhas) == 1 and linhas[0]["tipo_pendencia"] == tipo
+    assert linhas[0]["compare_url"] == m["repositorios"][0]["releases"][0]["compare_url"]
+    assert caminho.read_bytes() == original
+
+
+def test_sinais_resumidos_preservam_decisao_contagem_e_roundtrip(entradas, tmp_path):
+    pasta, caminho, _, _, p = entradas
+    sinais = [{"sha": str(i), "termo": "fix"} for i in range(20)]
+    p["repositorios"][0]["releases"][0]["commits_corretivos"] = sinais
+    gravar_json(caminho, p)
+    r = av.executar(caminho, pasta=pasta, saida=tmp_path / "out")
+    filtradas = json.loads((tmp_path / "out/previsoes_amostra.json").read_text())
+    rel = filtradas["repositorios"][0]["releases"][0]
+    assert rel["corretiva"] is True and rel["total_commits_corretivos"] == 20
+    assert rel["exemplos_commits_corretivos"] == sinais[:5] and "commits_corretivos" not in rel
+    r2 = av.executar(tmp_path / "out/previsoes_amostra.json", pasta=pasta, saida=tmp_path / "out2")
+    assert r2["matriz_confusao"] == r["matriz_confusao"]
+    assert json.loads((tmp_path / "out2/previsoes_amostra.json").read_text())["repositorios"] == filtradas["repositorios"]
 
 
 def test_pares_de_repositorios_diferentes_nao_se_confundem_pela_tag_ou_id_local(entradas, tmp_path):
@@ -163,6 +206,7 @@ def test_pares_de_repositorios_diferentes_nao_se_confundem_pela_tag_ou_id_local(
     (lambda p: p["repositorios"][0]["releases"][0].update(tag_name="v0.0.1"), "Tag divergente"),
     (lambda p: p["repositorios"][0]["releases"][0].update(published_at="2026-05-11T00:00:00Z"), "Data divergente"),
     (lambda p: p["repositorios"][0].pop("releases"), "sem detalhes"),
+    (lambda p: p["repositorios"][0]["releases"][0].update(commits_corretivos="fix"), "Sinais de commits"),
 ])
 def test_predicoes_incoerentes_nao_gravam_resultado(entradas, tmp_path, mutacao, erro):
     pasta, caminho, _, _, p = entradas

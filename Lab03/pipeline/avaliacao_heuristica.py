@@ -19,10 +19,12 @@ from pipeline.cache import gravar_json, substituir_atomico
 from pipeline.config import ConfigError
 
 SAIDA = "validacao/avaliacao-heuristica/v1"
-ARQUIVOS = ("avaliacao.json", "avaliacao.md", "pares.csv", "previsoes_amostra.json")
+ARQUIVOS = ("avaliacao.json", "avaliacao.md", "pares.csv", "previsoes_amostra.json", "pendencias.csv")
 COLUNAS_PARES = ("repo_id", "full_name", "release_id", "tag_name", "published_at",
                  "consenso", "origem_consenso", "previsao", "motivo_previsao",
                  "resultado", "motivos_exclusao")
+COLUNAS_PENDENCIAS = ("repo_id", "full_name", "release_id", "tag_name", "published_at",
+                      "compare_url", "tipo_pendencia", "motivos_exclusao", "acao_recomendada")
 
 
 def exigir(condicao, mensagem):
@@ -125,7 +127,15 @@ def selecionar_previsoes(repositorios, esperadas):
             conferir_identidade(rel | {"full_name": repo.get("full_name")}, esperadas[chave], "previsões", True)
             exigir("corretiva" in rel and (type(rel["corretiva"]) is bool or rel["corretiva"] is None),
                    f"Previsão corretiva deve ser bool ou null: {chave}")
-            selecionadas[chave] = rel
+            # A decisão já foi calculada com todas as mensagens. O recorte mantém
+            # contagem e exemplos dos sinais; a entrada integral fica vinculada por hash.
+            detalhe = dict(rel)
+            if "commits_corretivos" in detalhe:
+                sinais = detalhe.pop("commits_corretivos")
+                exigir(isinstance(sinais, list), f"Sinais de commits devem ser uma lista: {chave}")
+                detalhe["total_commits_corretivos"] = len(sinais)
+                detalhe["exemplos_commits_corretivos"] = sinais[:5]
+            selecionadas[chave] = detalhe
     return selecionadas
 
 
@@ -217,6 +227,40 @@ def avaliar(esperadas, consenso, previsoes):
             "pares": pares}
 
 
+def diagnosticar_pendencias(pares, previsoes, manifesto):
+    """Explica lacunas sem usar o consenso para alterar as previsões da heurística."""
+    urls = {(identificador(r["repo_id"]), identificador(rel["release_id"])): rel.get("compare_url")
+            for r in manifesto["repositorios"] for rel in r["releases"]}
+    pendencias = []
+    for par in pares:
+        if not par["motivos_exclusao"]:
+            continue
+        chave = par["repo_id"], par["release_id"]
+        previsao = previsoes.get(chave)
+        tipos, acoes = [], []
+        if "consenso_ausente" in par["motivos_exclusao"]:
+            tipos.append("consenso")
+            acoes.append("Concluir o rótulo de consenso da #160.")
+        if previsao is None:
+            tipos.append("previsao")
+            acoes.append("Exportar a previsão por release da #161 para este par de IDs.")
+        elif previsao["corretiva"] is None:
+            if "patch_semver" in previsao and previsao["patch_semver"] is None:
+                tipos.append("predecessora_historica")
+                acoes.append("Confirmar a predecessora anterior à janela, quando existir; ausência legítima permanece indeterminada na v1.")
+            if "compare_completo" in previsao and previsao["compare_completo"] is not True:
+                tipos.append("commits_compare")
+                acoes.append("Disponibilizar mensagens e contagens do compare completo ou registrar sua indisponibilidade.")
+            if not any(t in tipos for t in ("predecessora_historica", "commits_compare")):
+                tipos.append("evidencias_previsao")
+                acoes.append("Recalcular ou exportar as evidências de patch e compare da versão da heurística utilizada.")
+        pendencias.append({k: par[k] for k in COLUNAS_PENDENCIAS[:5]} |
+                          {"compare_url": urls[chave], "tipo_pendencia": "+".join(tipos),
+                           "motivos_exclusao": ";".join(par["motivos_exclusao"]),
+                           "acao_recomendada": " ".join(acoes)})
+    return pendencias
+
+
 def tabela_markdown(dados):
     def numero(v):
         return "não estimável" if v is None else f"{v:.6f}"
@@ -235,6 +279,10 @@ def tabela_markdown(dados):
             f"ficaram fora do cálculo {c['consenso_positivo_excluido']} corretivas e "
             f"{c['consenso_negativo_excluido']} não corretivas.\n\n"
             f"Exclusões por motivo (podem se sobrepor): `{json.dumps(c['motivos_exclusao'], ensure_ascii=False)}`.\n\n"
+            f"Diagnóstico das pendências: `{json.dumps(c['pendencias_por_tipo'], ensure_ascii=False)}`. "
+            "Os IDs, URLs oficiais de compare e ações recomendadas estão em `pendencias.csv`. "
+            "Uma URL vazia indica que o sorteio não fornece compare para a primeira release elegível; "
+            "ela não comprova ausência de predecessora fora da janela.\n\n"
             "Ausências não viram negativos. Valores com denominador nulo são não estimáveis. "
             "A censura de sete dias pertence à falha da CFR(b); esta avaliação usa `corretiva`, "
             "inclusive nas releases censuradas para CFR. Os pares e as exclusões estão em `pares.csv`.\n\n"
@@ -279,7 +327,9 @@ def executar(previsoes=None, *, releases=None, compares=None, pasta=PASTA_SAIDA,
         selecionadas = prever_entradas(releases, compares, manifesto, esperadas)
         versao = cfr_b.VERSAO_HEURISTICA
     dados = avaliar(esperadas, consenso, selecionadas)
-    dados.update(versao_avaliador=1, versao_heuristica=versao,
+    pendencias = diagnosticar_pendencias(dados["pares"], selecionadas, manifesto)
+    dados["cobertura"]["pendencias_por_tipo"] = dict(sorted(Counter(p["tipo_pendencia"] for p in pendencias).items()))
+    dados.update(versao_avaliador=2, versao_heuristica=versao,
                  bibliotecas={"python": platform.python_version(), "scikit-learn": sklearn.__version__},
                  metodo="precision_recall_fscore_support e confusion_matrix; labels=[nao,sim]; sem média entre repositórios",
                  entradas={k: {"arquivo": str(p), "sha256": hashes[k]} for k, p in entradas.items()})
@@ -301,6 +351,11 @@ def executar(previsoes=None, *, releases=None, compares=None, pasta=PASTA_SAIDA,
     gravar_texto(saida / ARQUIVOS[1], tabela_markdown(dados))
     gravar_texto(saida / ARQUIVOS[2], texto.getvalue())
     gravar_json(saida / ARQUIVOS[3], filtradas)
+    texto_pendencias = io.StringIO(newline="")
+    escritor = csv.DictWriter(texto_pendencias, fieldnames=COLUNAS_PENDENCIAS, lineterminator="\n")
+    escritor.writeheader()
+    escritor.writerows(pendencias)
+    gravar_texto(saida / ARQUIVOS[4], texto_pendencias.getvalue())
     return dados
 
 
@@ -311,7 +366,7 @@ def main(argv=None):
     fonte.add_argument("--releases", help="releases.json completo, antes de selecionar as cinco sorteadas")
     parser.add_argument("--compare", help="compare.json; sem ele só são conhecidas decisões com evidência suficiente")
     parser.add_argument("--pasta", default=PASTA_SAIDA, help="Pasta do manifesto e consenso da #160")
-    parser.add_argument("--saida", default=SAIDA, help="Pasta dos quatro artefatos de avaliação")
+    parser.add_argument("--saida", default=SAIDA, help="Pasta dos cinco artefatos de avaliação")
     parser.add_argument("--exigir-completa", action="store_true", help="Retorna 3, preservando o relatório, se a cobertura for parcial")
     args = parser.parse_args(argv)
     try:
