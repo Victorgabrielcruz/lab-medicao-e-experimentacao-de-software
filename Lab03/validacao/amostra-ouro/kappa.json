@@ -1,0 +1,164 @@
+{
+  "metodo": "fleiss_kappa(method='fleiss') sobre aggregate_raters; categorias nominais",
+  "interpretacao": "Landis e Koch (1977)",
+  "rotuladores": [
+    "A",
+    "B",
+    "C"
+  ],
+  "completo": true,
+  "entradas_sha256": {
+    "amostra_ouro.json": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657",
+    "rotulador_A_repositorios.csv": "af1425e456aebac4a138d364c0954913c4d84f304e4d43d5c4a083125f14629f",
+    "rotulador_B_repositorios.csv": "84dfa691ba65cdf2830cd6536784abc0d5ac1a5ea60ef2bdff3449e6b01cbb25",
+    "rotulador_C_repositorios.csv": "5957f8953f7b0908c515f55ded252b7170598b4debbf17ef25524b359266ad89",
+    "rotulador_A_releases.csv": "4cd98237e0438aedc2e85b00cdd700284b543b0416f03311b0b0d7adaa23acd4",
+    "rotulador_B_releases.csv": "65d98c8b8f21a5e9536f8b039b5173a59f88b5cac02de8df12e2eb8214a78954",
+    "rotulador_C_releases.csv": "61fb81b81efb6ab1baf2876e97a3fdc8d7c54a5ac60d4bab7c391705c92ed07b"
+  },
+  "dimensoes": {
+    "tipo_projeto": {
+      "categorias": [
+        "biblioteca",
+        "framework",
+        "aplicacao",
+        "ferramenta_dev",
+        "infraestrutura",
+        "outro"
+      ],
+      "itens": 60,
+      "itens_completos": 60,
+      "ausentes_por_rotulador": {
+        "A": 0,
+        "B": 0,
+        "C": 0
+      },
+      "distribuicao_por_rotulador": {
+        "A": {
+          "biblioteca": 7,
+          "framework": 5,
+          "aplicacao": 20,
+          "ferramenta_dev": 17,
+          "infraestrutura": 10,
+          "outro": 1
+        },
+        "B": {
+          "biblioteca": 7,
+          "framework": 5,
+          "aplicacao": 17,
+          "ferramenta_dev": 23,
+          "infraestrutura": 7,
+          "outro": 1
+        },
+        "C": {
+          "biblioteca": 7,
+          "framework": 5,
+          "aplicacao": 16,
+          "ferramenta_dev": 22,
+          "infraestrutura": 9,
+          "outro": 1
+        }
+      },
+      "concordancia_itens": {
+        "unanimes": 52,
+        "maioria": 7,
+        "todos_diferentes": 1
+      },
+      "distribuicao": {
+        "biblioteca": 21,
+        "framework": 15,
+        "aplicacao": 53,
+        "ferramenta_dev": 62,
+        "infraestrutura": 26,
+        "outro": 3
+      },
+      "p_observado": 0.9055555555555556,
+      "p_esperado": 0.24703703703703703,
+      "kappa": 0.8745696015740285,
+      "interpretacao": "quase perfeita",
+      "motivo_nao_estimavel": null
+    },
+    "releases_sao_entregas_reais": {
+      "categorias": [
+        "sim",
+        "nao"
+      ],
+      "itens": 60,
+      "itens_completos": 60,
+      "ausentes_por_rotulador": {
+        "A": 0,
+        "B": 0,
+        "C": 0
+      },
+      "distribuicao_por_rotulador": {
+        "A": {
+          "sim": 58,
+          "nao": 2
+        },
+        "B": {
+          "sim": 59,
+          "nao": 1
+        },
+        "C": {
+          "sim": 59,
+          "nao": 1
+        }
+      },
+      "concordancia_itens": {
+        "unanimes": 59,
+        "maioria": 1,
+        "todos_diferentes": 0
+      },
+      "distribuicao": {
+        "sim": 176,
+        "nao": 4
+      },
+      "p_observado": 0.9888888888888889,
+      "p_esperado": 0.9565432098765432,
+      "kappa": 0.7443181818181829,
+      "interpretacao": "substancial",
+      "motivo_nao_estimavel": null
+    },
+    "corretiva": {
+      "categorias": [
+        "sim",
+        "nao"
+      ],
+      "itens": 300,
+      "itens_completos": 300,
+      "ausentes_por_rotulador": {
+        "A": 0,
+        "B": 0,
+        "C": 0
+      },
+      "distribuicao_por_rotulador": {
+        "A": {
+          "sim": 246,
+          "nao": 54
+        },
+        "B": {
+          "sim": 251,
+          "nao": 49
+        },
+        "C": {
+          "sim": 250,
+          "nao": 50
+        }
+      },
+      "concordancia_itens": {
+        "unanimes": 294,
+        "maioria": 6,
+        "todos_diferentes": 0
+      },
+      "distribuicao": {
+        "sim": 747,
+        "nao": 153
+      },
+      "p_observado": 0.9866666666666667,
+      "p_esperado": 0.7178,
+      "kappa": 0.952752185211434,
+      "interpretacao": "quase perfeita",
+      "motivo_nao_estimavel": null
+    }
+  }
+}

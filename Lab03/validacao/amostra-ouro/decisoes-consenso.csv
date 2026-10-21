@@ -1,0 +1,16 @@
+﻿dimensao,repo_id,release_id,decisao,justificativa,participantes,data
+tipo_projeto,133442384,,infraestrutura,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,1663468,,biblioteca,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,172953845,,ferramenta_dev,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,27193779,,infraestrutura,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,340547520,,ferramenta_dev,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,361044034,,ferramenta_dev,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+tipo_projeto,571770,,ferramenta_dev,"Sem maioria (A=aplicacao, B=biblioteca, C=ferramenta_dev). O grupo decidiu ferramenta_dev: o pandoc é usado principalmente como conversor de documentos pela linha de comando.","A, B, C",2026-10-20
+tipo_projeto,993475914,,ferramenta_dev,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+releases_sao_entregas_reais,3214406,,sim,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,1086419061,267408243,nao,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,1103012935,265823021,sim,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,1144520675,397445365,sim,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,1182081931,302704241,nao,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,327089870,268896852,sim,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20
+corretiva,881458615,266163229,nao,Maioria simples aceita pelo grupo.,"A, B, C",2026-10-20

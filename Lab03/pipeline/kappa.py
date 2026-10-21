@@ -119,9 +119,9 @@ def calcular_dimensao(rotulos, categorias):
     return resultado | {"kappa": kappa, "interpretacao": interpretar(kappa), "motivo_nao_estimavel": None}
 
 
-def executar(pasta=PASTA_SAIDA, saida=None):
+def carregar_rotulos(pasta):
+    """Rótulos validados por dimensão e rotulador, e o SHA-256 do manifesto e das planilhas."""
     pasta = Path(pasta)
-    saida = Path(saida) if saida else pasta
     manifesto_caminho = pasta / ARQUIVO_SORTEIO
     manifesto = json.loads(manifesto_caminho.read_text(encoding="utf-8"))
     esperadas = chaves_esperadas(manifesto)
@@ -135,6 +135,13 @@ def executar(pasta=PASTA_SAIDA, saida=None):
             entradas[caminho.name] = _sha256(caminho)
             for dimensao, valores in ler_planilha(caminho, colunas_chave, dimensoes, esperadas[planilha]).items():
                 rotulos[dimensao][rotulador] = valores
+    return rotulos, entradas
+
+
+def executar(pasta=PASTA_SAIDA, saida=None):
+    pasta = Path(pasta)
+    saida = Path(saida) if saida else pasta
+    rotulos, entradas = carregar_rotulos(pasta)
     dimensoes = {d: calcular_dimensao(rotulos[d], cats) for d, (_, _, cats) in DIMENSOES.items()}
     resultado = {
         "metodo": "fleiss_kappa(method='fleiss') sobre aggregate_raters; categorias nominais",
