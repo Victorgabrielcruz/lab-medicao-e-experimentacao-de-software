@@ -1,0 +1,38 @@
+coluna,tipo,unidade,origem_formula,rq
+repo,str,-,`full_name` (owner/nome) da Search API,-
+estrelas,int,contagem,`stargazers_count` no momento da busca,RQ06
+linguagem,str,-,`language` (vazio se a API não informa),RQ06
+criado_em,str,ISO 8601 UTC,`created_at` do repositório,-
+idade_dias,int,dias,fim da janela − `created_at`,RQ06
+contribuidores,int,contagem,última página de `/contributors?per_page=1&anon=true`; vazio se a API recusa,RQ06
+default_branch,str,-,`default_branch` (único branch considerado nos workflow runs),-
+n_releases,int,contagem,releases com `draft=false` e `prerelease=false` publicadas na janela,RQ01
+freq_deploy_semana,float,releases/semana,`n_releases` ÷ semanas da janela,RQ01
+n_releases_lead,int,contagem,releases usadas no lead time (compare ok e ≥ 1 commit),RQ02
+n_releases_sem_anterior,int,contagem,releases sem release anterior (primeira da história): fora do lead time,RQ02
+n_releases_indisponiveis,int,contagem,releases cujo `compare` retornou 404/422: fora do lead time,RQ02
+n_releases_sem_commits,int,contagem,releases sem commits novos em relação à anterior,RQ02
+n_commits_lead,int,contagem,commits somados em todas as releases usadas (base da variante b),RQ02
+n_lead_negativos,int,contagem,commits com `author.date` posterior à release (rebase/squash); mantidos nos cálculos,RQ02
+lead_time_a_h,float,horas,"mediana, entre releases, de (data da release − commit mais antigo nela)",RQ02a
+lead_time_b_h,float,horas,"mediana, entre todos os commits de todas as releases, de (data da release − data do commit)",RQ02b
+n_runs_sucesso,int,contagem,workflow runs push no default branch com conclusion=success,RQ03a
+n_runs_falha,int,contagem,"runs com conclusion in {failure, timed_out, startup_failure}",RQ03a
+n_runs_ignorados,int,contagem,runs cancelled/skipped/neutral/action_required/stale/vazio (fora dos cálculos),RQ03a
+teto_runs_atingido,bool,-,True se algum intervalo ainda tinha ≥ 1.000 runs após subdividir (coleta possivelmente incompleta),RQ03a
+cfr_ci,float,proporção 0–1,n_runs_falha ÷ (n_runs_falha + n_runs_sucesso),RQ03a
+n_releases_avaliadas,int,contagem,releases com ≥ 7 dias de janela restante,RQ03b
+n_releases_falha,int,contagem,"releases seguidas, em até 7 dias, por release corretiva (heurística)",RQ03b
+n_releases_censuradas,int,contagem,releases dos últimos 7 dias da janela (fora do denominador),RQ03b
+heuristica_versao,str,-,versão da heurística de release corretiva usada em cfr_entrega,RQ03b
+cfr_entrega,float,proporção 0–1,n_releases_falha ÷ n_releases_avaliadas,RQ03b
+n_episodios,int,contagem,"episódios de falha (1ª falha após sucesso até o próximo sucesso, por workflow)",RQ04
+n_episodios_censurados,int,contagem,episódios sem recuperação até o fim da janela,RQ04
+prop_episodios_censurados,float,proporção 0–1,n_episodios_censurados ÷ n_episodios,RQ04
+recuperacao_h,float,horas,"mediana de (updated_at do sucesso − run_started_at da 1ª falha), só episódios concluídos",RQ04
+recuperacao_h_c_censura,float,horas,"idem, incluindo censurados como limite inferior (fim da janela − início da falha)",RQ04
+cls_freq,str,Elite/High/Medium/Low,faixa da frequência de deploy,RQ07
+cls_lead_a,str,Elite/High/Medium/Low,faixa do lead time (variante a),RQ07
+cls_cfr_ci,str,Elite/High/Medium/Low,faixa do CFR (variante a),RQ07
+cls_recuperacao,str,Elite/High/Medium/Low,faixa do tempo de recuperação,RQ07
+classe_dora_c1,str,Elite/High/Medium/Low,"combinação C1 (release, lead a, CFR a): mediana dos pontos 4/3/2/1, arredondada para baixo",RQ07
