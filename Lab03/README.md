@@ -818,6 +818,29 @@ Saídas em `validacao/amostra-ouro/`: `consenso_repositorios.csv` e
 hashes das entradas e o registro de cada divergência. As planilhas
 independentes de A, B e C não são alteradas.
 
+### Avaliação da heurística contra consenso (S02-12 — #162)
+
+`pipeline/avaliacao_heuristica.py` compara `corretiva` por
+`(repo_id, release_id)` com `consenso_releases.csv`. Registra precisão,
+recall e F1 da classe positiva `sim`, matriz de confusão, cobertura,
+exclusões e hashes. A partir de `Lab03`, com as dependências instaladas:
+
+```bash
+python -m pipeline.avaliacao_heuristica \
+  --previsoes data/processed/amostra-final-500/cfr_b.json \
+  --saida validacao/avaliacao-heuristica/final-500 --exigir-completa
+```
+
+O arquivo precisa conter os **detalhes por release** da #161; o CSV agregado
+dos 500 repositórios e os JSONs resumidos não bastam. Também é possível
+recalcular a v1 com `--releases` e `--compare`, lendo somente dados locais.
+
+Há uma [execução histórica parcial](validacao/avaliacao-heuristica/snapshot-500/avaliacao.md)
+reproduzível pelo snapshot publicado: **146/300** releases, com 154
+previsões indeterminadas. Seus escores não validam o desempenho na amostra
+inteira. A [documentação da #162](docs/avaliacao-heuristica-162.md) explica
+os contratos, a reprodução offline e a substituição pela execução final.
+
 ## Estrutura
 
 ```text

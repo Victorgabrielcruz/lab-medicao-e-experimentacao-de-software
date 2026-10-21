@@ -1,0 +1,4286 @@
+{
+  "classe_positiva": "sim",
+  "avaliacao_completa": false,
+  "cobertura": {
+    "total_amostra": 300,
+    "avaliadas": 146,
+    "excluidas": 154,
+    "fracao_avaliada": 0.4866666666666667,
+    "motivos_exclusao": {
+      "previsao_indeterminada": 154
+    },
+    "consenso_positivo_total": 249,
+    "consenso_negativo_total": 51,
+    "consenso_positivo_excluido": 122,
+    "consenso_negativo_excluido": 32
+  },
+  "matriz_confusao": {
+    "linhas_consenso": [
+      "nao",
+      "sim"
+    ],
+    "colunas_previsao": [
+      "nao",
+      "sim"
+    ],
+    "valores": [
+      [
+        0,
+        19
+      ],
+      [
+        0,
+        127
+      ]
+    ],
+    "VP": 127,
+    "FP": 19,
+    "FN": 0,
+    "VN": 0
+  },
+  "precisao": 0.8698630136986302,
+  "recall": 1.0,
+  "f1": 0.9304029304029304,
+  "suporte_positivo": 127,
+  "suporte_negativo": 19,
+  "previsoes_positivas": 146,
+  "previsoes_negativas": 0,
+  "denominadores": {
+    "precisao": 146,
+    "recall": 127,
+    "f1": 273
+  },
+  "limiar_f1": 0.7,
+  "atinge_limiar_no_subconjunto": true,
+  "pares": [
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397445365",
+      "tag_name": "v6.3.2",
+      "published_at": "2026-09-27T00:29:15Z",
+      "consenso": "sim",
+      "origem_consenso": "maioria",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397790106",
+      "tag_name": "v6.4.4",
+      "published_at": "2026-09-27T19:57:34Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "397898184",
+      "tag_name": "v6.4.8",
+      "published_at": "2026-09-28T01:59:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "398948862",
+      "tag_name": "v6.5.4",
+      "published_at": "2026-09-29T08:26:11Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1144520675",
+      "full_name": "Alishahryar1/free-claude-code",
+      "release_id": "399450030",
+      "tag_name": "v6.5.5",
+      "published_at": "2026-09-29T19:14:46Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "975734319",
+      "full_name": "anomalyco/opencode",
+      "release_id": "258234669",
+      "tag_name": "v0.15.26",
+      "published_at": "2025-10-29T16:59:51Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "975734319",
+      "full_name": "anomalyco/opencode",
+      "release_id": "259379676",
+      "tag_name": "v1.0.17",
+      "published_at": "2025-11-03T21:15:02Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "975734319",
+      "full_name": "anomalyco/opencode",
+      "release_id": "259792392",
+      "tag_name": "v1.0.25",
+      "published_at": "2025-11-05T07:00:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "975734319",
+      "full_name": "anomalyco/opencode",
+      "release_id": "260111951",
+      "tag_name": "v1.0.34",
+      "published_at": "2025-11-06T02:35:27Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "975734319",
+      "full_name": "anomalyco/opencode",
+      "release_id": "285288712",
+      "tag_name": "v1.1.58",
+      "published_at": "2026-02-11T15:12:36Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "33884891",
+      "full_name": "apache/airflow",
+      "release_id": "257461859",
+      "tag_name": "3.1.1",
+      "published_at": "2025-10-27T13:51:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "33884891",
+      "full_name": "apache/airflow",
+      "release_id": "259964514",
+      "tag_name": "3.1.2",
+      "published_at": "2025-11-05T16:03:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "33884891",
+      "full_name": "apache/airflow",
+      "release_id": "290595792",
+      "tag_name": "airflow-ctl/0.1.2",
+      "published_at": "2026-02-25T21:45:45Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "33884891",
+      "full_name": "apache/airflow",
+      "release_id": "331316417",
+      "tag_name": "3.2.2",
+      "published_at": "2026-05-29T06:27:24Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "33884891",
+      "full_name": "apache/airflow",
+      "release_id": "334088828",
+      "tag_name": "helm-chart/1.22.0",
+      "published_at": "2026-06-13T23:37:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "993475914",
+      "full_name": "apple/container",
+      "release_id": "251810665",
+      "tag_name": "0.5.0",
+      "published_at": "2025-10-02T18:03:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "993475914",
+      "full_name": "apple/container",
+      "release_id": "257664293",
+      "tag_name": "0.6.0",
+      "published_at": "2025-10-27T23:08:23Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "993475914",
+      "full_name": "apple/container",
+      "release_id": "314276919",
+      "tag_name": "0.12.0",
+      "published_at": "2026-04-27T21:38:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "993475914",
+      "full_name": "apple/container",
+      "release_id": "367076333",
+      "tag_name": "1.2.2",
+      "published_at": "2026-08-08T01:33:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "993475914",
+      "full_name": "apple/container",
+      "release_id": "378819149",
+      "tag_name": "1.3.1",
+      "published_at": "2026-08-29T00:24:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "699532645",
+      "full_name": "astral-sh/uv",
+      "release_id": "300426132",
+      "tag_name": "0.11.0",
+      "published_at": "2026-03-23T22:08:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "699532645",
+      "full_name": "astral-sh/uv",
+      "release_id": "318048243",
+      "tag_name": "0.11.10",
+      "published_at": "2026-05-05T20:24:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "699532645",
+      "full_name": "astral-sh/uv",
+      "release_id": "338153758",
+      "tag_name": "0.11.21",
+      "published_at": "2026-06-11T18:20:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "699532645",
+      "full_name": "astral-sh/uv",
+      "release_id": "341682539",
+      "tag_name": "0.11.22",
+      "published_at": "2026-06-18T23:05:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "699532645",
+      "full_name": "astral-sh/uv",
+      "release_id": "370794065",
+      "tag_name": "0.12.5",
+      "published_at": "2026-08-14T19:57:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "251319318",
+      "tag_name": "v0.17.1",
+      "published_at": "2025-10-01T05:35:41Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "252169671",
+      "tag_name": "v0.17.2",
+      "published_at": "2025-10-04T07:55:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "263106890",
+      "tag_name": "v0.17.3",
+      "published_at": "2025-11-17T21:25:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "291876022",
+      "tag_name": "v0.18.1",
+      "published_at": "2026-03-02T01:24:58Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "234798675",
+      "full_name": "bevyengine/bevy",
+      "release_id": "341118668",
+      "tag_name": "v0.19.0",
+      "published_at": "2026-06-18T01:25:13Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "266163229",
+      "tag_name": "0.10.1",
+      "published_at": "2025-11-29T22:10:15Z",
+      "consenso": "nao",
+      "origem_consenso": "maioria",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "277534246",
+      "tag_name": "0.11.3",
+      "published_at": "2026-01-16T20:55:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "292335320",
+      "tag_name": "0.12.1",
+      "published_at": "2026-03-03T01:52:58Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "336257780",
+      "tag_name": "0.13.0",
+      "published_at": "2026-06-08T22:07:47Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "881458615",
+      "full_name": "browser-use/browser-use",
+      "release_id": "355488872",
+      "tag_name": "0.13.6",
+      "published_at": "2026-07-17T05:29:18Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "276959733",
+      "tag_name": "chrome-devtools-mcp-v0.13.0",
+      "published_at": "2026-01-15T07:26:03Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "282898010",
+      "tag_name": "chrome-devtools-mcp-v0.16.0",
+      "published_at": "2026-02-04T10:05:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "367766364",
+      "tag_name": "chrome-devtools-mcp-v1.7.0",
+      "published_at": "2026-08-10T08:14:18Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "376355807",
+      "tag_name": "chrome-devtools-mcp-v1.8.0",
+      "published_at": "2026-08-25T11:35:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1054793726",
+      "full_name": "ChromeDevTools/chrome-devtools-mcp",
+      "release_id": "394515501",
+      "tag_name": "chrome-devtools-mcp-v1.10.0",
+      "published_at": "2026-09-23T09:52:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "721767116",
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "release_id": "260834131",
+      "tag_name": "v2.4.3",
+      "published_at": "2025-11-08T11:44:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "721767116",
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "release_id": "271685100",
+      "tag_name": "v2.4.4",
+      "published_at": "2025-12-19T08:49:56Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "721767116",
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "release_id": "324731389",
+      "tag_name": "v2.5.0",
+      "published_at": "2026-05-19T05:57:46Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "721767116",
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "release_id": "356382939",
+      "tag_name": "v2.5.2",
+      "published_at": "2026-07-19T17:00:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "721767116",
+      "full_name": "clash-verge-rev/clash-verge-rev",
+      "release_id": "393737198",
+      "tag_name": "v2.5.5",
+      "published_at": "2026-09-22T13:38:49Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "212613049",
+      "full_name": "cli/cli",
+      "release_id": "251561457",
+      "tag_name": "v2.81.0",
+      "published_at": "2025-10-01T20:22:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "212613049",
+      "full_name": "cli/cli",
+      "release_id": "287791026",
+      "tag_name": "v2.87.0",
+      "published_at": "2026-02-18T17:19:01Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "212613049",
+      "full_name": "cli/cli",
+      "release_id": "288835991",
+      "tag_name": "v2.87.1",
+      "published_at": "2026-02-20T18:47:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "212613049",
+      "full_name": "cli/cli",
+      "release_id": "348300685",
+      "tag_name": "v2.96.0",
+      "published_at": "2026-07-02T21:31:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "212613049",
+      "full_name": "cli/cli",
+      "release_id": "382143096",
+      "tag_name": "v2.100.0",
+      "published_at": "2026-09-03T15:43:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "265166206",
+      "tag_name": "v25.8.12.129-lts",
+      "published_at": "2025-11-25T15:07:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "274542497",
+      "tag_name": "v25.3.12.8-lts",
+      "published_at": "2026-01-06T14:44:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "317982524",
+      "tag_name": "v26.4.1.1141-stable",
+      "published_at": "2026-05-05T18:25:17Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "364963961",
+      "tag_name": "v26.6.2.158-stable",
+      "published_at": "2026-08-04T15:14:23Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "60246359",
+      "full_name": "ClickHouse/ClickHouse",
+      "release_id": "383238566",
+      "tag_name": "v26.3.31.5-lts",
+      "published_at": "2026-09-05T12:20:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "172953845",
+      "full_name": "coder/code-server",
+      "release_id": "318623446",
+      "tag_name": "v4.118.0",
+      "published_at": "2026-05-06T21:42:07Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "172953845",
+      "full_name": "coder/code-server",
+      "release_id": "326306939",
+      "tag_name": "v4.121.0",
+      "published_at": "2026-05-20T22:54:10Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "172953845",
+      "full_name": "coder/code-server",
+      "release_id": "355526588",
+      "tag_name": "v4.129.0",
+      "published_at": "2026-07-17T09:38:42Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "172953845",
+      "full_name": "coder/code-server",
+      "release_id": "371864433",
+      "tag_name": "v4.133.0",
+      "published_at": "2026-08-17T18:28:34Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "172953845",
+      "full_name": "coder/code-server",
+      "release_id": "391851165",
+      "tag_name": "v4.138.0",
+      "published_at": "2026-09-19T20:06:39Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "74627617",
+      "full_name": "commaai/openpilot",
+      "release_id": "258575009",
+      "tag_name": "v0.10.1",
+      "published_at": "2025-10-30T17:56:04Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "74627617",
+      "full_name": "commaai/openpilot",
+      "release_id": "266237382",
+      "tag_name": "v0.10.2",
+      "published_at": "2025-11-30T22:24:16Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "74627617",
+      "full_name": "commaai/openpilot",
+      "release_id": "272044809",
+      "tag_name": "v0.10.3",
+      "published_at": "2025-12-21T19:00:05Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "74627617",
+      "full_name": "commaai/openpilot",
+      "release_id": "298150619",
+      "tag_name": "v0.11.0",
+      "published_at": "2026-03-17T20:37:56Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "74627617",
+      "full_name": "commaai/openpilot",
+      "release_id": "335030300",
+      "tag_name": "v0.11.1",
+      "published_at": "2026-06-05T16:15:25Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1135212071",
+      "full_name": "coreyhaines31/marketingskills",
+      "release_id": "358205740",
+      "tag_name": "v2.8.2",
+      "published_at": "2026-07-22T17:45:15Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1135212071",
+      "full_name": "coreyhaines31/marketingskills",
+      "release_id": "358205749",
+      "tag_name": "v2.8.3",
+      "published_at": "2026-07-22T17:45:16Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1135212071",
+      "full_name": "coreyhaines31/marketingskills",
+      "release_id": "358205858",
+      "tag_name": "v2.8.12",
+      "published_at": "2026-07-22T17:45:27Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1135212071",
+      "full_name": "coreyhaines31/marketingskills",
+      "release_id": "375337952",
+      "tag_name": "v2.10.1",
+      "published_at": "2026-08-23T22:02:10Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1135212071",
+      "full_name": "coreyhaines31/marketingskills",
+      "release_id": "375337967",
+      "tag_name": "v2.11.0",
+      "published_at": "2026-08-23T22:02:14Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "133442384",
+      "full_name": "denoland/deno",
+      "release_id": "298943287",
+      "tag_name": "v2.7.7",
+      "published_at": "2026-03-19T13:52:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "133442384",
+      "full_name": "denoland/deno",
+      "release_id": "301271978",
+      "tag_name": "v2.7.8",
+      "published_at": "2026-03-25T16:11:12Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "133442384",
+      "full_name": "denoland/deno",
+      "release_id": "333704777",
+      "tag_name": "v2.8.2",
+      "published_at": "2026-06-03T13:41:42Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "133442384",
+      "full_name": "denoland/deno",
+      "release_id": "344734675",
+      "tag_name": "v2.9.0",
+      "published_at": "2026-06-25T15:00:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "133442384",
+      "full_name": "denoland/deno",
+      "release_id": "347524162",
+      "tag_name": "v2.9.1",
+      "published_at": "2026-07-01T16:31:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "251963275",
+      "tag_name": "v2.55.1",
+      "published_at": "2025-10-03T10:26:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "281601754",
+      "tag_name": "v2.71.0",
+      "published_at": "2026-01-30T17:11:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "308366558",
+      "tag_name": "v2.88.0",
+      "published_at": "2026-04-13T14:05:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "338557876",
+      "tag_name": "v2.102.0",
+      "published_at": "2026-06-12T12:23:14Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "826168160",
+      "full_name": "docling-project/docling",
+      "release_id": "362415346",
+      "tag_name": "v2.117.0",
+      "published_at": "2026-07-30T12:22:45Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1182081931",
+      "full_name": "Egonex-AI/Understand-Anything",
+      "release_id": "300977420",
+      "tag_name": "v1.2.0",
+      "published_at": "2026-03-25T03:20:30Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1182081931",
+      "full_name": "Egonex-AI/Understand-Anything",
+      "release_id": "302660159",
+      "tag_name": "v1.3.0",
+      "published_at": "2026-03-28T08:49:06Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1182081931",
+      "full_name": "Egonex-AI/Understand-Anything",
+      "release_id": "302704241",
+      "tag_name": "v2.0.0",
+      "published_at": "2026-03-28T15:33:47Z",
+      "consenso": "nao",
+      "origem_consenso": "maioria",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1182081931",
+      "full_name": "Egonex-AI/Understand-Anything",
+      "release_id": "316972427",
+      "tag_name": "v2.5.0",
+      "published_at": "2026-05-04T01:58:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1182081931",
+      "full_name": "Egonex-AI/Understand-Anything",
+      "release_id": "352006549",
+      "tag_name": "v2.9.0",
+      "published_at": "2026-07-10T09:36:42Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "77213120",
+      "full_name": "Eugeny/tabby",
+      "release_id": "254200488",
+      "tag_name": "v1.0.228",
+      "published_at": "2025-10-16T00:21:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "77213120",
+      "full_name": "Eugeny/tabby",
+      "release_id": "261398112",
+      "tag_name": "v1.0.229",
+      "published_at": "2025-11-11T11:47:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "77213120",
+      "full_name": "Eugeny/tabby",
+      "release_id": "319209348",
+      "tag_name": "v1.0.233",
+      "published_at": "2026-05-07T22:18:25Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "77213120",
+      "full_name": "Eugeny/tabby",
+      "release_id": "358325134",
+      "tag_name": "v1.0.235",
+      "published_at": "2026-07-22T22:48:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "77213120",
+      "full_name": "Eugeny/tabby",
+      "release_id": "394818795",
+      "tag_name": "v1.0.236",
+      "published_at": "2026-09-23T17:14:24Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "48378947",
+      "full_name": "fatedier/frp",
+      "release_id": "274033390",
+      "tag_name": "v0.66.0",
+      "published_at": "2026-01-04T07:04:03Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "48378947",
+      "full_name": "fatedier/frp",
+      "release_id": "281751801",
+      "tag_name": "v0.67.0",
+      "published_at": "2026-01-31T06:12:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "48378947",
+      "full_name": "fatedier/frp",
+      "release_id": "332417623",
+      "tag_name": "v0.69.1",
+      "published_at": "2026-06-01T10:17:17Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "48378947",
+      "full_name": "fatedier/frp",
+      "release_id": "358530318",
+      "tag_name": "v0.70.1",
+      "published_at": "2026-07-23T07:55:25Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "48378947",
+      "full_name": "fatedier/frp",
+      "release_id": "370392810",
+      "tag_name": "v0.71.0",
+      "published_at": "2026-08-14T06:36:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "252159585",
+      "tag_name": "v0.70.0",
+      "published_at": "2025-10-04T04:34:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "253555837",
+      "tag_name": "v0.70.1",
+      "published_at": "2025-10-10T07:36:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "328929601",
+      "tag_name": "v0.71.1",
+      "published_at": "2026-05-25T15:03:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "360515175",
+      "tag_name": "v0.72.0",
+      "published_at": "2026-07-27T15:11:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "331107018",
+      "full_name": "FuelLabs/sway",
+      "release_id": "378668076",
+      "tag_name": "v0.72.1",
+      "published_at": "2026-08-28T17:59:58Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "17728164",
+      "full_name": "hashicorp/terraform",
+      "release_id": "254644141",
+      "tag_name": "v1.13.4",
+      "published_at": "2025-10-15T10:43:39Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "17728164",
+      "full_name": "hashicorp/terraform",
+      "release_id": "290380003",
+      "tag_name": "v1.14.6",
+      "published_at": "2026-02-25T14:16:02Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "17728164",
+      "full_name": "hashicorp/terraform",
+      "release_id": "295683027",
+      "tag_name": "v1.14.7",
+      "published_at": "2026-03-11T14:14:31Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "17728164",
+      "full_name": "hashicorp/terraform",
+      "release_id": "316452175",
+      "tag_name": "v1.15.1",
+      "published_at": "2026-05-01T16:43:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "17728164",
+      "full_name": "hashicorp/terraform",
+      "release_id": "373119079",
+      "tag_name": "v1.15.9",
+      "published_at": "2026-08-19T14:29:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "12256376",
+      "full_name": "ionic-team/ionic-framework",
+      "release_id": "263736017",
+      "tag_name": "v8.7.10",
+      "published_at": "2025-11-19T18:10:59Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "12256376",
+      "full_name": "ionic-team/ionic-framework",
+      "release_id": "301326863",
+      "tag_name": "v8.8.2",
+      "published_at": "2026-03-25T16:58:47Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "12256376",
+      "full_name": "ionic-team/ionic-framework",
+      "release_id": "304382387",
+      "tag_name": "v8.8.3",
+      "published_at": "2026-04-01T19:53:19Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "12256376",
+      "full_name": "ionic-team/ionic-framework",
+      "release_id": "318645709",
+      "tag_name": "v8.8.6",
+      "published_at": "2026-05-06T21:32:59Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "12256376",
+      "full_name": "ionic-team/ionic-framework",
+      "release_id": "347660991",
+      "tag_name": "v8.8.13",
+      "published_at": "2026-07-01T19:00:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "679506386",
+      "full_name": "janhq/jan",
+      "release_id": "251666490",
+      "tag_name": "v0.7.0",
+      "published_at": "2025-10-02T09:30:34Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "679506386",
+      "full_name": "janhq/jan",
+      "release_id": "268251435",
+      "tag_name": "v0.7.5",
+      "published_at": "2025-12-08T10:12:28Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "679506386",
+      "full_name": "janhq/jan",
+      "release_id": "300001274",
+      "tag_name": "v0.7.9",
+      "published_at": "2026-03-23T06:09:34Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "679506386",
+      "full_name": "janhq/jan",
+      "release_id": "331234930",
+      "tag_name": "v0.8.1",
+      "published_at": "2026-05-29T03:09:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "679506386",
+      "full_name": "janhq/jan",
+      "release_id": "343404751",
+      "tag_name": "v0.8.3",
+      "published_at": "2026-06-24T06:06:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "134017286",
+      "full_name": "jesseduffield/lazygit",
+      "release_id": "258990430",
+      "tag_name": "v0.56.0",
+      "published_at": "2025-11-01T09:49:19Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "134017286",
+      "full_name": "jesseduffield/lazygit",
+      "release_id": "267988799",
+      "tag_name": "v0.57.0",
+      "published_at": "2025-12-06T13:08:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "134017286",
+      "full_name": "jesseduffield/lazygit",
+      "release_id": "294869920",
+      "tag_name": "v0.60.0",
+      "published_at": "2026-03-09T19:57:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "134017286",
+      "full_name": "jesseduffield/lazygit",
+      "release_id": "348950626",
+      "tag_name": "v0.63.0",
+      "published_at": "2026-07-04T12:50:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "134017286",
+      "full_name": "jesseduffield/lazygit",
+      "release_id": "383282192",
+      "tag_name": "v0.65.0",
+      "published_at": "2026-09-05T15:12:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "571770",
+      "full_name": "jgm/pandoc",
+      "release_id": "252281498",
+      "tag_name": "3.8.2",
+      "published_at": "2025-10-05T21:26:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "571770",
+      "full_name": "jgm/pandoc",
+      "release_id": "266341664",
+      "tag_name": "3.8.3",
+      "published_at": "2025-12-01T10:30:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "571770",
+      "full_name": "jgm/pandoc",
+      "release_id": "298944221",
+      "tag_name": "3.9.0.2",
+      "published_at": "2026-03-19T13:01:03Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "571770",
+      "full_name": "jgm/pandoc",
+      "release_id": "378830353",
+      "tag_name": "3.11",
+      "published_at": "2026-08-29T00:52:49Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "571770",
+      "full_name": "jgm/pandoc",
+      "release_id": "398863537",
+      "tag_name": "3.12",
+      "published_at": "2026-09-29T06:30:47Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "252875506",
+      "tag_name": "v1.12.0",
+      "published_at": "2025-10-08T15:58:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "274974003",
+      "tag_name": "v1.12.4",
+      "published_at": "2026-01-07T22:07:43Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "307322022",
+      "tag_name": "v1.12.6",
+      "published_at": "2026-04-10T19:32:05Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "371337204",
+      "tag_name": "v1.10.12",
+      "published_at": "2026-08-16T13:47:00Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1644196",
+      "full_name": "JuliaLang/julia",
+      "release_id": "386139815",
+      "tag_name": "v1.13.0",
+      "published_at": "2026-09-10T09:11:25Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "656099147",
+      "full_name": "mem0ai/mem0",
+      "release_id": "312150169",
+      "tag_name": "cli-node-v0.2.4",
+      "published_at": "2026-04-22T10:11:52Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "656099147",
+      "full_name": "mem0ai/mem0",
+      "release_id": "326208744",
+      "tag_name": "cli-node-v0.2.7",
+      "published_at": "2026-05-20T19:36:29Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "656099147",
+      "full_name": "mem0ai/mem0",
+      "release_id": "344175041",
+      "tag_name": "cli-node-v0.2.9",
+      "published_at": "2026-06-24T14:41:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "656099147",
+      "full_name": "mem0ai/mem0",
+      "release_id": "385594682",
+      "tag_name": "openclaw-v1.1.0",
+      "published_at": "2026-09-09T14:34:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "656099147",
+      "full_name": "mem0ai/mem0",
+      "release_id": "394978108",
+      "tag_name": "pi-agent-v0.3.2",
+      "published_at": "2026-09-23T19:12:34Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384693385",
+      "tag_name": "release/METEOR@3.0",
+      "published_at": "2026-09-08T12:05:22Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384693465",
+      "tag_name": "release/METEOR@3.0.1",
+      "published_at": "2026-09-08T12:05:24Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384694298",
+      "tag_name": "release/METEOR@3.0.3",
+      "published_at": "2026-09-08T12:05:28Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384694395",
+      "tag_name": "release/METEOR@3.1",
+      "published_at": "2026-09-08T12:05:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3214406",
+      "full_name": "meteor/meteor",
+      "release_id": "384694573",
+      "tag_name": "release/METEOR@3.2",
+      "published_at": "2026-09-08T12:05:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "649170660",
+      "full_name": "Mintplex-Labs/anything-llm",
+      "release_id": "253490461",
+      "tag_name": "v1.9.0",
+      "published_at": "2025-10-09T22:20:12Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "649170660",
+      "full_name": "Mintplex-Labs/anything-llm",
+      "release_id": "268887125",
+      "tag_name": "v1.9.1",
+      "published_at": "2025-12-09T20:56:11Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "649170660",
+      "full_name": "Mintplex-Labs/anything-llm",
+      "release_id": "298198229",
+      "tag_name": "v1.11.2",
+      "published_at": "2026-03-18T16:57:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "649170660",
+      "full_name": "Mintplex-Labs/anything-llm",
+      "release_id": "370225907",
+      "tag_name": "v1.16.0",
+      "published_at": "2026-08-13T21:38:01Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "649170660",
+      "full_name": "Mintplex-Labs/anything-llm",
+      "release_id": "377971782",
+      "tag_name": "v1.16.1",
+      "published_at": "2026-08-27T16:42:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "7691631",
+      "full_name": "moby/moby",
+      "release_id": "251798390",
+      "tag_name": "v28.5.0",
+      "published_at": "2025-10-02T20:12:31Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7691631",
+      "full_name": "moby/moby",
+      "release_id": "261265152",
+      "tag_name": "docker-v29.0.0",
+      "published_at": "2025-11-10T22:45:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7691631",
+      "full_name": "moby/moby",
+      "release_id": "265971746",
+      "tag_name": "docker-v29.1.1",
+      "published_at": "2025-11-28T13:08:46Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7691631",
+      "full_name": "moby/moby",
+      "release_id": "311237617",
+      "tag_name": "client/v0.4.1",
+      "published_at": "2026-04-20T14:49:11Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7691631",
+      "full_name": "moby/moby",
+      "release_id": "322592314",
+      "tag_name": "docker-v29.5.0",
+      "published_at": "2026-05-14T21:37:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "896924279",
+      "full_name": "moeru-ai/airi",
+      "release_id": "276147489",
+      "tag_name": "v0.8.1-beta.11",
+      "published_at": "2026-01-12T20:38:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "896924279",
+      "full_name": "moeru-ai/airi",
+      "release_id": "280816752",
+      "tag_name": "v0.8.2",
+      "published_at": "2026-01-28T17:53:21Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "896924279",
+      "full_name": "moeru-ai/airi",
+      "release_id": "302284724",
+      "tag_name": "v0.9.0-alpha.28",
+      "published_at": "2026-03-27T10:05:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "896924279",
+      "full_name": "moeru-ai/airi",
+      "release_id": "307415311",
+      "tag_name": "v0.9.0",
+      "published_at": "2026-04-10T07:01:49Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "896924279",
+      "full_name": "moeru-ai/airi",
+      "release_id": "379070264",
+      "tag_name": "v0.12.0-beta.5",
+      "published_at": "2026-08-29T18:40:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1663468",
+      "full_name": "mozilla/pdf.js",
+      "release_id": "252269691",
+      "tag_name": "v5.4.296",
+      "published_at": "2025-10-05T17:01:35Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1663468",
+      "full_name": "mozilla/pdf.js",
+      "release_id": "291841298",
+      "tag_name": "v5.5.207",
+      "published_at": "2026-03-01T20:22:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1663468",
+      "full_name": "mozilla/pdf.js",
+      "release_id": "331938293",
+      "tag_name": "v6.0.227",
+      "published_at": "2026-05-30T13:11:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1663468",
+      "full_name": "mozilla/pdf.js",
+      "release_id": "345734630",
+      "tag_name": "v6.1.200",
+      "published_at": "2026-06-27T16:30:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1663468",
+      "full_name": "mozilla/pdf.js",
+      "release_id": "361333612",
+      "tag_name": "v6.2.108",
+      "published_at": "2026-07-28T19:49:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "10744183",
+      "full_name": "netdata/netdata",
+      "release_id": "254697908",
+      "tag_name": "v2.7.2",
+      "published_at": "2025-10-15T14:10:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "10744183",
+      "full_name": "netdata/netdata",
+      "release_id": "257850012",
+      "tag_name": "v2.7.3",
+      "published_at": "2025-10-28T14:46:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "10744183",
+      "full_name": "netdata/netdata",
+      "release_id": "270416324",
+      "tag_name": "v2.8.3",
+      "published_at": "2025-12-15T14:56:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "10744183",
+      "full_name": "netdata/netdata",
+      "release_id": "308857421",
+      "tag_name": "v2.10.2",
+      "published_at": "2026-04-14T14:38:38Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "10744183",
+      "full_name": "netdata/netdata",
+      "release_id": "390020534",
+      "tag_name": "v2.11.1",
+      "published_at": "2026-09-16T16:35:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "275377169",
+      "tag_name": "v1.2.2",
+      "published_at": "2026-01-09T04:18:54Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "277729247",
+      "tag_name": "v2.1.0",
+      "published_at": "2026-01-18T16:26:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "279798011",
+      "tag_name": "v2.2.1",
+      "published_at": "2026-01-26T01:53:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "345115694",
+      "tag_name": "v2.8.8",
+      "published_at": "2026-06-26T04:02:42Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1106996539",
+      "full_name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "release_id": "345573538",
+      "tag_name": "v2.9.0",
+      "published_at": "2026-06-26T23:56:00Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "318321911",
+      "tag_name": "open-design-v0.4.1",
+      "published_at": "2026-05-06T10:17:22Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "345343782",
+      "tag_name": "open-design-v0.12.0",
+      "published_at": "2026-06-26T13:46:14Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "376459888",
+      "tag_name": "open-design-v0.21.0",
+      "published_at": "2026-08-25T14:15:03Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "385495816",
+      "tag_name": "open-design-v0.22.1",
+      "published_at": "2026-09-09T12:30:14Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1223170290",
+      "full_name": "nexu-io/open-design",
+      "release_id": "393947317",
+      "tag_name": "open-design-v0.24.0",
+      "published_at": "2026-09-22T16:51:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "27193779",
+      "full_name": "nodejs/node",
+      "release_id": "253836594",
+      "tag_name": "v24.10.0",
+      "published_at": "2025-10-11T16:18:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "27193779",
+      "full_name": "nodejs/node",
+      "release_id": "257943424",
+      "tag_name": "v25.1.0",
+      "published_at": "2025-10-28T19:20:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "27193779",
+      "full_name": "nodejs/node",
+      "release_id": "276372644",
+      "tag_name": "v24.13.0",
+      "published_at": "2026-01-13T13:57:24Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "27193779",
+      "full_name": "nodejs/node",
+      "release_id": "322058698",
+      "tag_name": "v22.22.3",
+      "published_at": "2026-05-13T18:44:11Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "27193779",
+      "full_name": "nodejs/node",
+      "release_id": "361798619",
+      "tag_name": "v22.23.2",
+      "published_at": "2026-07-29T14:00:18Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "331020350",
+      "tag_name": "v2026.5.28",
+      "published_at": "2026-05-28T17:46:09Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "335259097",
+      "tag_name": "v2026.6.5",
+      "published_at": "2026-06-06T00:55:58Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "371876201",
+      "tag_name": "v2026.8.16.2",
+      "published_at": "2026-08-17T18:43:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "379999964",
+      "tag_name": "v2026.8.31",
+      "published_at": "2026-08-31T19:29:49Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1024554267",
+      "full_name": "NousResearch/hermes-agent",
+      "release_id": "395553114",
+      "tag_name": "v2026.9.24",
+      "published_at": "2026-09-24T10:09:38Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "265823021",
+      "tag_name": "v1.2.0",
+      "published_at": "2025-11-27T18:11:41Z",
+      "consenso": "sim",
+      "origem_consenso": "maioria",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "275947006",
+      "tag_name": "v2026.1.11",
+      "published_at": "2026-01-12T09:40:39Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "289014892",
+      "tag_name": "v2026.2.21",
+      "published_at": "2026-02-21T16:56:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "289709455",
+      "tag_name": "v2026.2.23",
+      "published_at": "2026-02-24T05:41:47Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1103012935",
+      "full_name": "openclaw/openclaw",
+      "release_id": "319188139",
+      "tag_name": "v2026.5.7",
+      "published_at": "2026-05-07T20:57:43Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "278660115",
+      "tag_name": "v3.0.0",
+      "published_at": "2026-01-21T15:23:43Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "287437031",
+      "tag_name": "v3.0.1",
+      "published_at": "2026-02-17T21:56:03Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "303390234",
+      "tag_name": "v3.0.2",
+      "published_at": "2026-03-30T20:14:45Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "345930477",
+      "tag_name": "v3.0.4",
+      "published_at": "2026-06-28T15:07:57Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "858127",
+      "full_name": "pandas-dev/pandas",
+      "release_id": "358342712",
+      "tag_name": "v3.0.5",
+      "published_at": "2026-07-22T21:47:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1165277268",
+      "full_name": "Panniantong/Agent-Reach",
+      "release_id": "290354431",
+      "tag_name": "v1.1.0",
+      "published_at": "2026-02-25T13:14:44Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1165277268",
+      "full_name": "Panniantong/Agent-Reach",
+      "release_id": "290879013",
+      "tag_name": "v1.2.0",
+      "published_at": "2026-02-26T12:34:58Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1165277268",
+      "full_name": "Panniantong/Agent-Reach",
+      "release_id": "292911301",
+      "tag_name": "v1.3.0",
+      "published_at": "2026-03-04T10:18:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1165277268",
+      "full_name": "Panniantong/Agent-Reach",
+      "release_id": "336995046",
+      "tag_name": "v1.4.1",
+      "published_at": "2026-06-10T03:47:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1165277268",
+      "full_name": "Panniantong/Agent-Reach",
+      "release_id": "337079415",
+      "tag_name": "v1.4.2",
+      "published_at": "2026-06-10T08:02:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "458648791",
+      "full_name": "paperless-ngx/paperless-ngx",
+      "release_id": "281757448",
+      "tag_name": "v2.20.6",
+      "published_at": "2026-01-31T07:30:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "458648791",
+      "full_name": "paperless-ngx/paperless-ngx",
+      "release_id": "289074069",
+      "tag_name": "v2.20.8",
+      "published_at": "2026-02-22T01:40:54Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "458648791",
+      "full_name": "paperless-ngx/paperless-ngx",
+      "release_id": "309048712",
+      "tag_name": "v2.20.14",
+      "published_at": "2026-04-14T20:47:45Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "458648791",
+      "full_name": "paperless-ngx/paperless-ngx",
+      "release_id": "359002689",
+      "tag_name": "v3.0.1",
+      "published_at": "2026-07-23T23:18:35Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "458648791",
+      "full_name": "paperless-ngx/paperless-ngx",
+      "release_id": "359887293",
+      "tag_name": "v3.0.3",
+      "published_at": "2026-07-25T23:59:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "327089870",
+      "full_name": "payloadcms/payload",
+      "release_id": "268896852",
+      "tag_name": "v3.68.1",
+      "published_at": "2025-12-09T21:22:54Z",
+      "consenso": "sim",
+      "origem_consenso": "maioria",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "327089870",
+      "full_name": "payloadcms/payload",
+      "release_id": "270526132",
+      "tag_name": "v3.68.5",
+      "published_at": "2025-12-15T20:09:15Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "327089870",
+      "full_name": "payloadcms/payload",
+      "release_id": "293134388",
+      "tag_name": "v3.79.0",
+      "published_at": "2026-03-04T19:36:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "327089870",
+      "full_name": "payloadcms/payload",
+      "release_id": "329456558",
+      "tag_name": "v3.85.0",
+      "published_at": "2026-05-26T14:23:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "327089870",
+      "full_name": "payloadcms/payload",
+      "release_id": "368852585",
+      "tag_name": "v3.88.0",
+      "published_at": "2026-08-11T20:58:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7741856",
+      "full_name": "pixijs/pixijs",
+      "release_id": "252544018",
+      "tag_name": "v8.14.0",
+      "published_at": "2025-10-06T21:29:30Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7741856",
+      "full_name": "pixijs/pixijs",
+      "release_id": "282646332",
+      "tag_name": "v8.16.0",
+      "published_at": "2026-02-03T16:55:02Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7741856",
+      "full_name": "pixijs/pixijs",
+      "release_id": "309029836",
+      "tag_name": "v8.18.1",
+      "published_at": "2026-04-14T20:00:55Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "7741856",
+      "full_name": "pixijs/pixijs",
+      "release_id": "373953000",
+      "tag_name": "v8.20.0",
+      "published_at": "2026-08-20T18:42:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "7741856",
+      "full_name": "pixijs/pixijs",
+      "release_id": "377227232",
+      "tag_name": "v8.20.1",
+      "published_at": "2026-08-26T14:52:26Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "724712",
+      "full_name": "rust-lang/rust",
+      "release_id": "258584176",
+      "tag_name": "1.91.0",
+      "published_at": "2025-10-30T18:29:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "724712",
+      "full_name": "rust-lang/rust",
+      "release_id": "293629082",
+      "tag_name": "1.94.0",
+      "published_at": "2026-03-05T18:44:15Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "724712",
+      "full_name": "rust-lang/rust",
+      "release_id": "349271259",
+      "tag_name": "1.96.1",
+      "published_at": "2026-07-05T23:50:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "724712",
+      "full_name": "rust-lang/rust",
+      "release_id": "355073850",
+      "tag_name": "1.97.1",
+      "published_at": "2026-07-16T12:29:15Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_e_mensagem",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "724712",
+      "full_name": "rust-lang/rust",
+      "release_id": "373931400",
+      "tag_name": "1.98.0",
+      "published_at": "2026-08-20T18:05:33Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "256910643",
+      "tag_name": "v52.6.0",
+      "published_at": "2025-10-24T07:20:46Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "275063808",
+      "tag_name": "v52.11.2",
+      "published_at": "2026-01-08T07:40:58Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "285548093",
+      "tag_name": "v52.12.0",
+      "published_at": "2026-02-12T05:59:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "353549465",
+      "tag_name": "v52.18.0",
+      "published_at": "2026-07-14T03:10:23Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "361044034",
+      "full_name": "slidevjs/slidev",
+      "release_id": "389590434",
+      "tag_name": "v52.20.1",
+      "published_at": "2026-09-16T02:05:27Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "594155488",
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "release_id": "275627194",
+      "tag_name": "v2.2.0",
+      "published_at": "2026-01-09T22:10:33Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "594155488",
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "release_id": "279555164",
+      "tag_name": "v2.4.0",
+      "published_at": "2026-01-24T00:51:05Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "594155488",
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "release_id": "296428111",
+      "tag_name": "v2.7.1",
+      "published_at": "2026-03-12T21:58:46Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "594155488",
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "release_id": "324931257",
+      "tag_name": "v2.11.0",
+      "published_at": "2026-05-19T10:52:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "594155488",
+      "full_name": "Stirling-Tools/Stirling-PDF",
+      "release_id": "350596534",
+      "tag_name": "v2.14.1",
+      "published_at": "2026-07-07T21:56:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "251382132",
+      "tag_name": "v5.25.0",
+      "published_at": "2025-10-01T11:00:41Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "256337955",
+      "tag_name": "v5.29.0",
+      "published_at": "2025-10-22T12:45:09Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "269170802",
+      "tag_name": "v5.32.0",
+      "published_at": "2025-12-10T15:18:17Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "304108689",
+      "tag_name": "v5.41.1",
+      "published_at": "2026-04-01T09:55:43Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "43441403",
+      "full_name": "strapi/strapi",
+      "release_id": "347992007",
+      "tag_name": "v5.50.0",
+      "published_at": "2026-07-02T11:15:14Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "207645083",
+      "full_name": "TanStack/query",
+      "release_id": "259006687",
+      "tag_name": "@tanstack/solid-query-persist-client@5.90.9",
+      "published_at": "2025-11-01T15:02:37Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "207645083",
+      "full_name": "TanStack/query",
+      "release_id": "273081167",
+      "tag_name": "@tanstack/svelte-query-persist-client@6.0.14",
+      "published_at": "2025-12-28T16:09:32Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "207645083",
+      "full_name": "TanStack/query",
+      "release_id": "276605243",
+      "tag_name": "@tanstack/query-async-storage-persister@5.90.19",
+      "published_at": "2026-01-14T06:24:02Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "207645083",
+      "full_name": "TanStack/query",
+      "release_id": "376730226",
+      "tag_name": "@tanstack/react-query-persist-client@5.102.4",
+      "published_at": "2026-08-25T21:27:31Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "207645083",
+      "full_name": "TanStack/query",
+      "release_id": "392833904",
+      "tag_name": "@tanstack/vue-query-devtools@6.2.2",
+      "published_at": "2026-09-21T09:33:08Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "42408804",
+      "full_name": "traefik/traefik",
+      "release_id": "257751782",
+      "tag_name": "v2.11.30",
+      "published_at": "2025-10-28T09:03:27Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "42408804",
+      "full_name": "traefik/traefik",
+      "release_id": "262132261",
+      "tag_name": "v3.6.1",
+      "published_at": "2025-11-13T14:28:54Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "42408804",
+      "full_name": "traefik/traefik",
+      "release_id": "337312543",
+      "tag_name": "v3.7.5",
+      "published_at": "2026-06-10T15:00:19Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "42408804",
+      "full_name": "traefik/traefik",
+      "release_id": "359287751",
+      "tag_name": "v2.11.53",
+      "published_at": "2026-07-24T12:19:25Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "42408804",
+      "full_name": "traefik/traefik",
+      "release_id": "372846236",
+      "tag_name": "v3.7.11",
+      "published_at": "2026-08-19T06:44:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "572984571",
+      "full_name": "twentyhq/twenty",
+      "release_id": "251862090",
+      "tag_name": "v1.7.0",
+      "published_at": "2025-10-02T21:40:11Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "572984571",
+      "full_name": "twentyhq/twenty",
+      "release_id": "262469570",
+      "tag_name": "v1.11.0",
+      "published_at": "2025-11-14T15:09:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "572984571",
+      "full_name": "twentyhq/twenty",
+      "release_id": "313422770",
+      "tag_name": "v2.1.0",
+      "published_at": "2026-04-24T21:05:40Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "572984571",
+      "full_name": "twentyhq/twenty",
+      "release_id": "336481062",
+      "tag_name": "twenty/v2.10.0",
+      "published_at": "2026-06-09T09:31:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "572984571",
+      "full_name": "twentyhq/twenty",
+      "release_id": "383703538",
+      "tag_name": "twenty/v2.38.1",
+      "published_at": "2026-09-06T20:12:13Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "14747598",
+      "full_name": "typicode/json-server",
+      "release_id": "278810999",
+      "tag_name": "v1.0.0-beta.4",
+      "published_at": "2026-01-21T22:57:31Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "14747598",
+      "full_name": "typicode/json-server",
+      "release_id": "286444840",
+      "tag_name": "v1.0.0-beta.6",
+      "published_at": "2026-02-14T22:48:17Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "14747598",
+      "full_name": "typicode/json-server",
+      "release_id": "288501896",
+      "tag_name": "v1.0.0-beta.9",
+      "published_at": "2026-02-19T23:37:59Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "14747598",
+      "full_name": "typicode/json-server",
+      "release_id": "299466559",
+      "tag_name": "v1.0.0-beta.14",
+      "published_at": "2026-03-20T15:15:06Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "14747598",
+      "full_name": "typicode/json-server",
+      "release_id": "300375540",
+      "tag_name": "v1.0.0-beta.15",
+      "published_at": "2026-03-23T19:40:05Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "312775930",
+      "tag_name": "v0.1.37-beta",
+      "published_at": "2026-04-23T14:33:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "337431619",
+      "tag_name": "v0.1.451-beta",
+      "published_at": "2026-06-10T18:20:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "384797056",
+      "tag_name": "v0.1.807-beta",
+      "published_at": "2026-09-08T14:21:12Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "389862460",
+      "tag_name": "Windows-ARM64",
+      "published_at": "2026-09-16T11:26:07Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "725205304",
+      "full_name": "unslothai/unsloth",
+      "release_id": "393951653",
+      "tag_name": "v0.1.813-beta",
+      "published_at": "2026-09-22T17:46:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "256498490",
+      "tag_name": "v1.0.25",
+      "published_at": "2025-10-22T21:20:42Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "FP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "265971477",
+      "tag_name": "@upstash/context7-mcp@1.0.31",
+      "published_at": "2025-11-28T12:23:35Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "333218890",
+      "tag_name": "ctx7@0.4.5",
+      "published_at": "2026-06-02T15:56:04Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "355562844",
+      "tag_name": "@upstash/context7-mcp@3.2.4",
+      "published_at": "2026-07-17T08:41:46Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "955620917",
+      "full_name": "upstash/context7",
+      "release_id": "366574990",
+      "tag_name": "@upstash/context7-mcp@4.0.0",
+      "published_at": "2026-08-07T07:08:33Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "267408243",
+      "tag_name": "v0.0.16",
+      "published_at": "2025-12-04T12:11:19Z",
+      "consenso": "nao",
+      "origem_consenso": "maioria",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "269208665",
+      "tag_name": "v0.1.1",
+      "published_at": "2025-12-10T16:58:17Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "280729913",
+      "tag_name": "v0.4.0",
+      "published_at": "2026-01-28T14:32:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "312173781",
+      "tag_name": "v0.5.4",
+      "published_at": "2026-04-22T11:14:06Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "1086419061",
+      "full_name": "vectorize-io/hindsight",
+      "release_id": "330270195",
+      "tag_name": "v0.7.0",
+      "published_at": "2026-05-27T14:32:16Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "254137805",
+      "tag_name": "v15.5.5",
+      "published_at": "2025-10-13T17:15:14Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "267155199",
+      "tag_name": "v15.1.9",
+      "published_at": "2025-12-03T16:39:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "267156324",
+      "tag_name": "v15.3.6",
+      "published_at": "2025-12-03T16:41:47Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "280066005",
+      "tag_name": "v15.3.9",
+      "published_at": "2026-01-26T20:48:10Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "70107786",
+      "full_name": "vercel/next.js",
+      "release_id": "280066109",
+      "tag_name": "v15.4.11",
+      "published_at": "2026-01-26T20:48:34Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "mensagem_commit",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "251633628",
+      "tag_name": "create-vite@8.0.2",
+      "published_at": "2025-10-02T05:51:22Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "263887784",
+      "tag_name": "create-vite@8.2.0",
+      "published_at": "2025-11-20T07:24:22Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "270318867",
+      "tag_name": "v7.3.0",
+      "published_at": "2025-12-15T08:52:06Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "298781657",
+      "tag_name": "v8.0.1",
+      "published_at": "2026-03-19T04:47:44Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "257485422",
+      "full_name": "vitejs/vite",
+      "release_id": "298781798",
+      "tag_name": "create-vite@9.0.3",
+      "published_at": "2026-03-19T04:48:40Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3678731",
+      "full_name": "webpack/webpack",
+      "release_id": "292623339",
+      "tag_name": "v5.105.4",
+      "published_at": "2026-03-03T16:29:55Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "3678731",
+      "full_name": "webpack/webpack",
+      "release_id": "325803947",
+      "tag_name": "v5.107.0",
+      "published_at": "2026-05-20T09:40:29Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "3678731",
+      "full_name": "webpack/webpack",
+      "release_id": "345321746",
+      "tag_name": "v5.108.1",
+      "published_at": "2026-06-26T13:04:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "3678731",
+      "full_name": "webpack/webpack",
+      "release_id": "361284366",
+      "tag_name": "v5.109.2",
+      "published_at": "2026-07-28T18:14:32Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "3678731",
+      "full_name": "webpack/webpack",
+      "release_id": "388178739",
+      "tag_name": "v5.111.0",
+      "published_at": "2026-09-14T06:11:20Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "340547520",
+      "full_name": "zed-industries/zed",
+      "release_id": "263423589",
+      "tag_name": "v0.212.7",
+      "published_at": "2025-11-18T22:22:50Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "340547520",
+      "full_name": "zed-industries/zed",
+      "release_id": "270818214",
+      "tag_name": "v0.217.1",
+      "published_at": "2025-12-16T18:11:28Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "340547520",
+      "full_name": "zed-industries/zed",
+      "release_id": "278701390",
+      "tag_name": "v0.220.2",
+      "published_at": "2026-01-21T17:29:48Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "340547520",
+      "full_name": "zed-industries/zed",
+      "release_id": "287970435",
+      "tag_name": "v0.224.6",
+      "published_at": "2026-02-19T03:30:11Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "340547520",
+      "full_name": "zed-industries/zed",
+      "release_id": "363830669",
+      "tag_name": "v1.13.2",
+      "published_at": "2026-08-02T17:33:45Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "778556932",
+      "full_name": "zen-browser/desktop",
+      "release_id": "256864102",
+      "tag_name": "1.17.2b",
+      "published_at": "2025-10-24T00:26:42Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "778556932",
+      "full_name": "zen-browser/desktop",
+      "release_id": "262791582",
+      "tag_name": "1.17.7b",
+      "published_at": "2025-11-16T18:11:43Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "778556932",
+      "full_name": "zen-browser/desktop",
+      "release_id": "270184928",
+      "tag_name": "1.17.14b",
+      "published_at": "2025-12-14T11:19:35Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "778556932",
+      "full_name": "zen-browser/desktop",
+      "release_id": "306528387",
+      "tag_name": "1.19.7b",
+      "published_at": "2026-04-08T11:04:08Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "778556932",
+      "full_name": "zen-browser/desktop",
+      "release_id": "334231949",
+      "tag_name": "1.20.2b",
+      "published_at": "2026-06-04T09:23:36Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "522158088",
+      "full_name": "zhayujie/CowAgent",
+      "release_id": "282437128",
+      "tag_name": "2.0.0",
+      "published_at": "2026-02-03T07:00:18Z",
+      "consenso": "nao",
+      "origem_consenso": "unanime",
+      "previsao": null,
+      "motivo_previsao": "evidencia_insuficiente",
+      "resultado": null,
+      "motivos_exclusao": [
+        "previsao_indeterminada"
+      ]
+    },
+    {
+      "repo_id": "522158088",
+      "full_name": "zhayujie/CowAgent",
+      "release_id": "286003990",
+      "tag_name": "2.0.1",
+      "published_at": "2026-02-13T08:52:52Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "522158088",
+      "full_name": "zhayujie/CowAgent",
+      "release_id": "318276591",
+      "tag_name": "2.0.8",
+      "published_at": "2026-05-06T08:47:15Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "522158088",
+      "full_name": "zhayujie/CowAgent",
+      "release_id": "361475109",
+      "tag_name": "2.1.5",
+      "published_at": "2026-07-29T02:24:56Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    },
+    {
+      "repo_id": "522158088",
+      "full_name": "zhayujie/CowAgent",
+      "release_id": "374139456",
+      "tag_name": "2.1.7",
+      "published_at": "2026-08-21T02:39:37Z",
+      "consenso": "sim",
+      "origem_consenso": "unanime",
+      "previsao": true,
+      "motivo_previsao": "patch_semver",
+      "resultado": "VP",
+      "motivos_exclusao": []
+    }
+  ],
+  "versao_avaliador": 1,
+  "versao_heuristica": "corretiva-v1-patch-ou-mensagem",
+  "bibliotecas": {
+    "python": "3.14.3",
+    "scikit-learn": "1.9.1"
+  },
+  "metodo": "precision_recall_fscore_support e confusion_matrix; labels=[nao,sim]; sem média entre repositórios",
+  "entradas": {
+    "amostra": {
+      "arquivo": "validacao/amostra-ouro/amostra_ouro.json",
+      "sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657"
+    },
+    "consenso": {
+      "arquivo": "validacao/amostra-ouro/consenso_releases.csv",
+      "sha256": "d7416f5b5de19ac7def65abac72cb4b11a80be32ef3e36eb3049e5aa3361c8f8"
+    },
+    "previsoes": {
+      "arquivo": "validacao/avaliacao-heuristica/snapshot-500/entrada_snapshot.json",
+      "sha256": "77e3e56f2b34c2fd41a356715b10baf6605ee03468a458be53a2c5e836a8b6c4"
+    }
+  }
+}
