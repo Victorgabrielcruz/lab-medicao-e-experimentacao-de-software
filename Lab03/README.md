@@ -853,6 +853,20 @@ A v1 foi mantida provisoriamente: F1=0,930403 em 146/300 pares não comprova
 a meta de 0,70 na amostra inteira. A justificativa e o procedimento para
 avaliar os dados finais e refinar a regra, se necessário, estão documentados.
 
+### RQ05 — correlação de Spearman (S03-04 — #170)
+
+O [notebook da RQ05](analise/s03-04-rq05-spearman.ipynb) calcula a associação
+entre frequência de deploy e CFR separadamente para (a) e (b), lendo somente
+o CSV final. Reporta rho, p-valor bilateral e n, gera a dispersão com DF em
+log e verifica os p-valores por permutação reproduzível. A
+[documentação da análise](analise/README.md#rq05--correlação-entre-frequência-e-taxa-de-falha-170)
+descreve as exclusões por par, a sensibilidade aos indicadores de incompletude
+e a proveniência dos resultados. A partir de `Lab03`:
+
+```bash
+python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-04-rq05-spearman.ipynb
+```
+
 ## Estrutura
 
 ```text

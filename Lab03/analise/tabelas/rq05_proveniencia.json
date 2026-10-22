@@ -1,0 +1,30 @@
+{
+  "issue": 170,
+  "csv": "entregas/s02-03-dataset-500-final/dataset-500.csv",
+  "csv_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "total_repositorios": 500,
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "unidade_analise": "repositório; DF em releases/semana; CFR em fração",
+  "metodo": "scipy.stats.spearmanr; bilateral; empates por ranks médios; p_valor assintótico sem ajuste",
+  "permutacao": {
+    "tipo": "pairings",
+    "variavel_permutada": "ranks de CFR",
+    "alternativa": "two-sided",
+    "n_resamples": 99999,
+    "semente": 170,
+    "rng": "numpy.default_rng (PCG64)",
+    "p_bilateral": "duas vezes a menor cauda; ajuste +1 em Monte Carlo; teste exato quando enumerável"
+  },
+  "sensibilidade": "exclui coleta_incompleta OU calculo_parcial; não substitui a análise principal",
+  "codigo_sha256": "bda25ea2ad25e3fd2111b66bcf9cece4dc9e81f00f4f94df799bf14f8724b5f7",
+  "bibliotecas": {
+    "python": "3.14.3",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.2"
+  }
+}

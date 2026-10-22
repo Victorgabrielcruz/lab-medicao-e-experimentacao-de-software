@@ -1,0 +1,5 @@
+recorte,variante,x,y,n_universo,excluidos_por_nulos,fora_do_recorte,n,rho,p_valor,p_permutacao,permutacoes_solicitadas,permutacoes_realizadas,semente,metodo_permutacao,motivo
+principal,a,deployment_frequency,cfr_a,500,0,0,500,0.15456155940391716,0.00052373318126654677,0.00054000000000000001,99999,99999,170,aleatoria,
+principal,b,deployment_frequency,cfr_b,500,2,0,498,0.79909764215383805,1.1085384103961705e-111,2.0000000000000002e-05,99999,99999,170,aleatoria,
+sem_indicadores,a,deployment_frequency,cfr_a,446,0,54,446,0.11538074114635884,0.014768696367395327,0.015440000000000001,99999,99999,170,aleatoria,
+sem_indicadores,b,deployment_frequency,cfr_b,446,2,54,444,0.77751575759293234,4.4621782341301809e-91,2.0000000000000002e-05,99999,99999,170,aleatoria,
