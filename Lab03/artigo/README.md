@@ -1,5 +1,27 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Discussão das hipóteses — S03-13 (#179)
+
+[discussao.tex](discussao.tex) confronta os componentes das sete expectativas
+com os resultados publicados, separando compatibilidade parcial, direção
+contrariada e componentes não testados. Relaciona os achados ao DORA 2021,
+a Kinsman et al. (2021) e ao preprint de Sánchez Ruiz et al. (2023), sem
+apresentar proxies de CI/releases como incidentes de produção ou inferir
+causalidade. As implicações distinguem uso pelos mantenedores e pesquisa.
+
+As duas redações das RQ05–RQ07, presentes na introdução e no complemento,
+foram preservadas. A introdução inclui idade na RQ06; tipo de projeto
+aparece no complemento e permanece sem análise para os 500. A metodologia
+e este README foram alinhados a essa distinção, sem reescrever hipóteses.
+Os cortes fixos do enunciado também não são tratados como os mesmos
+intervalos dos clusters do relatório DORA 2021.
+
+Fontes, vereditos descritivos por componente, limites e conferência estão
+em [validacao-s03-179.md](validacao-s03-179.md). Nenhum dado, classificação,
+sorteio ou resultado das análises foi alterado. Compilação e conferências
+desta revisão são registradas nesse arquivo; os números de testes das
+entregas anteriores não representam uma nova execução nesta tarefa textual.
+
 ## Resultados RQ07 — S03-12 (#178)
 
 A seção RQ07 de [resultados.tex](resultados.tex) apresenta C1/C2/C3,
@@ -53,14 +75,15 @@ com rho/p/n nas duas variantes e dispersão em log; todos os 18 globais com
 Holm e ε²; 27 pares selecionados com família de 108, com os sete contrastes
 Q1–Q4 detalhados por p corrigido e delta de Cliff. Os três fatores são
 estrelas, contribuidores e idade, agrupados em quartis. O tipo de projeto
-citado na hipótese original não foi testado para os 500.
+citado no complemento não foi testado para os 500; idade já integra a
+expectativa da introdução, conforme a conferência da #179.
 
 A [metodologia](metodologia.tex) descreve famílias, critérios e fórmulas;
 a [discussão](discussao.tex) confronta os resultados com as expectativas,
 sem atribuir causalidade. Resumos e conclusão foram alinhados à amostra
 final de 500, substituindo os textos que ainda descreviam o piloto de 82.
 Hipóteses originais, dados humanos e tabelas analíticas foram preservados.
-A RQ07 continua em entrega própria. Consulte também
+Os resultados da RQ07 estão na seção da #178 acima. Consulte também
 [validacao-s03-177.md](validacao-s03-177.md).
 
 ## Revisão da metodologia — S02-16 (#166)
@@ -168,28 +191,21 @@ Essa limitação não impediu a compilação verificada do projeto no Overleaf;
 nenhum TeX/plugin foi instalado.
 ## Registro das hipóteses
 
-As RQ01 a RQ04 foram adicionadas na issue #137. As RQ05 a RQ07 foram redigidas
-na S01-15 (#143), em **08/10/2026**, a partir do enunciado e das definições do
-estudo, sem consultar resultados de coleta ou de análise:
+As RQ01–RQ04 estão registradas na #137 (06/10/2026), e a #143 registra a
+redação das RQ05–RQ07 em 08/10/2026. Coexistem duas formulações no artigo:
 
-- **RQ05:** associação fraca ou negativa entre frequência de deploy e CFR,
-  com expectativas distintas para os proxies de CI e corretivas.
-- **RQ06:** diferenças por popularidade, contribuidores e tipo de projeto,
-  com heterogeneidade entre métricas. A análise numérica adicional usa idade;
-  ela não corresponde a uma hipótese original sobre tipo de projeto.
-- **RQ07:** mudanças de categoria entre definições, com maior concordância
-  esperada entre referência e releases com pré-releases do que entre referência
-  e tags.
+- [introducao.tex](introducao.tex): RQ05 prevê associação negativa e menor
+  associação para CI; RQ06 prevê desempenho melhor nos quartis superiores
+  de estrelas, contribuidores e idade; RQ07 prevê sensibilidade às variantes
+  e maior concordância com pré-releases do que com tags;
+- [hipoteses_complementares.tex](hipoteses_complementares.tex): RQ05 admite
+  associação fraca ou negativa; RQ06 menciona heterogeneidade por popularidade,
+  contribuidores e tipo de projeto; RQ07 inclui a expectativa de maior
+  concordância nas classes extremas.
 
-Essas afirmações são expectativas a confrontar com os dados, não resultados
-observados. O histórico Git registra a versão original e o momento da redação
-de cada conjunto. O início da **coleta principal** deve ser registrado na
-metodologia ou na issue correspondente e comparado com esses commits para
-verificar o critério de hipóteses anteriores à coleta. A data do commit,
-isoladamente, não comprova essa ordem.
-
-Se a coleta principal já tiver começado antes da redação, registre essa
-limitação: as hipóteses foram escritas sem consultar resultados, mas isso não
-equivale a terem sido escritas antes da coleta. Preserve a versão original;
-eventuais revisões posteriores devem ser identificadas como tais, com data e
-justificativa.
+O complemento se declara posterior ao piloto. O histórico preserva o
+momento da redação, mas isso não comprova hipóteses anteriores a toda coleta
+ou observação. A #179 mantém esses textos byte a byte e discute as diferenças
+explicitamente. Não se escolhe retrospectivamente uma formulação para tornar
+um resultado positivo em confirmação da previsão negativa, nem se interpreta
+a análise por idade como teste da previsão por tipo de projeto.
