@@ -1,0 +1,63 @@
+{
+  "issue": 172,
+  "csv": "entregas/s02-03-dataset-500-final/dataset-500.csv",
+  "csv_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "total_repositorios": 500,
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "fatores": [
+    "estrelas",
+    "contribuidores",
+    "idade_dias"
+  ],
+  "metricas": [
+    "deployment_frequency",
+    "lead_time_a",
+    "lead_time_b",
+    "cfr_a",
+    "cfr_b",
+    "tempo_recuperacao"
+  ],
+  "alpha_por_familia": 0.05,
+  "correcao": "statsmodels.stats.multitest.multipletests(method=holm); famílias global e pares separadas; ordem original",
+  "familias": [
+    {
+      "familia": "globais",
+      "testes_planejados": 18,
+      "testes_estimaveis": 18,
+      "testes_nao_estimaveis": 0,
+      "rejeicoes_holm": 7,
+      "alpha": 0.05,
+      "metodo": "holm"
+    },
+    {
+      "familia": "pares",
+      "testes_planejados": 108,
+      "testes_estimaveis": 108,
+      "testes_nao_estimaveis": 0,
+      "rejeicoes_holm": 27,
+      "alpha": 0.05,
+      "metodo": "holm"
+    }
+  ],
+  "pares_planejados": "todos os contrastes não ordenados antes da seleção por significância; teste direto de dois grupos somente na família global",
+  "nao_estimaveis": "p=1 auxiliar interno para manter m planejado; saída e decisão continuam ausentes",
+  "regra_relato_pares": "global_rejeita_holm E rejeita_holm do par",
+  "epsilon2": "H/(n-1); H com empates; n efetivo após exclusões; só Kruskal-Wallis estimável",
+  "cliff_delta": "2*U_1/(n_1*n_2)-1; positivo = valores maiores no grupo_1",
+  "magnitude_delta": "abs(delta): <0.147 desprezivel; <0.33 pequeno; <0.474 medio; >=0.474 grande",
+  "pares_relataveis": 27,
+  "codigo_sha256": {
+    "pipeline/comparacao_rq06.py": "b0f953994dfd06f80257283493578be3e7fa1856149fb8332c28b9b82304e64c",
+    "pipeline/inferencia_rq06.py": "f410a0afea7a5fdd0223d34ff99cdd22e71712933c458783f02e3d73472ff24f"
+  },
+  "bibliotecas": {
+    "python": "3.14.3",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.17.1",
+    "statsmodels": "0.15.0"
+  }
+}
