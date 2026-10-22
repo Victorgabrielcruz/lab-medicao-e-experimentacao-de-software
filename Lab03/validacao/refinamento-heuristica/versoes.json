@@ -1,14 +1,14 @@
 {
   "issue": 163,
-  "data_revisao": "2026-10-21",
-  "commit_main_referencia": "ff3db78",
+  "data_revisao": "2026-10-22",
+  "commit_main_referencia": "63f3933",
   "limiar_f1": 0.7,
   "versao_em_uso": "corretiva-v1-patch-ou-mensagem",
   "versao_final_validada": null,
   "f1_amostra_completa": null,
   "meta_comprovada_na_amostra_completa": false,
-  "decisao": "manter_v1_provisoriamente_com_justificativa",
-  "justificativa": "A avaliação abrange 146/300 pares, todos com previsão positiva. Faltam evidências para 154 previsões; o F1 parcial não comprova a meta na amostra inteira nem demonstra necessidade de refinamento.",
+  "decisao": "manter_v1_sem_refinamento_com_indeterminacoes_justificadas",
+  "justificativa": "F1 observado 0,933078 em 296/300 pares. As quatro primeiras releases sem predecessora permanecem indeterminadas; qualquer conclusão binária delas mantém F1 acima de 0,70, condicionada às previsões e consenso conhecidos. Não se declara F1 observado nas 300 nem validação cega independente.",
   "documentacao": "docs/refinamento-heuristica-163.md",
   "versoes": [
     {
@@ -95,11 +95,104 @@
           "f1": 0.9304029304029304,
           "atinge_limiar_no_subconjunto": true,
           "permite_declarar_meta_global": false
+        },
+        {
+          "versao_avaliador": 2,
+          "entradas": {
+            "amostra": {
+              "arquivo": "validacao/amostra-ouro/amostra_ouro.json",
+              "sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657"
+            },
+            "consenso": {
+              "arquivo": "validacao/amostra-ouro/consenso_releases.csv",
+              "sha256": "d7416f5b5de19ac7def65abac72cb4b11a80be32ef3e36eb3049e5aa3361c8f8"
+            },
+            "previsoes": {
+              "arquivo": "data/processed/validacao-final-500/cfr_b.json",
+              "sha256": "a40fa32652071c710013be4e61f5f801aaa7ea08601181f5eafb7163234de082"
+            }
+          },
+          "classe_positiva": "sim",
+          "avaliacao_completa": false,
+          "cobertura": {
+            "total_amostra": 300,
+            "avaliadas": 296,
+            "excluidas": 4,
+            "fracao_avaliada": 0.9866666666666667,
+            "motivos_exclusao": {
+              "previsao_indeterminada": 4
+            },
+            "consenso_positivo_total": 249,
+            "consenso_negativo_total": 51,
+            "consenso_positivo_excluido": 0,
+            "consenso_negativo_excluido": 4,
+            "pendencias_por_tipo": {
+              "predecessora_historica+commits_compare": 4
+            }
+          },
+          "matriz_confusao": {
+            "linhas_consenso": [
+              "nao",
+              "sim"
+            ],
+            "colunas_previsao": [
+              "nao",
+              "sim"
+            ],
+            "valores": [
+              [
+                17,
+                30
+              ],
+              [
+                5,
+                244
+              ]
+            ],
+            "VP": 244,
+            "FP": 30,
+            "FN": 5,
+            "VN": 17
+          },
+          "precisao": 0.8905109489051095,
+          "recall": 0.9799196787148594,
+          "f1": 0.9330783938814532,
+          "atinge_limiar_no_subconjunto": true,
+          "identificador": "fontes-finais-500-2026-10-22",
+          "estado": "fontes_finais_com_quatro_indeterminacoes_estruturais",
+          "avaliador": {
+            "arquivo": "pipeline/avaliacao_heuristica.py",
+            "sha256": "9cd88eb7bdd46805a6fb275cdf92aaa87247cbb5f83a045f994465e7d2a7b9a9"
+          },
+          "relatorio": {
+            "arquivo": "validacao/avaliacao-heuristica/final-500/avaliacao.json",
+            "sha256": "36d87c949ea074d3dd85f88bb956c6dabcf591fd786ecbcd6ab5af582de74354"
+          },
+          "permite_declarar_meta_global": false
         }
       ]
     }
   ],
   "cenarios_condicionais_amostra_completa": {
+    "hipotese": "Previsões conhecidas e consenso fixos; quatro exclusões com consenso negativo. Limites condicionais, não escores observados nem intervalos de confiança.",
+    "todos_restantes_errados": {
+      "VP": 244,
+      "FP": 34,
+      "FN": 5,
+      "VN": 17,
+      "f1": 0.9259962049335864
+    },
+    "todos_restantes_certos": {
+      "VP": 244,
+      "FP": 30,
+      "FN": 5,
+      "VN": 21,
+      "f1": 0.9330783938814532
+    }
+  },
+  "versao_final_selecionada": "corretiva-v1-patch-ou-mensagem",
+  "limiar_robusto_as_indeterminadas": true,
+  "cenarios_condicionais_historicos_146": {
     "hipotese": "Previsões conhecidas e consenso fixos; eventual classificação binária dos 154 pares restantes. Não são resultados observados nem intervalos de confiança.",
     "todos_restantes_errados": {
       "VP": 127,
