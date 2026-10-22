@@ -1,5 +1,61 @@
 # Conferência da metodologia de validação manual — S02-15 (#165)
 
+## Revisão com as fontes finais — 22/10/2026
+
+O relato de [metodologia.tex](metodologia.tex) passou do protocolo previsto
+para os registros efetivamente disponíveis. As seis planilhas estão completas
+(60 tipos, 60 decisões de entregas e 300 releases por avaliador). Foram
+reexecutados `pipeline.kappa` e `pipeline.consenso` em pastas temporárias:
+**os JSONs e CSVs resultantes são idênticos aos oficiais**, sem sobrescrita.
+
+| Dimensão | Itens completos | Fleiss |
+|---|---:|---:|
+| Tipo de projeto | 60 | 0,8745696015740285 |
+| Entregas reais | 60 | 0,7443181818181829 |
+| Release corretiva | 300 | 0,952752185211434 |
+
+O consenso tem 405 itens unânimes e 15 divergentes resolvidos, 249 releases
+corretivas e 51 não corretivas. A avaliação final #162 usa 296/300 pares,
+matriz `[[17,30],[5,244]]`, precisão 0,8905109489051095, recall
+0,9799196787148594 e F1 0,9330783938814532. As quatro primeiras releases sem
+predecessora, registradas na fonte final, não receberam previsão artificial.
+A #163 mantém a v1 sem refinamento, com justificativa e limites condicionais.
+
+Fontes atuais:
+
+- [manifesto e livro de códigos](../validacao/amostra-ouro/LIVRO-CODIGOS.md);
+- [kappa](../validacao/amostra-ouro/kappa.json),
+  [protocolo de consenso](../validacao/amostra-ouro/PROTOCOLO-CONSENSO.md) e
+  seus CSVs preservados;
+- [procedimento real de C](../docs/rotulagem-c-158.md) e
+  [de B](../docs/rotulagem-b-157.md);
+- [avaliação com as fontes finais dos 500](../validacao/avaliacao-heuristica/final-500/README.md)
+  e [histórico da regra](../validacao/refinamento-heuristica/versoes.json).
+
+O texto não presume independência a partir de arquivos completos. Relata a
+assistência a C, a consulta à documentação de B e a declaração de trabalho
+conjunto. O protocolo registra reunião em 20/10 e a complementação de C está
+documentada em 21/10: não se afirma cronologia completa e comprovada antes
+do consenso. A definição aplicada inclui releases mistas com alguma correção,
+em vez de exigir correção como objetivo principal. Kappa e F1 são resultados
+contra os registros disponíveis, sujeitos a essas limitações.
+
+Reprodução das conferências, a partir de `Lab03`:
+
+```bash
+python -m pipeline.kappa --saida /tmp/lab03-conferencia-kappa
+python -m pipeline.consenso --saida /tmp/lab03-conferencia-consenso
+```
+
+Nenhuma planilha, decisão humana, fonte congelada ou sorteio foi alterado.
+A prévia isolada usada em 15/10 não existe mais no caminho temporário;
+não foi criada substituta nem aberta outra aba. A compilação atual do
+projeto completo é registrada ao final desta revisão.
+
+## Registro histórico da entrega de 15/10/2026
+
+As afirmações abaixo descrevem exclusivamente a base consultada naquela data.
+
 Revisão documental de **15/10/2026**, na branch
 `feat/s02-15-metodologia-validacao-manual-165`, a partir da `main`
 `2b4ea3bdba8502a71cb5ea6b4b9fa422775d19a3`.
@@ -96,3 +152,16 @@ Os hashes abaixo identificam as fontes e a prévia efetivamente compilada.
 | artigo/README.md | `7adacfe32308bf4d58c4da3a6af879475d26caacd37a428eb77ada062bec1278` |
 | Prévia isolada compilada | `89693b72682426cd9bfcacbd6de6de5d934b0a0e29d5d2d1c934a2747fefa61d` |
 | Gerador da amostra-ouro (preservado) | `d1700a65cc5fa8c28f1a9addcadf8952e3a86f7ea2dc5e19ee32871b37493c43` |
+
+## Conferência atual de compilação e integridade — 22/10/2026
+
+O projeto completo compilou com sucesso no compilador nativo, usando raiz
+`Lab03` e principal `artigo/main.tex`, incluindo as figuras existentes de
+`analise/figuras`. Não foi aberta nova aba nem substituída a antiga prévia.
+Não houve exportação de PDF ou sincronização do Overleaf; a confirmação não
+representa inspeção visual de todas as páginas.
+
+A suíte dos arquivos oficiais aprovou 1.169 testes, com dois ignorados e
+94,80% de cobertura. Cópias locais alheias à entrega, com sufixo ` 2.py`,
+foram preservadas e excluídas dessa medição. Os CSVs de consenso e as seis
+planilhas humanas permanecem idênticos aos recebidos da `main`.

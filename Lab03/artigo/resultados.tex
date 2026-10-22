@@ -1,7 +1,7 @@
 \section{Resultados}
 \label{sec:resultados}
 % S03-10 (#176): RQ01 a RQ04 e classificação C1; notebooks em Lab03/analise/
-% (#167, #168, #169). RQ05 a RQ07 entram nas subseções seguintes (#177, #178).
+% (#167, #168, #169). RQ05 e RQ06: #177; RQ07 continua em entrega própria (#178).
 
 Os resultados referem-se aos 500 repositórios da amostra final
 (Seção~\ref{sec:metodologia}). Cada métrica é resumida pela mediana e pelo
@@ -70,8 +70,9 @@ A CFR (a), calculada sobre os runs válidos, tem mediana de 0,053 e IQR de
 de releases corretivas, tem mediana de 0,440 e IQR de 0,200 a 0,727 em 498
 repositórios. A variante (a) é menor que a (b) em 425 dos 498 pares, e
 apenas 104 repositórios (20,9\%) ficam na mesma classe DORA pelas duas
-variantes. A CFR (b) ainda depende da avaliação da heurística contra os
-rótulos de consenso da amostra-ouro.
+variantes. A heurística da CFR (b) foi avaliada contra o consenso registrado em
+296/300 releases, com F1 de 0,933 e limites de independência e construto
+(Seção~\ref{sec:validacao-manual}).
 
 \subsection{RQ04 -- Tempo de recuperação}
 Há episódios recuperados em 469 repositórios. A mediana do tempo de
@@ -115,3 +116,131 @@ Geral: LT (b) + CFR (a) & 5,6 & 44,0 & 45,2 & 5,2 & 0,0 \\
 \hline
 \end{tabular}
 \end{table}
+
+% S03-11 (#177): fontes reexecutáveis das #170--172, CSV final de 500.
+\subsection{RQ05 -- Frequência de deploy e taxa de falha}
+\label{sec:resultados-rq05}
+A associação de Spearman é positiva nas duas variantes
+(Tabela~\ref{tab:rq05-spearman}). Para a CFR(a), o coeficiente é 0,155;
+para a CFR(b), 0,799. Os tamanhos diferem porque dois projetos não têm
+CFR(b); valores ausentes não foram imputados. A
+Figura~\ref{fig:rq05-spearman} mostra a dispersão, com frequência em escala
+logarítmica e CFR na escala original. A transformação serve à visualização;
+o teste usa os ranks das observações originais.
+
+\begin{table}[ht]
+\centering
+\caption{Spearman bilateral entre frequência de deploy e CFR}
+\label{tab:rq05-spearman}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Variante & $n$ & $\rho$ & $p$ assintótico & $p$ permutação \\
+\hline
+CFR(a) & 500 & 0,154562 & $5,23733\times10^{-4}$ & 0,00054 \\
+CFR(b) & 498 & 0,799098 & $1,10854\times10^{-111}$ & 0,00002 \\
+\hline
+\end{tabular}
+\end{table}
+
+A verificação por 99.999 permutações, com semente 170, mantém a evidência
+bilateral nas duas variantes; o menor valor informado não é zero. Excluindo
+54 projetos com algum indicador de coleta incompleta ou cálculo parcial,
+a associação permanece positiva: $\rho=0,115381$, $n=446$, $p=0,014769$
+para (a) e $\rho=0,777516$, $n=444$, $p=4,46218\times10^{-91}$ para (b).
+Os valores de permutação correspondentes são 0,01544 e 0,00002.
+A análise é associativa: não demonstra que publicar mais cause mais falhas.
+O tamanho maior em (b) também deve ser lido à luz do proxy temporal de
+corretivas e dos limites de validação da Seção~\ref{sec:validacao-manual}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{rq05_df_cfr_spearman.png}
+\caption{Frequência de deploy e CFR, por variante; $\rho$, $p$ e $n$
+correspondem aos pares válidos de cada painel}
+\label{fig:rq05-spearman}
+\end{figure}
+
+\subsection{RQ06 -- Comparações por fatores}
+\label{sec:resultados-rq06}
+Os três fatores numéricos foram divididos em quartis: estrelas,
+contribuidores e idade em dias, com 125 projetos em cada grupo antes de
+excluir métricas ausentes. Os cortes internos foram, respectivamente,
+36.047,75/45.049/68.388,5 estrelas; 180,75/395/887,25 contribuidores; e
+939/2.390,5/3.954,5 dias. A Tabela~\ref{tab:rq06-globais} apresenta os 18
+Kruskal--Wallis, com correção de Holm conjunta e $\varepsilon^2=H/(n-1)$.
+
+\begin{table}[ht]
+\centering
+\caption{RQ06: testes globais por fator e métrica; Holm na família de 18}
+\label{tab:rq06-globais}
+\small
+\begin{tabular}{llrrrr}
+\hline
+Fator & Métrica & $n$ & $H$ & $p_{\mathrm{Holm}}$ & $\varepsilon^2$ \\
+\hline
+Estrelas & Frequência & 500 & 8,134 & 0,476489 & 0,016 \\
+Estrelas & LT(a) & 499 & 1,716 & 1,000000 & 0,003 \\
+Estrelas & LT(b) & 499 & 1,163 & 1,000000 & 0,002 \\
+Estrelas & CFR(a) & 500 & 3,697 & 1,000000 & 0,007 \\
+Estrelas & CFR(b) & 498 & 5,135 & 1,000000 & 0,010 \\
+Estrelas & Recuperação & 469 & 4,328 & 1,000000 & 0,009 \\
+Contribuidores & Frequência & 500 & 3,187 & 1,000000 & 0,006 \\
+Contribuidores & LT(a) & 499 & 74,206 & $7,507\times10^{-15}$ & 0,149 \\
+Contribuidores & LT(b) & 499 & 108,712 & $3,323\times10^{-22}$ & 0,218 \\
+Contribuidores & CFR(a) & 500 & 4,480 & 1,000000 & 0,009 \\
+Contribuidores & CFR(b) & 498 & 3,760 & 1,000000 & 0,008 \\
+Contribuidores & Recuperação & 469 & 1,286 & 1,000000 & 0,003 \\
+Idade & Frequência & 500 & 44,168 & $1,807\times10^{-8}$ & 0,089 \\
+Idade & LT(a) & 499 & 140,775 & $4,374\times10^{-29}$ & 0,283 \\
+Idade & LT(b) & 499 & 147,189 & $1,916\times10^{-30}$ & 0,296 \\
+Idade & CFR(a) & 500 & 4,429 & 1,000000 & 0,009 \\
+Idade & CFR(b) & 498 & 84,969 & $3,954\times10^{-17}$ & 0,171 \\
+Idade & Recuperação & 469 & 18,276 & 0,004629 & 0,039 \\
+\hline
+\end{tabular}
+\end{table}
+
+Após Holm, sete dos 18 testes globais mantêm diferença, frente a oito
+nominais. Contribuidores se associam aos dois lead times; idade, à frequência,
+aos dois lead times, à CFR(b) e à recuperação. Nenhuma métrica difere por
+quartil de estrelas após correção. A associação nominal estrelas--frequência
+($p=0,043317$) passa a $p_{\mathrm{Holm}}=0,476489$.
+
+Para os pós-testes, corrigiram-se os 108 pares possíveis em uma segunda
+família de Holm, antes de selecionar os resultados. São relatados como
+diferença apenas pares que passam pela correção e pelo teste global corrigido:
+27 contrastes, distribuídos pelos mesmos sete efeitos globais. A
+Tabela~\ref{tab:rq06-pares} resume os contrastes Q1--Q4, presentes entre os
+27; as tabelas reexecutáveis publicam todos os 108, incluindo os não rejeitados.
+O delta de Cliff positivo significa valores maiores em Q1 que em Q4;
+negativo significa menores. O sinal não implica melhor desempenho em todas
+as métricas, pois frequência e durações têm sentidos distintos.
+
+\begin{table}[ht]
+\centering
+\caption{RQ06: contrastes Q1--Q4 selecionados após Holm e teste global}
+\label{tab:rq06-pares}
+\small
+\begin{tabular}{llrrrr}
+\hline
+Fator & Métrica & $n_1/n_4$ & $p_{\mathrm{Holm}}$ & $\delta$ & Magnitude \\
+\hline
+Contribuidores & LT(a) & 125/124 & $2,604\times10^{-13}$ & -0,580 & Grande \\
+Contribuidores & LT(b) & 125/124 & $8,795\times10^{-19}$ & -0,686 & Grande \\
+Idade & Frequência & 125/125 & $2,055\times10^{-6}$ & 0,409 & Média \\
+Idade & LT(a) & 125/125 & $2,167\times10^{-22}$ & -0,746 & Grande \\
+Idade & LT(b) & 125/125 & $2,052\times10^{-23}$ & -0,763 & Grande \\
+Idade & CFR(b) & 124/125 & $4,508\times10^{-13}$ & 0,575 & Grande \\
+Idade & Recuperação & 119/113 & 0,035816 & -0,267 & Pequena \\
+\hline
+\end{tabular}
+\end{table}
+
+Nos extremos de contribuidores, os lead times são menores em Q1, com
+efeitos grandes ($\delta=-0,580$ e $-0,686$). Projetos mais novos, em Q1 de
+idade, publicam mais frequentemente e têm CFR(b) maior que Q4, mas lead times
+e recuperação menores. Os contrastes de idade mostram efeitos de pequeno a
+grande conforme a métrica. Não há um perfil uniformemente superior em todas
+as dimensões. Esses resultados não isolam confundidores e não permitem
+atribuir causalidade ao tamanho, à popularidade ou à idade dos projetos.

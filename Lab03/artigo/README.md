@@ -2,49 +2,53 @@
 
 ## Validação manual — S02-15 (#165)
 
-A seção **Validação manual** de [metodologia.tex](metodologia.tex) descreve
-o protocolo para a população encerrada de 255 repositórios:
+**Atualização de 22/10/2026:** [metodologia.tex](metodologia.tex) incorpora
+as planilhas e os relatórios existentes, preservando os dados humanos:
 
-- sorteio oficial da #155: 60 repositórios e 5 releases estáveis de cada um,
-  sem reposição e com `random_state=42`, total previsto de 300 pares;
-- três rotuladores independentes, catálogo de categorias e tratamento das
-  ausências, com preservação dos julgamentos antes do consenso;
-- kappa de Fleiss nas três dimensões, calculado **antes do consenso**, com
-  número de itens válidos, proporções das categorias e casos não estimáveis;
-- proposta explícita de consenso: maioria simples como proposta discutida,
-  reunião para três categorias distintas e pendências justificadas sem usar
-  a heurística como desempate;
-- avaliação binária de **release corretiva** contra consenso: matriz de
-  confusão, precisão, recall, F1, cobertura e tratamento de divisões por zero;
-- histórico das versões da heurística e refinamento previsto na #163 se
-  F1 < 0,70, com declaração do reuso da amostra para ajuste.
+- amostra oficial de 60 projetos e 300 releases, sorteada entre os primeiros
+  255 elegíveis, mantida após ampliar a população para 500;
+- livro de códigos realmente aplicado: seis tipos, entregas reais sim/não e
+  corretiva com ao menos uma correção, inclusive releases mistas;
+- Fleiss reproduzido: tipo **0,874570** (60), entregas **0,744318** (60),
+  corretiva **0,952752** (300); consenso de 249 corretivas e 51 não corretivas,
+  com 405 itens unânimes e 15 divergências resolvidas;
+- CFR(b) recalculado sobre 34.255 releases dos 500 projetos, com os 498
+  agregados e dois nulos coincidentes com o CSV final;
+- avaliação da v1 em **296/300** pares: matriz `[[17,30],[5,244]]`, precisão
+  **0,890511**, recall **0,979920**, F1 **0,933078**. As quatro primeiras
+  releases sem predecessora ficam indeterminadas. A #163 mantém a v1.
 
-O trecho da CFR(b) foi alinhado ao enunciado: a release que falha é aquela
-seguida, em até sete dias, por uma corretiva; as publicadas nos últimos sete
-dias ficam censuradas. A avaliação da heurística classifica a **corretiva**,
-não diretamente a release anterior nem um incidente em produção.
+Os escores descrevem o consenso registrado, com limitações explícitas:
+assistência e consulta à documentação de B na complementação de C,
+declaração de trabalho conjunto e cronologia não comprovada de todos os
+julgamentos antes da conciliação. Não se afirma avaliação inteiramente
+cega e independente. O critério humano aplicado também é mais amplo que
+“objetivo principal de corrigir defeito recente”. Essas limitações não são
+resolvidas apenas pela completude dos arquivos ou pelo kappa elevado.
 
-**Estado em 15/10/2026:** na base `2b4ea3b`, não há manifesto do sorteio
-oficial nem rótulos completos, consenso, kappa ou avaliação numérica. A
-preparação C também registra essa dependência em
-[rotulagem-c-158.md](../docs/rotulagem-c-158.md). A publicação dos brutos e do
-CSV de 255 não constitui a amostra-ouro rotulada. Não foi feito novo sorteio,
-preenchimento de rótulos, implementação da heurística ou consulta aos dados
-de A/B/C nesta entrega.
+Fontes, reprodução e conferência estão em
+[validacao-s02-165.md](validacao-s02-165.md) e no
+[relatório final da #162](../validacao/avaliacao-heuristica/final-500/README.md).
+O protocolo previsto da entrega de 15/10 é histórico; esta revisão o
+substitui pelo relato do procedimento documentado e seus resultados.
+Não houve alteração de rótulos nem sincronização do Overleaf.
 
-Os tamanhos 60/300 são previstos; as métricas permanecem **pendentes**, não
-zero. Para concluir o relato empírico, incorporar o manifesto oficial (#155),
-as três rotulagens independentes (#156–158), o relatório de concordância,
-o consenso aprovado e a avaliação da heurística (#161–163). O protocolo de
-consenso descrito aqui deve ser alinhado com o responsável por essa entrega
-antes de ser apresentado como executado. Nenhuma issue é fechada por esta
-revisão documental.
+## Resultados RQ05 e RQ06 — S03-11 (#177)
 
-As referências metodológicas foram acrescentadas em
-[referencias.bib](referencias.bib), preservando as entradas anteriores.
-As evidências e o alcance da conferência da seção estão em
-[validacao-s02-165.md](validacao-s02-165.md). Não houve sincronização do
-Overleaf nem atualização dos resultados/resumos históricos do piloto.
+[Resultados](resultados.tex) incorpora as tabelas das #170–172: Spearman
+com rho/p/n nas duas variantes e dispersão em log; todos os 18 globais com
+Holm e ε²; 27 pares selecionados com família de 108, com os sete contrastes
+Q1–Q4 detalhados por p corrigido e delta de Cliff. Os três fatores são
+estrelas, contribuidores e idade, agrupados em quartis. O tipo de projeto
+citado na hipótese original não foi testado para os 500.
+
+A [metodologia](metodologia.tex) descreve famílias, critérios e fórmulas;
+a [discussão](discussao.tex) confronta os resultados com as expectativas,
+sem atribuir causalidade. Resumos e conclusão foram alinhados à amostra
+final de 500, substituindo os textos que ainda descreviam o piloto de 82.
+Hipóteses originais, dados humanos e tabelas analíticas foram preservados.
+A RQ07 continua em entrega própria. Consulte também
+[validacao-s03-177.md](validacao-s03-177.md).
 
 ## Revisão da metodologia — S02-16 (#166)
 
@@ -155,10 +159,11 @@ As RQ01 a RQ04 foram adicionadas na issue #137. As RQ05 a RQ07 foram redigidas
 na S01-15 (#143), em **08/10/2026**, a partir do enunciado e das definições do
 estudo, sem consultar resultados de coleta ou de análise:
 
-- **RQ05:** associação negativa entre frequência de deploy e CFR, com uma
-  associação esperada mais fraca para o proxy de CI.
-- **RQ06:** melhor desempenho esperado nos quartis superiores de estrelas,
-  contribuidores e idade, os três fatores previstos para comparação.
+- **RQ05:** associação fraca ou negativa entre frequência de deploy e CFR,
+  com expectativas distintas para os proxies de CI e corretivas.
+- **RQ06:** diferenças por popularidade, contribuidores e tipo de projeto,
+  com heterogeneidade entre métricas. A análise numérica adicional usa idade;
+  ela não corresponde a uma hipótese original sobre tipo de projeto.
 - **RQ07:** mudanças de categoria entre definições, com maior concordância
   esperada entre referência e releases com pré-releases do que entre referência
   e tags.

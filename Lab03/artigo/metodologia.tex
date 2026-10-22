@@ -67,7 +67,8 @@ Foram processadas 34.151 comparações, com 104 releases ignoradas e
 diagnósticos de compare incompleto em 11 projetos. Os lead times (a) e (b)
 têm estimativa em 499 projetos; ausência e incompletude permanecem explícitas,
 sem imputação por zero. A CFR (b) usa a heurística v1, com validação humana
-na \#162 ainda pendente. A exportação final é local, confere hashes e
+na \#162 reportada para 296 dos 300 pares da amostra-ouro, com quatro
+indeterminações justificadas. A exportação final é local, confere hashes e
 reproduz o CSV byte a byte; concluir a execução não elimina os diagnósticos.
 
 Configuração, fonte de candidatos, progresso, checkpoints e cache foram
@@ -180,8 +181,8 @@ as publicadas nos últimos sete dias da janela ficam censuradas e fora dele.
 Identificar uma release corretiva não equivale a marcar essa própria release
 como falha. A implementação da heurística e da CFR (b) pertence à \#161;
 sua avaliação e eventual refinamento pertencem às \#162 e \#163. Sem a fonte
-local dessa métrica, valor e classe permanecem nulos. O protocolo de validação
-manual previsto é descrito na Seção~\ref{sec:validacao-manual}.
+local dessa métrica, valor e classe permanecem nulos. O procedimento de validação
+manual e seus limites são descritos na Seção~\ref{sec:validacao-manual}.
 
 \paragraph{Tempo de recuperação (RQ04).}
 Agrupamos os runs por workflow e os ordenamos por
@@ -222,119 +223,167 @@ Resultados agregados entre repositórios serão apresentados por mediana e
 IQR, identificando o número de valores válidos de cada métrica. A disponibilidade
 de uma estimativa parcial não elimina o diagnóstico de incompletude.
 
-% S02-15 (#165): protocolo metodológico; resultados humanos ainda pendentes.
+% S02-15 (#165): relato atualizado com as fontes finais e limites do procedimento.
 \subsection{Validação manual}
 \label{sec:validacao-manual}
 
 \paragraph{Amostra-ouro e instrumento.}
-O protocolo da \#155 sorteou, sem reposição, 60 dos 255 repositórios
-elegíveis da primeira etapa da coleta, encerrada em 15 de outubro, e cinco
-releases estáveis de cada um, totalizando 300 pares repositório--release.
-O sorteio foi mantido após a retomada: os 60 repositórios pertencem à
-amostra final de 500, mas foram sorteados entre os 255 primeiros elegíveis,
-não entre os 500. O gerador usa
-\texttt{DataFrame.sample} com \texttt{random\_state=42} nos dois sorteios;
-ordena previamente os repositórios por ID e as releases por publicação/ID.
-O mesmo manifesto oficial deve orientar os três avaliadores, sem sorteios
-alternativos por integrante. Ele registra janela, IDs, semente, tamanho e
-hash da população. Releases devem pertencer à janela, sem drafts nem
-pré-releases, conforme a configuração usada nesta revisão.
+A \#155 sorteou, sem reposição, 60 dos 255 primeiros repositórios elegíveis
+e cinco releases estáveis por projeto, totalizando 300 pares
+repositório--release. O manifesto foi preservado após ampliar a coleta para
+500; a população de origem do sorteio continua sendo 255. O gerador ordena
+repositórios por ID e releases por publicação/ID e usa
+\texttt{DataFrame.sample}, com \texttt{random\_state=42}, nas duas seleções.
+Todos os pares pertencem à janela e excluem drafts e pré-releases.
 
-O instrumento contém duas planilhas por avaliador, com IDs e links de apoio.
-Por repositório, o tipo principal será classificado como biblioteca/framework,
-aplicação/serviço, ferramenta CLI ou outro; as releases serão julgadas como
-entregas reais ao usuário com as opções sim, não ou incerto. Por release,
-será indicado se seu objetivo principal é corrigir um defeito recente
-(sim/não), consultando notas de versão e evidências dos commits. O número
-da versão ou uma palavra-chave, isoladamente, não define o rótulo humano.
-Casos mistos e evidências insuficientes exigem justificativa em observações.
-O catálogo deve ser fixado no instrumento comum antes do preenchimento.
+Cada avaliador dispõe de duas planilhas com IDs e links de apoio. O livro de
+códigos efetivamente usado distingue biblioteca, framework, aplicação,
+ferramenta de desenvolvimento, infraestrutura e outro. Por repositório,
+registrou-se também se as releases distribuem software para uso (sim/não).
+Por release, corretiva significa haver \emph{pelo menos uma correção de
+defeito}, mesmo junto a funcionalidades. Essa definição é mais ampla que
+exigir correção de defeito recente como objetivo principal: os resultados
+abaixo devem ser interpretados segundo o instrumento aplicado. Número de
+versão e palavra-chave isolados não determinam o rótulo humano; notas,
+changelogs e evidências dos commits fundamentam a decisão. Evidência
+insuficiente deveria permanecer vazia, com justificativa, nunca virar não.
 
-\paragraph{Rotulagem independente.}
-Os três integrantes preencherão individualmente suas planilhas, sem consultar
-rótulos dos demais nem a heurística ou suas previsões. Serão priorizadas as
-evidências preservadas na coleta encerrada; links identificam a origem para
-inspeção humana e não autorizam retomar os coletores. Compare ausente não
-significa release não corretiva. Células vazias e decisões ainda pendentes
-permanecerão ausentes; a categoria incerto é válida somente no julgamento
-de entregas reais. Antes da análise, serão conferidos IDs, duplicatas,
-categorias e cobertura: até 60 julgamentos por dimensão de repositório e
-300 de releases, por avaliador. As versões independentes serão preservadas
-com hashes, sem substituição pelos rótulos de consenso.
+\paragraph{Procedimento e independência.}
+O protocolo exige preenchimento individual por A, B e C, sem consultar os
+demais nem a heurística. As seis planilhas preservadas contêm, por avaliador,
+60 julgamentos de tipo, 60 de entregas reais e 300 de corretiva, sem ausências.
+Foram conferidos IDs, categorias, duplicatas e hashes contra o manifesto;
+nenhum rótulo foi preenchido ou alterado nesta revisão.
 
-\paragraph{Concordância antes do consenso.}
-O protocolo prevê calcular separadamente o kappa de Fleiss para tipo de
-projeto, entregas reais e releases corretivas \cite{fleiss1971}.
-Os itens serão associados por ID e mantidos no cálculo de cada dimensão
-somente quando houver três julgamentos válidos. Serão informados o número
-de itens completos, as ausências e a distribuição das categorias.
-O coeficiente é
+A completude dos arquivos não comprova o cumprimento integral da
+independência. A documentação de C registra 51 decisões complementares
+confirmadas após resumos assistidos das evidências, consulta à documentação
+de B e uma declaração de trabalho conjunto. A declaração posterior de
+conferência individual dos outros 249 casos não comprova avaliação cega dos
+51 complementares. O protocolo de consenso registra reunião em 20 de outubro,
+enquanto a complementação de C está documentada em 21 de outubro; as fontes
+não estabelecem a cronologia individual necessária para assegurar que todos
+os julgamentos precederam a conciliação. Relatamos, portanto, concordância
+entre as planilhas registradas, com essa limitação, sem afirmar três
+rotulagens humanas inteiramente cegas e independentes.
+
+\paragraph{Concordância nas planilhas preservadas.}
+Calculou-se separadamente o kappa de Fleiss para as três dimensões
+\cite{fleiss1971}. A associação usa os IDs; cada dimensão inclui apenas
+itens com três códigos válidos. As contagens nominais por item/categoria
+são formadas por \texttt{aggregate\_raters} e submetidas a
+\texttt{fleiss\_kappa}, método \texttt{fleiss} \cite{statsmodelsFleiss}:
 \begin{equation}
 \kappa_F=\frac{\bar P-P_e}{1-P_e},
 \label{eq:fleiss-validacao}
 \end{equation}
-onde \(\bar P\) é a concordância observada média entre pares de avaliadores
-e \(P_e\) é a soma dos quadrados das proporções marginais das categorias.
-A implementação prevista usa \texttt{aggregate\_raters} para formar contagens
-por item/categoria e \texttt{fleiss\_kappa} com método
-\texttt{fleiss} \cite{statsmodelsFleiss}. Categorias são nominais, sem
-ponderação ordinal. Sem itens completos ou com \(P_e=1\), o coeficiente
-será registrado como não estimável, com motivo. O cálculo antecederá qualquer
-conciliação; o consenso não será usado para aumentar artificialmente a
-concordância independente.
+onde \(\bar P\) é a concordância média entre pares de avaliadores e
+\(P_e\), a soma dos quadrados das proporções marginais das categorias.
+Não se usa o consenso para recalcular a concordância. Sem itens completos
+ou com \(P_e=1\), o coeficiente seria não estimável.
 
-\paragraph{Protocolo de consenso previsto.}
-Após preservar os julgamentos e calcular a concordância, os três avaliadores
-discutirão as divergências com base nas evidências de cada item. Nos casos
-com dois votos iguais, a maioria simples será a proposta de rótulo, submetida
-à discussão e registrada com justificativa. Três categorias diferentes
-exigirão discussão conjunta até uma decisão fundamentada; sem resolução,
-o item permanecerá pendente, com motivo. Não haverá desempate pela heurística.
-A consolidação deverá registrar os rótulos originais, a decisão final,
-os participantes, a data e a evidência. Esse protocolo é uma proposta
-operacional da \#165 a alinhar com a entrega de consenso, não uma reunião
-já realizada nem prova de concordância obtida.
+\begin{table}[ht]
+\centering
+\caption{Concordância das três planilhas registradas, sem ausências}
+\label{tab:validacao-kappa}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Dimensão & Itens & $\bar P$ & $P_e$ & $\kappa_F$ \\
+\hline
+Tipo de projeto & 60 & 0,9056 & 0,2470 & 0,8746 \\
+Entregas reais & 60 & 0,9889 & 0,9565 & 0,7443 \\
+Release corretiva & 300 & 0,9867 & 0,7178 & 0,9528 \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Consenso registrado.}
+O protocolo da \#160 adota o rótulo comum em itens unânimes. Nos divergentes,
+a maioria simples é a proposta submetida à discussão; três categorias
+diferentes exigem decisão fundamentada. Sem acordo, o item permanece
+pendente, sem desempate pela heurística. O arquivo de decisões identifica
+item, justificativa, participantes e data, preservando os votos originais.
+Dos 420 itens (60 de tipo, 60 de entregas reais e 300 de corretiva), 405
+foram unânimes e 15 divergentes. Aceitou-se a maioria em sete tipos, uma
+decisão sobre entregas e seis releases; um tipo foi resolvido por discussão.
+O consenso não tem pendências e classifica 249 releases como corretivas e
+51 como não corretivas. O registro formal do protocolo não elimina os
+limites de independência e cronologia descritos acima.
 
 \paragraph{Avaliação da heurística.}
-Depois de concluído o consenso, a \#162 comparará, nos mesmos pares
-\texttt{(repo\_id, release\_id)}, a previsão da \#161 com o rótulo humano
-de release corretiva. A classe positiva será sim. A matriz de confusão
-registrará verdadeiros positivos (VP), falsos positivos (FP), falsos negativos
-(FN) e verdadeiros negativos (VN). Precisão, recall e F1 serão calculados
-para a classe positiva \cite{sklearnPrecisionRecall}:
+A \#162 comparou o campo \texttt{corretiva} da v1 com o consenso nos mesmos
+pares \texttt{(repo\_id, release\_id)}, usando sim como classe positiva.
+A v1 foi aplicada à sequência integral dos 500 projetos antes de selecionar
+as cinco releases sorteadas; nenhuma previsão usou os rótulos humanos.
+A censura dos últimos sete dias se aplica a \texttt{falhou} na CFR(b),
+não exclui corretivas da avaliação. Cada release tem peso igual, sem média
+entre repositórios. Precisão, recall e F1 usam \cite{sklearnPrecisionRecall}:
 \begin{equation}
 P=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FP}},\quad
 R=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FN}},\quad
 F_1=\frac{2\mathrm{VP}}{2\mathrm{VP}+\mathrm{FP}+\mathrm{FN}}.
 \label{eq:avaliacao-heuristica}
 \end{equation}
-A precisão mede a fração de previsões corretivas confirmadas; o recall,
-a fração de corretivas do consenso detectadas. Será reportada a cobertura
-dos 300 pares previstos, junto aos suportes positivo e negativo.
-Ausência de consenso, previsão ou evidência não será convertida em não;
-esses casos permanecerão identificados fora da avaliação, explicitando
-o possível viés de cobertura. Uma taxa com denominador nulo será não
-estimável; zero com denominador positivo continua sendo um resultado válido.
+Taxas com denominador nulo são não estimáveis; zero com denominador
+positivo é válido. Ausências ficam identificadas fora da matriz.
 
-Se F1 ficar abaixo de 0,70, a \#163 prevê revisar a heurística e reavaliar,
-registrando cada versão, regras, pares avaliados, matriz de confusão e
-métricas. Se o limiar não for alcançado, a limitação deverá ser justificada.
-O uso dos mesmos rótulos para ajuste e avaliação será declarado, sem
-apresentá-lo como avaliação independente em novos dados. A avaliação de
-releases corretivas sustenta a heurística; não mede diretamente incidentes
-em produção nem equivale ao valor da CFR (b).
+A fonte final cobre 34.255 releases dos 500 projetos. Na amostra-ouro,
+296 dos 300 pares têm previsão conhecida (98,67\%): 249 positivos e 47
+negativos do consenso. A matriz, com linhas de consenso e colunas de previsão
+na ordem não/sim, é $\left[\begin{smallmatrix}17&30\\5&244\end{smallmatrix}\right]$:
+VN=17, FP=30, FN=5 e VP=244. A precisão é 0,890511; o recall, 0,979920;
+e o F1, 0,933078. As quatro exclusões têm consenso negativo e são primeiras
+releases sem predecessora, segundo o compare publicado. Não são imputadas
+como negativas; não se declara F1 observado nos 300 pares nem validação
+humana para todas as releases dos 500 projetos.
 
-\paragraph{Situação nesta revisão.}
-O sorteio oficial da \#155 contém 60 repositórios e 300 releases,
-com semente 42, selecionados sobre os primeiros 255 elegíveis.
-A decisão de 16 de outubro mantém esse sorteio após a ampliação para 500,
-sem substituir as planilhas nem repetir a seleção. Na versão conferida em
-20 de outubro, C tem 60 classificações de tipo de projeto, 60 decisões
-sobre entregas reais e 249 decisões sobre releases; faltam 51 julgamentos.
-O procedimento registrado acompanha a avaliação da independência.
-Não se presume rotulagem completa a partir da decisão de manter o sorteio.
-Kappa, consenso e avaliação da heurística exigem seus próprios artefatos
-de evidência; esta revisão não lhes atribui resultados novos.
+A \#163 manteve a v1 sem ajuste da regra: o F1 observado supera 0,70.
+Mesmo que as quatro previsões desconhecidas fossem positivas, mantendo
+fixos os demais pares e o consenso, o F1 seria $488/527=0,925996$.
+Esse limite condicional justifica não refinar para atingir a meta, mas não
+substitui uma medição completa nem é intervalo de confiança. Cada versão
+e avaliação ficam registradas com matriz, cobertura, métricas e hashes;
+um ajuste futuro usando o mesmo consenso deve ser declarado como tal.
+A avaliação sustenta a identificação de corretivas segundo o instrumento,
+não mede diretamente incidentes em produção nem a exatidão da CFR(b).
+
+% S03-11 (#177): procedimentos executados nas #170--172.
+\subsection{Análises das RQ05 e RQ06}
+\label{sec:metodo-rq05-rq06}
+As análises reexecutáveis usam o CSV final dos 500 projetos, com SHA-256
+registrado nos notebooks e tabelas. A RQ05 calcula Spearman bilateral entre
+frequência de deploy e cada CFR, com exclusão de nulos por par, ranks médios
+nos empates e relato de $\rho$, $p$ assintótico e $n$. A verificação usa
+99.999 permutações com semente 170 e correção de contagem que evita $p=0$.
+A dispersão usa frequência em log; os testes não dependem dessa escala.
+Uma análise de sensibilidade exclui os 54 projetos com algum indicador de
+coleta incompleta ou cálculo parcial. Os dois testes de Spearman são
+reportados sem ajuste; a correção abaixo se restringe à RQ06.
+
+Na RQ06, estrelas, contribuidores e idade em dias são divididos em quartis
+por \texttt{qcut} sobre os valores disponíveis do fator, antes de excluir
+valores ausentes da métrica. Os limites e tamanhos são preservados; empates
+nos limites não são separados artificialmente. Exigem-se ao menos cinco
+observações válidas por grupo. São analisadas seis métricas: frequência,
+lead time (a)/(b), CFR(a)/(b) e recuperação. O tipo de projeto da hipótese
+original não é testado nesta análise dos 500: só a amostra-ouro dispõe de
+rótulos manuais; idade é um fator numérico adicional, sem reformular a
+hipótese original após observar os resultados.
+
+Kruskal--Wallis compara os quatro grupos, com correção de empates. Holm
+é aplicado à família dos 18 testes globais e, separadamente, à família dos
+108 contrastes possíveis de Mann--Whitney bilateral, assintótico com
+correção de empates e continuidade. Não se reduz a família aos pares
+selecionados por significância nominal. Um contraste é relatado como
+diferença somente quando o teste global e o par passam por Holm, com
+$\alpha=0,05$. Para os globais, usa-se a convenção do enunciado,
+$\varepsilon^2=H/(n-1)$, com $n$ efetivamente testado. Para os pares,
+$\delta=2U_1/(n_1n_2)-1$, onde sinal positivo indica valores maiores no
+primeiro grupo. Os cortes de $|\delta|$ são 0,147, 0,33 e 0,474 para separar
+magnitudes desprezível, pequena, média e grande. Ausências ficam nulas,
+sem imputação; associações e diferenças de distribuição não são tratadas
+como efeitos causais.
 
 \subsection{Classificação e dicionário de dados}
 Usamos os cortes fixos do enunciado da disciplina, contrato

@@ -67,29 +67,34 @@ contagens de motivos podem se sobrepor quando faltam ambos os lados.
 O relatório registra cobertura, suportes avaliados e contagens do consenso
 total, para tornar visível o viés de cobertura.
 
-## Execução com os dados finais
+## Execução com os dados finais — 22/10/2026
 
-Na pasta `Lab03`:
+O pacote de compare final da PR #245 já está disponível. O
+[relatório final dos 500](../validacao/avaliacao-heuristica/final-500/README.md)
+publica o CFR(b) integral comprimido, com hashes e restaurador sem sobrescrita.
+Foram processadas **34.255 releases dos 500 projetos**; os 498 valores de
+CFR(b) e os dois nulos coincidem com o CSV final. Não houve nova coleta.
+
+Contra o consenso oficial: **296/300 pares**, VN=17, FP=30, FN=5 e VP=244;
+precisão **0,890511**, recall **0,979920**, F1 **0,933078**. As quatro
+exclusões são primeiras releases sem predecessora, conforme a fonte final.
+O diagnóstico rastreável está em `final-500/diagnostico-fontes.json`.
+Não são imputadas como negativas; a avaliação continua parcialmente coberta.
 
 ```bash
-python -m pip install -r requirements.txt
+mkdir -p data/processed/validacao-final-500
+python validacao/avaliacao-heuristica/final-500/restaurar_cfr_b.py \
+  --destino data/processed/validacao-final-500/cfr_b.json
 python -m pipeline.avaliacao_heuristica \
-  --previsoes data/processed/amostra-final-500/cfr_b.json \
-  --saida validacao/avaliacao-heuristica/final-500 --exigir-completa
+  --previsoes data/processed/validacao-final-500/cfr_b.json \
+  --saida /tmp/lab03-avaliacao-final-reproduzida --exigir-completa
 ```
 
-Se o JSON processado for um resumo, use os brutos finais:
-
-```bash
-python -m pipeline.avaliacao_heuristica \
-  --releases data/raw/amostra-final-500/releases.json \
-  --compare data/raw/amostra-final-500/compare.json \
-  --saida validacao/avaliacao-heuristica/final-500 --exigir-completa
-```
-
-Sem `--compare`, somente evidências suficientes das releases podem produzir
-uma decisão conhecida. Um compare explicitamente solicitado mas inexistente
-gera erro, em vez de ser ignorado. Nenhum comando acessa a API ou usa tokens.
+O destino da restauração deve ser novo; o retorno do avaliador é **3**.
+Consulte o README do relatório para recalcular pelos pacotes completos,
+conferir agregados e reproduzir o diagnóstico sem API. A avaliação usa o
+consenso registrado, cujo procedimento de independência tem limitações
+explicitadas na metodologia; não prova validade externa do rótulo.
 
 Cada execução gera:
 
@@ -127,11 +132,9 @@ rótulos nem ajustar automaticamente a heurística nesta tarefa.
 
 ## Reprodução do snapshot histórico disponível
 
-Os detalhes da execução final referidos no
-[CSV final](../entregas/s02-03-dataset-500-final/README.md) permanecem na
-máquina do responsável pela coleta. O CSV agregado não permite reconstruir
-a matriz por release. Para permitir uma execução real com os dados
-versionados, foi implementado [avaliacao_snapshot.py](../pipeline/avaliacao_snapshot.py):
+O corte abaixo é histórico e antecede a publicação dos detalhes finais.
+O CSV agregado não permite reconstruir a matriz por release. Para permitir
+a execução com aquele snapshot, foi implementado [avaliacao_snapshot.py](../pipeline/avaliacao_snapshot.py):
 
 ```bash
 python -m pipeline.avaliacao_snapshot \
@@ -249,7 +252,26 @@ a recuperação do snapshot, 99%. Isso não substitui a execução da CI em
 Python 3.11 e 3.13. A dependência adicionada `scikit-learn==1.9.1` declara
 compatibilidade com Python >= 3.11.
 
-Nenhum valor do artigo foi atualizado com essa avaliação parcial. Os critérios
-de cálculo e registro da matriz estão implementados; a avaliação com a fonte
-final permanece dependente da disponibilização dos detalhes por release.
+A validação local acima pertence à entrega histórica. A execução final
+desta revisão está registrada em `final-500/`, com cobertura 296/300 e
+quatro indeterminações justificadas; ela substitui o snapshot parcial como
+resultado corrente, sem apagar a evidência anterior.
 Qualquer commit desta entrega deve referenciar `(#162)`.
+
+### Conferência das fontes finais em 22/10/2026
+
+A extração dos 500 checkpoints, o restaurador comprimido e a auditoria de
+agregados/indeterminações acrescentam **24 casos de teste**: fontes íntegras,
+partes/checkpoints corrompidos, duplicatas, ausência de membros, caminhos
+inseguros, preservação de destinos/temporários preexistentes, divergências
+no CSV e indeterminação sem fonte. O relatório final foi reproduzido a partir
+do JSON restaurado, sem consultas à rede; os resultados e os 300 pares
+concordam com a execução registrada.
+
+A suíte dos arquivos oficiais passou com **1.169 testes, dois ignorados e
+94,80% de cobertura**, incluindo os testes anteriores do avaliador. As
+cópias locais não versionadas `pipeline/comparacao_rq06 2.py` e
+`tests/test_comparacao_rq06 2.py` foram preservadas e excluídas da medição.
+A extração de releases tem 100% de cobertura e a auditoria, 98%; o
+restaurador tem verificação funcional e teste real de restauração por hash.
+Não se afirma execução da pipeline remota.
