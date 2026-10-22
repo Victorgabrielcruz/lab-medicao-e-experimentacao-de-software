@@ -867,6 +867,21 @@ e a proveniência dos resultados. A partir de `Lab03`:
 python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-04-rq05-spearman.ipynb
 ```
 
+### RQ06 — comparação por fatores (S03-05 — #171)
+
+O [notebook da RQ06](analise/s03-05-rq06-grupos.ipynb) agrupa estrelas,
+contribuidores e idade em quartis e compara as seis variantes de métricas
+por Kruskal-Wallis. Quando há diferença nominal, executa Mann-Whitney
+para todos os pares de grupos. As tabelas registram cortes, grupos, n,
+ausências, estatísticas e p-valores brutos, preparando a correção de Holm
+e os tamanhos de efeito da #172. Consulte a
+[documentação da análise](analise/README.md#rq06--comparação-das-métricas-por-fator-171).
+A partir de `Lab03`, com as dependências instaladas:
+
+```bash
+python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-05-rq06-grupos.ipynb
+```
+
 ## Estrutura
 
 ```text
