@@ -1,0 +1,154 @@
+{
+  "issue": 173,
+  "contrato_classificacao": "lab03-enunciado-cortes-v2",
+  "dataset_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "manifesto_sha256": "ab8775958c2b4d57529699a124705244a0e5874a4dfa920f62dd9053e4241d71",
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "combinacoes": {
+    "C1": {
+      "deployment_frequency": "deployment_frequency",
+      "lead_time": "lead_time_b",
+      "change_failure_rate": "cfr_a",
+      "tempo_recuperacao": "tempo_recuperacao"
+    },
+    "C2": {
+      "deployment_frequency": "deployment_frequency",
+      "lead_time": "lead_time_a",
+      "change_failure_rate": "cfr_a",
+      "tempo_recuperacao": "tempo_recuperacao"
+    },
+    "C3": {
+      "deployment_frequency": "deployment_frequency",
+      "lead_time": "lead_time_b",
+      "change_failure_rate": "cfr_b",
+      "tempo_recuperacao": "tempo_recuperacao"
+    }
+  },
+  "distribuicoes": {
+    "C1": {
+      "repositorios": 500,
+      "completos": 468,
+      "classe_deployment_frequency": {
+        "Elite": 12,
+        "High": 120,
+        "Medium": 248,
+        "Low": 120,
+        "ausentes": 0
+      },
+      "classe_lead_time": {
+        "Elite": 56,
+        "High": 135,
+        "Medium": 149,
+        "Low": 159,
+        "ausentes": 1
+      },
+      "classe_change_failure_rate": {
+        "Elite": 405,
+        "High": 62,
+        "Medium": 18,
+        "Low": 15,
+        "ausentes": 0
+      },
+      "classe_tempo_recuperacao": {
+        "Elite": 113,
+        "High": 305,
+        "Medium": 43,
+        "Low": 8,
+        "ausentes": 31
+      },
+      "geral": {
+        "Elite": 28,
+        "High": 220,
+        "Medium": 226,
+        "Low": 26,
+        "ausentes": 0
+      }
+    },
+    "C2": {
+      "repositorios": 500,
+      "completos": 468,
+      "classe_deployment_frequency": {
+        "Elite": 12,
+        "High": 120,
+        "Medium": 248,
+        "Low": 120,
+        "ausentes": 0
+      },
+      "classe_lead_time": {
+        "Elite": 64,
+        "High": 128,
+        "Medium": 151,
+        "Low": 156,
+        "ausentes": 1
+      },
+      "classe_change_failure_rate": {
+        "Elite": 405,
+        "High": 62,
+        "Medium": 18,
+        "Low": 15,
+        "ausentes": 0
+      },
+      "classe_tempo_recuperacao": {
+        "Elite": 113,
+        "High": 305,
+        "Medium": 43,
+        "Low": 8,
+        "ausentes": 31
+      },
+      "geral": {
+        "Elite": 32,
+        "High": 203,
+        "Medium": 235,
+        "Low": 30,
+        "ausentes": 0
+      }
+    },
+    "C3": {
+      "repositorios": 500,
+      "completos": 467,
+      "classe_deployment_frequency": {
+        "Elite": 12,
+        "High": 120,
+        "Medium": 248,
+        "Low": 120,
+        "ausentes": 0
+      },
+      "classe_lead_time": {
+        "Elite": 56,
+        "High": 135,
+        "Medium": 149,
+        "Low": 159,
+        "ausentes": 1
+      },
+      "classe_change_failure_rate": {
+        "Elite": 94,
+        "High": 91,
+        "Medium": 68,
+        "Low": 245,
+        "ausentes": 2
+      },
+      "classe_tempo_recuperacao": {
+        "Elite": 113,
+        "High": 305,
+        "Medium": 43,
+        "Low": 8,
+        "ausentes": 31
+      },
+      "geral": {
+        "Elite": 4,
+        "High": 117,
+        "Medium": 318,
+        "Low": 61,
+        "ausentes": 0
+      }
+    }
+  },
+  "limites": [
+    "#162 encerrada com avaliação publicada parcial (146/300); conferência final local: 296/300 e quatro previsões indeterminadas. C3 mantém essa limitação de validade.",
+    "Nota geral ignora métricas ausentes; completa distingue notas de quatro métricas.",
+    "DF estável e recuperação fixas; pré-releases e tags fora destas três combinações."
+  ]
+}

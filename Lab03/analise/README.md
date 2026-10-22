@@ -323,3 +323,15 @@ ou dependência entre projetos e não estabelecem causalidade. CFR(b) mantém
 a limitação da validação humana ainda parcial (#162/#163). A atualização
 dos resultados do artigo permanece no escopo da #177. Todo commit desta
 entrega deve referenciar `(#172)`.
+## RQ07 — combinações operacionais (#173)
+
+A análise offline `python -m pipeline.rq07`, executada de `Lab03`, usa o CSV
+final de 500 e gera [classificações por combinação](rq07/classificacoes.csv)
+e [definições, distribuições e hashes](rq07/combinacoes.json).
+Consulte o [protocolo e as limitações](../docs/rq07-combinacoes-173.md).
+
+Para a #174, execute `python -m pipeline.rq07_robustez` também de `Lab03`.
+O comando reproduz as classificações e gera [o relatório de robustez](rq07/robustez.md),
+[a tabela](rq07/robustez.csv) e [as matrizes e hashes](rq07/robustez.json).
+O [método e a interpretação](../docs/rq07-robustez-174.md) registram
+percentuais, kappa ponderado e verificações de disponibilidade e qualidade.
