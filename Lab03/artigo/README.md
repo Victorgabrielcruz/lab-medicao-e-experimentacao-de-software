@@ -1,5 +1,18 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Resultados RQ07 — S03-12 (#178)
+
+A seção RQ07 de [resultados.tex](resultados.tex) apresenta C1/C2/C3,
+percentuais de mudança de classe, kappa ponderado e verificações de robustez
+das análises #173/#174. C1 mantém a referência da main: LT(b)+CFR(a).
+As tabelas distinguem pares completos de notas gerais parciais nos 500;
+o texto mantém os limites da avaliação de CFR(b) e das hipóteses não testadas.
+
+As fontes, os hashes, a reprodução e a compilação estão registrados em
+[validacao-s03-178.md](validacao-s03-178.md). Resumo, abstract e conclusão
+foram alinhados à existência desses resultados, preservando os resultados
+anteriores das outras RQs. A revisão final de páginas permanece na #186.
+
 ## Validação manual — S02-15 (#165)
 
 **Atualização de 22/10/2026:** [metodologia.tex](metodologia.tex) incorpora

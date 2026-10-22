@@ -1,7 +1,7 @@
 \section{Resultados}
 \label{sec:resultados}
 % S03-10 (#176): RQ01 a RQ04 e classificação C1; notebooks em Lab03/analise/
-% (#167, #168, #169). RQ05 e RQ06: #177; RQ07 continua em entrega própria (#178).
+% (#167, #168, #169). RQ05 e RQ06: #177; RQ07: #178, fontes #173 e #174.
 
 Os resultados referem-se aos 500 repositórios da amostra final
 (Seção~\ref{sec:metodologia}). Cada métrica é resumida pela mediana e pelo
@@ -92,9 +92,9 @@ arredondada para baixo. Quase nove em cada dez repositórios ficam em High
 ou Medium na classe geral; Elite e Low somam 10,8\%. Por métrica, a
 frequência de deploy concentra-se em Medium (49,6\%), o lead time se divide
 entre High, Medium e Low, a CFR (a) concentra-se em Elite (81,0\%) e o
-tempo de recuperação, em High (61,0\%). Substituir a CFR (a) pela (b) na
-classe geral altera a classe de 37\% dos repositórios; substituir apenas o
-lead time (b) pelo (a) altera 16\%.
+tempo de recuperação, em High (61,0\%). A sensibilidade da classe geral
+às variantes de lead time e CFR é apresentada na
+Seção~\ref{sec:resultados-rq07}, distinguindo notas parciais de casos completos.
 
 \begin{table}[ht]
 \centering
@@ -244,3 +244,81 @@ e recuperação menores. Os contrastes de idade mostram efeitos de pequeno a
 grande conforme a métrica. Não há um perfil uniformemente superior em todas
 as dimensões. Esses resultados não isolam confundidores e não permitem
 atribuir causalidade ao tamanho, à popularidade ou à idade dos projetos.
+
+% S03-12 (#178): combinacoes.json e robustez.csv/json das #173 e #174.
+\subsection{RQ07 -- Sensibilidade às definições operacionais}
+\label{sec:resultados-rq07}
+Mantiveram-se a frequência de releases estáveis, a recuperação por episódios
+de CI, a janela e os cortes DORA, variando apenas lead time e CFR
+(Tabela~\ref{tab:rq07-combinacoes}). C1 é a referência da seção anterior:
+lead time (b), por commit, e CFR (a), por runs. C2 usa lead time (a), por
+release, e C3 usa CFR (b), pela heurística de releases corretivas. Assim,
+C1$\times$C2 isola lead time, C1$\times$C3 isola CFR e C2$\times$C3 altera ambos.
+As combinações foram fixadas após a coleta; não constituem pré-registro.
+
+\begin{table}[ht]
+\centering
+\caption{RQ07: combinações de definições com frequência e recuperação fixas}
+\label{tab:rq07-combinacoes}
+\small
+\begin{tabular}{lll}
+\hline
+Combinação & Lead time & CFR \\
+\hline
+C1 (referência) & (b), por commit & (a), falhas de CI \\
+C2 & (a), por release & (a), falhas de CI \\
+C3 & (b), por commit & (b), releases corretivas \\
+\hline
+\end{tabular}
+\end{table}
+
+A análise principal exige as quatro métricas disponíveis nas duas
+combinações de cada par. Ausências não viram zero nem uma classe DORA.
+A mudança corresponde à proporção de repositórios cuja classe geral
+difere; o denominador é o número de pares elegíveis. O kappa de Cohen usa
+pesos quadráticos de discordância $((i-j)/3)^2$, com posições de 0 a 3
+para Low, Medium, High e Elite. Compara-se a discordância observada à
+esperada pelas marginais; não se trata do kappa de Fleiss dos rotuladores.
+
+\begin{table}[ht]
+\centering
+\caption{RQ07: mudança da classe geral e kappa quadrático em casos completos}
+\label{tab:rq07-robustez}
+\small
+\begin{tabular}{lrrrrr}
+\hline
+Par & $n$ & Excluídos & Mudaram & Mudança (\%) & $\kappa_w$ \\
+\hline
+C1$\times$C2 & 468 & 32 & 68 & 14,53 & 0,8411 \\
+C1$\times$C3 & 467 & 33 & 179 & 38,33 & 0,5635 \\
+C2$\times$C3 & 467 & 33 & 197 & 42,18 & 0,4494 \\
+\hline
+\end{tabular}
+\end{table}
+
+Trocar somente a definição de CFR altera mais classes gerais que trocar
+somente lead time (Tabela~\ref{tab:rq07-robustez}). Fixando a população
+completa comum em 467 projetos, C1$\times$C2 passa a 14,56\% e kappa 0,8394;
+os outros pares permanecem iguais. Excluindo também alertas de coleta
+incompleta ou cálculo parcial, as mudanças são 14,29\% em 420 pares,
+37,23\% e 41,29\% em 419 pares, com kappas 0,8367, 0,5648 e 0,4451,
+respectivamente. A diferença entre definições persiste nessas restrições.
+
+Incluindo as notas gerais parciais permitidas pelo protocolo nos 500
+projetos, as mudanças são 16,0\%, 37,4\% e 41,6\%. Com pesos lineares,
+os kappas dos pares completos são 0,7913, 0,4431 e 0,3574. O padrão de
+maior sensibilidade ao CFR se mantém, mas a magnitude do kappa depende
+da ponderação. Mesmo kappa 0,8411 acompanha 68 trocas de classe; proximidade
+ordinal não equivale à estabilidade da categoria. A mediana das quatro
+notas pode ainda ocultar mudanças por métrica, disponíveis nas matrizes
+de transição e tabelas reexecutáveis.
+
+Esses resultados descrevem sensibilidade nesta amostra, sem demonstrar
+superioridade de validade de uma definição. CFR(b) mantém os limites de
+construto e da avaliação em 296/300 releases da amostra-ouro, com quatro
+previsões indeterminadas (Seção~\ref{sec:validacao-manual}); esses pares de
+releases não se confundem com os repositórios excluídos da tabela.
+Não se alteraram previsões nem rótulos humanos. A unidade de deploy não
+foi variada: pré-releases, tags e a expectativa de maior concordância nas
+classes extremas permanecem fora destes testes, sem inferência causal
+ou conclusão sobre incidentes em produção.
