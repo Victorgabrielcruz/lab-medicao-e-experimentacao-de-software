@@ -41,5 +41,8 @@ python -m pipeline.dataset_csv --raw data/raw/amostra-final-500 --processed data
 O ajuste de memória foi validado por 365 testes de coleta, métricas,
 consolidação, auditoria e exportação. A exportação real conferiu os 500 IDs,
 janela, contrato e hashes antes/depois, além da igualdade byte a byte.
-Os detalhes por commit/release permanecem nos JSONs locais. As análises
+Os detalhes finais por commit/release estão publicados em
+[`../compares-500-final/`](../compares-500-final/README.md), como `compare.json`
+compactado em partes, com manifesto de hashes e restauração offline.
+São 34.151 comparações entre releases dos 500 repositórios. As análises
 #167, #168 e #169 são etapas posteriores; não foram executadas nesta entrega.
