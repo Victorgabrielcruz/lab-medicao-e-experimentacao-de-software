@@ -1,0 +1,3 @@
+familia,testes_planejados,testes_estimaveis,testes_nao_estimaveis,rejeicoes_holm,alpha,metodo
+globais,18,18,0,7,0.050000000000000003,holm
+pares,108,108,0,27,0.050000000000000003,holm
