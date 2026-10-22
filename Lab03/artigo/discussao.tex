@@ -60,12 +60,17 @@ os critérios de inclusão não mudaram em nenhuma etapa.
 \paragraph{Heurística e rótulos.} A CFR (b) herda os erros da heurística
 de release corretiva. A referência humana é uma amostra-ouro de 60
 repositórios e 300 releases, sorteada entre os 255 primeiros elegíveis
-porque o sorteio antecedeu a retomada da coleta. A concordância entre os
-três rotuladores foi alta (kappa de Fleiss de 0,744 a 0,953 nas três
-dimensões), e as 15 divergências foram resolvidas por um protocolo de
-consenso registrado, sem usar a heurística como desempate. O mesmo
-consenso serve para ajustar e avaliar a heurística, o que pode
-superestimar seu desempenho.
+porque o sorteio antecedeu a retomada da coleta. A concordância nas três planilhas registradas foi de 0,744 a 0,953
+(kappa de Fleiss), e as 15 divergências têm decisões de consenso registradas.
+Entretanto, a assistência documentada a C, a consulta à documentação de B e
+os limites de cronologia não permitem afirmar três rotulagens cegas
+independentes. O instrumento também considera corretivas as releases mistas
+com alguma correção, um construto mais amplo que correção como objetivo
+principal. A v1 obteve F1=0,933 em 296/300 pares, com quatro primeiras
+releases sem base excluídas; não se extrapola esse escore a todas as releases
+dos 500 projetos. Não houve ajuste nesta revisão; eventual uso futuro desse
+consenso para ajuste e avaliação deve ser declarado e pode superestimar o
+desempenho fora da amostra.
 
 \paragraph{Censura.} Episódios de falha sem sucesso até o fim da janela
 (330, ou 0,36\%) e sequências sem sucesso anterior observado (683) ficam
