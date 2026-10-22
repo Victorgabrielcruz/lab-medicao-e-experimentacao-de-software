@@ -844,6 +844,15 @@ Seus escores não validam o desempenho na amostra
 inteira. A [documentação da #162](docs/avaliacao-heuristica-162.md) explica
 os contratos, a reprodução offline e a substituição pela execução final.
 
+### Histórico e refinamento da heurística (S02-13 — #163)
+
+O [histórico da #163](docs/refinamento-heuristica-163.md) registra a regra
+v1, precisão, recall, F1, matriz e cobertura, com um
+[registro de versões e hashes](validacao/refinamento-heuristica/versoes.json).
+A v1 foi mantida provisoriamente: F1=0,930403 em 146/300 pares não comprova
+a meta de 0,70 na amostra inteira. A justificativa e o procedimento para
+avaliar os dados finais e refinar a regra, se necessário, estão documentados.
+
 ## Estrutura
 
 ```text
