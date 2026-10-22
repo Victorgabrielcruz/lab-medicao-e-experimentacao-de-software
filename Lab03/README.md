@@ -882,6 +882,19 @@ A partir de `Lab03`, com as dependências instaladas:
 python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-05-rq06-grupos.ipynb
 ```
 
+### RQ06 — Holm e tamanho de efeito (S03-06 — #172)
+
+O [notebook da #172](analise/s03-06-rq06-holm-efeitos.ipynb) completa os
+testes por fator com Holm, ε² de Kruskal-Wallis e Cliff's delta dos pares.
+Mantém p-valores brutos, declara as famílias de 18 globais e 108 pares e
+registra o critério de relato após correção. Veja a
+[documentação da análise](analise/README.md#rq06--holm-e-tamanhos-de-efeito-172).
+A partir de `Lab03`, com as dependências instaladas:
+
+```bash
+python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-06-rq06-holm-efeitos.ipynb
+```
+
 ## Estrutura
 
 ```text

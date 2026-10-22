@@ -12,6 +12,7 @@ Notebooks que leem o dataset final de 500 repositórios
 | [s03-02-rq03-rq04.ipynb](s03-02-rq03-rq04.ipynb) | #168 | Mediana e IQR da CFR (a) e (b) e do tempo de recuperação, comparação das variantes e das classes, percentual de episódios censurados e gráficos. |
 | [s03-04-rq05-spearman.ipynb](s03-04-rq05-spearman.ipynb) | #170 | Spearman entre DF e CFR (a)/(b): rho, p-valor, n, dispersão, verificação por permutação e sensibilidade aos indicadores de incompletude. |
 | [s03-05-rq06-grupos.ipynb](s03-05-rq06-grupos.ipynb) | #171 | Quartis de estrelas, contribuidores e idade; Kruskal-Wallis por fator e métrica e Mann-Whitney par a par quando há diferença nominal. |
+| [s03-06-rq06-holm-efeitos.ipynb](s03-06-rq06-holm-efeitos.ipynb) | #172 | Correção de Holm dos globais e pares, ε² de Kruskal-Wallis e Cliff's delta com sinal e magnitude. |
 
 `dados/rq04_episodios_500.csv` traz os episódios de recuperação por repositório,
 extraídos de `processed/amostra-final-500/tempo_recuperacao.json` (pacote
@@ -209,3 +210,116 @@ de `Lab03/`, com CSV copiado e saída isolada. As cinco tabelas foram idênticas
 byte a byte e a entrada permaneceu intacta. Essa execução local não
 substitui a CI em Python 3.11 e 3.13. Os resultados do artigo permanecem
 no escopo da #177. Todo commit desta entrega deve referenciar `(#171)`.
+
+## RQ06 — Holm e tamanhos de efeito (#172)
+
+O [notebook da #172](s03-06-rq06-holm-efeitos.ipynb) completa a #171,
+preservando seus testes, cortes, n e arquivos históricos. Recalcula os
+testes a partir do mesmo CSV final, aplica Holm e acrescenta os tamanhos
+de efeito. A partir de `Lab03`, com `requirements.txt` instalado:
+
+```bash
+python -m jupyter nbconvert --to notebook --execute --inplace analise/s03-06-rq06-holm-efeitos.ipynb
+```
+
+Também funciona a partir de `analise/`. `LAB03_RQ06_HOLM_CSV` permite outra
+exportação do mesmo contrato; `LAB03_RQ06_HOLM_SAIDA` define uma pasta
+isolada. Caminhos relativos usam a pasta de trabalho do kernel. A entrada
+permanece intacta e seu hash é conferido antes de exportar.
+
+### Correção e famílias
+
+Usa-se [multipletests](https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html)
+com `method="holm"`, α=0,05 e ordem original preservada. Foram definidas
+duas famílias, antes de selecionar resultados por significância:
+
+- **Globais:** 18 combinações dos três fatores com as seis variantes de
+  métricas. Inclui Kruskal-Wallis e, caso os quartis se reduzam a apenas
+  dois grupos, Mann-Whitney direto.
+- **Pares:** todos os contrastes não ordenados de grupos dos fatores com
+  três ou mais grupos, em todas as métricas. São **108** no CSV atual
+  (3 fatores × 6 métricas × 6 pares), inclusive onde o global não rejeita.
+  O teste direto de dois grupos pertence somente à família global.
+
+A família dos pares é ampliada em relação aos 48 selecionados nominalmente
+na #171, para não definir a correção pelos p-valores observados. Os 48
+originais continuam identificados em `executado_na_171`, com os mesmos U e
+p brutos. Um par tem `relatar_diferenca=True` somente quando **o global e
+o par são rejeitados após Holm**, nas respectivas famílias. O controle é
+por família; não se afirma uma correção única dos 126 testes nem se incluem
+as correlações da RQ05. A decisão usa o retorno do statsmodels, equivalente
+a p ajustado ≤ α.
+
+Testes não estimáveis continuam na contagem planejada da família. Um p=1
+auxiliar é usado internamente para uma correção conservadora; a saída
+restaura p corrigido e decisão como ausentes. Esse marcador não é um
+p-valor observado. Em outro CSV, o número de contrastes segue os grupos
+efetivamente formados pelos fatores, antes de qualquer seleção por p.
+
+### Fórmulas e orientação dos efeitos
+
+**Kruskal-Wallis:** `epsilon2 = H / (n - 1)`, exatamente como definido no
+enunciado. H considera os empates e n é o total realmente testado naquele
+fator × métrica, depois das exclusões. Não se substitui esse estimador por
+`(H-k+1)/(n-k)`. O efeito é reportado também para testes não rejeitados;
+ausência de teste e comparação direta de dois grupos deixam ε² ausente.
+Não se atribuem cortes de magnitude a ε² nem se interpreta como variação
+explicada na escala original. Apenas ruído de até 1e−12 nos limites de H
+é tolerado; valores materialmente fora do domínio são recusados.
+
+**Mann-Whitney:** `cliff_delta = 2*U_1/(n_1*n_2) - 1`. O
+[U do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html)
+corresponde ao primeiro grupo. δ positivo significa valores maiores no
+grupo 1; negativo, no grupo 2. Os pares seguem a ordem crescente dos grupos,
+e inverter as amostras inverte o sinal. Empates contribuem com metade para
+U e zero para a diferença de proporções de vitórias e derrotas.
+
+A magnitude usa os limites do enunciado sobre |δ|: `<0,147` desprezível,
+`<0,33` pequeno, `<0,474` médio e `≥0,474` grande. Zero permanece zero e
+efeito não estimável permanece ausente. O sinal não equivale a “melhor”:
+DF maior e tempo/CFR menor têm sentidos diferentes. Com somente dois grupos,
+o delta e a identificação/tamanho das amostras ficam na tabela global,
+sem duplicar a hipótese na família de pares.
+
+### Resultados e artefatos
+
+No CSV final, **7 dos 18 globais** são rejeitados após Holm, frente aos
+oito nominais da #171. Estrelas × DF passa de p bruto=0,0433171 para
+p Holm=0,476489 e não mantém a rejeição. Há **27 pares** com rejeição própria
+na família de 108 e também com global rejeitado. Os efeitos são registrados
+para todos os testes/pares estimáveis, independentemente da rejeição.
+
+- [rq06_holm_globais.csv](tabelas/rq06_holm_globais.csv): testes globais,
+  p bruto/corrigido, família, decisão, ε² e delta de eventual teste direto.
+- [rq06_holm_pares.csv](tabelas/rq06_holm_pares.csv): todos os 108 pares,
+  n, U, delta, magnitude, p bruto/corrigido e critério final de relato.
+- [rq06_holm_familias.csv](tabelas/rq06_holm_familias.csv): contagens
+  planejadas, estimáveis, não estimáveis e rejeições de cada família.
+- [rq06_holm_proveniencia.json](tabelas/rq06_holm_proveniencia.json): fonte,
+  hashes, janela, fórmulas, famílias, decisões, parâmetros e bibliotecas.
+
+O código está em [inferencia_rq06.py](../pipeline/inferencia_rq06.py), com
+[testes](../tests/test_inferencia_rq06.py) para Holm em exemplos conhecidos,
+ausências sem redução da família, fronteiras, ε² com n efetivo, delta por
+contagem independente, empates, inversão de sinal, seleção dos pares,
+comparação direta e preservação dos resultados da #171.
+
+Validação local em Python 3.14.3: **1.135 testes aprovados, 2 ignorados**,
+cobertura global de **94,69%** e 100% no módulo novo. Para conferir a suíte
+da entrega, foram desconsideradas apenas duas cópias locais idênticas e
+não versionadas (`pipeline/comparacao_rq06 2.py` e
+`tests/test_comparacao_rq06 2.py`), sem removê-las ou alterar os originais.
+A execução com essas cópias também passou (1.180 testes, 92,59% de cobertura).
+
+O notebook foi executado a partir de `analise/` e em kernel limpo a partir
+de `Lab03/`, com outro caminho de CSV e saída isolada: as três tabelas
+foram idênticas byte a byte. Holm foi conferido por ordenação/acúmulo
+independentes; os 18 ε² e 108 deltas, pelas fórmulas e contagem de pares.
+Os 48 pares e os globais históricos da #171 mantêm seus U/H e p brutos.
+A execução local não substitui a CI em Python 3.11 e 3.13.
+
+A correção e os efeitos não eliminam confusão entre fatores, viés de seleção
+ou dependência entre projetos e não estabelecem causalidade. CFR(b) mantém
+a limitação da validação humana ainda parcial (#162/#163). A atualização
+dos resultados do artigo permanece no escopo da #177. Todo commit desta
+entrega deve referenciar `(#172)`.
