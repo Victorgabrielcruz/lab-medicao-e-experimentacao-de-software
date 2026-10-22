@@ -1,0 +1,2714 @@
+{
+  "issue": 174,
+  "dataset_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "classificacoes_sha256": "d35f6f0cde9171b3731170fc6e632184e9cafa62f625bfc66939fd78efac6e01",
+  "metodo": "Cohen ponderado quadrático (principal) e linear (sensibilidade)",
+  "ordem": [
+    "Low",
+    "Medium",
+    "High",
+    "Elite"
+  ],
+  "resultados": [
+    {
+      "par": "C1xC2",
+      "dimensao": "geral",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 468,
+      "excluidos": 32,
+      "mudaram": 68,
+      "percentual_mudanca": 14.52991452991453,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          18,
+          1,
+          0,
+          0
+        ],
+        [
+          3,
+          193,
+          19,
+          0
+        ],
+        [
+          0,
+          26,
+          170,
+          12
+        ],
+        [
+          0,
+          0,
+          7,
+          19
+        ]
+      ],
+      "kappa_quadratico": 0.8410881744914163,
+      "kappa_linear": 0.7913152959383074,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "geral",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 68,
+      "percentual_mudanca": 14.5610278372591,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          18,
+          1,
+          0,
+          0
+        ],
+        [
+          3,
+          193,
+          19,
+          0
+        ],
+        [
+          0,
+          26,
+          170,
+          12
+        ],
+        [
+          0,
+          0,
+          7,
+          18
+        ]
+      ],
+      "kappa_quadratico": 0.8394198970458844,
+      "kappa_linear": 0.7898401101228294,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "geral",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 80,
+      "percentual_mudanca": 16.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          25,
+          1,
+          0,
+          0
+        ],
+        [
+          4,
+          201,
+          21,
+          0
+        ],
+        [
+          1,
+          33,
+          174,
+          12
+        ],
+        [
+          0,
+          0,
+          8,
+          20
+        ]
+      ],
+      "kappa_quadratico": 0.8278008298755186,
+      "kappa_linear": 0.774483818517941,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "geral",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 420,
+      "excluidos": 80,
+      "mudaram": 60,
+      "percentual_mudanca": 14.285714285714286,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          17,
+          1,
+          0,
+          0
+        ],
+        [
+          3,
+          181,
+          18,
+          0
+        ],
+        [
+          0,
+          25,
+          148,
+          7
+        ],
+        [
+          0,
+          0,
+          6,
+          14
+        ]
+      ],
+      "kappa_quadratico": 0.8366860223973456,
+      "kappa_linear": 0.7890860395045196,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 468,
+      "excluidos": 32,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          232,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          231,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          120,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          248,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          120,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 420,
+      "excluidos": 80,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          106,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          208,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          97,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          9
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 468,
+      "excluidos": 32,
+      "mudaram": 195,
+      "percentual_mudanca": 41.666666666666664,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          97,
+          36,
+          11,
+          4
+        ],
+        [
+          45,
+          71,
+          23,
+          3
+        ],
+        [
+          1,
+          32,
+          70,
+          21
+        ],
+        [
+          0,
+          1,
+          18,
+          35
+        ]
+      ],
+      "kappa_quadratico": 0.7157057654075547,
+      "kappa_linear": 0.5830879122667144,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 195,
+      "percentual_mudanca": 41.7558886509636,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          97,
+          36,
+          11,
+          4
+        ],
+        [
+          45,
+          71,
+          23,
+          3
+        ],
+        [
+          1,
+          32,
+          70,
+          21
+        ],
+        [
+          0,
+          1,
+          18,
+          34
+        ]
+      ],
+      "kappa_quadratico": 0.713788730730744,
+      "kappa_linear": 0.5811110246443828,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_lead_time",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 499,
+      "excluidos": 1,
+      "mudaram": 208,
+      "percentual_mudanca": 41.68336673346693,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          36,
+          12,
+          4
+        ],
+        [
+          47,
+          75,
+          24,
+          3
+        ],
+        [
+          2,
+          39,
+          73,
+          21
+        ],
+        [
+          0,
+          1,
+          19,
+          36
+        ]
+      ],
+      "kappa_quadratico": 0.7125339478232244,
+      "kappa_linear": 0.5800720702577122,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_lead_time",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 420,
+      "excluidos": 80,
+      "mudaram": 177,
+      "percentual_mudanca": 42.142857142857146,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          94,
+          33,
+          11,
+          4
+        ],
+        [
+          45,
+          59,
+          21,
+          1
+        ],
+        [
+          0,
+          31,
+          63,
+          14
+        ],
+        [
+          0,
+          1,
+          16,
+          27
+        ]
+      ],
+      "kappa_quadratico": 0.7060018967619563,
+      "kappa_linear": 0.572107765451664,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 468,
+      "excluidos": 32,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          13,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          18,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          62,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          375
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          13,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          18,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          62,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          374
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          15,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          18,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          62,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          405
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 420,
+      "excluidos": 80,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          9,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          16,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          53,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          342
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 468,
+      "excluidos": 32,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          113
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          112
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 469,
+      "excluidos": 31,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          305,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          113
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC2",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 420,
+      "excluidos": 80,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          41,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          280,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          92
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "geral",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 179,
+      "percentual_mudanca": 38.32976445396146,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          16,
+          3,
+          0,
+          0
+        ],
+        [
+          34,
+          181,
+          0,
+          0
+        ],
+        [
+          3,
+          117,
+          88,
+          0
+        ],
+        [
+          0,
+          1,
+          21,
+          3
+        ]
+      ],
+      "kappa_quadratico": 0.5634680983306497,
+      "kappa_linear": 0.4431020663499696,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "geral",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 179,
+      "percentual_mudanca": 38.32976445396146,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          16,
+          3,
+          0,
+          0
+        ],
+        [
+          34,
+          181,
+          0,
+          0
+        ],
+        [
+          3,
+          117,
+          88,
+          0
+        ],
+        [
+          0,
+          1,
+          21,
+          3
+        ]
+      ],
+      "kappa_quadratico": 0.5634680983306497,
+      "kappa_linear": 0.4431020663499696,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "geral",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 187,
+      "percentual_mudanca": 37.4,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          22,
+          4,
+          0,
+          0
+        ],
+        [
+          34,
+          192,
+          0,
+          0
+        ],
+        [
+          5,
+          120,
+          95,
+          0
+        ],
+        [
+          0,
+          2,
+          22,
+          4
+        ]
+      ],
+      "kappa_quadratico": 0.5737704918032787,
+      "kappa_linear": 0.4628657496622146,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "geral",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 156,
+      "percentual_mudanca": 37.23150357995227,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          16,
+          2,
+          0,
+          0
+        ],
+        [
+          33,
+          169,
+          0,
+          0
+        ],
+        [
+          3,
+          102,
+          75,
+          0
+        ],
+        [
+          0,
+          1,
+          15,
+          3
+        ]
+      ],
+      "kappa_quadratico": 0.5647614572255337,
+      "kappa_linear": 0.4500229704009977,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          231,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          231,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          120,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          248,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          120,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          106,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          207,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          97,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          9
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          148,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          142,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          124,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          53
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          148,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          142,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          124,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          53
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 499,
+      "excluidos": 1,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          159,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          149,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          135,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          56
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          142,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          126,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          108,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          43
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 370,
+      "percentual_mudanca": 79.22912205567452,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          2,
+          0
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          187,
+          48,
+          64,
+          75
+        ]
+      ],
+      "kappa_quadratico": 0.030273274011213713,
+      "kappa_linear": 0.027129786223516916,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 370,
+      "percentual_mudanca": 79.22912205567452,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          2,
+          0
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          187,
+          48,
+          64,
+          75
+        ]
+      ],
+      "kappa_quadratico": 0.030273274011213713,
+      "kappa_linear": 0.027129786223516916,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 498,
+      "excluidos": 2,
+      "mudaram": 394,
+      "percentual_mudanca": 79.11646586345381,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          3,
+          1
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          193,
+          55,
+          73,
+          82
+        ]
+      ],
+      "kappa_quadratico": 0.026056215467427757,
+      "kappa_linear": 0.02193382144989464,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 329,
+      "percentual_mudanca": 78.52028639618139,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          5,
+          3,
+          1,
+          0
+        ],
+        [
+          10,
+          1,
+          3,
+          2
+        ],
+        [
+          25,
+          8,
+          11,
+          9
+        ],
+        [
+          163,
+          45,
+          60,
+          73
+        ]
+      ],
+      "kappa_quadratico": 0.025972787066325442,
+      "kappa_linear": 0.023510128819115517,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          112
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          112
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 469,
+      "excluidos": 31,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          305,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          113
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C1xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          41,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          280,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          91
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "geral",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 197,
+      "percentual_mudanca": 42.184154175588866,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          15,
+          6,
+          0,
+          0
+        ],
+        [
+          32,
+          175,
+          13,
+          0
+        ],
+        [
+          5,
+          112,
+          78,
+          1
+        ],
+        [
+          1,
+          9,
+          18,
+          2
+        ]
+      ],
+      "kappa_quadratico": 0.4494002300748937,
+      "kappa_linear": 0.3573602093226087,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "geral",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 197,
+      "percentual_mudanca": 42.184154175588866,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          15,
+          6,
+          0,
+          0
+        ],
+        [
+          32,
+          175,
+          13,
+          0
+        ],
+        [
+          5,
+          112,
+          78,
+          1
+        ],
+        [
+          1,
+          9,
+          18,
+          2
+        ]
+      ],
+      "kappa_quadratico": 0.4494002300748937,
+      "kappa_linear": 0.3573602093226087,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "geral",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 208,
+      "percentual_mudanca": 41.6,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          22,
+          8,
+          0,
+          0
+        ],
+        [
+          32,
+          186,
+          17,
+          0
+        ],
+        [
+          6,
+          115,
+          81,
+          1
+        ],
+        [
+          1,
+          9,
+          19,
+          3
+        ]
+      ],
+      "kappa_quadratico": 0.47201048696412085,
+      "kappa_linear": 0.37746937149307747,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "geral",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 173,
+      "percentual_mudanca": 41.288782816229116,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          15,
+          5,
+          0,
+          0
+        ],
+        [
+          31,
+          163,
+          13,
+          0
+        ],
+        [
+          5,
+          100,
+          66,
+          1
+        ],
+        [
+          1,
+          6,
+          11,
+          2
+        ]
+      ],
+      "kappa_quadratico": 0.44512927140187386,
+      "kappa_linear": 0.35755267583341577,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          231,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          231,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          117,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 500,
+      "excluidos": 0,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          120,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          248,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          120,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          12
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_deployment_frequency",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          106,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          207,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          97,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          9
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 195,
+      "percentual_mudanca": 41.7558886509636,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          97,
+          45,
+          1,
+          0
+        ],
+        [
+          36,
+          71,
+          32,
+          1
+        ],
+        [
+          11,
+          23,
+          70,
+          18
+        ],
+        [
+          4,
+          3,
+          21,
+          34
+        ]
+      ],
+      "kappa_quadratico": 0.713788730730744,
+      "kappa_linear": 0.5811110246443828,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 195,
+      "percentual_mudanca": 41.7558886509636,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          97,
+          45,
+          1,
+          0
+        ],
+        [
+          36,
+          71,
+          32,
+          1
+        ],
+        [
+          11,
+          23,
+          70,
+          18
+        ],
+        [
+          4,
+          3,
+          21,
+          34
+        ]
+      ],
+      "kappa_quadratico": 0.713788730730744,
+      "kappa_linear": 0.5811110246443828,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 499,
+      "excluidos": 1,
+      "mudaram": 208,
+      "percentual_mudanca": 41.68336673346693,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          107,
+          47,
+          2,
+          0
+        ],
+        [
+          36,
+          75,
+          39,
+          1
+        ],
+        [
+          12,
+          24,
+          73,
+          19
+        ],
+        [
+          4,
+          3,
+          21,
+          36
+        ]
+      ],
+      "kappa_quadratico": 0.7125339478232244,
+      "kappa_linear": 0.5800720702577122,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_lead_time",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 177,
+      "percentual_mudanca": 42.243436754176614,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          94,
+          45,
+          0,
+          0
+        ],
+        [
+          33,
+          59,
+          31,
+          1
+        ],
+        [
+          11,
+          21,
+          63,
+          16
+        ],
+        [
+          4,
+          1,
+          14,
+          26
+        ]
+      ],
+      "kappa_quadratico": 0.7035659268557084,
+      "kappa_linear": 0.5696679219445395,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 370,
+      "percentual_mudanca": 79.22912205567452,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          2,
+          0
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          187,
+          48,
+          64,
+          75
+        ]
+      ],
+      "kappa_quadratico": 0.030273274011213713,
+      "kappa_linear": 0.027129786223516916,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 370,
+      "percentual_mudanca": 79.22912205567452,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          2,
+          0
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          187,
+          48,
+          64,
+          75
+        ]
+      ],
+      "kappa_quadratico": 0.030273274011213713,
+      "kappa_linear": 0.027129786223516916,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 498,
+      "excluidos": 2,
+      "mudaram": 394,
+      "percentual_mudanca": 79.11646586345381,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          3,
+          3,
+          1
+        ],
+        [
+          11,
+          2,
+          3,
+          2
+        ],
+        [
+          33,
+          8,
+          12,
+          9
+        ],
+        [
+          193,
+          55,
+          73,
+          82
+        ]
+      ],
+      "kappa_quadratico": 0.026056215467427757,
+      "kappa_linear": 0.02193382144989464,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_change_failure_rate",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 329,
+      "percentual_mudanca": 78.52028639618139,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          5,
+          3,
+          1,
+          0
+        ],
+        [
+          10,
+          1,
+          3,
+          2
+        ],
+        [
+          25,
+          8,
+          11,
+          9
+        ],
+        [
+          163,
+          45,
+          60,
+          73
+        ]
+      ],
+      "kappa_quadratico": 0.025972787066325442,
+      "kappa_linear": 0.023510128819115517,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_por_par",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          112
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "completos_nas_tres",
+      "total": 500,
+      "n": 467,
+      "excluidos": 33,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          304,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          112
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "notas_disponiveis",
+      "total": 500,
+      "n": 469,
+      "excluidos": 31,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          305,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          113
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    },
+    {
+      "par": "C2xC3",
+      "dimensao": "classe_tempo_recuperacao",
+      "coorte": "sem_alertas",
+      "total": 500,
+      "n": 419,
+      "excluidos": 81,
+      "mudaram": 0,
+      "percentual_mudanca": 0.0,
+      "ordem_matriz": [
+        "Low",
+        "Medium",
+        "High",
+        "Elite"
+      ],
+      "matriz_transicao": [
+        [
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          41,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          280,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          91
+        ]
+      ],
+      "kappa_quadratico": 1.0,
+      "kappa_linear": 1.0,
+      "motivo_nao_estimavel": null
+    }
+  ]
+}

@@ -329,3 +329,9 @@ A análise offline `python -m pipeline.rq07`, executada de `Lab03`, usa o CSV
 final de 500 e gera [classificações por combinação](rq07/classificacoes.csv)
 e [definições, distribuições e hashes](rq07/combinacoes.json).
 Consulte o [protocolo e as limitações](../docs/rq07-combinacoes-173.md).
+
+Para a #174, execute `python -m pipeline.rq07_robustez` também de `Lab03`.
+O comando reproduz as classificações e gera [o relatório de robustez](rq07/robustez.md),
+[a tabela](rq07/robustez.csv) e [as matrizes e hashes](rq07/robustez.json).
+O [método e a interpretação](../docs/rq07-robustez-174.md) registram
+percentuais, kappa ponderado e verificações de disponibilidade e qualidade.
