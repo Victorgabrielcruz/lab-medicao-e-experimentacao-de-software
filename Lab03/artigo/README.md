@@ -33,6 +33,23 @@ O protocolo previsto da entrega de 15/10 é histórico; esta revisão o
 substitui pelo relato do procedimento documentado e seus resultados.
 Não houve alteração de rótulos nem sincronização do Overleaf.
 
+## Resultados RQ05 e RQ06 — S03-11 (#177)
+
+[Resultados](resultados.tex) incorpora as tabelas das #170–172: Spearman
+com rho/p/n nas duas variantes e dispersão em log; todos os 18 globais com
+Holm e ε²; 27 pares selecionados com família de 108, com os sete contrastes
+Q1–Q4 detalhados por p corrigido e delta de Cliff. Os três fatores são
+estrelas, contribuidores e idade, agrupados em quartis. O tipo de projeto
+citado na hipótese original não foi testado para os 500.
+
+A [metodologia](metodologia.tex) descreve famílias, critérios e fórmulas;
+a [discussão](discussao.tex) confronta os resultados com as expectativas,
+sem atribuir causalidade. Resumos e conclusão foram alinhados à amostra
+final de 500, substituindo os textos que ainda descreviam o piloto de 82.
+Hipóteses originais, dados humanos e tabelas analíticas foram preservados.
+A RQ07 continua em entrega própria. Consulte também
+[validacao-s03-177.md](validacao-s03-177.md).
+
 ## Revisão da metodologia — S02-16 (#166)
 
 **Atualização de 20/10/2026:** a metodologia agora registra a retomada de
@@ -142,10 +159,11 @@ As RQ01 a RQ04 foram adicionadas na issue #137. As RQ05 a RQ07 foram redigidas
 na S01-15 (#143), em **08/10/2026**, a partir do enunciado e das definições do
 estudo, sem consultar resultados de coleta ou de análise:
 
-- **RQ05:** associação negativa entre frequência de deploy e CFR, com uma
-  associação esperada mais fraca para o proxy de CI.
-- **RQ06:** melhor desempenho esperado nos quartis superiores de estrelas,
-  contribuidores e idade, os três fatores previstos para comparação.
+- **RQ05:** associação fraca ou negativa entre frequência de deploy e CFR,
+  com expectativas distintas para os proxies de CI e corretivas.
+- **RQ06:** diferenças por popularidade, contribuidores e tipo de projeto,
+  com heterogeneidade entre métricas. A análise numérica adicional usa idade;
+  ela não corresponde a uma hipótese original sobre tipo de projeto.
 - **RQ07:** mudanças de categoria entre definições, com maior concordância
   esperada entre referência e releases com pré-releases do que entre referência
   e tags.

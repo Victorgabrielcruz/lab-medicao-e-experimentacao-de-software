@@ -1,13 +1,18 @@
 \section{Conclusão}
 \label{sec:conclusao}
-A entrega disponibiliza um pipeline com cache, retomada, diagnóstico de
-incompletude e auditoria independente, além dos cálculos observáveis no
-piloto existente. A validação do software e a validação empírica têm
-alcances distintos: os dados disponíveis não constituem a amostra de cem
-projetos elegíveis completos.
+O estudo disponibiliza um pipeline reproduzível com cache, retomada,
+diagnósticos e auditoria, aplicado a 500 repositórios elegíveis. O pacote
+final permite recalcular CFR(b) para 498 projetos e preservar dois valores
+não estimáveis, sem novas consultas. Contra o consenso registrado, a v1
+atinge F1 de 0,933 em 296/300 releases; quatro primeiras releases sem
+predecessora continuam indeterminadas. O limiar não exigiu refinar a regra,
+mas os limites do instrumento e da independência da rotulagem permanecem.
 
-O limite de tempo motivou o encerramento da coleta adicional. A contribuição
-empírica desta versão se restringe às contagens e aos episódios auditados do
-piloto, com suas ausências e censuras. A análise das hipóteses, a integração
-das variantes pendentes e as conclusões sobre as RQs exigem dados e trabalho
-adicionais. Nesta versão, não se afirma o atendimento das hipóteses.
+Frequência e CFR apresentam associação positiva, mais elevada na variante
+de corretivas que no proxy de CI. Contribuidores e idade se associam a
+algumas métricas após Holm, sem um perfil superior em todas as dimensões;
+reportam-se também tamanhos de efeito. Esses resultados são exploratórios,
+restritos à população e à janela estudadas, sem inferência causal ou
+identificação direta de incidentes em produção. A análise das definições
+alternativas da RQ07 e do tipo de projeto fora da amostra-ouro permanece
+fora desta revisão, sem declarar atendidas todas as hipóteses.

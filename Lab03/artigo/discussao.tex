@@ -81,12 +81,33 @@ dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
 \subsection{Validade externa}
 Repositórios populares, usuários de Actions e projetos com releases frequentes
 não representam todos os projetos de software. Selecionar os primeiros elegíveis
-na ordem de estrelas introduz viés para projetos populares. As conclusions devem
-ser limitadas à população e à janela estudadas. A discussão empírica das hipóteses
-será adicionada após a auditoria, sem alterar seu registro anterior à coleta.
+na ordem de estrelas introduz viés para projetos populares. As conclusões devem
+ser limitadas à população e à janela estudadas. O tipo de projeto, citado
+na hipótese da RQ06, não foi comparado nos 500 por falta de rótulos fora da
+amostra-ouro; a análise por idade é complementar e não substitui esse teste.
 
 \subsection{Validade de conclusão}
-A análise futura deve tratar comparações múltiplas, efeitos de subgrupos pequenos
-e durações censuradas. As hipóteses complementares foram registradas depois do
-piloto, o que limita sua interpretação como previsões anteriores aos dados.
-Nenhum teste estatístico ou veredito das hipóteses é apresentado nesta sprint.
+A associação positiva da RQ05 é fraca para CFR(a) e elevada para CFR(b).
+A expectativa de associação fraca ou negativa não se sustenta para (b),
+e o sinal negativo não aparece em nenhuma variante. Frequência elevada
+oferece mais oportunidades de uma corretiva ocorrer em sete dias; essa
+relação operacional pode contribuir para a associação em (b), sem provar
+mais incidentes em produção. A sensibilidade aos indicadores de incompletude
+mantém os sinais, mas não remove confundidores, heterogeneidade de projetos
+ou dependência entre observações do mesmo ecossistema.
+
+Na RQ06, Holm reduz de oito para sete os globais rejeitados e controla
+separadamente as 108 comparações planejadas; 27 pares passam também pelo
+teste global corrigido. Reportar $\varepsilon^2$ e delta de Cliff evita
+interpretar apenas p-valores. Ausência de diferença por estrelas não prova
+equivalência; diferenças de distribuição também não implicam apenas mudança
+de mediana. A associação de contribuidores com lead times maiores nos
+quartis superiores contraria uma interpretação uniforme de melhor
+desempenho por tamanho. Recuperação e frequência têm sentidos distintos,
+e nenhum fator mostrou superioridade em todas as métricas.
+
+As hipóteses complementares foram registradas depois do piloto, o que
+limita seu caráter de previsão anterior aos dados. Não houve ajuste da
+heurística nesta revisão. Os limites de independência do consenso,
+completude e seleção permanecem mesmo com F1 alto e p-valores pequenos.
+A RQ07 e a verificação de todas as hipóteses exigem suas análises próprias.

@@ -15,24 +15,32 @@ Engenharia de Software -- PUC Minas}
 \begin{document}
 \maketitle
 \begin{abstract}
-This study defines a reproducible protocol to mine delivery metrics from public
-GitHub repositories using GitHub Actions. Published releases represent deployments,
-while workflow runs indicate failures and recoveries. The protocol uses a twelve-month
-window, explicit inclusion criteria, and diagnostics for incomplete collections.
-The available pilot covers 82 repositories and 238,629 workflow runs, with
-18 incomplete collections. This partial delivery preserves missing values and
-censoring; it does not meet the target of one hundred fully eligible projects.
-The complete DORA analysis and hypothesis assessment remain pending.
+This study mines delivery metrics from 500 public GitHub repositories using
+GitHub Actions over a twelve-month window. Releases approximate deployments,
+while workflow runs indicate CI failures and recoveries; missing values and
+censoring remain explicit. Spearman correlations between deployment frequency
+and change failure rate are positive for the CI variant (rho=0.155, n=500)
+and the corrective-release variant (rho=0.799, n=498). Group comparisons find
+seven significant global differences after Holm correction, with reported
+effect sizes. The corrective-release heuristic achieves F1=0.933 against the
+recorded consensus on 296 of 300 sampled releases. Four first releases remain
+indeterminate, and documented limitations of labeling independence constrain
+interpretation. These associations do not establish causality or production
+incident rates; alternative operational definitions remain a separate analysis.
 \end{abstract}
 \begin{resumo}
-Este estudo define um protocolo reproduzível para minerar métricas de entrega em
-repositórios públicos do GitHub que usam Actions. Releases publicadas representam
-implantações, e runs indicam falhas e recuperações. O protocolo utiliza uma janela
-de doze meses, critérios explícitos de inclusão e diagnósticos de coleta incompleta.
-O piloto disponível abrange 82 repositórios e 238.629 runs, com 18 coletas
-incompletas. A entrega parcial preserva ausências e censuras e não atende à
-meta de cem projetos elegíveis completos. A análise DORA conjunta e a
-avaliação das hipóteses permanecem pendentes.
+Este estudo minera métricas de entrega em 500 repositórios públicos do GitHub
+com Actions, em doze meses. Releases aproximam implantações, e runs indicam
+falhas e recuperações de CI; ausências e censuras permanecem explícitas.
+As correlações de Spearman entre frequência e CFR são positivas: 0,155 para
+a variante de CI (n=500) e 0,799 para a de releases corretivas (n=498).
+Comparações por fatores mantêm sete diferenças globais após Holm, com
+tamanhos de efeito reportados. A heurística de corretivas obtém F1=0,933
+contra o consenso registrado em 296 de 300 releases sorteadas. Quatro
+primeiras releases permanecem indeterminadas, e limites documentados da
+independência da rotulagem restringem a interpretação. As associações não
+estabelecem causalidade nem taxas de incidentes em produção; definições
+operacionais alternativas exigem análise própria.
 \end{resumo}
 \input{introducao}
 \input{hipoteses_complementares}

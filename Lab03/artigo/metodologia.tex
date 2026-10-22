@@ -348,6 +348,43 @@ um ajuste futuro usando o mesmo consenso deve ser declarado como tal.
 A avaliação sustenta a identificação de corretivas segundo o instrumento,
 não mede diretamente incidentes em produção nem a exatidão da CFR(b).
 
+% S03-11 (#177): procedimentos executados nas #170--172.
+\subsection{Análises das RQ05 e RQ06}
+\label{sec:metodo-rq05-rq06}
+As análises reexecutáveis usam o CSV final dos 500 projetos, com SHA-256
+registrado nos notebooks e tabelas. A RQ05 calcula Spearman bilateral entre
+frequência de deploy e cada CFR, com exclusão de nulos por par, ranks médios
+nos empates e relato de $\rho$, $p$ assintótico e $n$. A verificação usa
+99.999 permutações com semente 170 e correção de contagem que evita $p=0$.
+A dispersão usa frequência em log; os testes não dependem dessa escala.
+Uma análise de sensibilidade exclui os 54 projetos com algum indicador de
+coleta incompleta ou cálculo parcial. Os dois testes de Spearman são
+reportados sem ajuste; a correção abaixo se restringe à RQ06.
+
+Na RQ06, estrelas, contribuidores e idade em dias são divididos em quartis
+por \texttt{qcut} sobre os valores disponíveis do fator, antes de excluir
+valores ausentes da métrica. Os limites e tamanhos são preservados; empates
+nos limites não são separados artificialmente. Exigem-se ao menos cinco
+observações válidas por grupo. São analisadas seis métricas: frequência,
+lead time (a)/(b), CFR(a)/(b) e recuperação. O tipo de projeto da hipótese
+original não é testado nesta análise dos 500: só a amostra-ouro dispõe de
+rótulos manuais; idade é um fator numérico adicional, sem reformular a
+hipótese original após observar os resultados.
+
+Kruskal--Wallis compara os quatro grupos, com correção de empates. Holm
+é aplicado à família dos 18 testes globais e, separadamente, à família dos
+108 contrastes possíveis de Mann--Whitney bilateral, assintótico com
+correção de empates e continuidade. Não se reduz a família aos pares
+selecionados por significância nominal. Um contraste é relatado como
+diferença somente quando o teste global e o par passam por Holm, com
+$\alpha=0,05$. Para os globais, usa-se a convenção do enunciado,
+$\varepsilon^2=H/(n-1)$, com $n$ efetivamente testado. Para os pares,
+$\delta=2U_1/(n_1n_2)-1$, onde sinal positivo indica valores maiores no
+primeiro grupo. Os cortes de $|\delta|$ são 0,147, 0,33 e 0,474 para separar
+magnitudes desprezível, pequena, média e grande. Ausências ficam nulas,
+sem imputação; associações e diferenças de distribuição não são tratadas
+como efeitos causais.
+
 \subsection{Classificação e dicionário de dados}
 Usamos os cortes fixos do enunciado da disciplina, contrato
 \texttt{lab03-enunciado-cortes-v2}. Para frequência, Elite exige ao menos

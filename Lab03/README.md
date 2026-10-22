@@ -553,7 +553,9 @@ Coletas incompletas mantêm `coleta_incompleta=true` e geram alerta. Ausência d
 páginas pode esconder a primeira falha ou uma recuperação, então os episódios
 calculados também ficam sujeitos a essa limitação. O cálculo não aplica o
 filtro final de inclusão nem integra as etapas em um único comando; isso fica
-para a S01-21 (#149). A validação real e o aceite da task permanecem pendentes.
+para a S01-21 (#149). A execução real posterior está documentada na
+[entrega final dos 500](entregas/s02-03-dataset-500-final/README.md), com
+auditoria e diagnósticos; os testes unitários, isoladamente, não provam aceite.
 ### Funil de seleção e critério mínimo de inclusão (S01-06)
 
 O módulo `pipeline.funil` aplica o critério mínimo de inclusão de
@@ -674,7 +676,7 @@ O filtro `--amostra` restringe aos repositórios elegíveis. O integrado e a
 reconstrução offline já executam essa etapa com esse recorte. Ausências de
 evidência produzem decisões indeterminadas e diagnósticos de cobertura;
 patch pode sustentar decisões mesmo sem compare. A avaliação manual da v1
-continua pendente da #162. Veja as [regras, limites e opções](docs/heuristica-cfr-b-161.md).
+foi executada na #162 com cobertura 296/300 e limitações registradas. Veja as [regras, limites e opções](docs/heuristica-cfr-b-161.md).
 
 ### Etapas
 
@@ -701,8 +703,8 @@ O workflow [`lab03-ci.yml`](../.github/workflows/lab03-ci.yml) roda esse mesmo c
 O protocolo metodológico da validação manual, incluindo rotulagem, Fleiss,
 consenso e avaliação da heurística, está documentado na
 [seção do artigo S02-15 — #165](artigo/README.md#validação-manual--s02-15-165).
-A documentação distingue os procedimentos previstos dos resultados humanos
-ainda pendentes; o gerador abaixo não cria rótulos nem métricas de validação.
+A documentação relata os resultados registrados e os limites de independência
+e cobertura; o gerador abaixo não cria rótulos nem métricas de validação.
 
 `pipeline/amostra_ouro.py` sorteia a amostra da validação manual e gera as
 planilhas que cada integrante preenche:
@@ -827,31 +829,45 @@ exclusões e hashes. A partir de `Lab03`, com as dependências instaladas:
 
 ```bash
 python -m pipeline.avaliacao_heuristica \
-  --previsoes data/processed/amostra-final-500/cfr_b.json \
-  --saida validacao/avaliacao-heuristica/final-500 --exigir-completa
+  --previsoes data/processed/validacao-final-500/cfr_b.json \
+  --saida /tmp/lab03-avaliacao-final --exigir-completa
 ```
 
 O arquivo precisa conter os **detalhes por release** da #161; o CSV agregado
 dos 500 repositórios e os JSONs resumidos não bastam. Também é possível
 recalcular a v1 com `--releases` e `--compare`, lendo somente dados locais.
 
-Há uma [execução histórica parcial](validacao/avaliacao-heuristica/snapshot-500/avaliacao.md)
-reproduzível pelo snapshot publicado: **146/300** releases, com 154
-previsões indeterminadas. O relatório principal usa o `cfr_b.json` versionado
-e gera uma [lista das pendências](validacao/avaliacao-heuristica/snapshot-500/pendencias.csv),
-com a evidência faltante e a ação recomendada para cada par.
-Seus escores não validam o desempenho na amostra
-inteira. A [documentação da #162](docs/avaliacao-heuristica-162.md) explica
-os contratos, a reprodução offline e a substituição pela execução final.
+O [relatório final](validacao/avaliacao-heuristica/final-500/README.md)
+processa **500 repositórios e 34.255 releases**, publica o CFR(b) integral
+comprimido e inclui restauração com SHA-256 e reprodução sem API.
+Os valores agregados coincidem com o CSV final (498 estimáveis, dois nulos).
+Na amostra-ouro, a avaliação cobre **296/300 releases**: precisão **0,890511**,
+recall **0,979920**, F1 **0,933078**; matriz `[[17,30],[5,244]]`.
+As quatro primeiras releases sem predecessora permanecem indeterminadas,
+com diagnóstico registrado; `--exigir-completa` retorna 3. O
+[snapshot histórico](validacao/avaliacao-heuristica/snapshot-500/avaliacao.md)
+de 146 pares foi preservado. O consenso registrado tem limitações de
+independência descritas no artigo e não equivale a rótulos para todas as
+releases dos 500 projetos.
 
 ### Histórico e refinamento da heurística (S02-13 — #163)
 
-O [histórico da #163](docs/refinamento-heuristica-163.md) registra a regra
-v1, precisão, recall, F1, matriz e cobertura, com um
-[registro de versões e hashes](validacao/refinamento-heuristica/versoes.json).
-A v1 foi mantida provisoriamente: F1=0,930403 em 146/300 pares não comprova
-a meta de 0,70 na amostra inteira. A justificativa e o procedimento para
-avaliar os dados finais e refinar a regra, se necessário, estão documentados.
+O [histórico da #163](docs/refinamento-heuristica-163.md) e o
+[registro de versões](validacao/refinamento-heuristica/versoes.json)
+incorporam a avaliação final das fontes. Mantém-se a v1, sem ajuste da regra:
+F1 observado de 0,933078 em 296 pares. Mesmo a conclusão binária mais
+desfavorável das quatro indeterminações daria F1=0,925996, mantendo fixos
+os demais pares e o consenso; esse limite condicional não é F1 medido nas
+300 releases. A decisão e as limitações estão justificadas.
+
+### Relato atualizado no artigo (#165 e #177)
+
+A [metodologia](artigo/metodologia.tex) apresenta amostra-ouro, concordância,
+consenso e avaliação com seus limites documentados. Os
+[resultados](artigo/resultados.tex) incluem Spearman nas duas variantes e
+RQ06 com Holm, ε² e delta de Cliff, sem alterar hipóteses ou rótulos.
+O [registro de conferência](artigo/validacao-s03-177.md) descreve reprodução,
+compilação e alcance; a RQ07 permanece em entrega própria.
 
 ### RQ05 — correlação de Spearman (S03-04 — #170)
 
@@ -1041,6 +1057,10 @@ O comando calcula também a variante por commit (#142) em
 `processed/lead_time_commit.json`, a cada execução, e reúne todas as métricas
 por repositório em `processed/metricas.json` (#152). A CFR (b) (#161) é a
 dependência explícita em `execucao.json`.
-A presença dos tipos de métrica implementados não comprova execução real
-nem atendimento de todas as variantes do protocolo. A validação real dos 100 repositórios continua
-pendente até haver evidência registrada no relatório.
+A presença dos tipos de métrica implementados não comprova, por si, execução
+real nem atendimento de todas as variantes do protocolo. A execução final
+dos 500 está documentada em
+[entregas/s02-03-dataset-500-final](entregas/s02-03-dataset-500-final/README.md);
+os detalhes de CFR(b) e sua avaliação estão no
+[relatório final](validacao/avaliacao-heuristica/final-500/README.md). Os
+diagnósticos de incompletude e as limitações de validação continuam válidos.
