@@ -1,0 +1,42 @@
+{
+  "issue": 171,
+  "csv": "entregas/s02-03-dataset-500-final/dataset-500.csv",
+  "csv_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "total_repositorios": 500,
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "fatores": [
+    "estrelas",
+    "contribuidores",
+    "idade_dias"
+  ],
+  "metricas": [
+    "deployment_frequency",
+    "lead_time_a",
+    "lead_time_b",
+    "cfr_a",
+    "cfr_b",
+    "tempo_recuperacao"
+  ],
+  "alpha_nominal": 0.05,
+  "agrupamento": "qcut(q=4, duplicates=drop); cortes fixados antes de excluir nulos das métricas; empates não separados por ID",
+  "minimo_por_grupo": 5,
+  "teste_global": "Kruskal-Wallis assintótico com empates; Mann-Whitney direto se houver dois grupos",
+  "posthoc": "todos os pares não ordenados quando p bruto de KW < alpha; Mann-Whitney bilateral assintótico com empates e continuidade",
+  "multiplicidade": "p-valores brutos; Holm e tamanhos de efeito na issue #172; resultados nominais",
+  "contagens": {
+    "testes_planejados": 18,
+    "testes_estimaveis": 18,
+    "globais_com_poshoc": 8,
+    "pares_realizados": 48
+  },
+  "codigo_sha256": "b0f953994dfd06f80257283493578be3e7fa1856149fb8332c28b9b82304e64c",
+  "bibliotecas": {
+    "python": "3.14.3",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.17.1"
+  }
+}

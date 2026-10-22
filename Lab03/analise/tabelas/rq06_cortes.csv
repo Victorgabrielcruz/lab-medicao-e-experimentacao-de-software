@@ -1,0 +1,13 @@
+fator,n_populacao,n_fator,ausentes_fator,grupo,limite_inferior,limite_superior,inclui_inferior,n_grupo,grupos_efetivos,motivo
+estrelas,500,500,0,Q1,30088,36047.75,True,125,4,
+estrelas,500,500,0,Q2,36047.75,45049,False,125,4,
+estrelas,500,500,0,Q3,45049,68388.5,False,125,4,
+estrelas,500,500,0,Q4,68388.5,391470,False,125,4,
+contribuidores,500,500,0,Q1,1,180.75,True,125,4,
+contribuidores,500,500,0,Q2,180.75,395,False,125,4,
+contribuidores,500,500,0,Q3,395,887.25,False,125,4,
+contribuidores,500,500,0,Q4,887.25,9944,False,125,4,
+idade_dias,500,500,0,Q1,12,939,True,125,4,
+idade_dias,500,500,0,Q2,939,2390.5,False,125,4,
+idade_dias,500,500,0,Q3,2390.5,3954.5,False,125,4,
+idade_dias,500,500,0,Q4,3954.5,6746,False,125,4,
