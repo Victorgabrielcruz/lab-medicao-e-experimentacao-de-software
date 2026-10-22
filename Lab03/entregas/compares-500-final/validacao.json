@@ -1,0 +1,14 @@
+{
+  "verificacao_integral_gzip": true,
+  "partes_verificadas": 25,
+  "bytes_compactados": 1038521362,
+  "bytes_json_verificados": 5037734031,
+  "sha256_json": "dccac2b514a7a5f5f400c667d5fee856cee00db8367a527d109b33d19e505c73",
+  "sha256_origem_confere_auditoria_final": true,
+  "total_repositorios": 500,
+  "total_comparacoes": 34151,
+  "ocorrencias_removidas": 4,
+  "testes_aprovados": 10,
+  "suite": "tests/test_compares_publicados.py",
+  "consultas_api_na_publicacao": 0
+}

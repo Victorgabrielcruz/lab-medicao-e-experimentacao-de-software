@@ -1,0 +1,147 @@
+{
+  "versao": 1,
+  "arquivo_restaurado": "compare.json",
+  "compressao": "gzip em partes concatenáveis",
+  "bytes": 5037734031,
+  "sha256": "dccac2b514a7a5f5f400c667d5fee856cee00db8367a527d109b33d19e505c73",
+  "bytes_origem": 5037734099,
+  "sha256_origem": "90a8d95da2e775bc139d14f72fd909adbe5cfaa5485b29af412b62528d474d26",
+  "ocorrencias_removidas": 4,
+  "total_repositorios": 500,
+  "total_comparacoes": 34151,
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "coletas_compare_incompletas": 11,
+  "releases_compare_ignoradas": 104,
+  "partes": [
+    {
+      "arquivo": "compare.json.gz.part001",
+      "bytes": 41943040,
+      "sha256": "b3797a5bfcddfad25a76994a966ed555d1f45dc511b957ecc794a4ba4a2928e9"
+    },
+    {
+      "arquivo": "compare.json.gz.part002",
+      "bytes": 41943040,
+      "sha256": "35983bf0de59a321be3ccaa4b0cb4940691a42e1a38cfd04e94190e8f816f372"
+    },
+    {
+      "arquivo": "compare.json.gz.part003",
+      "bytes": 41943040,
+      "sha256": "e1337e76a698a6987a5572c936c3a653e93ed606b1f854da3c492cd3a955e8cd"
+    },
+    {
+      "arquivo": "compare.json.gz.part004",
+      "bytes": 41943040,
+      "sha256": "00806768c6af09372039931973eb556e20225f0e2b7a296b6d1fae0bf6b91056"
+    },
+    {
+      "arquivo": "compare.json.gz.part005",
+      "bytes": 41943040,
+      "sha256": "68b9259660e287700ed91b4b85050c7041a86f078ce4a589968a5e32b368094a"
+    },
+    {
+      "arquivo": "compare.json.gz.part006",
+      "bytes": 41943040,
+      "sha256": "2e9b994960ab558251fec04ec1f9fd69cf44c5f75187d6b52a520728610054ee"
+    },
+    {
+      "arquivo": "compare.json.gz.part007",
+      "bytes": 41943040,
+      "sha256": "366dc8d61ae1f2526c3596d0e55a724970216ce175f6966b925d26620ba06152"
+    },
+    {
+      "arquivo": "compare.json.gz.part008",
+      "bytes": 41943040,
+      "sha256": "12d8db17380b2d1215a445d2476cd86ab045b7bc7740d084475b6af936b958b4"
+    },
+    {
+      "arquivo": "compare.json.gz.part009",
+      "bytes": 41943040,
+      "sha256": "9bb2cf84e43c4e3e99a1f43400084675f9bc77f38265c2cbd665263a3755d377"
+    },
+    {
+      "arquivo": "compare.json.gz.part010",
+      "bytes": 41943040,
+      "sha256": "17d40bed771980e4a68a428e98cf1d77f8b4ca9fabef8dd3c812a1c878a7a303"
+    },
+    {
+      "arquivo": "compare.json.gz.part011",
+      "bytes": 41943040,
+      "sha256": "b8b6e637b4f0e3751210d653eedd313d7cc25ea7d70e6b5e4fe02c0b8d13fa82"
+    },
+    {
+      "arquivo": "compare.json.gz.part012",
+      "bytes": 41943040,
+      "sha256": "454f52b1e45453b7cf513f0e5d210f2f3eb91276af5e6932e07a14ec13214d58"
+    },
+    {
+      "arquivo": "compare.json.gz.part013",
+      "bytes": 41943040,
+      "sha256": "090481e84d0b8d1f003733d0ea9604167cf412b2ad1a09be901cde3dce4eaa58"
+    },
+    {
+      "arquivo": "compare.json.gz.part014",
+      "bytes": 41943040,
+      "sha256": "98ad1e14afc24370378238b98d25dce31ef0c92555ceba27bc949146f70b9177"
+    },
+    {
+      "arquivo": "compare.json.gz.part015",
+      "bytes": 41943040,
+      "sha256": "ad849a6df5a4cbc377b37f77f80993520f162a9c2f4d29e526d1ca41280c637e"
+    },
+    {
+      "arquivo": "compare.json.gz.part016",
+      "bytes": 41943040,
+      "sha256": "ed2d4c9548eff1e37ce811948f46818bd37f0dc90c03072c103ff78384c956ed"
+    },
+    {
+      "arquivo": "compare.json.gz.part017",
+      "bytes": 41943040,
+      "sha256": "3f89a5a61c635ef8b6b9dc0c319f0e63a6966d299715223969f7cfec0e40f485"
+    },
+    {
+      "arquivo": "compare.json.gz.part018",
+      "bytes": 41943040,
+      "sha256": "fe0e049deebe6c894814fe5a5d76cec10d1a6c1d8dff9b848962cf77cace7825"
+    },
+    {
+      "arquivo": "compare.json.gz.part019",
+      "bytes": 41943040,
+      "sha256": "a9faf31e1365e2c63fe478f10d522ae9c39cbe8dad7e3bf18ae5be07ee7917cc"
+    },
+    {
+      "arquivo": "compare.json.gz.part020",
+      "bytes": 41943040,
+      "sha256": "f6cf251319161ad5a8bc01d765cbbd67dc0dbcead822cc0b15c7fdeaed02b0e7"
+    },
+    {
+      "arquivo": "compare.json.gz.part021",
+      "bytes": 41943040,
+      "sha256": "d9148c6b846309755d5a866b9c0e44f54291ad38fb6d480878043b61a1e3d010"
+    },
+    {
+      "arquivo": "compare.json.gz.part022",
+      "bytes": 41943040,
+      "sha256": "fe80d7de0b89245f4a7d1eb73a240c675ca98f56006fa0dbea96756acad7884d"
+    },
+    {
+      "arquivo": "compare.json.gz.part023",
+      "bytes": 41943040,
+      "sha256": "e1c0bc0e4e85c88d72ee302a96a6bf23ba64610f7e4b92f367ace99ebf4fab92"
+    },
+    {
+      "arquivo": "compare.json.gz.part024",
+      "bytes": 41943040,
+      "sha256": "4d3c405adb6fb8be391c58ba71c633249397a4d45afc23fa1664487836b3bc91"
+    },
+    {
+      "arquivo": "compare.json.gz.part025",
+      "bytes": 31888402,
+      "sha256": "8d4eb30fd5cbf7df9cb57b41114bd655e29cb3c87588a4279a24f3f458f19fec"
+    }
+  ],
+  "saneamento": "Mesmo padrão de tokens do snapshot anterior; apenas textos públicos saneados. IDs, datas e decisões não são recalculados.",
+  "validacao_sha256_lf": "08e6cd5e87c8e3e6bd0ac15562a5f4a1310c092ce086e25ac2816ce3944f39c5"
+}

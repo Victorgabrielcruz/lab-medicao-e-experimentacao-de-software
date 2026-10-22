@@ -4,7 +4,10 @@ Snapshot autorizado pelo responsável em 20/10/2026. A seleção atingiu **500
 repositórios elegíveis entre 1.064 candidatos avaliados**, na janela
 `[2025-10-01T00:00:00Z, 2026-10-01T00:00:00Z)`.
 
-**O processamento final ainda não terminou.** A execução parou durante os
+**Este snapshot preserva o estado parcial anterior.** O processamento final
+foi concluído posteriormente: consulte o [CSV final](../s02-03-dataset-500-final/README.md)
+e o [`compare.json` final publicado em partes](../compares-500-final/README.md).
+Na captura histórica preservada aqui, a execução parou durante os
 compares após um HTTP 403. As saídas processadas publicadas representam o estado
 parcial observado, não um conjunto completo das quatro métricas para 500 projetos.
 Ausências de métricas não equivalem a zero.
