@@ -1,0 +1,26 @@
+{
+  "arquivo_gzip": "cfr_b.json.gz",
+  "bytes_gzip": 66826825,
+  "sha256_gzip": "07666363a6833c1d4bfb4994431d231c1e3ad69070488080e3a85f03f8cbfa0a",
+  "bytes_json": 345647323,
+  "sha256_json": "a40fa32652071c710013be4e61f5f801aaa7ea08601181f5eafb7163234de082",
+  "total_repositorios": 500,
+  "total_releases": 34255,
+  "origens": {
+    "entregas/compares-500-final/manifesto.json": "761d8960065307ef3fb69e850db56ebd80ab018dba196d612e0d01f42daf9646",
+    "entregas/dados-brutos-500/manifesto.json": "379091e2f9d6c13c07a002bf006c1f7926ad2f593f4fc05986d36463ca8d7e9c",
+    "entregas/s02-03-dataset-500-final/dataset-500.csv": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+    "data/raw/validacao-final-500/releases.json": "89e884ab73d977173c2a79427662155b04fb0d9abb3249f0f0c97e2e5a9e077d"
+  },
+  "compare_publicado_sha256": "dccac2b514a7a5f5f400c667d5fee856cee00db8367a527d109b33d19e505c73",
+  "versao_heuristica": "corretiva-v1-patch-ou-mensagem",
+  "limite_escopo": "Processamento dos 500 e sequência integral; classificações indeterminadas preservadas. Validação contra o consenso restrita aos 300 pares oficiais.",
+  "data_revisao": "2026-10-22",
+  "codigos_sha256": {
+    "pipeline/releases_snapshot.py": "5625f29b93e00905a769cd28042cc92732a7790f9cc5f9dcf83ee28fd952fb78",
+    "pipeline/auditoria_cfr_final.py": "1e3619f9e797f8442f19e0263932293e1abd1713b0d89e8a092efc297bdc340e",
+    "pipeline/cfr_b.py": "8fb3435889b4ba0e27301f5935271e3920f239aa56dd77e2719e5c42f2581e44",
+    "pipeline/avaliacao_heuristica.py": "9cd88eb7bdd46805a6fb275cdf92aaa87247cbb5f83a045f994465e7d2a7b9a9",
+    "validacao/avaliacao-heuristica/final-500/restaurar_cfr_b.py": "1e159a73c111ce0701896214984daeb7d44477bde458470fe151a9a17e061878"
+  }
+}
