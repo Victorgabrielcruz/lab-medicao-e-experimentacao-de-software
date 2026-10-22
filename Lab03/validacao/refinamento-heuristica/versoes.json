@@ -1,0 +1,119 @@
+{
+  "issue": 163,
+  "data_revisao": "2026-10-21",
+  "commit_main_referencia": "ff3db78",
+  "limiar_f1": 0.7,
+  "versao_em_uso": "corretiva-v1-patch-ou-mensagem",
+  "versao_final_validada": null,
+  "f1_amostra_completa": null,
+  "meta_comprovada_na_amostra_completa": false,
+  "decisao": "manter_v1_provisoriamente_com_justificativa",
+  "justificativa": "A avaliação abrange 146/300 pares, todos com previsão positiva. Faltam evidências para 154 previsões; o F1 parcial não comprova a meta na amostra inteira nem demonstra necessidade de refinamento.",
+  "documentacao": "docs/refinamento-heuristica-163.md",
+  "versoes": [
+    {
+      "versao_heuristica": "corretiva-v1-patch-ou-mensagem",
+      "issue_implementacao": 161,
+      "regra": "Aumento de patch SemVer com major/minor iguais OU mensagem de commit com termo isolado fix/revert/hotfix, sem distinguir maiúsculas; evidência insuficiente permanece indeterminada.",
+      "alteracao_nesta_entrega": false,
+      "codigo": {
+        "arquivo": "pipeline/cfr_b.py",
+        "sha256": "8fb3435889b4ba0e27301f5935271e3920f239aa56dd77e2719e5c42f2581e44"
+      },
+      "avaliacoes": [
+        {
+          "identificador": "snapshot-500-parcial-2026-10-21",
+          "estado": "parcial",
+          "avaliador": {
+            "arquivo": "pipeline/avaliacao_heuristica.py",
+            "sha256": "9cd88eb7bdd46805a6fb275cdf92aaa87247cbb5f83a045f994465e7d2a7b9a9"
+          },
+          "versao_avaliador": 2,
+          "relatorio": {
+            "arquivo": "validacao/avaliacao-heuristica/snapshot-500/avaliacao.json",
+            "sha256": "55aaa95af2a5fc16a3ae1dd66ed93b8ada479d1388e5c3ffe993dd2b67d1a3e2"
+          },
+          "entradas": {
+            "amostra": {
+              "arquivo": "validacao/amostra-ouro/amostra_ouro.json",
+              "sha256": "0a8bb2a23b03e3c40e0e7348abfe03c7c0d11350350bfcdccf4cb05c5ecb7657"
+            },
+            "consenso": {
+              "arquivo": "validacao/amostra-ouro/consenso_releases.csv",
+              "sha256": "d7416f5b5de19ac7def65abac72cb4b11a80be32ef3e36eb3049e5aa3361c8f8"
+            },
+            "previsoes": {
+              "arquivo": "validacao/avaliacao-heuristica/snapshot-500/cfr_b.json",
+              "sha256": "0e20ab6fae43b857e5a0d353bf1a4b4b014a1833f564dbf4968b6273912a2acd"
+            }
+          },
+          "classe_positiva": "sim",
+          "avaliacao_completa": false,
+          "cobertura": {
+            "total_amostra": 300,
+            "avaliadas": 146,
+            "excluidas": 154,
+            "fracao_avaliada": 0.4866666666666667,
+            "motivos_exclusao": {
+              "previsao_indeterminada": 154
+            },
+            "consenso_positivo_total": 249,
+            "consenso_negativo_total": 51,
+            "consenso_positivo_excluido": 122,
+            "consenso_negativo_excluido": 32,
+            "pendencias_por_tipo": {
+              "commits_compare": 125,
+              "predecessora_historica+commits_compare": 29
+            }
+          },
+          "matriz_confusao": {
+            "linhas_consenso": [
+              "nao",
+              "sim"
+            ],
+            "colunas_previsao": [
+              "nao",
+              "sim"
+            ],
+            "valores": [
+              [
+                0,
+                19
+              ],
+              [
+                0,
+                127
+              ]
+            ],
+            "VP": 127,
+            "FP": 19,
+            "FN": 0,
+            "VN": 0
+          },
+          "precisao": 0.8698630136986302,
+          "recall": 1.0,
+          "f1": 0.9304029304029304,
+          "atinge_limiar_no_subconjunto": true,
+          "permite_declarar_meta_global": false
+        }
+      ]
+    }
+  ],
+  "cenarios_condicionais_amostra_completa": {
+    "hipotese": "Previsões conhecidas e consenso fixos; eventual classificação binária dos 154 pares restantes. Não são resultados observados nem intervalos de confiança.",
+    "todos_restantes_errados": {
+      "VP": 127,
+      "FP": 51,
+      "FN": 122,
+      "VN": 0,
+      "f1": 0.594847775175644
+    },
+    "todos_restantes_certos": {
+      "VP": 249,
+      "FP": 19,
+      "FN": 0,
+      "VN": 32,
+      "f1": 0.9632495164410058
+    }
+  }
+}
