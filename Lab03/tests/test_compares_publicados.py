@@ -6,8 +6,11 @@ from pathlib import Path
 
 import pytest
 
-spec = importlib.util.spec_from_file_location('pacote_compares',
-    Path(__file__).resolve().parents[1] / 'entregas/compares-500-final/pacote.py')
+caminho_script = Path(__file__).resolve().parents[1] / 'entregas/compares-500-final/pacote.py'
+if not caminho_script.is_file():
+    pytest.skip('Script de publicação ausente no checkout parcial: compares-500-final/pacote.py',
+                allow_module_level=True)
+spec = importlib.util.spec_from_file_location('pacote_compares', caminho_script)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 

@@ -15,8 +15,40 @@ Cálculo das quatro métricas DORA (deployment frequency, lead time, change fail
 | [`docs/coleta-tres-sessoes.md`](docs/coleta-tres-sessoes.md) | Retomada até 500 com três tokens, sem prioridade por tamanho, status no terminal e recuperação de rede |
 | [`docs/definicoes-operacionais.md`](docs/definicoes-operacionais.md) | Janela de observação, definição de deploy, regras de runs, critério de inclusão, filtro de Actions, metadados e tabela de classificação DORA (C1) |
 | [`artigo/README.md`](artigo/README.md) | Organização do artigo em LaTeX, hipóteses informais das RQ01 a RQ07 e registro de sua cronologia; RQ05 a RQ07 na S01-15 (#143) |
+| [`replicacao/fin-03-retorno/README.md`](replicacao/fin-03-retorno/README.md) | Análise e tratamento das issues #251–254 recebidas de Cardosoooo, testes e pendência de vínculo ao Project na #182 |
 
 ## Como executar
+
+### Obter o código sem baixar os pacotes de dados (#253)
+
+Os snapshots de `entregas/dados-brutos-255`, `entregas/dados-brutos-500` e
+`entregas/compares-500-final` ocupam vários GB e servem à reprodução offline.
+Eles **não são necessários para executar uma coleta nova pela API**. Para
+baixar o código do Lab03, os CSVs pequenos e a documentação, mantendo os
+scripts de restauração mas excluindo os pacotes `.part*`, `.zip` e `.gz`,
+use estes comandos no PowerShell ou em um shell Linux/macOS:
+
+```text
+git clone --filter=blob:none --no-checkout --single-branch --branch main https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software.git lab03-codigo
+cd lab03-codigo
+git sparse-checkout set --no-cone '/.gitignore' '/README.md' '/.github/' '/Lab03/' '!*.part*' '!*.zip' '!*.gz'
+git checkout main
+```
+
+O filtro evita baixar o conteúdo dos blobs até que seja solicitado; o
+sparse-checkout evita solicitar os pacotes durante o checkout. Apenas
+`--depth 1` não exclui os arquivos grandes presentes na versão atual.
+Para obter todos os arquivos depois, `git sparse-checkout disable` solicita
+também os pacotes grandes. Consulte os READMEs das entregas antes de restaurá-los.
+
+Os testes de publicação usam pacotes sintéticos temporários, sem ler os GB
+dos snapshots. Se um checkout excluir também as pastas com `restaurar.py`
+ou `pacote.py`, os dois módulos correspondentes são ignorados com motivo
+explícito; os demais testes continuam. Manter os scripts permite testar
+essas funções mesmo sem os binários. Os CSVs pequenos usados por análises,
+como `entregas/s02-03-dataset-500-final/dataset-500.csv`, devem permanecer.
+
+### Preparar o ambiente
 
 Requer Python 3.11 ou superior. Use o Python do ambiente virtual para garantir
 que as dependências instaladas sejam as mesmas usadas na execução.
@@ -106,8 +138,10 @@ O cliente HTTP trata as falhas temporárias automaticamente em todas as etapas:
 - Em respostas `403`/`429` de rate limit, repete a mesma consulta após a espera.
   `Retry-After`, quando válido, é respeitado junto com o reset da cota, usando
   o maior prazo quando ambos estiverem presentes. Para
-  limite secundário sem prazo, aguarda 60, 120, 240 e 480 segundos. Um `403` de
-  permissão, sem indicação de rate limit, é propagado imediatamente.
+  limite secundário sem prazo, aguarda 60, 120, 240 e 480 segundos. Se a cota
+  continuar zerada e o reset informado já passou, aplica esse mesmo backoff
+  crescente, em vez de esgotar as tentativas com espera zero (#254). Um `403`
+  de permissão, sem indicação de rate limit, é propagado imediatamente.
 - Para respostas `5xx`, faz até quatro novas tentativas com esperas de **1, 2,
   4 e 8 segundos**: são no máximo cinco requisições se apenas esse erro ocorrer.
 - As repetições por rate limit também são limitadas a quatro por consulta. Os
@@ -953,6 +987,59 @@ padrão, `raw/candidatos_busca.json` preserva a busca completa, enquanto
 com a mesma janela, identidade e default branch. Use caminhos próprios em
 `caminhos.raw` e `caminhos.processed` para preservar o piloto; o cache pode ser
 compartilhado depois que a coleta original terminar.
+
+#### Replicar uma lista fixa de repositórios (#251)
+
+`--candidatos` aceita um JSON UTF-8 com a chave `candidatos`, uma lista sem
+IDs duplicados. Use o seguinte formato por repositório (valores ilustrativos;
+use os IDs e metadados da lista que deseja replicar):
+
+```json
+{
+  "candidatos": [
+    {
+      "id": 8514,
+      "full_name": "rails/rails",
+      "html_url": "https://github.com/rails/rails",
+      "estrelas": 58838,
+      "linguagem": "Ruby"
+    }
+  ]
+}
+```
+
+Para uma subamostra dos 500 projetos, selecione as linhas desejadas do CSV
+final e use suas colunas `id`, `full_name`, `estrelas` e `linguagem`; a URL
+é `https://github.com/` seguida de `full_name`. `linguagem` pode ser `null`.
+Preserve a ordem da lista e registre os IDs, a janela e a revisão do código
+para tornar a escolha reproduzível. A fonte precisa ficar fora do arquivo
+`candidatos.json` que será gerado em `caminhos.raw`.
+
+Salve os 30 registros em `candidatos_30.json`. Copie `config.yaml` para
+`config-replicacao.yaml` e altere apenas os caminhos, mantendo a janela e
+os critérios de inclusão da replicação:
+
+```yaml
+caminhos:
+  cache: data/cache/replicacao-30
+  raw: data/raw/replicacao-30
+  processed: data/processed/replicacao-30
+```
+
+A partir de `Lab03`, com o token configurado no ambiente, execute:
+
+```powershell
+.\.venv\Scripts\python.exe -m pipeline.integrado --config config-replicacao.yaml --candidatos candidatos_30.json --alvo 30 --max-candidatos 30
+```
+
+No Linux/macOS, use `python` do ambiente ativado. O comando não faz nova
+busca de candidatos nem inclui projetos fora da lista; continua verificando
+os critérios de elegibilidade. Se algum dos 30 candidatos não for elegível,
+poderá terminar abaixo de 30 incluídos, com código 3; isso não autoriza trocar
+projetos silenciosamente. Após interrupção, repetir o mesmo comando com a
+mesma fonte/configuração reutiliza os checkpoints e o cache. Esses caminhos
+isolam a replicação dos dados originais; o comando acima realiza consultas
+à API, portanto não é necessário executá-lo apenas para rodar os testes.
 
 A política principal atual usa `inclusao.incluir_prereleases=false`, conforme
 as definições de deploy/inclusão atualizadas na #138. Pré-releases continuam

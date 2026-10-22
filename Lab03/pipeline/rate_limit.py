@@ -96,7 +96,9 @@ class ControleRequisicoes:
         if retry_after is not None:
             return max(1, retry_after, espera_reset or 0)
         if espera_reset is not None:
-            return espera_reset
+            # O servidor pode continuar reportando cota zero após o reset.
+            # Nesse caso, repetir imediatamente consome todas as tentativas.
+            return espera_reset if espera_reset > 0 else ESPERA_SECUNDARIA_S * 2 ** repeticoes
         try:
             corpo = resposta.json()
         except ValueError:
@@ -135,8 +137,6 @@ class ControleRequisicoes:
                             resposta.status_code, limites, MAX_REPETICOES_LIMITE, espera, path)
                 with self._trava:
                     self._estatisticas["repeticoes_limite"] += 1
-                if espera == 0:
-                    self.sleep(0)
                 continue
             if 500 <= resposta.status_code < 600 and falhas < len(BACKOFF_5XX):
                 espera = BACKOFF_5XX[falhas]
