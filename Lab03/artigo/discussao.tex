@@ -224,13 +224,24 @@ longas. Ambos são contados e reportados, e as releases dos últimos sete
 dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
 
 \subsection{Validade externa}
-Repositórios populares, usuários de Actions e projetos com releases frequentes
-não representam todos os projetos de software. Selecionar os primeiros elegíveis
-na ordem de estrelas introduz viés para projetos populares. As conclusões devem
-ser limitadas à população e à janela estudadas. Idade integra a previsão
-da introdução; o tipo de projeto mencionado no complemento não foi comparado
-nos 500 por falta de rótulos fora da amostra-ouro. Uma análise não substitui
-a outra.
+% FIN-05 (#184): ameaças externas e de conclusão, com mitigações.
+\paragraph{População.} A amostra reúne os 500 primeiros elegíveis entre
+1.064 candidatos avaliados na ordem da busca por estrelas: todos têm ao
+menos 30.088 estrelas, e a mediana é de 45.049. Os
+filtros de Actions, cinco releases estáveis e cinquenta runs selecionam
+projetos abertos, populares e com publicação regular; projetos privados,
+pouco conhecidos, sem releases ou com outro sistema de CI ficam fora.
+Mitigamos declarando o funil completo, sem relaxar critérios, e
+restringindo as conclusões a esse recorte; as proporções de classes DORA
+não são estimativas para o software em geral.
+
+\paragraph{Janela e fatores.} Um único ano, de outubro de 2025 a setembro
+de 2026, não captura variações entre anos nem mudanças da plataforma. A
+RQ08 descreve a evolução mensal dentro da janela, sem substituir outras
+janelas; a configuração versionada permite repetir a coleta com outro
+recorte. A idade, prevista na introdução, foi comparada na RQ06; o tipo de
+projeto, mencionado no complemento, não foi comparado nos 500 por falta de
+rótulos fora da amostra-ouro, e uma análise não substitui a outra.
 
 \subsection{Alcance da replicação cruzada}
 A replicação descrita nas Seções~\ref{sec:metodo-replicacao}
@@ -261,6 +272,20 @@ separadas de 18 globais e 108 contrastes. P-valores pequenos não substituem
 os tamanhos de efeito nem removem confundidores; diferenças de distribuição
 não implicam apenas diferenças de mediana. Ausência de rejeição não prova
 equivalência, e o kappa da RQ07 não comprova validade do construto.
+
+O tamanho da amostra foi fixado pelo planejamento, sem análise de poder.
+Com 500 projetos, associações fracas já são significativas: na RQ05, a CFR
+(a) tem $\rho=0,155$ e $p<0,001$, mas explica pouco da variação. Por isso
+interpretamos $\rho$, $\varepsilon^2$ e o delta de Cliff, e não só os
+p-valores. Ao mesmo tempo, o $n$ efetivo varia por métrica, de 469 a 500, e
+cai para 419 nos pares completos da RQ07; os quartis de 125 projetos perdem
+observações quando a métrica falta, o que reduz o poder dos contrastes. As
+ausências não são imputadas e cada tabela informa o $n$ usado. Para
+mitigar, conferimos os p-valores de Spearman com 99.999 permutações,
+repetimos a RQ05 sem os 54 projetos com coleta incompleta ou cálculo
+parcial, com a mesma direção, e corrigimos os testes da RQ06 por Holm. A
+F1 da heurística vem de 296 pares de 60 projetos, sem intervalo de
+confiança, e deve ser lida como estimativa pontual.
 
 Não houve ajuste da heurística nesta revisão. Os limites de independência
 do consenso, cobertura das métricas, censura e seleção permanecem mesmo
