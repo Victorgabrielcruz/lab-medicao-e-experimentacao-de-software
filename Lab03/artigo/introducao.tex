@@ -1,119 +1,46 @@
 % Seção 1 do artigo do Lab03 (template SBC).
 % RQ01 a RQ04: S01-09 (#137); RQ05 a RQ07: S01-15 (#143).
-% A redação de cada conjunto está registrada no histórico Git.
-% O início da coleta principal deve ser registrado para verificar a cronologia.
+% Versão condensada na FIN-07 (#186); a redação completa está no histórico Git.
 
 \section{Introdução}
 \label{sec:introducao}
 
-A adoção de práticas DevOps tornou a entrega contínua de software um objetivo
-comum em equipes de desenvolvimento. Para medir o desempenho dessa entrega, o
-programa de pesquisa DORA (\textit{DevOps Research and Assessment}) propôs quatro
-métricas: frequência de implantação (\textit{deployment frequency}), tempo de
-espera para mudanças (\textit{lead time for changes}), taxa de falha de mudanças
-(\textit{change failure rate}) e tempo de recuperação de serviço
-\cite{forsgren2018accelerate}. A partir delas, os relatórios anuais do DORA
-classificam as organizações em quatro grupos de desempenho: Elite, High, Medium
-e Low \cite{dora2021}.
+O programa DORA (\textit{DevOps Research and Assessment}) mede o desempenho de
+entrega por quatro métricas: frequência de implantação, lead time de mudanças,
+taxa de falha de mudanças (CFR) e tempo de recuperação
+\cite{forsgren2018accelerate}, e classifica as equipes em Elite, High, Medium e
+Low \cite{dora2021}. Essas classes vêm de questionários. Em projetos de código
+aberto, releases, commits e execuções de integração contínua são públicos, e o
+GitHub Actions é amplamente usado \cite{kinsman2021actions, decan2022actions};
+calcular as métricas a partir desses dados, porém, exige decidir o que conta
+como entrega, como medir o lead time e o que é uma falha.
 
-Essas classificações, porém, vêm de questionários respondidos por profissionais,
-e não de dados medidos diretamente. Em projetos de código aberto, boa parte das
-informações necessárias para calcular as métricas é pública: as releases marcam
-as entregas, os commits mostram quando cada mudança foi feita, e as execuções de
-integração contínua registram falhas e correções. O GitHub Actions, serviço de
-automação de fluxos de trabalho integrado ao GitHub, tornou-se amplamente usado
-nesses projetos \cite{kinsman2021actions, decan2022actions}, e o histórico de
-suas execuções pode ser consultado pela API da plataforma.
-
-Calcular as métricas DORA a partir desses dados exige decisões que os relatórios
-não detalham. Em um projeto de código aberto não há implantação em produção
-controlada pela equipe, então é preciso escolher o que conta como entrega, como
-o lead time é medido e o que caracteriza uma falha. Cada escolha pode levar a
-valores e classificações diferentes para o mesmo repositório.
-
-O objetivo deste trabalho é calcular as quatro métricas DORA para repositórios
-populares de código aberto que usam GitHub Actions, a partir de dados públicos
-coletados pela API do GitHub, em uma janela de observação de 12 meses. Neste
-estudo, uma implantação corresponde a uma release publicada, e as falhas são
-observadas nas execuções de workflows do branch principal. Além de descrever a
-distribuição das métricas e a classificação resultante, o estudo investiga a
-relação entre as métricas, a influência de características dos repositórios e o
-quanto a classificação depende das definições operacionais escolhidas.
+Este trabalho calcula as quatro métricas para 500 repositórios populares que
+usam GitHub Actions, em doze meses, tratando uma release estável como
+implantação e as execuções de workflows do branch principal como fonte de
+falhas. Além da distribuição das métricas e das classes, investigamos a
+relação entre frequência e CFR, a influência de características dos
+repositórios e a sensibilidade da classificação às definições operacionais.
 
 \subsection{Questões de pesquisa e hipóteses}
 \label{sec:hipoteses}
+As hipóteses são expectativas informais registradas no histórico Git antes das
+análises; as das RQ05 a RQ07 foram formuladas sem consultar resultados.
 
-As quatro primeiras questões de pesquisa descrevem cada métrica na amostra.
-As três seguintes investigam associações entre métricas, diferenças entre
-grupos de repositórios e sensibilidade às definições operacionais. As hipóteses
-abaixo são expectativas informais, registradas no histórico Git para servir
-como ponto de comparação na discussão dos resultados. As hipóteses das RQ05
-a RQ07 foram formuladas a partir das definições do estudo, sem consulta a
-resultados de coleta ou de análise.
-
-\textbf{RQ01 -- Qual é a frequência de implantação dos repositórios?}
-Esperamos que a maioria dos repositórios fique na classe High, com mediana entre
-uma e três releases por mês, e que pouquíssimos atinjam a classe Elite. Projetos
-de código aberto agrupam mudanças em versões, e mesmo projetos muito ativos
-raramente publicam uma release por dia. Também esperamos uma distribuição
-assimétrica, com uma cauda longa de repositórios que publicam com muito mais
-frequência do que a mediana.
-
-\textbf{RQ02 -- Qual é o lead time das mudanças?}
-Esperamos que a mediana do lead time por commit fique entre uma e três semanas,
-o que coloca a maior parte dos repositórios na classe Medium. Se as releases
-saem aproximadamente uma vez por mês, um commit espera, em média, metade desse
-intervalo até ser publicado. Esperamos ainda que a variante calculada por release
-produza valores maiores que a calculada por commit, porque ela é influenciada
-pelos commits mais antigos de cada release.
-
-\textbf{RQ03 -- Qual é a taxa de falha das mudanças?}
-Pela variante baseada nas execuções de workflows, esperamos uma mediana entre
-10\% e 20\%. Falhas de integração contínua são frequentes em projetos ativos e
-nem sempre indicam um problema que chegaria ao usuário, como testes instáveis ou
-erros de configuração. Esperamos que a variante baseada em releases corretivas
-produza valores diferentes, e que as duas variantes classifiquem o mesmo
-repositório de forma diferente em uma parcela relevante dos casos.
-
-\textbf{RQ04 -- Qual é o tempo de recuperação após uma falha?}
-Esperamos uma mediana de algumas horas, abaixo de um dia, o que coloca a maior
-parte dos repositórios na classe High. Em projetos ativos, uma execução com falha
-costuma ser seguida por uma correção em pouco tempo, já que ela bloqueia o
-trabalho dos demais contribuidores. Esperamos também uma cauda longa, formada
-por episódios que só se resolvem dias depois, e alguns episódios ainda abertos
-no fim da janela.
-
-% S01-15 (#143): hipóteses informais das RQ05 a RQ07.
-\textbf{RQ05 -- Repositórios com maior frequência de implantação apresentam
-maior ou menor taxa de falha?}
-Esperamos uma associação negativa entre frequência de implantação e taxa de
-falha: repositórios que publicam mais frequentemente tenderiam a apresentar
-menor CFR. Nossa expectativa é que entregas menores facilitem a revisão e a
-correção das mudanças. Esperamos que essa associação seja mais fraca para a
-CFR baseada em execuções de CI, pois testes instáveis e falhas de configuração
-podem ocorrer sem afetar uma entrega ao usuário. As duas variantes de CFR
-serão examinadas separadamente; uma associação observada não será interpretada
-como evidência de causalidade.
-
-\textbf{RQ06 -- Quais características dos repositórios estão associadas a um
-melhor desempenho DORA?}
-Esperamos diferenças nas métricas entre os grupos definidos pelos quartis de
-estrelas, número de contribuidores e idade do repositório. Nossa hipótese é que
-os quartis superiores desses três fatores apresentem, em geral, maior
-frequência de implantação e menores lead time, CFR e tempo de recuperação.
-A expectativa é que projetos mais maduros, com maior participação e atenção
-da comunidade, tenham processos de revisão e automação mais consolidados.
-Essa hipótese diz respeito a associações entre grupos, sem atribuir às
-características um efeito causal sobre o desempenho.
-
-\textbf{RQ07 -- Quanto a classificação DORA de um repositório depende da
-definição operacional escolhida?}
-Esperamos que uma parcela relevante dos repositórios mude de categoria ao
-compararmos as combinações de releases estáveis, releases com pré-releases e
-tags, juntamente com as variantes de lead time e CFR. Esperamos maior
-concordância entre a combinação de referência e a que inclui pré-releases do
-que entre a referência e a que usa tags. A inclusão de outras unidades de
-entrega pode alterar a frequência medida, e a escolha entre o lead time por
-release e por commit pode alterar a classe dessa métrica. Nossa expectativa é
-que parte das classificações dependa dessas escolhas, indicando sensibilidade
-dos proxies e limites à robustez das conclusões das RQ01 a RQ06.
+\begin{description}\setlength{\itemsep}{0pt}
+\item[RQ01 -- Frequência de implantação.] Maioria High, mediana de uma a três
+releases por mês, pouquíssimos Elite e cauda longa.
+\item[RQ02 -- Lead time.] Mediana por commit de uma a três semanas (maioria
+Medium); a variante por release maior que a por commit.
+\item[RQ03 -- CFR.] Mediana de 10\% a 20\% pelos runs de CI; a variante por
+releases corretivas com valores e classes diferentes.
+\item[RQ04 -- Tempo de recuperação.] Mediana de algumas horas (maioria High),
+com cauda longa e episódios abertos no fim da janela.
+\item[RQ05 -- Frequência e CFR.] Associação negativa, mais fraca na CFR de CI,
+sem interpretação causal.
+\item[RQ06 -- Características.] Quartis superiores de estrelas, contribuidores
+e idade com melhor desempenho nas quatro métricas.
+\item[RQ07 -- Definições.] Parcela relevante muda de classe ao variar unidade
+de entrega e variantes de lead time e CFR; maior concordância com pré-releases
+do que com tags.
+\end{description}

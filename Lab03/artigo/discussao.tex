@@ -1,294 +1,77 @@
 \section{Discussão e ameaças à validade}
 \label{sec:discussao}
-% S03-13 (#179): confronto das expectativas preservadas com as fontes finais.
+% S03-13 (#179), FIN-04 (#183), FIN-05 (#184). Versão condensada na FIN-07 (#186);
+% a argumentação completa está no histórico Git e nos registros de validação.
 \subsection{Hipóteses e resultados}
 \label{sec:confronto-hipoteses}
-Confrontamos as expectativas da Seção~\ref{sec:hipoteses} com os resultados
-dos 500 projetos, distinguindo componentes compatíveis, contrariados e não
-testados. Há duas redações de RQ05--RQ07 no artigo: a introdução prevê
-associação negativa na RQ05 e melhora nos quartis superiores de estrelas,
-contribuidores e idade na RQ06; o complemento admite associação fraca ou
-negativa e menciona tipo de projeto. As duas redações foram preservadas.
-A discussão explicita essa diferença, sem escolher uma formulação depois
-de observar os números. Os julgamentos abaixo são descritivos e
-exploratórios, não uma aceitação formal de hipóteses por testes de nulidade.
+Os julgamentos abaixo são descritivos, não aceitações formais por testes de
+nulidade, e consideram as duas redações de RQ05--RQ07.
 
-\paragraph{RQ01 -- Frequência: compatibilidade parcial.}
-A mediana de 2,08 releases por mês está na faixa esperada de uma a três,
-mas essa faixa não contém a maioria dos projetos: 36,6\% estão nela. A
-previsão de maioria High também não se sustenta: High reúne 24,0\%, e
-Medium é a classe mais frequente (49,6\%, sem maioria absoluta). Com os
-cortes do enunciado, High exige ao menos uma release por semana; a faixa
-mensal prevista não implica essa classe. A pequena parcela Elite (2,4\%)
-e a cauda até 51,3 releases por semana são compatíveis com as outras
-expectativas. Logo, acertar a mediana não valida a previsão sobre a classe
-nem caracteriza todos os ritmos de publicação.
+\textbf{RQ01, parcial.} A mediana de 2,1 releases por mês está na faixa
+prevista, mas só 36,6\% dos projetos estão nela e Medium (49,6\%) supera High
+(24,0\%): o corte de High exige uma release por semana. Elite raro e cauda
+longa confirmam-se. \textbf{RQ02, parcial.} A mediana por commit (12,6 dias)
+está na faixa prevista, mas Low (31,8\%) é mais frequente que Medium (29,8\%);
+(a) supera (b) em 60,7\% dos pares, como esperado. \textbf{RQ03, magnitude
+contrariada.} A CFR (a), de 5,3\%, fica abaixo dos 10--20\% previstos; a
+discordância entre variantes confirma-se. \textbf{RQ04, compatível.} Poucas
+horas, maioria High, cauda longa e censura confirmam-se para a recuperação do
+CI. \textbf{RQ05, direção contrariada.} As associações são positivas, não
+negativas; a menor na CFR de CI é compatível com a expectativa relativa. Para
+(b), publicar mais aumenta as oportunidades de uma corretiva surgir nos sete
+dias seguintes, o que é efeito da definição, não evidência de mais incidentes.
+\textbf{RQ06, superioridade uniforme não sustentada.} Estrelas não diferem
+após correção, e quartis superiores de contribuidores e idade têm lead times
+maiores; só a CFR (b) favorece projetos mais antigos. A heterogeneidade prevista
+no complemento confirma-se; tipo de projeto não foi testado nos 500.
+\textbf{RQ07, parcial.} A classe depende das variantes, sobretudo da CFR;
+pré-releases, tags e classes extremas não foram testadas.
 
-\paragraph{RQ02 -- Lead time: compatibilidade parcial.}
-A mediana por commit, 12,63 dias em 499 projetos, está entre uma e três
-semanas, mas Medium corresponde a 29,8\% dos 500; Low é a classe mais
-frequente (31,8\%). A hipótese de maioria Medium não é sustentada.
-Dentro do mesmo projeto, a variante por release supera a por commit em
-303 dos 499 pares (60,7\%), compatível com a expectativa direcional sem
-implicar que isso ocorra em todos. Entre projetos, a mediana de (a), 268
-horas, é menor que a de (b), 303 horas. Não há contradição: a comparação
-pareada e a ordenação das duas medianas são operações distintas sobre
-distribuições heterogêneas. O commit mais antigo de uma release não
-permite ordenar, por si só, as medianas agregadas de todas as releases e
-commits de um projeto.
-
-\paragraph{RQ03 -- CFR: magnitude contrariada, sensibilidade compatível.}
-A mediana de CFR(a), 5,34\% em 500 projetos, fica abaixo dos 10--20\%
-esperados. A expectativa de valores e classes diferentes entre variantes
-é compatível com os pares observados: CFR(b) tem mediana de 43,96\% em
-498 projetos, e apenas 104 desses pares (20,88\%) mantêm a classe da
-métrica. Isso não significa que a diferença de cerca de 39 pontos
-percentuais entre as medianas estime erros de medição ou incidentes
-ocultos: CI e sequência de corretivas têm eventos e denominadores distintos.
-O F1 da heurística contra o consenso avalia o rótulo corretiva, não a
-exatidão da CFR como taxa de falha em produção.
-
-\paragraph{RQ04 -- Recuperação: compatível no proxy observado.}
-A mediana de 2,60 horas em 469 projetos e os 61,0\% dos 500 classificados
-como High são compatíveis com a previsão de poucas horas e maioria High.
-O máximo de aproximadamente 693 horas e os 330 episódios ainda sem sucesso
-no fim da janela também sustentam a expectativa de cauda longa e censura.
-A compatibilidade se restringe à recuperação de CI observada: os 31 projetos
-sem episódio recuperado não recebem duração zero, e a exclusão dos
-censurados pode subestimar durações longas. Não se conclui que serviços
-percebidos pelos usuários foram restaurados nesses intervalos.
-
-\paragraph{RQ05 -- Associação: direção negativa não sustentada.}
-Os coeficientes positivos, $\rho=0,154562$ para CFR(a) e $0,799098$ para
-CFR(b), contrariam a direção negativa prevista na introdução. O coeficiente
-menor para o proxy de CI é compatível com a expectativa relativa entre
-variantes; isso não transforma o resultado positivo em confirmação da
-hipótese negativa. O complemento não fixou um limite numérico para fraca.
-Os sinais persistem na análise sem indicadores de incompletude, mas não
-identificam causalidade. Uma explicação possível para (b) é que publicar
-mais aumenta as oportunidades de uma corretiva aparecer nos sete dias
-seguintes; trata-se de interpretação da definição operacional, não de um
-mecanismo demonstrado pelos dados nem de evidência de mais incidentes.
-
-\paragraph{RQ06 -- Perfil superior uniforme não sustentado.}
-Após Holm, sete dos 18 globais e 27 dos 108 pares planejados mantêm
-diferença. Não há evidência corrigida de diferença por estrelas; isso não
-prova equivalência. Para contribuidores, Q1 tem lead times menores que Q4,
-com deltas de Cliff de $-0,580$ e $-0,686$, contrariando a direção de melhora
-esperada nos quartis superiores. Em idade, Q4 tem CFR(b) menor que Q1,
-compatível com essa componente, mas frequência menor e lead times e
-recuperação maiores contrariam as demais direções. Assim, os resultados
-sustentam heterogeneidade entre métricas, como prevê o complemento, sem
-sustentar superioridade geral por popularidade, participação ou idade.
-Tipo de projeto, mencionado apenas no complemento, não foi testado para
-os 500: a amostra-ouro rotulada não fornece esse fator para toda a população.
-
-\paragraph{RQ07 -- Sensibilidade compatível nas variantes testadas.}
-Nos casos completos, trocar somente lead time muda 68/468 classes gerais
-(14,53\%; $\kappa_w=0,8411$), e trocar somente CFR muda 179/467
-(38,33\%; $\kappa_w=0,5635$). Essas trocas demonstram dependência das
-variantes examinadas, sem um limiar pré-fixado para parcela relevante.
-A frequência foi mantida em releases estáveis: a previsão de maior
-concordância ao incluir pré-releases do que ao usar tags não foi testada.
-A expectativa do complemento sobre maior concordância nas classes extremas
-também não foi testada; um kappa ponderado global não é um teste desse padrão.
-As verificações de coorte e qualidade mantêm a sensibilidade à CFR, mas
-não identificam uma combinação como mais válida. A compatibilidade é
-parcial, limitada às combinações definidas após a coleta.
-
-\subsection{Relação com a literatura}
+\subsection{Relação com a literatura e implicações}
 \label{sec:discussao-literatura}
-O DORA 2021 distingue fluxo de entrega e estabilidade, observando equipes
-com entregas frequentes, lead times curtos e baixa taxa de falha
-\cite{dora2021}. A associação positiva da RQ05 não refuta esse resultado:
-aqui a unidade é o repositório e as falhas são proxies de CI ou corretivas,
-enquanto o relatório trata de entregas e degradações percebidas em produção
-ou pelos usuários. Os cortes fixos do enunciado também não reproduzem todos
-os intervalos dos clusters daquele relatório. As classes deste estudo não
-permitem ranquear seus projetos diretamente contra as equipes pesquisadas
-pelo DORA, nem testar a hipótese causal de que lotes menores melhoram a
-entrega; tamanho dos lotes e práticas das equipes não foram medidos.
-
-No preprint de S{\'a}nchez Ruiz et al.~\cite{sanchezruiz2023benchmarking}, a
-adaptação do benchmarking para OSS distingue releases de implantações e
-propõe métricas próprias para fluxo e estabilidade. A dependência das
-classes em relação à CFR e ao lead time na RQ07 é coerente com a necessidade
-de declarar essas definições. Não é uma replicação quantitativa do preprint:
-suas métricas e quatro projetos diferem da nossa amostra, e concordância
-entre definições não estabelece validade de uma delas.
-
-Kinsman et al.~\cite{kinsman2021actions} investigam automação com GitHub
-Actions e mudanças em indicadores de pull requests após a adoção. Esses indicadores de atividade diferem de implantação e incidentes;
-essa distinção orienta a comparação com nosso recorte. Nosso recorte inclui apenas usuários de Actions,
-sem grupo de não adotantes ou desenho antes/depois; portanto não permite
-atribuir os resultados ao uso da ferramenta nem reproduzir os efeitos
-sobre pull requests descritos naquele trabalho.
-
-\subsection{Implicações}
 \label{sec:implicacoes}
-Para os mantenedores, os resultados indicam que frequência, lead time e
-estabilidade devem ser acompanhados conjuntamente e com definições
-constantes ao longo do tempo. Um projeto pode publicar rapidamente e ter
-CFR(b) elevada pela proximidade de corretivas, sem evidência de que seu
-serviço seja menos confiável. Estrelas, contribuidores e idade não são
-substitutos de práticas de entrega; os efeitos da RQ06 não justificam usar
-esses fatores como metas de desempenho ou comparar equipes individuais.
+O DORA observa equipes que combinam alta frequência e baixa taxa de falha
+\cite{dora2021}. A associação positiva da RQ05 não o refuta: aqui a unidade é
+o repositório e as falhas são proxies de CI ou corretivas, não degradações em
+produção. A sensibilidade às definições é coerente com a adaptação do
+benchmarking a projetos abertos, que separa releases de implantações
+\cite{sanchezruiz2023benchmarking}. Como só incluímos usuários de Actions,
+não atribuímos os resultados à ferramenta \cite{kinsman2021actions}. Para
+mantenedores, frequência, lead time e estabilidade devem ser acompanhados
+juntos e com definições constantes; estrelas, contribuidores e idade não são
+metas de desempenho. Para a pesquisa, classes DORA devem vir com valores
+contínuos, $n$, exclusões e variantes.
 
-Para a pesquisa, as classes devem vir acompanhadas de valores contínuos,
-$n$, exclusões e variantes: mesmo kappa 0,8411 acompanha 68 mudanças de
-categoria. Uma comparação futura com incidentes de produção, rotulagem
-independente e amostragem por tipo de projeto ajudaria a avaliar os proxies.
-Comparar pré-releases e tags, investigar as classes extremas e controlar
-fatores de confusão em outras janelas são extensões necessárias, não
-resultados desta revisão. Explicações sobre coordenação, maturidade ou
-lotes menores permanecem hipóteses de mecanismos para novos estudos.
+\subsection{Ameaças à validade}
+\textbf{Construto.} Uma release aproxima uma implantação; a amostra-ouro
+julgou as releases como entregas reais em 59 dos 60 projetos. A data de autor
+pode ser reescrita por rebase. Falhas de CI incluem testes instáveis e erros
+de configuração, e a CFR (b) depende da heurística; por isso reportamos as duas
+variantes. A recuperação mede o CI, não a restauração de serviço. As classes
+dependem dos cortes e das variantes, como mostra a RQ07.
 
-\subsection{Validade de construto}
-% FIN-04 (#183): ameaças de construto e internas, com mitigações.
-\paragraph{Release como implantação.} Uma release estável publicada é uma
-aproximação de implantação: bibliotecas não são implantadas pelos
-mantenedores, e serviços podem implantar sem publicar release. Para
-mitigar, a amostra-ouro julgou se as releases de cada projeto são entregas
-reais de software, e o consenso foi positivo em 59 dos 60 repositórios
-sorteados. Pré-releases e tags ficam como definições alternativas na RQ07.
+\textbf{Interna.} Limites da API e interrupções podem deixar dados
+incompletos; mitigamos com coleta mensal subdividida, cache, checkpoints e
+diagnósticos (13 projetos com alguma coleta incompleta e 52 com cálculo
+parcial), sem imputar zeros. Metadados refletem o estado observado na coleta.
+A ordem de coleta adiou um projeto nos 561 primeiros avaliados, sem mudar
+critérios. A CFR (b) herda os erros da heurística, avaliada em uma amostra de
+60 projetos com limites documentados de independência dos avaliadores; a
+exclusão de episódios censurados tende a subestimar recuperações longas.
 
-\paragraph{Lead time.} A data de autor do commit pode ser anterior ao
-trabalho efetivo ou ser reescrita por rebase e squash, e o intervalo até a
-release não inclui a espera até o usuário atualizar. A variante (a) depende
-do commit mais antigo de cada release; a (b), de todos os pares
-commit--release. Reportamos as duas variantes e sua comparação pareada.
+\textbf{Externa.} Os 500 projetos têm ao menos 30.088 estrelas (mediana de
+45.049) e passaram por filtros de Actions, releases e runs; projetos privados,
+pouco conhecidos, sem releases ou com outro CI ficam fora. Um único ano não
+captura variações entre anos. Mitigamos declarando o funil sem relaxar
+critérios e restringindo as conclusões a esse recorte; a configuração
+versionada permite repetir a coleta com outra janela.
 
-\paragraph{CFR.} Falhas de workflows não identificam necessariamente falhas
-em produção: incluem testes instáveis e erros de infraestrutura ou de
-configuração, e seu peso depende de quantos runs cada projeto dispara. A
-CFR (b) troca esse proxy por releases seguidas, em até sete dias, por uma
-release corretiva, identificada por uma heurística de versão patch e termos
-de commit. Como as duas medem construtos diferentes, apresentamos ambas, sem
-tratar uma como substituta da outra; a heurística é avaliada contra os
-rótulos de consenso da amostra-ouro, com precisão, recall e F1.
-
-\paragraph{Tempo de recuperação.} Medimos o tempo entre o primeiro run com
-falha e o sucesso seguinte no mesmo workflow do default branch, o que
-descreve a recuperação do CI, não a restauração de um serviço percebida
-pelo usuário.
-
-\paragraph{Classes DORA.} As classes dependem dos cortes fixos do enunciado
-e, na classe geral, da escolha das variantes. Mitigamos registrando o
-contrato dos cortes e reportando as distribuições por métrica e a
-sensibilidade da classe geral às três combinações da RQ07. Nos pares
-completos, mudar somente CFR altera 38,33\% das classes; mudar as duas
-variantes altera 42,18\%. Esses denominadores não se confundem com as
-notas gerais parciais dos 500 projetos.
-
-\subsection{Validade interna e confiabilidade}
-\paragraph{Coleta.} Limites de paginação, repositórios inacessíveis,
-interrupções por cota e históricos removidos podem produzir dados
-incompletos. Mitigamos com coleta mensal de runs com subdivisão de
-intervalos saturados, checkpoints e cache para retomar sem repetir
-consultas, e diagnósticos explícitos: 13 repositórios têm alguma coleta
-marcada como incompleta, como a de comparações de commits, e 52 têm
-cálculo parcial em alguma métrica. Repositórios com
-coleta de runs incompleta não entram na amostra, métricas sem estimativa
-ficam nulas, nunca zero, e auditorias conferem contagens e hashes entre
-coleta, cálculo e exportação. Renomeações são associadas pelo ID do GitHub.
-
-\paragraph{Estado observado.} Releases podem ser editadas ou publicadas
-depois, e o default branch e os metadados são os observados na coleta, não
-uma reconstrução histórica. O cache preserva esse estado e permite
-reproduzir os cálculos sem novas consultas.
-
-\paragraph{Ordem da coleta.} Os 561 primeiros candidatos avaliados
-seguiram uma ordem que adiou projetos com alto volume de runs; os demais
-seguiram a ordem da busca. A ordem efetiva e os descartes estão no funil, e
-os critérios de inclusão não mudaram em nenhuma etapa.
-
-\paragraph{Heurística e rótulos.} A CFR (b) herda os erros da heurística
-de release corretiva. A referência humana é uma amostra-ouro de 60
-repositórios e 300 releases, sorteada entre os 255 primeiros elegíveis
-porque o sorteio antecedeu a retomada da coleta. A concordância nas três planilhas registradas foi de 0,744 a 0,953
-(kappa de Fleiss), e as 15 divergências têm decisões de consenso registradas.
-Entretanto, a assistência documentada a C, a consulta à documentação de B e
-os limites de cronologia não permitem afirmar três rotulagens cegas
-independentes. O instrumento também considera corretivas as releases mistas
-com alguma correção, um construto mais amplo que correção como objetivo
-principal. A v1 obteve F1=0,933 em 296/300 pares, com quatro primeiras
-releases sem base excluídas; não se extrapola esse escore a todas as releases
-dos 500 projetos. Não houve ajuste nesta revisão; eventual uso futuro desse
-consenso para ajuste e avaliação deve ser declarado e pode superestimar o
-desempenho fora da amostra.
-
-\paragraph{Censura.} Episódios de falha sem sucesso até o fim da janela
-(330, ou 0,36\%) e sequências sem sucesso anterior observado (683) ficam
-fora da mediana de recuperação, o que tende a subestimar recuperações
-longas. Ambos são contados e reportados, e as releases dos últimos sete
-dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
-
-\subsection{Validade externa}
-% FIN-05 (#184): ameaças externas e de conclusão, com mitigações.
-\paragraph{População.} A amostra reúne os 500 primeiros elegíveis entre
-1.064 candidatos avaliados na ordem da busca por estrelas: todos têm ao
-menos 30.088 estrelas, e a mediana é de 45.049. Os
-filtros de Actions, cinco releases estáveis e cinquenta runs selecionam
-projetos abertos, populares e com publicação regular; projetos privados,
-pouco conhecidos, sem releases ou com outro sistema de CI ficam fora.
-Mitigamos declarando o funil completo, sem relaxar critérios, e
-restringindo as conclusões a esse recorte; as proporções de classes DORA
-não são estimativas para o software em geral.
-
-\paragraph{Janela e fatores.} Um único ano, de outubro de 2025 a setembro
-de 2026, não captura variações entre anos nem mudanças da plataforma. A
-RQ08 descreve a evolução mensal dentro da janela, sem substituir outras
-janelas; a configuração versionada permite repetir a coleta com outro
-recorte. A idade, prevista na introdução, foi comparada na RQ06; o tipo de
-projeto, mencionado no complemento, não foi comparado nos 500 por falta de
-rótulos fora da amostra-ouro, e uma análise não substitui a outra.
-
-\subsection{Alcance da replicação cruzada}
-A replicação descrita nas Seções~\ref{sec:metodo-replicacao}
-e~\ref{sec:resultados-replicacao} evidenciou barreiras práticas de
-documentação, portabilidade e tolerância ao limite da API. Cache e retomada
-permitiram concluir as execuções relatadas, mas depender de intervenção
-manual após HTTP 403 restringia a execução autônoma do nosso pipeline.
-O tratamento das issues melhora essas condições sem alterar os dados ou
-as definições das métricas. Respostas simuladas e testes locais sustentam
-as correções técnicas, sem substituir uma nova execução independente.
-
-A seleção de somente 30 projetos, a presença de dois projetos ausentes na
-publicação parceira e a comparação quantitativa ainda pendente limitam a
-evidência de reprodutibilidade dos resultados. Não se atribuem divergências
-numéricas à evolução da API, à seleção ou à implementação sem comparação
-pareada. A sobreposição de repositórios e o sucesso do comando não validam
-os proxies DORA nem as classificações. A pendência administrativa de
-Projects também é distinta das quatro correções técnicas já integradas.
-
-\subsection{Validade de conclusão}
-As direções e diferenças discutidas na
-Seção~\ref{sec:confronto-hipoteses} são associações exploratórias. As
-hipóteses complementares foram registradas depois do piloto, o que limita
-seu caráter de previsão anterior aos dados. A coexistência de duas redações
-não foi resolvida por reescrita retrospectiva das hipóteses. Os valores de
-Spearman são bilaterais e sem ajuste, enquanto a RQ06 usa famílias de Holm
-separadas de 18 globais e 108 contrastes. P-valores pequenos não substituem
-os tamanhos de efeito nem removem confundidores; diferenças de distribuição
-não implicam apenas diferenças de mediana. Ausência de rejeição não prova
-equivalência, e o kappa da RQ07 não comprova validade do construto.
-
-O tamanho da amostra foi fixado pelo planejamento, sem análise de poder.
-Com 500 projetos, associações fracas já são significativas: na RQ05, a CFR
-(a) tem $\rho=0,155$ e $p<0,001$, mas explica pouco da variação. Por isso
-interpretamos $\rho$, $\varepsilon^2$ e o delta de Cliff, e não só os
-p-valores. Ao mesmo tempo, o $n$ efetivo varia por métrica, de 469 a 500, e
-cai para 419 nos pares completos da RQ07; os quartis de 125 projetos perdem
-observações quando a métrica falta, o que reduz o poder dos contrastes. As
-ausências não são imputadas e cada tabela informa o $n$ usado. Para
-mitigar, conferimos os p-valores de Spearman com 99.999 permutações,
-repetimos a RQ05 sem os 54 projetos com coleta incompleta ou cálculo
-parcial, com a mesma direção, e corrigimos os testes da RQ06 por Holm. A
-F1 da heurística vem de 296 pares de 60 projetos, sem intervalo de
-confiança, e deve ser lida como estimativa pontual.
-
-Não houve ajuste da heurística nesta revisão. Os limites de independência
-do consenso, cobertura das métricas, censura e seleção permanecem mesmo
-com F1 alto. As previsões sobre pré-releases, tags, classes extremas e tipo
-de projeto não recebem conclusão sem suas próprias análises. Esses limites
-restringem o alcance das implicações discutidas na Seção~\ref{sec:implicacoes}.
+\textbf{Conclusão.} O tamanho da amostra não veio de análise de poder. Com
+500 projetos, efeitos fracos já são significativos (CFR (a): $\rho=0,155$), e o
+$n$ efetivo varia por métrica, de 469 a 500, o que reduz o poder dos
+contrastes por quartil. Por isso interpretamos $\rho$, $\varepsilon^2$ e
+$\delta$, usamos permutações, Holm e a repetição sem projetos com alertas. A
+F1 vem de 296 pares e é uma estimativa pontual. As hipóteses complementares
+foram registradas após o piloto, e as combinações da RQ07, após a coleta. A
+replicação cruzada não incluiu comparação numérica, o que limita a evidência
+de reprodutibilidade.
