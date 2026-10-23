@@ -70,3 +70,21 @@ português. Os dados não mudaram: as figuras são geradas a partir de
 (`pipeline/evolucao_temporal.py`). Os 55 testes desses dois módulos passam.
 As saídas embutidas nos notebooks s03-04 e s03-09 mostram o estilo anterior
 até serem executados de novo.
+
+## Figuras das RQ01 a RQ04
+
+As quatro figuras foram redesenhadas para a meia largura em que entram no
+artigo (3,1 polegadas, fonte de 8 pt), em vez de serem desenhadas com 6
+polegadas e reduzidas pela metade. Elas não têm título interno, usam vírgula
+decimal, números comuns no eixo log (0,1, 1, 10, 1.000) e rótulos curtos para
+os cortes. Nos eixos log, a caixa e os bigodes de Tukey (1,5 IQR) são
+calculados em log10. Antes, o bigode inferior do lead time ia até 0,01 h por
+ser calculado na escala linear. As legendas das Figuras 1 e 2 dizem isso.
+
+O código está nas células de figura dos notebooks s03-01 e s03-02, que foram
+executados de novo. As tabelas geradas não mudaram. As figuras pareadas
+(`rq02_lead_time_pareado.png` e `rq03_cfr_pareado.png`), que não entram no
+artigo, mudaram só pela fonte de 8 pt.
+
+O PDF final está em
+[`entregas/artigo-final/`](../entregas/artigo-final/README.md).
