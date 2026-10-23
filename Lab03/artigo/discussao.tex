@@ -1,5 +1,148 @@
 \section{Discussão e ameaças à validade}
 \label{sec:discussao}
+% S03-13 (#179): confronto das expectativas preservadas com as fontes finais.
+\subsection{Hipóteses e resultados}
+\label{sec:confronto-hipoteses}
+Confrontamos as expectativas da Seção~\ref{sec:hipoteses} com os resultados
+dos 500 projetos, distinguindo componentes compatíveis, contrariados e não
+testados. Há duas redações de RQ05--RQ07 no artigo: a introdução prevê
+associação negativa na RQ05 e melhora nos quartis superiores de estrelas,
+contribuidores e idade na RQ06; o complemento admite associação fraca ou
+negativa e menciona tipo de projeto. As duas redações foram preservadas.
+A discussão explicita essa diferença, sem escolher uma formulação depois
+de observar os números. Os julgamentos abaixo são descritivos e
+exploratórios, não uma aceitação formal de hipóteses por testes de nulidade.
+
+\paragraph{RQ01 -- Frequência: compatibilidade parcial.}
+A mediana de 2,08 releases por mês está na faixa esperada de uma a três,
+mas essa faixa não contém a maioria dos projetos: 36,6\% estão nela. A
+previsão de maioria High também não se sustenta: High reúne 24,0\%, e
+Medium é a classe mais frequente (49,6\%, sem maioria absoluta). Com os
+cortes do enunciado, High exige ao menos uma release por semana; a faixa
+mensal prevista não implica essa classe. A pequena parcela Elite (2,4\%)
+e a cauda até 51,3 releases por semana são compatíveis com as outras
+expectativas. Logo, acertar a mediana não valida a previsão sobre a classe
+nem caracteriza todos os ritmos de publicação.
+
+\paragraph{RQ02 -- Lead time: compatibilidade parcial.}
+A mediana por commit, 12,63 dias em 499 projetos, está entre uma e três
+semanas, mas Medium corresponde a 29,8\% dos 500; Low é a classe mais
+frequente (31,8\%). A hipótese de maioria Medium não é sustentada.
+Dentro do mesmo projeto, a variante por release supera a por commit em
+303 dos 499 pares (60,7\%), compatível com a expectativa direcional sem
+implicar que isso ocorra em todos. Entre projetos, a mediana de (a), 268
+horas, é menor que a de (b), 303 horas. Não há contradição: a comparação
+pareada e a ordenação das duas medianas são operações distintas sobre
+distribuições heterogêneas. O commit mais antigo de uma release não
+permite ordenar, por si só, as medianas agregadas de todas as releases e
+commits de um projeto.
+
+\paragraph{RQ03 -- CFR: magnitude contrariada, sensibilidade compatível.}
+A mediana de CFR(a), 5,34\% em 500 projetos, fica abaixo dos 10--20\%
+esperados. A expectativa de valores e classes diferentes entre variantes
+é compatível com os pares observados: CFR(b) tem mediana de 43,96\% em
+498 projetos, e apenas 104 desses pares (20,88\%) mantêm a classe da
+métrica. Isso não significa que a diferença de cerca de 39 pontos
+percentuais entre as medianas estime erros de medição ou incidentes
+ocultos: CI e sequência de corretivas têm eventos e denominadores distintos.
+O F1 da heurística contra o consenso avalia o rótulo corretiva, não a
+exatidão da CFR como taxa de falha em produção.
+
+\paragraph{RQ04 -- Recuperação: compatível no proxy observado.}
+A mediana de 2,60 horas em 469 projetos e os 61,0\% dos 500 classificados
+como High são compatíveis com a previsão de poucas horas e maioria High.
+O máximo de aproximadamente 693 horas e os 330 episódios ainda sem sucesso
+no fim da janela também sustentam a expectativa de cauda longa e censura.
+A compatibilidade se restringe à recuperação de CI observada: os 31 projetos
+sem episódio recuperado não recebem duração zero, e a exclusão dos
+censurados pode subestimar durações longas. Não se conclui que serviços
+percebidos pelos usuários foram restaurados nesses intervalos.
+
+\paragraph{RQ05 -- Associação: direção negativa não sustentada.}
+Os coeficientes positivos, $\rho=0,154562$ para CFR(a) e $0,799098$ para
+CFR(b), contrariam a direção negativa prevista na introdução. O coeficiente
+menor para o proxy de CI é compatível com a expectativa relativa entre
+variantes; isso não transforma o resultado positivo em confirmação da
+hipótese negativa. O complemento não fixou um limite numérico para fraca.
+Os sinais persistem na análise sem indicadores de incompletude, mas não
+identificam causalidade. Uma explicação possível para (b) é que publicar
+mais aumenta as oportunidades de uma corretiva aparecer nos sete dias
+seguintes; trata-se de interpretação da definição operacional, não de um
+mecanismo demonstrado pelos dados nem de evidência de mais incidentes.
+
+\paragraph{RQ06 -- Perfil superior uniforme não sustentado.}
+Após Holm, sete dos 18 globais e 27 dos 108 pares planejados mantêm
+diferença. Não há evidência corrigida de diferença por estrelas; isso não
+prova equivalência. Para contribuidores, Q1 tem lead times menores que Q4,
+com deltas de Cliff de $-0,580$ e $-0,686$, contrariando a direção de melhora
+esperada nos quartis superiores. Em idade, Q4 tem CFR(b) menor que Q1,
+compatível com essa componente, mas frequência menor e lead times e
+recuperação maiores contrariam as demais direções. Assim, os resultados
+sustentam heterogeneidade entre métricas, como prevê o complemento, sem
+sustentar superioridade geral por popularidade, participação ou idade.
+Tipo de projeto, mencionado apenas no complemento, não foi testado para
+os 500: a amostra-ouro rotulada não fornece esse fator para toda a população.
+
+\paragraph{RQ07 -- Sensibilidade compatível nas variantes testadas.}
+Nos casos completos, trocar somente lead time muda 68/468 classes gerais
+(14,53\%; $\kappa_w=0,8411$), e trocar somente CFR muda 179/467
+(38,33\%; $\kappa_w=0,5635$). Essas trocas demonstram dependência das
+variantes examinadas, sem um limiar pré-fixado para parcela relevante.
+A frequência foi mantida em releases estáveis: a previsão de maior
+concordância ao incluir pré-releases do que ao usar tags não foi testada.
+A expectativa do complemento sobre maior concordância nas classes extremas
+também não foi testada; um kappa ponderado global não é um teste desse padrão.
+As verificações de coorte e qualidade mantêm a sensibilidade à CFR, mas
+não identificam uma combinação como mais válida. A compatibilidade é
+parcial, limitada às combinações definidas após a coleta.
+
+\subsection{Relação com a literatura}
+\label{sec:discussao-literatura}
+O DORA 2021 distingue fluxo de entrega e estabilidade, observando equipes
+com entregas frequentes, lead times curtos e baixa taxa de falha
+\cite{dora2021}. A associação positiva da RQ05 não refuta esse resultado:
+aqui a unidade é o repositório e as falhas são proxies de CI ou corretivas,
+enquanto o relatório trata de entregas e degradações percebidas em produção
+ou pelos usuários. Os cortes fixos do enunciado também não reproduzem todos
+os intervalos dos clusters daquele relatório. As classes deste estudo não
+permitem ranquear seus projetos diretamente contra as equipes pesquisadas
+pelo DORA, nem testar a hipótese causal de que lotes menores melhoram a
+entrega; tamanho dos lotes e práticas das equipes não foram medidos.
+
+No preprint de S{\'a}nchez Ruiz et al.~\cite{sanchezruiz2023benchmarking}, a
+adaptação do benchmarking para OSS distingue releases de implantações e
+propõe métricas próprias para fluxo e estabilidade. A dependência das
+classes em relação à CFR e ao lead time na RQ07 é coerente com a necessidade
+de declarar essas definições. Não é uma replicação quantitativa do preprint:
+suas métricas e quatro projetos diferem da nossa amostra, e concordância
+entre definições não estabelece validade de uma delas.
+
+Kinsman et al.~\cite{kinsman2021actions} investigam automação com GitHub
+Actions e mudanças em indicadores de pull requests após a adoção. Esses indicadores de atividade diferem de implantação e incidentes;
+essa distinção orienta a comparação com nosso recorte. Nosso recorte inclui apenas usuários de Actions,
+sem grupo de não adotantes ou desenho antes/depois; portanto não permite
+atribuir os resultados ao uso da ferramenta nem reproduzir os efeitos
+sobre pull requests descritos naquele trabalho.
+
+\subsection{Implicações}
+\label{sec:implicacoes}
+Para os mantenedores, os resultados indicam que frequência, lead time e
+estabilidade devem ser acompanhados conjuntamente e com definições
+constantes ao longo do tempo. Um projeto pode publicar rapidamente e ter
+CFR(b) elevada pela proximidade de corretivas, sem evidência de que seu
+serviço seja menos confiável. Estrelas, contribuidores e idade não são
+substitutos de práticas de entrega; os efeitos da RQ06 não justificam usar
+esses fatores como metas de desempenho ou comparar equipes individuais.
+
+Para a pesquisa, as classes devem vir acompanhadas de valores contínuos,
+$n$, exclusões e variantes: mesmo kappa 0,8411 acompanha 68 mudanças de
+categoria. Uma comparação futura com incidentes de produção, rotulagem
+independente e amostragem por tipo de projeto ajudaria a avaliar os proxies.
+Comparar pré-releases e tags, investigar as classes extremas e controlar
+fatores de confusão em outras janelas são extensões necessárias, não
+resultados desta revisão. Explicações sobre coordenação, maturidade ou
+lotes menores permanecem hipóteses de mecanismos para novos estudos.
+
 \subsection{Validade de construto}
 % FIN-04 (#183): ameaças de construto e internas, com mitigações.
 \paragraph{Release como implantação.} Uma release estável publicada é uma
@@ -32,8 +175,10 @@ pelo usuário.
 \paragraph{Classes DORA.} As classes dependem dos cortes fixos do enunciado
 e, na classe geral, da escolha das variantes. Mitigamos registrando o
 contrato dos cortes e reportando as distribuições por métrica e a
-sensibilidade da classe geral às quatro combinações de variantes, que
-altera a classe de até 37\% dos repositórios.
+sensibilidade da classe geral às três combinações da RQ07. Nos pares
+completos, mudar somente CFR altera 38,33\% das classes; mudar as duas
+variantes altera 42,18\%. Esses denominadores não se confundem com as
+notas gerais parciais dos 500 projetos.
 
 \subsection{Validade interna e confiabilidade}
 \paragraph{Coleta.} Limites de paginação, repositórios inacessíveis,
@@ -82,35 +227,25 @@ dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
 Repositórios populares, usuários de Actions e projetos com releases frequentes
 não representam todos os projetos de software. Selecionar os primeiros elegíveis
 na ordem de estrelas introduz viés para projetos populares. As conclusões devem
-ser limitadas à população e à janela estudadas. O tipo de projeto, citado
-na hipótese da RQ06, não foi comparado nos 500 por falta de rótulos fora da
-amostra-ouro; a análise por idade é complementar e não substitui esse teste.
+ser limitadas à população e à janela estudadas. Idade integra a previsão
+da introdução; o tipo de projeto mencionado no complemento não foi comparado
+nos 500 por falta de rótulos fora da amostra-ouro. Uma análise não substitui
+a outra.
 
 \subsection{Validade de conclusão}
-A associação positiva da RQ05 é fraca para CFR(a) e elevada para CFR(b).
-A expectativa de associação fraca ou negativa não se sustenta para (b),
-e o sinal negativo não aparece em nenhuma variante. Frequência elevada
-oferece mais oportunidades de uma corretiva ocorrer em sete dias; essa
-relação operacional pode contribuir para a associação em (b), sem provar
-mais incidentes em produção. A sensibilidade aos indicadores de incompletude
-mantém os sinais, mas não remove confundidores, heterogeneidade de projetos
-ou dependência entre observações do mesmo ecossistema.
+As direções e diferenças discutidas na
+Seção~\ref{sec:confronto-hipoteses} são associações exploratórias. As
+hipóteses complementares foram registradas depois do piloto, o que limita
+seu caráter de previsão anterior aos dados. A coexistência de duas redações
+não foi resolvida por reescrita retrospectiva das hipóteses. Os valores de
+Spearman são bilaterais e sem ajuste, enquanto a RQ06 usa famílias de Holm
+separadas de 18 globais e 108 contrastes. P-valores pequenos não substituem
+os tamanhos de efeito nem removem confundidores; diferenças de distribuição
+não implicam apenas diferenças de mediana. Ausência de rejeição não prova
+equivalência, e o kappa da RQ07 não comprova validade do construto.
 
-Na RQ06, Holm reduz de oito para sete os globais rejeitados e controla
-separadamente as 108 comparações planejadas; 27 pares passam também pelo
-teste global corrigido. Reportar $\varepsilon^2$ e delta de Cliff evita
-interpretar apenas p-valores. Ausência de diferença por estrelas não prova
-equivalência; diferenças de distribuição também não implicam apenas mudança
-de mediana. A associação de contribuidores com lead times maiores nos
-quartis superiores contraria uma interpretação uniforme de melhor
-desempenho por tamanho. Recuperação e frequência têm sentidos distintos,
-e nenhum fator mostrou superioridade em todas as métricas.
-
-As hipóteses complementares foram registradas depois do piloto, o que
-limita seu caráter de previsão anterior aos dados. Não houve ajuste da
-heurística nesta revisão. Os limites de independência do consenso,
-completude e seleção permanecem mesmo com F1 alto e p-valores pequenos.
-A sensibilidade ao lead time e à CFR é apresentada na
-Seção~\ref{sec:resultados-rq07}. As previsões específicas da RQ07 sobre
-pré-releases, tags e classes extremas não foram testadas; não se declara
-verificação de todas as hipóteses.
+Não houve ajuste da heurística nesta revisão. Os limites de independência
+do consenso, cobertura das métricas, censura e seleção permanecem mesmo
+com F1 alto. As previsões sobre pré-releases, tags, classes extremas e tipo
+de projeto não recebem conclusão sem suas próprias análises. Esses limites
+restringem o alcance das implicações discutidas na Seção~\ref{sec:implicacoes}.

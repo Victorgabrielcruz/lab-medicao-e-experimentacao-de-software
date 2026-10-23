@@ -860,14 +860,16 @@ desfavorável das quatro indeterminações daria F1=0,925996, mantendo fixos
 os demais pares e o consenso; esse limite condicional não é F1 medido nas
 300 releases. A decisão e as limitações estão justificadas.
 
-### Relato atualizado no artigo (#165 e #177)
+### Relato atualizado no artigo (#165, #177, #178 e #179)
 
 A [metodologia](artigo/metodologia.tex) apresenta amostra-ouro, concordância,
 consenso e avaliação com seus limites documentados. Os
-[resultados](artigo/resultados.tex) incluem Spearman nas duas variantes e
-RQ06 com Holm, ε² e delta de Cliff, sem alterar hipóteses ou rótulos.
-O [registro de conferência](artigo/validacao-s03-177.md) descreve reprodução,
-compilação e alcance; a RQ07 permanece em entrega própria.
+[resultados](artigo/resultados.tex) incluem RQ01–RQ07, com Spearman nas duas
+variantes, RQ06 com Holm e tamanhos de efeito, e sensibilidade de C1/C2/C3.
+A [discussão](artigo/discussao.tex) confronta as sete expectativas, distingue
+as duas redações históricas das RQ05–RQ07 e relaciona achados e implicações
+à literatura. As previsões sem dados continuam explicitamente não testadas.
+A [conferência da #179](artigo/validacao-s03-179.md) registra fontes e alcance.
 
 ### RQ05 — correlação de Spearman (S03-04 — #170)
 
