@@ -2,7 +2,7 @@
 
 ## Revisão final — FIN-07 (#186)
 
-O artigo foi condensado de 25 para **9 páginas** com referências (MiKTeX,
+O artigo foi condensado de 25 para **10 páginas** com referências (MiKTeX,
 zero erros e zero overfull). A versão em vigor é a dos arquivos `.tex`. As
 seções abaixo registram o histórico de cada entrega e podem citar trechos
 ou números de páginas que não existem mais. O que foi cortado, as correções
