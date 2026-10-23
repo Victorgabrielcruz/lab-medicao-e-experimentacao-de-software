@@ -218,3 +218,16 @@ ou observação. A #179 mantém esses textos byte a byte e discute as diferença
 explicitamente. Não se escolhe retrospectivamente uma formulação para tornar
 um resultado positivo em confirmação da previsão negativa, nem se interpreta
 a análise por idade como teste da previsão por tipo de projeto.
+## Relato da replicação cruzada — FIN-06 (#185)
+
+O artigo em LaTeX incorpora o procedimento em
+[metodologia.tex](metodologia.tex), os resultados e tratamentos em
+[resultados.tex](resultados.tex) e os limites em [discussao.tex](discussao.tex).
+O relato usa a execução registrada na #180 e o retorno tratado na #182,
+sem nova coleta. A sobreposição de 28/30 projetos (93,33%) não representa
+concordância de classes. Diferenças relativas por métrica e concordância
+pareada permanecem pendentes na #181; a narrativa não afirma equivalência
+numérica nem nova execução externa após as correções.
+
+Fontes e conferências desta entrega estão em
+[validacao-fin-06-185.md](validacao-fin-06-185.md).

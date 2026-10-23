@@ -232,6 +232,24 @@ da introdução; o tipo de projeto mencionado no complemento não foi comparado
 nos 500 por falta de rótulos fora da amostra-ouro. Uma análise não substitui
 a outra.
 
+\subsection{Alcance da replicação cruzada}
+A replicação descrita nas Seções~\ref{sec:metodo-replicacao}
+e~\ref{sec:resultados-replicacao} evidenciou barreiras práticas de
+documentação, portabilidade e tolerância ao limite da API. Cache e retomada
+permitiram concluir as execuções relatadas, mas depender de intervenção
+manual após HTTP 403 restringia a execução autônoma do nosso pipeline.
+O tratamento das issues melhora essas condições sem alterar os dados ou
+as definições das métricas. Respostas simuladas e testes locais sustentam
+as correções técnicas, sem substituir uma nova execução independente.
+
+A seleção de somente 30 projetos, a presença de dois projetos ausentes na
+publicação parceira e a comparação quantitativa ainda pendente limitam a
+evidência de reprodutibilidade dos resultados. Não se atribuem divergências
+numéricas à evolução da API, à seleção ou à implementação sem comparação
+pareada. A sobreposição de repositórios e o sucesso do comando não validam
+os proxies DORA nem as classificações. A pendência administrativa de
+Projects também é distinta das quatro correções técnicas já integradas.
+
 \subsection{Validade de conclusão}
 As direções e diferenças discutidas na
 Seção~\ref{sec:confronto-hipoteses} são associações exploratórias. As
