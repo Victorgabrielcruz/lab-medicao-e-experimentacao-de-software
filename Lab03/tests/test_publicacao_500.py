@@ -7,8 +7,11 @@ import tarfile
 
 import pytest
 
-spec = importlib.util.spec_from_file_location('restaurar500',
-    Path(__file__).resolve().parents[1] / 'entregas/dados-brutos-500/restaurar.py')
+caminho_script = Path(__file__).resolve().parents[1] / 'entregas/dados-brutos-500/restaurar.py'
+if not caminho_script.is_file():
+    pytest.skip('Script de restauração ausente no checkout parcial: dados-brutos-500/restaurar.py',
+                allow_module_level=True)
+spec = importlib.util.spec_from_file_location('restaurar500', caminho_script)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 

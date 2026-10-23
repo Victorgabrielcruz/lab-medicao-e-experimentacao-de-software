@@ -161,7 +161,38 @@ def test_reset_vencido_nao_gera_espera_negativa(reset):
         resposta(403, {"X-RateLimit-Remaining": "0", "X-RateLimit-Reset": reset}), resposta(),
     ])
     c.get("/repos/org/projeto")
-    assert tempo.esperas == ([0] if reset == "90" else [1])
+    assert tempo.esperas == ([60] if reset == "90" else [1])
+
+
+@pytest.mark.parametrize("status", [403, 429])
+def test_limite_persiste_apos_reset_e_usa_backoff_antes_de_recuperar(status, tmp_path):
+    cache = CacheDisco(tmp_path)
+    headers = {"X-RateLimit-Remaining": "0", "X-RateLimit-Reset": "130"}
+    c, sessao, tempo = cliente(
+        [resposta(headers=headers)] + [resposta(status, headers) for _ in range(4)] + [resposta()], cache)
+    c.get("/repos/org/cota")
+    path, params = "/repos/org/projeto/compare/v1...v2", {"page": 3, "per_page": 100}
+    assert c.get(path, params) == {"ok": True}
+    assert tempo.esperas == [31, 60, 120, 240, 480]
+    consultas = sessao.chamadas[1:]
+    assert [r[3] for r in consultas] == [131, 191, 311, 551, 1031]
+    assert all(r[:3] == consultas[0][:3] for r in consultas)
+    assert c.estatisticas()["repeticoes_limite"] == 4
+    assert c.estatisticas()["espera_rate_limit_s"] == 931
+    c.get(path, params)
+    assert len(sessao.chamadas) == 6  # somente o sucesso foi cacheado
+
+
+@pytest.mark.parametrize("status", [403, 429])
+def test_reset_vencido_persistente_espera_mas_mantem_limite_finito(status):
+    c, sessao, tempo = cliente([
+        resposta(status, {"X-RateLimit-Remaining": "0", "X-RateLimit-Reset": "90"})
+        for _ in range(5)
+    ])
+    with pytest.raises(requests.HTTPError):
+        c.get("/repos/org/projeto")
+    assert tempo.esperas == [60, 120, 240, 480]
+    assert len(sessao.chamadas) == 5
 
 
 def test_reset_vencido_de_resposta_bem_sucedida_nao_bloqueia():

@@ -20,7 +20,7 @@ def test_reconstroi_sequencia_integral_sem_notas_cache_ou_rede(entradas, tmp_pat
     assert d['janela'] == manifesto['janela'] and d['origens']['novas_consultas_api'] == 0
     assert len(d['origens']['checkpoints_usados_sha256']) == 1
     assert set(d['repositorios'][0]['releases'][0]) == {'id', 'tag_name', 'published_at', 'draft', 'prerelease'}
-    assert json.loads(destino.read_text()) == d
+    assert json.loads(destino.read_text(encoding='utf-8')) == d
     assert all(p.read_bytes() == b for p, b in antes.items())
     assert mod.preparar(fonte, destino) == d
 
@@ -43,8 +43,8 @@ def test_recusa_populacao_duplicada_e_sobrescrita_do_pacote(entradas, tmp_path):
     with pytest.raises(ConfigError, match='sobrescrever'):
         mod.preparar(fonte, fonte / 'manifesto.json')
     p = fonte / 'manifesto.json'
-    m = json.loads(p.read_text()); m['ids_amostra'] *= 2
-    p.write_text(json.dumps(m))
+    m = json.loads(p.read_text(encoding='utf-8')); m['ids_amostra'] *= 2
+    p.write_text(json.dumps(m), encoding='utf-8')
     with pytest.raises(ConfigError, match='repetidos'):
         mod.preparar(fonte, tmp_path / 'out.json')
 
