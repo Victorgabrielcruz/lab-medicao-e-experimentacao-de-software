@@ -1,5 +1,13 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Ameaças externas e de conclusão — FIN-05 (#184)
+
+A validade externa de [discussao.tex](discussao.tex) descreve população,
+janela e fatores não comparados, com mitigações. A validade de conclusão
+acrescenta tamanho da amostra, n efetivo por métrica e as conferências
+usadas como mitigação. Não há números novos; as fontes estão em
+[validacao-fin-05-184.md](validacao-fin-05-184.md).
+
 ## RQ08 bônus — evolução temporal (#175)
 
 A subseção RQ08 de [resultados.tex](resultados.tex) resume a evolução
