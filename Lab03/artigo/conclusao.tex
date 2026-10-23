@@ -1,21 +1,14 @@
 \section{Conclusão}
 \label{sec:conclusao}
-O estudo disponibiliza um pipeline reproduzível com cache, retomada,
-diagnósticos e auditoria, aplicado a 500 repositórios elegíveis. O pacote
-final permite recalcular CFR(b) para 498 projetos e preservar dois valores
-não estimáveis, sem novas consultas. Contra o consenso registrado, a v1
-atinge F1 de 0,933 em 296/300 releases; quatro primeiras releases sem
-predecessora continuam indeterminadas. O limiar não exigiu refinar a regra,
-mas os limites do instrumento e da independência da rotulagem permanecem.
-
-Frequência e CFR apresentam associação positiva, mais elevada na variante
-de corretivas que no proxy de CI. Contribuidores e idade se associam a
-algumas métricas após Holm, sem um perfil superior em todas as dimensões;
-reportam-se também tamanhos de efeito. Esses resultados são exploratórios,
-restritos à população e à janela estudadas, sem inferência causal ou
-identificação direta de incidentes em produção. Nos pares completos, trocar
-apenas lead time altera 14,53\% das classes gerais, enquanto trocar apenas
-CFR altera 38,33\%; as verificações de disponibilidade e qualidade mantêm
-essa sensibilidade. A mudança da unidade de deploy para pré-releases ou
-tags e a análise por tipo de projeto fora da amostra-ouro permanecem fora
-desta revisão, sem declarar atendidas todas as hipóteses.
+Calculamos as métricas DORA para 500 repositórios populares com GitHub
+Actions, com um pipeline reproduzível que preserva ausências, censuras e
+diagnósticos. A maioria dos projetos fica em High ou Medium; a CFR de CI é
+baixa, enquanto a CFR por releases corretivas é alta e discorda dela na
+maioria dos casos. Frequência e CFR têm associação positiva, mais forte na
+variante de corretivas. Contribuidores e idade se associam a algumas métricas,
+sem um perfil superior em todas, e estrelas não mostram diferença após
+correção. Trocar apenas a definição de CFR altera 38,33\% das classes gerais,
+contra 14,53\% ao trocar apenas o lead time. Esses resultados são
+exploratórios e restritos ao recorte estudado. Trabalhos futuros podem variar
+a unidade de entrega, comparar os proxies com incidentes reais e analisar o
+tipo de projeto em toda a amostra.

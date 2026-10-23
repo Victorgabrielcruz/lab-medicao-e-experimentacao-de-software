@@ -1,13 +1,10 @@
 \section{Resultados}
 \label{sec:resultados}
-% S03-10 (#176): RQ01 a RQ04 e classificação C1; notebooks em Lab03/analise/
-% (#167, #168, #169). RQ05 e RQ06: #177; RQ07: #178, fontes #173 e #174.
+% S03-10 (#176), S03-11 (#177), S03-12 (#178), RQ08 (#175), FIN-06 (#185).
+% Versão condensada na FIN-07 (#186); tabelas completas em Lab03/analise/tabelas/.
 
-Os resultados referem-se aos 500 repositórios da amostra final
-(Seção~\ref{sec:metodologia}). Cada métrica é resumida pela mediana e pelo
-intervalo interquartil (IQR) entre repositórios, apenas com os valores
-válidos; ausências não são tratadas como zero. A Tabela~\ref{tab:resumo-rq}
-reúne os resumos, e as Figuras~\ref{fig:rq01-rq02} e~\ref{fig:rq03-rq04}
+A Tabela~\ref{tab:resumo-rq} resume as métricas nos 500 repositórios, apenas
+com valores válidos, e as Figuras~\ref{fig:rq01-rq02} e~\ref{fig:rq03-rq04}
 mostram as distribuições.
 
 \begin{table}[ht]
@@ -34,67 +31,38 @@ RQ04 & Tempo de recuperação (horas) & 469 & 2,6 & 1,1--7,2 \\
 \includegraphics[width=0.49\textwidth]{rq01_frequencia_deploy.png}\hfill
 \includegraphics[width=0.49\textwidth]{rq02_lead_time_variantes.png}
 \caption{Frequência de deploy (esquerda) e lead time por variante (direita),
-em escala logarítmica; linhas tracejadas marcam os cortes DORA}
+em escala logarítmica; linhas tracejadas marcam os cortes DORA e os bigodes vão a 1,5 IQR na escala log}
 \label{fig:rq01-rq02}
 \end{figure}
 
-\subsection{RQ01 -- Frequência de deploy}
-A mediana da frequência de deploy é de 0,48 release estável por semana,
-cerca de 2,1 por mês, com IQR de 0,23 a 1,13 por semana. A distribuição é
-assimétrica à direita: o máximo chega a 51,3 releases por semana. Em termos
-mensais, 24,0\% dos repositórios publicam menos de uma release por mês,
-36,6\% entre uma e três, e 39,4\% mais de três.
-
-\subsection{RQ02 -- Lead time}
-Há lead time para 499 repositórios; o restante não tem comparação válida
-entre releases. Pela variante (a), por release, a mediana é de 268~horas
-(11,2 dias), com IQR de 91 a 928~horas. Pela variante (b), por commit, a
-mediana é de 303~horas (12,6 dias), com IQR de 79 a 1.225~horas. No mesmo
-repositório, a variante (a) é maior que a (b) em 303 casos (60,7\%), menor
-em 195 e igual em um; a mediana da razão (a)/(b) é 1,29. A mediana entre
-repositórios de (a) fica abaixo da de (b) porque a variante (b) tem cauda
-superior mais longa.
+\textbf{RQ01.} A mediana é de 0,48 release estável por semana (cerca de 2,1 por
+mês), com cauda à direita até 51,3 por semana; 24,0\% publicam menos de uma
+release por mês, 36,6\% entre uma e três e 39,4\% mais de três.
+\textbf{RQ02.} O lead time (a) tem mediana de 268 horas (11,2 dias), e o (b),
+de 303 horas (12,6 dias). No mesmo repositório, (a) supera (b) em 303 dos 499
+casos (60,7\%); a mediana entre repositórios de (b) é maior porque sua cauda
+superior é mais longa.
+\textbf{RQ03.} A CFR (a) tem mediana de 0,053 e a CFR (b), de 0,440; (a) é
+menor que (b) em 425 dos 498 pares, e só 104 (20,9\%) recebem a mesma classe
+nas duas variantes.
+\textbf{RQ04.} A mediana de recuperação é de 2,6 horas, com máximo de 693
+horas. Dos 92.890 episódios, 330 (0,36\%) ficaram censurados à direita, e 683
+sequências não têm sucesso anterior; 31 repositórios não têm episódio
+recuperado e ficam sem valor.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.49\textwidth]{rq03_cfr_variantes.png}\hfill
 \includegraphics[width=0.49\textwidth]{rq04_tempo_recuperacao.png}
 \caption{CFR por variante (esquerda) e tempo de recuperação por repositório,
-em escala logarítmica (direita); linhas tracejadas marcam os cortes DORA}
+em escala logarítmica (direita); linhas tracejadas marcam os cortes DORA e os bigodes vão a 1,5 IQR na escala do eixo}
 \label{fig:rq03-rq04}
 \end{figure}
 
-\subsection{RQ03 -- Taxa de falha de mudanças}
-A CFR (a), calculada sobre os runs válidos, tem mediana de 0,053 e IQR de
-0,023 a 0,118 nos 500 repositórios. A CFR (b), calculada pela heurística v1
-de releases corretivas, tem mediana de 0,440 e IQR de 0,200 a 0,727 em 498
-repositórios. A variante (a) é menor que a (b) em 425 dos 498 pares, e
-apenas 104 repositórios (20,9\%) ficam na mesma classe DORA pelas duas
-variantes. A heurística da CFR (b) foi avaliada contra o consenso registrado em
-296/300 releases, com F1 de 0,933 e limites de independência e construto
-(Seção~\ref{sec:validacao-manual}).
-
-\subsection{RQ04 -- Tempo de recuperação}
-Há episódios recuperados em 469 repositórios. A mediana do tempo de
-recuperação é de 2,6~horas, com IQR de 1,1 a 7,2~horas e máximo de
-693~horas. Dos 92.890 episódios de falha, 330 (0,36\%) ficaram censurados
-à direita, sem sucesso até o fim da janela, distribuídos em 167
-repositórios. Outras 683 sequências de falha, em 274 repositórios, não têm
-sucesso anterior observado (censura à esquerda) e ficam fora dos episódios.
-Dos 31 repositórios sem episódio recuperado, 29 não têm nenhum episódio
-definido na janela e dois têm apenas episódios censurados.
-
-\subsection{Classificação DORA de referência}
-A Tabela~\ref{tab:c1} apresenta a distribuição nas classes da
-classificação de referência (C1). A classe geral usa frequência de deploy,
-lead time (b), CFR (a) e tempo de recuperação, pela mediana das notas
-arredondada para baixo. Quase nove em cada dez repositórios ficam em High
-ou Medium na classe geral; Elite e Low somam 10,8\%. Por métrica, a
-frequência de deploy concentra-se em Medium (49,6\%), o lead time se divide
-entre High, Medium e Low, a CFR (a) concentra-se em Elite (81,0\%) e o
-tempo de recuperação, em High (61,0\%). A sensibilidade da classe geral
-às variantes de lead time e CFR é apresentada na
-Seção~\ref{sec:resultados-rq07}, distinguindo notas parciais de casos completos.
+\textbf{Classes.} Na referência C1 (Tabela~\ref{tab:c1}), 89,2\% dos
+repositórios ficam em High ou Medium na classe geral. A frequência
+concentra-se em Medium, a CFR (a) em Elite e a recuperação em High; o lead
+time se divide entre High, Medium e Low, e a CFR (b) concentra-se em Low.
 
 \begin{table}[ht]
 \centering
@@ -112,305 +80,113 @@ CFR (a) & 81,0 & 12,4 & 3,6 & 3,0 & 0,0 \\
 CFR (b) & 18,8 & 18,2 & 13,6 & 49,0 & 0,4 \\
 Tempo de recuperação & 22,6 & 61,0 & 8,6 & 1,6 & 6,2 \\
 \hline
-Geral: LT (b) + CFR (a) & 5,6 & 44,0 & 45,2 & 5,2 & 0,0 \\
+Geral C1: LT (b) + CFR (a) & 5,6 & 44,0 & 45,2 & 5,2 & 0,0 \\
 \hline
 \end{tabular}
 \end{table}
 
-% S03-11 (#177): fontes reexecutáveis das #170--172, CSV final de 500.
 \subsection{RQ05 -- Frequência de deploy e taxa de falha}
 \label{sec:resultados-rq05}
-A associação de Spearman é positiva nas duas variantes
-(Tabela~\ref{tab:rq05-spearman}). Para a CFR(a), o coeficiente é 0,155;
-para a CFR(b), 0,799. Os tamanhos diferem porque dois projetos não têm
-CFR(b); valores ausentes não foram imputados. A
-Figura~\ref{fig:rq05-spearman} mostra a dispersão, com frequência em escala
-logarítmica e CFR na escala original. A transformação serve à visualização;
-o teste usa os ranks das observações originais.
-
-\begin{table}[ht]
-\centering
-\caption{Spearman bilateral entre frequência de deploy e CFR}
-\label{tab:rq05-spearman}
-\small
-\begin{tabular}{lrrrr}
-\hline
-Variante & $n$ & $\rho$ & $p$ assintótico & $p$ permutação \\
-\hline
-CFR(a) & 500 & 0,154562 & $5,23733\times10^{-4}$ & 0,00054 \\
-CFR(b) & 498 & 0,799098 & $1,10854\times10^{-111}$ & 0,00002 \\
-\hline
-\end{tabular}
-\end{table}
-
-A verificação por 99.999 permutações, com semente 170, mantém a evidência
-bilateral nas duas variantes; o menor valor informado não é zero. Excluindo
-54 projetos com algum indicador de coleta incompleta ou cálculo parcial,
-a associação permanece positiva: $\rho=0,115381$, $n=446$, $p=0,014769$
-para (a) e $\rho=0,777516$, $n=444$, $p=4,46218\times10^{-91}$ para (b).
-Os valores de permutação correspondentes são 0,01544 e 0,00002.
-A análise é associativa: não demonstra que publicar mais cause mais falhas.
-O tamanho maior em (b) também deve ser lido à luz do proxy temporal de
-corretivas e dos limites de validação da Seção~\ref{sec:validacao-manual}.
+A associação de Spearman é positiva nas duas variantes: $\rho=0,155$ para a
+CFR (a) ($n=500$, $p=0,0005$) e $\rho=0,799$ para a CFR (b) ($n=498$,
+$p<10^{-100}$); as permutações dão $p=0,00054$ e $p=0,00002$. Sem os 54
+projetos com alertas de qualidade, os valores são $\rho=0,115$ ($n=446$,
+$p=0,015$) e $\rho=0,778$ ($n=444$). A análise é associativa
+(Figura~\ref{fig:rq05-spearman}).
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{rq05_df_cfr_spearman.png}
-\caption{Frequência de deploy e CFR, por variante; $\rho$, $p$ e $n$
-correspondem aos pares válidos de cada painel}
+\caption{Frequência de deploy, em escala logarítmica, e CFR por variante;
+$\rho$, $p$ e $n$ correspondem aos pares válidos de cada painel}
 \label{fig:rq05-spearman}
 \end{figure}
 
 \subsection{RQ06 -- Comparações por fatores}
 \label{sec:resultados-rq06}
-Os três fatores numéricos foram divididos em quartis: estrelas,
-contribuidores e idade em dias, com 125 projetos em cada grupo antes de
-excluir métricas ausentes. Os cortes internos foram, respectivamente,
-36.047,75/45.049/68.388,5 estrelas; 180,75/395/887,25 contribuidores; e
-939/2.390,5/3.954,5 dias. A Tabela~\ref{tab:rq06-globais} apresenta os 18
-Kruskal--Wallis, com correção de Holm conjunta e $\varepsilon^2=H/(n-1)$.
+Após Holm, sete dos 18 testes globais mantêm diferença
+(Tabela~\ref{tab:rq06}); nenhuma métrica difere por quartil de estrelas.
+Entre os 108 pares, 27 passam pela correção. Nos extremos (Q1 contra Q4),
+projetos com menos contribuidores têm lead times menores ($\delta=-0,580$ e
+$-0,686$, grandes). Projetos mais novos publicam com mais frequência
+($\delta=0,409$, médio), têm lead times menores ($\delta=-0,746$ e $-0,763$)
+e recuperação menor ($\delta=-0,267$, pequeno), mas CFR (b) maior
+($\delta=0,575$). Nenhum perfil é superior em todas as métricas.
 
 \begin{table}[ht]
 \centering
-\caption{RQ06: testes globais por fator e métrica; Holm na família de 18}
-\label{tab:rq06-globais}
+\caption{RQ06: $\varepsilon^2$ dos testes de Kruskal--Wallis por fator;
+* indica $p_{\mathrm{Holm}}<0,05$ na família de 18}
+\label{tab:rq06}
 \small
-\begin{tabular}{llrrrr}
+\begin{tabular}{lrrrr}
 \hline
-Fator & Métrica & $n$ & $H$ & $p_{\mathrm{Holm}}$ & $\varepsilon^2$ \\
+Métrica & $n$ & Estrelas & Contribuidores & Idade \\
 \hline
-Estrelas & Frequência & 500 & 8,134 & 0,476489 & 0,016 \\
-Estrelas & LT(a) & 499 & 1,716 & 1,000000 & 0,003 \\
-Estrelas & LT(b) & 499 & 1,163 & 1,000000 & 0,002 \\
-Estrelas & CFR(a) & 500 & 3,697 & 1,000000 & 0,007 \\
-Estrelas & CFR(b) & 498 & 5,135 & 1,000000 & 0,010 \\
-Estrelas & Recuperação & 469 & 4,328 & 1,000000 & 0,009 \\
-Contribuidores & Frequência & 500 & 3,187 & 1,000000 & 0,006 \\
-Contribuidores & LT(a) & 499 & 74,206 & $7,507\times10^{-15}$ & 0,149 \\
-Contribuidores & LT(b) & 499 & 108,712 & $3,323\times10^{-22}$ & 0,218 \\
-Contribuidores & CFR(a) & 500 & 4,480 & 1,000000 & 0,009 \\
-Contribuidores & CFR(b) & 498 & 3,760 & 1,000000 & 0,008 \\
-Contribuidores & Recuperação & 469 & 1,286 & 1,000000 & 0,003 \\
-Idade & Frequência & 500 & 44,168 & $1,807\times10^{-8}$ & 0,089 \\
-Idade & LT(a) & 499 & 140,775 & $4,374\times10^{-29}$ & 0,283 \\
-Idade & LT(b) & 499 & 147,189 & $1,916\times10^{-30}$ & 0,296 \\
-Idade & CFR(a) & 500 & 4,429 & 1,000000 & 0,009 \\
-Idade & CFR(b) & 498 & 84,969 & $3,954\times10^{-17}$ & 0,171 \\
-Idade & Recuperação & 469 & 18,276 & 0,004629 & 0,039 \\
+Frequência & 500 & 0,016 & 0,006 & 0,089* \\
+Lead time (a) & 499 & 0,003 & 0,149* & 0,283* \\
+Lead time (b) & 499 & 0,002 & 0,218* & 0,296* \\
+CFR (a) & 500 & 0,007 & 0,009 & 0,009 \\
+CFR (b) & 498 & 0,010 & 0,008 & 0,171* \\
+Recuperação & 469 & 0,009 & 0,003 & 0,039* \\
 \hline
 \end{tabular}
 \end{table}
 
-Após Holm, sete dos 18 testes globais mantêm diferença, frente a oito
-nominais. Contribuidores se associam aos dois lead times; idade, à frequência,
-aos dois lead times, à CFR(b) e à recuperação. Nenhuma métrica difere por
-quartil de estrelas após correção. A associação nominal estrelas--frequência
-($p=0,043317$) passa a $p_{\mathrm{Holm}}=0,476489$.
-
-Para os pós-testes, corrigiram-se os 108 pares possíveis em uma segunda
-família de Holm, antes de selecionar os resultados. São relatados como
-diferença apenas pares que passam pela correção e pelo teste global corrigido:
-27 contrastes, distribuídos pelos mesmos sete efeitos globais. A
-Tabela~\ref{tab:rq06-pares} resume os contrastes Q1--Q4, presentes entre os
-27; as tabelas reexecutáveis publicam todos os 108, incluindo os não rejeitados.
-O delta de Cliff positivo significa valores maiores em Q1 que em Q4;
-negativo significa menores. O sinal não implica melhor desempenho em todas
-as métricas, pois frequência e durações têm sentidos distintos.
-
-\begin{table}[ht]
-\centering
-\caption{RQ06: contrastes Q1--Q4 selecionados após Holm e teste global}
-\label{tab:rq06-pares}
-\small
-\begin{tabular}{llrrrr}
-\hline
-Fator & Métrica & $n_1/n_4$ & $p_{\mathrm{Holm}}$ & $\delta$ & Magnitude \\
-\hline
-Contribuidores & LT(a) & 125/124 & $2,604\times10^{-13}$ & -0,580 & Grande \\
-Contribuidores & LT(b) & 125/124 & $8,795\times10^{-19}$ & -0,686 & Grande \\
-Idade & Frequência & 125/125 & $2,055\times10^{-6}$ & 0,409 & Média \\
-Idade & LT(a) & 125/125 & $2,167\times10^{-22}$ & -0,746 & Grande \\
-Idade & LT(b) & 125/125 & $2,052\times10^{-23}$ & -0,763 & Grande \\
-Idade & CFR(b) & 124/125 & $4,508\times10^{-13}$ & 0,575 & Grande \\
-Idade & Recuperação & 119/113 & 0,035816 & -0,267 & Pequena \\
-\hline
-\end{tabular}
-\end{table}
-
-Nos extremos de contribuidores, os lead times são menores em Q1, com
-efeitos grandes ($\delta=-0,580$ e $-0,686$). Projetos mais novos, em Q1 de
-idade, publicam mais frequentemente e têm CFR(b) maior que Q4, mas lead times
-e recuperação menores. Os contrastes de idade mostram efeitos de pequeno a
-grande conforme a métrica. Não há um perfil uniformemente superior em todas
-as dimensões. Esses resultados não isolam confundidores e não permitem
-atribuir causalidade ao tamanho, à popularidade ou à idade dos projetos.
-
-% S03-12 (#178): combinacoes.json e robustez.csv/json das #173 e #174.
 \subsection{RQ07 -- Sensibilidade às definições operacionais}
 \label{sec:resultados-rq07}
-Mantiveram-se a frequência de releases estáveis, a recuperação por episódios
-de CI, a janela e os cortes DORA, variando apenas lead time e CFR
-(Tabela~\ref{tab:rq07-combinacoes}). C1 é a referência da seção anterior:
-lead time (b), por commit, e CFR (a), por runs. C2 usa lead time (a), por
-release, e C3 usa CFR (b), pela heurística de releases corretivas. Assim,
-C1$\times$C2 isola lead time, C1$\times$C3 isola CFR e C2$\times$C3 altera ambos.
-As combinações foram fixadas após a coleta; não constituem pré-registro.
-
-\begin{table}[ht]
-\centering
-\caption{RQ07: combinações de definições com frequência e recuperação fixas}
-\label{tab:rq07-combinacoes}
-\small
-\begin{tabular}{lll}
-\hline
-Combinação & Lead time & CFR \\
-\hline
-C1 (referência) & (b), por commit & (a), falhas de CI \\
-C2 & (a), por release & (a), falhas de CI \\
-C3 & (b), por commit & (b), releases corretivas \\
-\hline
-\end{tabular}
-\end{table}
-
-A análise principal exige as quatro métricas disponíveis nas duas
-combinações de cada par. Ausências não viram zero nem uma classe DORA.
-A mudança corresponde à proporção de repositórios cuja classe geral
-difere; o denominador é o número de pares elegíveis. O kappa de Cohen usa
-pesos quadráticos de discordância $((i-j)/3)^2$, com posições de 0 a 3
-para Low, Medium, High e Elite. Compara-se a discordância observada à
-esperada pelas marginais; não se trata do kappa de Fleiss dos rotuladores.
+Fixando frequência, recuperação, janela e cortes, variamos lead time e CFR
+(Tabela~\ref{tab:rq07}). Trocar só a CFR muda 38,33\% das classes gerais nos
+casos completos, contra 14,53\% ao trocar só o lead time. O padrão se mantém
+na população comum de 467 projetos, sem os projetos com alertas (14,29\%,
+37,23\% e 41,29\%) e com as notas parciais dos 500 (16,0\%, 37,4\% e 41,6\%).
+Mesmo $\kappa_w=0,841$ acompanha 68 trocas de classe. A unidade de entrega não
+foi variada: pré-releases e tags ficaram fora das análises.
 
 \begin{table}[ht]
 \centering
 \caption{RQ07: mudança da classe geral e kappa quadrático em casos completos}
-\label{tab:rq07-robustez}
+\label{tab:rq07}
 \small
-\begin{tabular}{lrrrrr}
+\begin{tabular}{llrrr}
 \hline
-Par & $n$ & Excluídos & Mudaram & Mudança (\%) & $\kappa_w$ \\
+Par & Variantes trocadas & $n$ & Mudança (\%) & $\kappa_w$ \\
 \hline
-C1$\times$C2 & 468 & 32 & 68 & 14,53 & 0,8411 \\
-C1$\times$C3 & 467 & 33 & 179 & 38,33 & 0,5635 \\
-C2$\times$C3 & 467 & 33 & 197 & 42,18 & 0,4494 \\
+C1$\times$C2 & lead time (b)$\rightarrow$(a) & 468 & 14,53 & 0,841 \\
+C1$\times$C3 & CFR (a)$\rightarrow$(b) & 467 & 38,33 & 0,564 \\
+C2$\times$C3 & ambas & 467 & 42,18 & 0,449 \\
 \hline
 \end{tabular}
 \end{table}
 
-Trocar somente a definição de CFR altera mais classes gerais que trocar
-somente lead time (Tabela~\ref{tab:rq07-robustez}). Fixando a população
-completa comum em 467 projetos, C1$\times$C2 passa a 14,56\% e kappa 0,8394;
-os outros pares permanecem iguais. Excluindo também alertas de coleta
-incompleta ou cálculo parcial, as mudanças são 14,29\% em 420 pares,
-37,23\% e 41,29\% em 419 pares, com kappas 0,8367, 0,5648 e 0,4451,
-respectivamente. A diferença entre definições persiste nessas restrições.
-
-Incluindo as notas gerais parciais permitidas pelo protocolo nos 500
-projetos, as mudanças são 16,0\%, 37,4\% e 41,6\%. Com pesos lineares,
-os kappas dos pares completos são 0,7913, 0,4431 e 0,3574. O padrão de
-maior sensibilidade ao CFR se mantém, mas a magnitude do kappa depende
-da ponderação. Mesmo kappa 0,8411 acompanha 68 trocas de classe; proximidade
-ordinal não equivale à estabilidade da categoria. A mediana das quatro
-notas pode ainda ocultar mudanças por métrica, disponíveis nas matrizes
-de transição e tabelas reexecutáveis.
-
-Esses resultados descrevem sensibilidade nesta amostra, sem demonstrar
-superioridade de validade de uma definição. CFR(b) mantém os limites de
-construto e da avaliação em 296/300 releases da amostra-ouro, com quatro
-previsões indeterminadas (Seção~\ref{sec:validacao-manual}); esses pares de
-releases não se confundem com os repositórios excluídos da tabela.
-Não se alteraram previsões nem rótulos humanos. A unidade de deploy não
-foi variada: pré-releases, tags e a expectativa de maior concordância nas
-classes extremas permanecem fora destes testes, sem inferência causal
-ou conclusão sobre incidentes em produção.
-
-\subsection{RQ08 -- Evolução temporal da frequência de releases (bônus)}
+\subsection{RQ08 -- Evolução temporal (bônus)}
 \label{sec:resultados-rq08}
-Escolheu-se evolução temporal, em vez de rework rate, como análise
-exploratória definida após a coleta. As datas de 34.255 releases estáveis
-dos 500 projetos foram extraídas localmente e suas contagens por ID
-reconciliadas com a frequência anual do CSV. Para não atribuir zeros a
-meses anteriores à criação, o painel principal contém os 429 projetos
-existentes no início da janela; 71 criados depois ficam fora do painel.
-A taxa mensal divide a contagem pelas semanas reais de cada mês, incluindo
-meses sem publicação registrada, sem aproximá-los por quatro semanas.
+Como análise exploratória, contamos as 34.255 releases estáveis por mês nos
+429 projetos existentes no início da janela. As medianas mensais variam de
+0,226 a 0,467 release por semana; do primeiro para o segundo semestre, a
+mediana passa de 0,385 para 0,421, com 228 projetos aumentando e 201
+diminuindo (Figura~\ref{fig:rq08-temporal}). As medianas oscilam entre
+valores equivalentes a uma e duas releases por mês. É a descrição de um
+único ano, sem teste de tendência.
 
-\begin{figure}[ht]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\textwidth]{rq08_evolucao_mensal.png}
-\caption{RQ08: mediana mensal e IQR no painel inicial de 429 projetos;
-a linha tracejada mostra a mediana dos 398 sem alertas gerais de qualidade}
+\caption{Frequência mensal de releases estáveis por repositório: mediana e IQR
+no painel de 429 projetos existentes no início da janela e mediana dos 398 sem
+alertas de qualidade; as duas medianas coincidem, exceto em janeiro de 2026}
 \label{fig:rq08-temporal}
 \end{figure}
 
-As medianas mensais variam de 0,226 a 0,467 release por semana, com
-oscilações e dispersão entre projetos (Figura~\ref{fig:rq08-temporal}).
-Dividindo a janela em outubro--março (182 dias) e abril--setembro (183 dias),
-a mediana das taxas semestrais passa de 0,385 para 0,421. A mediana da
-diferença pareada entre taxas é 0,0368 release por semana; 228 projetos
-aumentam e 201 diminuem. Essa mediana não equivale necessariamente à
-diferença entre as duas medianas marginais. As taxas usam a exposição
-real de cada semestre; contagens iguais podem resultar em taxas distintas.
-
-Retirando projetos com coleta incompleta ou cálculo parcial no CSV,
-o painel de sensibilidade tem 398 projetos: a mediana passa de 0,346 para
-0,421, com diferença pareada mediana de 0,0367, 211 aumentos e 187 diminuições.
-Os alertas são gerais, não específicos de releases, de modo que essa
-restrição não prova completude das fontes. A concordância entre painéis
-não demonstra crescimento uniforme, sazonalidade, tendência estatística
-ou melhoria DORA geral. Trata-se de descrição de um único ciclo anual,
-em uma seleção retrospectiva por popularidade e ao menos cinco releases
-anuais; não há teste de tendência ou inferência causal. Não foram
-recalculadas CFR, recuperação ou rework rate nesta análise bônus.
-
-\subsection{Replicação cruzada: execução, diferenças e retorno}
+\subsection{Replicação cruzada}
 \label{sec:resultados-replicacao}
-O pipeline parceiro terminou com código zero e 30 repositórios incluídos,
-após cerca de 77 minutos efetivos. Uma interrupção manual com três projetos
-incluídos foi seguida de retomada pelo mesmo comando, sem repetir a busca.
-Dos 8.505 candidatos, 185 foram avaliados: 58 não tinham Actions, 88 tinham
-releases insuficientes e nove tinham runs insuficientes. Os outros 8.320
-não foram processados; não correspondem a exclusões por elegibilidade.
-
-Dos 30 repositórios replicados, 28 constavam no dataset publicado pelo
-parceiro, com 237 linhas; \texttt{itchio/itch} e
-\texttt{n00bcodr/Jellyfin-Enhanced} não constavam. A sobreposição de
-93,33\% é de identidade dos projetos, não de concordância de classificação.
-A publicação observada continha menos projetos que o alvo configurado de
-350 e o mínimo planejado de 300, sem que o registro disponível explique o
-encerramento. Não há, nos artefatos desta revisão, diferenças relativas por
-métrica nem percentual de classes coincidentes calculados para os pares;
-essa comparação permanece na \#181. Assim, a conclusão bem-sucedida do
-comando não estabelece equivalência numérica dos resultados.
-
-A execução revelou instruções de ativação de ambiente incompatíveis com o
-Windows, ausência de estimativa de tempo e consumo de API, silêncio no log
-por até 17 minutos, funil sem etapa explícita de avaliados, caracteres
-corrompidos no console e sobrescrita de saídas versionadas sem aviso.
-Usar diretamente o Python de \texttt{.venv/Scripts/}, observar o processo e
-o cache, consultar o funil gravado e preservar as saídas publicadas foram
-os contornos registrados. Não se afirma que o parceiro já corrigiu esses
-pontos ou recebeu issues sobre todos eles.
-
-No retorno sobre nosso pipeline, as issues \#251--\#254 resultaram nas
-seguintes ações, integradas pelo PR \#256:
-\begin{itemize}
-\item \#251: documentação do JSON de candidatos e de execução com lista
-fixa, janela preservada e saídas isoladas;
-\item \#252: codificação UTF-8 explícita nos testes de reconstrução de
-releases, cuja leitura padrão em Windows produzia divergência textual;
-\item \#253: instruções de clone filtrado sem os grandes binários e
-tratamento explícito da ausência dos scripts de publicação nos testes;
-\item \#254: espera crescente de 60, 120, 240 e 480 segundos quando a cota
-continua esgotada após o reset informado, mantendo o limite de tentativas.
-\end{itemize}
-O replicador havia relatado 1.170 testes aprovados e uma falha de codificação,
-além de uma coleta interrompida por HTTP 403 que terminou com código zero
-após retomada manual, sem perda relatada de dados. Após as correções,
-1.199 testes locais passaram, com 94,67\% de cobertura, em Python 3.12.14;
-dez testes de snapshot passaram também com padrão \texttt{cp1252} e UTF-8
-automático desativado. Os totais são de revisões distintas da suíte e não
-uma contagem pareada de falhas corrigidas. Testes simulados confirmam o
-backoff; não houve nova coleta real nem confirmação de execução externa
-da revisão corrigida. As quatro issues técnicas foram encerradas, mas o
-vínculo ao Project exigido pela \#182 não foi verificado por falta de
-permissão da credencial disponível.
+O pipeline do outro grupo terminou com 30 repositórios em cerca de 77
+minutos, após uma pausa e retomada pelo mesmo comando; 28 deles estão no
+dataset publicado pelo grupo (237 projetos). Registramos seis problemas,
+entre eles instruções de ambiente incompatíveis com o Windows, log silencioso
+por até 17 minutos e sobrescrita de saídas versionadas. A comparação por
+métrica não foi realizada, e não foi possível abrir issues no repositório do
+grupo autor. No sentido inverso, as quatro issues recebidas (\#251 a \#254),
+sobre documentação, codificação em Windows, tamanho do repositório e espera
+após HTTP 403, foram corrigidas, verificadas por 1.199 testes e registradas no
+Project. Os registros estão em \texttt{Lab03/replicacao/}.

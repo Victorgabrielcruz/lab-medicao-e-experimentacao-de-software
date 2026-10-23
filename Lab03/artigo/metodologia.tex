@@ -1,92 +1,26 @@
+% Versão condensada na FIN-07 (#186). Detalhes completos em Lab03/README.md,
+% Lab03/docs/ (definições, decisões de coleta, dicionário) e no histórico Git.
 \section{Metodologia}
 \label{sec:metodologia}
 
 \subsection{Seleção, janela e coleta}
-A população de candidatos é obtida pela Search API do GitHub, com mil a um
-milhão de estrelas, acesso público, sem forks nem repositórios arquivados,
-sem restrição de linguagem e com atividade desde o início da janela.
-O recorte temporal é UTC: de 1 de outubro de 2025, inclusive, a 1 de outubro
-de 2026, exclusive, abrangendo doze meses civis completos. As faixas da busca
-são subdivididas para contornar o teto de resultados, e IDs são deduplicados.
-A ordem inicial dos candidatos da busca prioriza estrelas. Na primeira etapa
-da coleta, foi aplicada a política de adiamento por custo observado descrita
-abaixo; assim, a ordem efetivamente consumida não é estritamente a ordem por
-estrelas.
-A amostra não é aleatória e as conclusões se restringem a esse recorte de
-projetos populares, condicionado também pela disponibilidade de coleta.
+Os candidatos vêm da Search API do GitHub: repositórios públicos com mil a um
+milhão de estrelas, sem forks nem arquivados, sem restrição de linguagem. A
+janela, em UTC, vai de 1/10/2025 (inclusive) a 1/10/2026 (exclusive).
+Incluímos projetos com workflows próprios em \texttt{.github/workflows/}, ao
+menos cinco releases estáveis (\texttt{draft=false}, \texttt{prerelease=false})
+e cinquenta runs válidos na janela, com coleta de runs completa. Os runs são do
+default branch, evento \texttt{push}; contam como válidos \texttt{success},
+\texttt{failure}, \texttt{timed\_out} e \texttt{startup\_failure}, e os demais,
+como \texttt{cancelled}, são ignorados. A coleta mensal subdivide intervalos
+saturados e usa cache e checkpoints para retomar sem repetir consultas.
 
-Incluímos projetos com workflows próprios em \texttt{.github/workflows/},
-pelo menos cinco releases estáveis publicadas e cinquenta runs válidos na
-janela. Workflows dinâmicos criados pelo GitHub não satisfazem o primeiro
-critério. Deploy, na definição principal, corresponde a release com
-\texttt{draft=false}, \texttt{prerelease=false} e \texttt{published\_at} na
-janela. Pré-releases são preservadas para análise alternativa, mas não
-contam para a inclusão principal; drafts são excluídos. Tags sem release,
-datadas pelo autor do commit apontado pela tag, constituem outra definição
-prevista para a RQ07, sem substituir releases na análise principal.
-
-Os runs são restritos ao default branch, evento \texttt{push} e
-\texttt{created\_at} na janela. São válidas as conclusions \texttt{success},
-\texttt{failure}, \texttt{timed\_out} e \texttt{startup\_failure}; as demais,
-incluindo \texttt{cancelled} e \texttt{skipped}, são ignoradas nas métricas de
-falha. As consultas são mensais, com subdivisão recursiva de intervalos
-saturados, paginação, deduplicação por ID e diagnóstico de incompletude.
-Cache por página e checkpoints por candidato permitem retomar a execução.
-O paralelismo respeita o limite global de requisições simultâneas e a ordem
-da fila configurada, inclusive a política de adiamento; os critérios de
-inclusão e a janela não foram relaxados para acelerar a execução.
-
-\paragraph{Replanejamento, encerramento e retomada da extração.}
-Em 14 de outubro de 2026, após preservar 102 elegíveis entre 211 candidatos
-avaliados, o responsável autorizou adiar candidatos pendentes com alto volume
-de runs observado: pelo menos 20.000 nos meses já concluídos ou 5.000 em um
-único mês. O custo se refere a runs coletados, não a tamanho em disco;
-custo desconhecido não classifica um projeto como pequeno. O único candidato
-identificado e adiado foi \texttt{grafana/grafana}, ID 15111821, com 107.617
-runs em sete meses. Os projetos grandes já concluídos permaneceram na amostra,
-e os demais candidatos mantiveram sua ordem relativa. O plano era priorizar
-os demais até 300 elegíveis e então liberar os adiados.
-
-Em 15 de outubro de 2026, às 18h09min11s UTC, a extração foi encerrada com
-\textbf{255 repositórios elegíveis entre 561 candidatos avaliados}, antes do
-marco de 300. Em 16 de outubro, o grupo decidiu retomar a coleta até a meta
-original de 500 elegíveis, preservando configuração, janela, critérios e os
-checkpoints dos 561 avaliados. Na retomada, os candidatos pendentes passaram
-a seguir a ordem original da busca, sem adiamento por volume de runs; Grafana
-voltou à sua posição nessa ordem e foi incluído. Assim, a preferência por
-custo de coleta ficou restrita aos 561 primeiros avaliados. A seleção
-terminou com \textbf{500 repositórios elegíveis entre 1.064 candidatos
-avaliados}, que correspondem exatamente aos 1.064 primeiros da fonte, sem
-lacunas, e incluem os 255 da primeira etapa.
-
-A captura publicada em 20 de outubro preservou o estado após uma interrupção
-por HTTP 403 nos compares. Em 21 de outubro, a retomada processou os compares
-dos 500 projetos e encerrou com código zero e
-\texttt{execucao\_completa=true}, sem alterar a população selecionada.
-Foram processadas 34.151 comparações, com 104 releases ignoradas e
-diagnósticos de compare incompleto em 11 projetos. Os lead times (a) e (b)
-têm estimativa em 499 projetos; ausência e incompletude permanecem explícitas,
-sem imputação por zero. A CFR (b) usa a heurística v1, com validação humana
-na \#162 reportada para 296 dos 300 pares da amostra-ouro, com quatro
-indeterminações justificadas. A exportação final é local, confere hashes e
-reproduz o CSV byte a byte; concluir a execução não elimina os diagnósticos.
-
-Configuração, fonte de candidatos, progresso, checkpoints e cache foram
-preservados com hashes. A completude de runs dos incluídos não assegura a
-completude das comparações de commits, tratadas separadamente; ausências
-de métricas permanecem nulas, sem imputação por zero. A amostra não é
-aleatória e não se presume que represente todos os candidatos da busca.
-
-\paragraph{Funil de seleção.}
-A Tabela~\ref{tab:funil} resume o funil. A busca, dividida em 57 faixas de
-estrelas sem nenhuma truncada, devolveu 37.383 candidatos distintos. Os
-36.319 não avaliados após a amostra atingir 500 elegíveis não foram
-processados; não são exclusões. Entre os 1.064 avaliados, cada etapa só
-recebe os que passaram pela anterior. O pré-filtro de releases evita coletar
-runs de quem já não atinge cinco releases estáveis; o critério de runs e a
-exigência de coleta completa vêm em seguida. O único descarte nesta última
-etapa, \texttt{dbeaver/dbeaver}, atinge os critérios quantitativos, mas
-tem a coleta de runs incompleta.
+Os candidatos foram avaliados na ordem da busca por estrelas até 500 elegíveis
+(Tabela~\ref{tab:funil}). Nos 561 primeiros avaliados, um único projeto com
+alto volume de runs (\texttt{grafana/grafana}) foi adiado; a coleta foi
+encerrada com 255 elegíveis e retomada na ordem original, sem adiamento, até
+500 elegíveis entre os 1.064 primeiros candidatos, sem alterar janela nem
+critérios. As decisões estão em \texttt{Lab03/docs/}. A amostra não é aleatória.
 
 \begin{table}[ht]
 \centering
@@ -97,10 +31,9 @@ tem a coleta de runs incompleta.
 \hline
 Etapa & Descartados & Restantes \\
 \hline
-Candidatos da Search API & -- & 37.383 \\
+Candidatos da Search API (57 faixas de estrelas) & -- & 37.383 \\
 Avaliados até atingir 500 elegíveis & 36.319$^{*}$ & 1.064 \\
-Com workflows próprios do GitHub Actions & 131 & 933 \\
-Metadados acessíveis & 1 & 932 \\
+Com workflows próprios e metadados acessíveis & 132 & 932 \\
 Ao menos cinco releases estáveis na janela & 363 & 569 \\
 Ao menos cinquenta runs válidos na janela & 68 & 501 \\
 Coleta de runs completa & 1 & 500 \\
@@ -109,346 +42,68 @@ Coleta de runs completa & 1 & 500 \\
 \end{tabular}
 \end{table}
 
-\subsection{Metadados e unidade de análise}
-A unidade do dataset é o repositório, identificado pelo ID do GitHub;
-metadados e métricas são associados por esse ID. Estrelas e linguagem
-principal representam o registro observado na coleta ou recuperado do cache,
-não uma reconstrução histórica ao fim da janela. A idade é a quantidade de
-dias completos entre \texttt{created\_at} e o fim exclusivo da janela; em
-anos, divide-se por 365,25, com duas casas decimais.
+\subsection{Definições operacionais}
+\textbf{Frequência (RQ01)} é o número de releases estáveis dividido pelas
+semanas reais da janela. \textbf{Lead time (RQ02)} compara releases estáveis
+consecutivas pela data de autor dos commits novos: a variante (a) toma, por
+release, a publicação menos o commit mais antigo e usa a mediana entre
+releases; a (b) usa a mediana de todos os pares commit--release. Primeiras
+releases sem anterior, releases sem commits novos e comparações indisponíveis
+ficam fora, com motivo registrado.
 
-Contribuidores são as entradas retornadas pelo endpoint com
-\texttt{per\_page=1} e \texttt{anon=1}, contadas pela última página ou pelo
-tamanho da resposta quando ela é única. Autores anônimos são incluídos;
-e-mails distintos podem representar a mesma pessoa. Listas grandes demais
-para a API produzem valor ausente e diagnóstico, sem imputação por zero.
+\textbf{CFR (RQ03)}: a variante (a) é $N_{\mathrm{falhas}}/(N_{\mathrm{falhas}}
++N_{\mathrm{sucessos}})$ nos runs válidos; a (b) é a fração de releases seguidas,
+em até sete dias, por uma release corretiva, identificada por uma heurística de
+versão patch e termos de commit (v1). Releases dos últimos sete dias ficam
+censuradas. \textbf{Recuperação (RQ04)}: por workflow, a primeira falha após
+um sucesso abre um episódio e o sucesso seguinte o fecha; o valor do
+repositório é a mediana das durações recuperadas. Episódios sem sucesso até o
+fim da janela (censura à direita) e falhas sem sucesso anterior (censura à
+esquerda) são contados à parte. Métricas sem estimativa ficam nulas, nunca
+zero, e são resumidas por mediana e IQR com o $n$ válido.
 
-\subsection{Definições operacionais e variantes}
-\paragraph{Frequência de deploy (RQ01).}
-Para cada repositório, dividimos a quantidade de releases estáveis publicadas
-pelas semanas reais da janela:
-\begin{equation}
-\mathrm{DF}=\frac{N_{\text{releases estáveis}}}
-{(t_1-t_0)/604800}.
-\label{eq:df}
-\end{equation}
-Na equação, \(t_0\) e \(t_1\) são os limites inicial e final exclusivo,
-e a diferença temporal está em segundos. Não se aproxima um ano
-por 52 semanas. A inclusão de pré-releases e o uso de tags são definições
-alternativas previstas para avaliar a sensibilidade na RQ07; a disponibilidade
-desses dados não significa que suas análises já tenham sido executadas.
+\textbf{Classes.} Usamos os cortes do enunciado: frequência Elite com ao menos
+sete releases por semana, High com uma por semana e Medium com doze por ano;
+lead time abaixo de 24, 168 e 720 horas; CFR até 15\%, 30\% e 45\%;
+recuperação abaixo de 1, 24 e 168 horas. A classe geral é a mediana das notas
+Low=1 a Elite=4, arredondada para baixo. A referência (C1) usa frequência,
+lead time (b), CFR (a) e recuperação.
 
-\paragraph{Lead time (RQ02).}
-Comparamos releases estáveis consecutivas em ordem de publicação, recuperando
-a release anterior à janela quando existir. A release atual deve pertencer
-à janela; seus commits podem ser anteriores a ela. Usamos a data do autor
-\texttt{commit.author.date}, convertida a UTC, e não a do committer.
-Na variante (a), o intervalo de cada release é sua publicação menos a menor
-data de autor dos commits novos; o valor do repositório é a mediana desses
-intervalos. Na variante (b), calculamos publicação menos data do autor para
-cada par commit--release válido e tomamos a mediana de todos os pares, sem
-mediana intermediária por release. Um SHA conta uma vez em cada release;
-se associado a outra release, constitui outro par. Ambas são expressas em
-horas e estão implementadas para cálculo local.
-
-A primeira release histórica sem anterior, releases sem commits novos e
-comparações ausentes, inacessíveis ou incompletas ficam fora do cálculo,
-com motivo registrado. Após o encerramento, somente comparações válidas já
-disponíveis localmente podem alimentar a estimativa; faltantes não são
-consultados novamente nem substituídos por zero. Se parte das comparações
-estiver disponível, a estimativa deve identificar sua cobertura parcial.
-Na variante (a), uma data de autor inválida invalida a release,
-pois seu mínimo é desconhecido; na variante (b), invalida o par individual,
-mantendo diagnóstico de cálculo parcial. Intervalos negativos são inválidos;
-zero observado é válido. Sem intervalos válidos, valor e classe ficam ausentes.
-
-\paragraph{Change failure rate (RQ03).}
-A variante (a) usa runs como proxy de falha de CI:
-\begin{equation}
-\mathrm{CFR}(a)=\frac{N_{\mathrm{falhas}}}
-{N_{\mathrm{falhas}}+N_{\mathrm{sucessos}}}.
-\label{eq:cfr}
-\end{equation}
-Falhas são \texttt{failure}, \texttt{timed\_out} e
-\texttt{startup\_failure}; sucesso é \texttt{success}.
-As demais conclusions não participam do denominador. Sem runs válidos, a
-fração fica ausente. Essa definição não identifica diretamente incidentes
-causados por deploy em produção, o que limita sua interpretação como DORA.
-
-A variante (b) considera falha uma release seguida, em até sete dias,
-por uma release corretiva. O denominador contém as releases avaliáveis;
-as publicadas nos últimos sete dias da janela ficam censuradas e fora dele.
-Identificar uma release corretiva não equivale a marcar essa própria release
-como falha. A implementação da heurística e da CFR (b) pertence à \#161;
-sua avaliação e eventual refinamento pertencem às \#162 e \#163. Sem a fonte
-local dessa métrica, valor e classe permanecem nulos. O procedimento de validação
-manual e seus limites são descritos na Seção~\ref{sec:validacao-manual}.
-
-\paragraph{Tempo de recuperação (RQ04).}
-Agrupamos os runs por workflow e os ordenamos por
-\texttt{run\_started\_at} e ID. A primeira falha após um sucesso observado
-abre um episódio; falhas consecutivas preservam seu início. O próximo sucesso
-encerra o episódio por seu \texttt{updated\_at}. A duração é
-\texttt{success.updated\_at - first\_failure.run\_started\_at}, em horas.
-Conclusions ignoradas não abrem nem encerram episódios. O valor do
-repositório é a mediana das durações com recuperação observada na janela.
-
-\subsection{Censura, ausências e qualidade}
-Sem término de sucesso antes do fim exclusivo da janela, o episódio tem
-censura à direita; preservamos o limite inferior de duração até esse fim,
-mas o excluímos da mediana e do IQR. A proporção censurada é a quantidade
-de episódios censurados à direita dividida pelo total de episódios definidos,
-ou valor ausente quando esse total é zero. Sequências iniciais de falhas sem
-sucesso anterior observado são registradas separadamente como censura à
-esquerda, sem presumir início ou duração. Não entram no denominador da
-proporção de censura à direita.
-
-Timestamps essenciais inválidos ou contraditórios invalidam a estimativa
-daquele workflow, preservando IDs e motivos. Não há substituição automática
-por \texttt{created\_at}, pois remover somente um run poderia unir episódios
-indevidamente. Runs iniciados fora da janela recebem diagnóstico.
-Os demais workflows válidos podem contribuir para a estatística do projeto.
-
-Quartis de recuperação usam interpolação linear inclusiva e
-\(\mathrm{IQR}=Q_3-Q_1\). Um único episódio recuperado produz IQR zero;
-nenhum produz mediana, quartis e classe ausentes. As estatísticas descrevem
-recuperações observadas, não uma estimativa de sobrevivência incluindo
-censurados. A análise deve consultar contagens e diagnósticos detalhados,
-além dos indicadores consolidados de coleta incompleta e cálculo parcial;
-esses indicadores não resumem toda a censura nem todos os problemas temporais.
-
-Cada métrica sem estimativa permanece nula, com seu nome em
-\texttt{metricas\_ausentes}; ausência não é convertida em zero.
-Resultados agregados entre repositórios serão apresentados por mediana e
-IQR, identificando o número de valores válidos de cada métrica. A disponibilidade
-de uma estimativa parcial não elimina o diagnóstico de incompletude.
-
-% S02-15 (#165): relato atualizado com as fontes finais e limites do procedimento.
-\subsection{Validação manual}
+\subsection{Validação manual da heurística}
 \label{sec:validacao-manual}
+Sorteamos 60 dos 255 primeiros elegíveis e cinco releases estáveis de cada
+(300 pares, semente 42). Três avaliadores registraram tipo de projeto, se as
+releases são entregas reais e se cada release é corretiva, definida como
+contendo ao menos uma correção de defeito. O kappa de Fleiss
+\cite{fleiss1971, statsmodelsFleiss} foi 0,875 para tipo, 0,744 para entregas
+reais e 0,953 para corretiva. Dos 420 itens, 15 divergiram e foram resolvidos
+em reunião de consenso, que classificou 249 releases como corretivas e 51 como
+não corretivas. A documentação registra limites de independência entre os
+avaliadores, de modo que não afirmamos três rotulagens inteiramente cegas.
+Contra o consenso, a v1 teve precisão 0,891, recall 0,980 e F1 0,933
+\cite{sklearnPrecisionRecall} em 296 pares; quatro primeiras releases sem
+predecessora ficaram indeterminadas. Como o F1 superou a meta de 0,70, a regra
+não foi ajustada.
 
-\paragraph{Amostra-ouro e instrumento.}
-A \#155 sorteou, sem reposição, 60 dos 255 primeiros repositórios elegíveis
-e cinco releases estáveis por projeto, totalizando 300 pares
-repositório--release. O manifesto foi preservado após ampliar a coleta para
-500; a população de origem do sorteio continua sendo 255. O gerador ordena
-repositórios por ID e releases por publicação/ID e usa
-\texttt{DataFrame.sample}, com \texttt{random\_state=42}, nas duas seleções.
-Todos os pares pertencem à janela e excluem drafts e pré-releases.
-
-Cada avaliador dispõe de duas planilhas com IDs e links de apoio. O livro de
-códigos efetivamente usado distingue biblioteca, framework, aplicação,
-ferramenta de desenvolvimento, infraestrutura e outro. Por repositório,
-registrou-se também se as releases distribuem software para uso (sim/não).
-Por release, corretiva significa haver \emph{pelo menos uma correção de
-defeito}, mesmo junto a funcionalidades. Essa definição é mais ampla que
-exigir correção de defeito recente como objetivo principal: os resultados
-abaixo devem ser interpretados segundo o instrumento aplicado. Número de
-versão e palavra-chave isolados não determinam o rótulo humano; notas,
-changelogs e evidências dos commits fundamentam a decisão. Evidência
-insuficiente deveria permanecer vazia, com justificativa, nunca virar não.
-
-\paragraph{Procedimento e independência.}
-O protocolo exige preenchimento individual por A, B e C, sem consultar os
-demais nem a heurística. As seis planilhas preservadas contêm, por avaliador,
-60 julgamentos de tipo, 60 de entregas reais e 300 de corretiva, sem ausências.
-Foram conferidos IDs, categorias, duplicatas e hashes contra o manifesto;
-nenhum rótulo foi preenchido ou alterado nesta revisão.
-
-A completude dos arquivos não comprova o cumprimento integral da
-independência. A documentação de C registra 51 decisões complementares
-confirmadas após resumos assistidos das evidências, consulta à documentação
-de B e uma declaração de trabalho conjunto. A declaração posterior de
-conferência individual dos outros 249 casos não comprova avaliação cega dos
-51 complementares. O protocolo de consenso registra reunião em 20 de outubro,
-enquanto a complementação de C está documentada em 21 de outubro; as fontes
-não estabelecem a cronologia individual necessária para assegurar que todos
-os julgamentos precederam a conciliação. Relatamos, portanto, concordância
-entre as planilhas registradas, com essa limitação, sem afirmar três
-rotulagens humanas inteiramente cegas e independentes.
-
-\paragraph{Concordância nas planilhas preservadas.}
-Calculou-se separadamente o kappa de Fleiss para as três dimensões
-\cite{fleiss1971}. A associação usa os IDs; cada dimensão inclui apenas
-itens com três códigos válidos. As contagens nominais por item/categoria
-são formadas por \texttt{aggregate\_raters} e submetidas a
-\texttt{fleiss\_kappa}, método \texttt{fleiss} \cite{statsmodelsFleiss}:
-\begin{equation}
-\kappa_F=\frac{\bar P-P_e}{1-P_e},
-\label{eq:fleiss-validacao}
-\end{equation}
-onde \(\bar P\) é a concordância média entre pares de avaliadores e
-\(P_e\), a soma dos quadrados das proporções marginais das categorias.
-Não se usa o consenso para recalcular a concordância. Sem itens completos
-ou com \(P_e=1\), o coeficiente seria não estimável.
-
-\begin{table}[ht]
-\centering
-\caption{Concordância das três planilhas registradas, sem ausências}
-\label{tab:validacao-kappa}
-\small
-\begin{tabular}{lrrrr}
-\hline
-Dimensão & Itens & $\bar P$ & $P_e$ & $\kappa_F$ \\
-\hline
-Tipo de projeto & 60 & 0,9056 & 0,2470 & 0,8746 \\
-Entregas reais & 60 & 0,9889 & 0,9565 & 0,7443 \\
-Release corretiva & 300 & 0,9867 & 0,7178 & 0,9528 \\
-\hline
-\end{tabular}
-\end{table}
-
-\paragraph{Consenso registrado.}
-O protocolo da \#160 adota o rótulo comum em itens unânimes. Nos divergentes,
-a maioria simples é a proposta submetida à discussão; três categorias
-diferentes exigem decisão fundamentada. Sem acordo, o item permanece
-pendente, sem desempate pela heurística. O arquivo de decisões identifica
-item, justificativa, participantes e data, preservando os votos originais.
-Dos 420 itens (60 de tipo, 60 de entregas reais e 300 de corretiva), 405
-foram unânimes e 15 divergentes. Aceitou-se a maioria em sete tipos, uma
-decisão sobre entregas e seis releases; um tipo foi resolvido por discussão.
-O consenso não tem pendências e classifica 249 releases como corretivas e
-51 como não corretivas. O registro formal do protocolo não elimina os
-limites de independência e cronologia descritos acima.
-
-\paragraph{Avaliação da heurística.}
-A \#162 comparou o campo \texttt{corretiva} da v1 com o consenso nos mesmos
-pares \texttt{(repo\_id, release\_id)}, usando sim como classe positiva.
-A v1 foi aplicada à sequência integral dos 500 projetos antes de selecionar
-as cinco releases sorteadas; nenhuma previsão usou os rótulos humanos.
-A censura dos últimos sete dias se aplica a \texttt{falhou} na CFR(b),
-não exclui corretivas da avaliação. Cada release tem peso igual, sem média
-entre repositórios. Precisão, recall e F1 usam \cite{sklearnPrecisionRecall}:
-\begin{equation}
-P=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FP}},\quad
-R=\frac{\mathrm{VP}}{\mathrm{VP}+\mathrm{FN}},\quad
-F_1=\frac{2\mathrm{VP}}{2\mathrm{VP}+\mathrm{FP}+\mathrm{FN}}.
-\label{eq:avaliacao-heuristica}
-\end{equation}
-Taxas com denominador nulo são não estimáveis; zero com denominador
-positivo é válido. Ausências ficam identificadas fora da matriz.
-
-A fonte final cobre 34.255 releases dos 500 projetos. Na amostra-ouro,
-296 dos 300 pares têm previsão conhecida (98,67\%): 249 positivos e 47
-negativos do consenso. A matriz, com linhas de consenso e colunas de previsão
-na ordem não/sim, é $\left[\begin{smallmatrix}17&30\\5&244\end{smallmatrix}\right]$:
-VN=17, FP=30, FN=5 e VP=244. A precisão é 0,890511; o recall, 0,979920;
-e o F1, 0,933078. As quatro exclusões têm consenso negativo e são primeiras
-releases sem predecessora, segundo o compare publicado. Não são imputadas
-como negativas; não se declara F1 observado nos 300 pares nem validação
-humana para todas as releases dos 500 projetos.
-
-A \#163 manteve a v1 sem ajuste da regra: o F1 observado supera 0,70.
-Mesmo que as quatro previsões desconhecidas fossem positivas, mantendo
-fixos os demais pares e o consenso, o F1 seria $488/527=0,925996$.
-Esse limite condicional justifica não refinar para atingir a meta, mas não
-substitui uma medição completa nem é intervalo de confiança. Cada versão
-e avaliação ficam registradas com matriz, cobertura, métricas e hashes;
-um ajuste futuro usando o mesmo consenso deve ser declarado como tal.
-A avaliação sustenta a identificação de corretivas segundo o instrumento,
-não mede diretamente incidentes em produção nem a exatidão da CFR(b).
-
-% S03-11 (#177): procedimentos executados nas #170--172.
-\subsection{Análises das RQ05 e RQ06}
+\subsection{Análises estatísticas}
 \label{sec:metodo-rq05-rq06}
-As análises reexecutáveis usam o CSV final dos 500 projetos, com SHA-256
-registrado nos notebooks e tabelas. A RQ05 calcula Spearman bilateral entre
-frequência de deploy e cada CFR, com exclusão de nulos por par, ranks médios
-nos empates e relato de $\rho$, $p$ assintótico e $n$. A verificação usa
-99.999 permutações com semente 170 e correção de contagem que evita $p=0$.
-A dispersão usa frequência em log; os testes não dependem dessa escala.
-Uma análise de sensibilidade exclui os 54 projetos com algum indicador de
-coleta incompleta ou cálculo parcial. Os dois testes de Spearman são
-reportados sem ajuste; a correção abaixo se restringe à RQ06.
+Na RQ05, calculamos Spearman bilateral entre frequência e cada CFR, conferido
+por 99.999 permutações, e repetimos a análise sem os 54 projetos com coleta
+incompleta ou cálculo parcial. Na RQ06, estrelas, contribuidores e idade foram
+divididos em quartis de 125 projetos; Kruskal--Wallis compara os quartis em
+seis métricas, com $\varepsilon^2=H/(n-1)$, e Mann--Whitney compara os pares,
+com delta de Cliff ($|\delta|$ de 0,147, 0,33 e 0,474 para pequeno, médio e
+grande). Holm corrige separadamente os 18 testes globais e os 108 pares, e um
+par só é relatado se ele e seu teste global passam com $\alpha=0,05$. Na RQ07,
+comparamos a classe geral entre combinações de variantes pela proporção de
+mudanças e pelo kappa de Cohen com pesos quadráticos.
 
-Na RQ06, estrelas, contribuidores e idade em dias são divididos em quartis
-por \texttt{qcut} sobre os valores disponíveis do fator, antes de excluir
-valores ausentes da métrica. Os limites e tamanhos são preservados; empates
-nos limites não são separados artificialmente. Exigem-se ao menos cinco
-observações válidas por grupo. São analisadas seis métricas: frequência,
-lead time (a)/(b), CFR(a)/(b) e recuperação. Os três fatores numéricos
-correspondem à expectativa da introdução. O complemento também menciona
-tipo de projeto, não testado nos 500 porque só a amostra-ouro dispõe de
-rótulos manuais; essa previsão permanece distinta e sem avaliação, sem
-reformular os registros após observar os resultados.
-
-Kruskal--Wallis compara os quatro grupos, com correção de empates. Holm
-é aplicado à família dos 18 testes globais e, separadamente, à família dos
-108 contrastes possíveis de Mann--Whitney bilateral, assintótico com
-correção de empates e continuidade. Não se reduz a família aos pares
-selecionados por significância nominal. Um contraste é relatado como
-diferença somente quando o teste global e o par passam por Holm, com
-$\alpha=0,05$. Para os globais, usa-se a convenção do enunciado,
-$\varepsilon^2=H/(n-1)$, com $n$ efetivamente testado. Para os pares,
-$\delta=2U_1/(n_1n_2)-1$, onde sinal positivo indica valores maiores no
-primeiro grupo. Os cortes de $|\delta|$ são 0,147, 0,33 e 0,474 para separar
-magnitudes desprezível, pequena, média e grande. Ausências ficam nulas,
-sem imputação; associações e diferenças de distribuição não são tratadas
-como efeitos causais.
-
-\subsection{Classificação e dicionário de dados}
-Usamos os cortes fixos do enunciado da disciplina, contrato
-\texttt{lab03-enunciado-cortes-v2}. Para frequência, Elite exige ao menos
-sete releases por semana; High, uma por semana; Medium, doze na janela de
-doze meses. Para lead time, os limites superiores exclusivos de Elite, High
-e Medium são 24, 168 e 720 horas. Para CFR, os limites são inclusivos:
-15\%, 30\% e 45\%. Para recuperação, são exclusivos: 1, 24 e 168 horas.
-Os demais valores válidos são Low. Valores ausentes não recebem classe.
-Quando utilizada, a classe geral resulta da mediana das notas
-Low=1, Medium=2, High=3 e Elite=4, arredondada para baixo e ignorando ausentes;
-as três combinações da RQ07 e suas verificações de disponibilidade e
-qualidade são apresentadas na Seção~\ref{sec:resultados-rq07}.
-
-O dicionário versionado da S02-04 (\#154) está em
-\texttt{Lab03/docs/dicionario-dados.md}, contrato
-\texttt{lab03-dataset-v1}. Ele especifica as 28 colunas da consolidação:
-identidade, janela, metadados, valores e classes das seis métricas/variantes,
-indicadores de qualidade e lista de ausências. Para cada coluna informa nome,
-tipo, unidade e fórmula ou origem. A exportação offline da S02-03 (\#153) preserva a entrega histórica de 255,
-o corte parcial de 500 e a entrega final em \texttt{Lab03/entregas/s02-03-dataset-500-final/}.
-O contrato mantém uma linha por ID do manifesto da captura e preserva
-nulos como células vazias;
-diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
-
-\subsection{Procedimento de replicação cruzada}
+\subsection{Replicação cruzada e artefatos}
 \label{sec:metodo-replicacao}
-Na replicação cruzada, executamos o pipeline do grupo de Matheus, Pedro e
-Murilo seguindo somente seu README, no commit \texttt{9ba3443}, pasta
-\texttt{lab03-metricas-dora} do repositório
-\url{https://github.com/matheustitton/lab-medicao-experimentacao-6-periodo}.
-O ambiente registrado foi Windows 11, Git Bash e Python 3.13.6, com ambiente
-virtual novo e dependências do grupo autor. Mantivemos o
-\texttt{config.yaml}, cuja janela declarada era de outubro de 2025 a
-setembro de 2026, e usamos credencial própria e \texttt{--limite 30}.
-Preservamos o CSV de 30 linhas e 37 colunas, o dicionário e o funil em
-\texttt{Lab03/replicacao/fin-01-execucao/}. A comparação com a publicação
-do parceiro é uma etapa separada; a coincidência da janela declarada não
-comprova identidade de filtros, limites temporais ou definições.
-
-No sentido inverso, analisamos quatro issues abertas por
-\texttt{Cardosoooo} sobre nosso commit \texttt{24b366e}, em Windows 11 e
-Python 3.12.10. O replicador usou uma lista de 30 candidatos extraída do
-nosso CSV final, com diretórios de saída isolados. Registramos diagnóstico,
-correção e verificação por issue em
-\texttt{Lab03/replicacao/fin-03-retorno/}. As correções foram verificadas
-localmente, com testes e respostas HTTP simuladas, sem nova coleta da base
-de 500 projetos; esse procedimento distingue tratamento do retorno de uma
-nova replicação independente após as correções.
-
-\subsection{Artefatos e rastreabilidade}
-\begingroup\raggedright
-Código, definições e dicionário estão no repositório público:
-\url{https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software}.\par
-O planejamento está no GitHub Projects:
-\url{https://github.com/users/Victorgabrielcruz/projects/7}.\par
-Configuração, commit do coletor \texttt{4ddbab9}, hashes das entradas e
-diagnósticos identificam a execução encerrada. O manifesto local
-\texttt{encerramento-amostra.json} registra os 255 IDs oficiais, a janela,
-a fonte, os hashes e a decisão humana; a política anterior está versionada
-em \texttt{Lab03/docs/decisoes-coleta-final.md}. Cache, manifesto detalhado
-e dados brutos permanecem locais; credenciais não compõem os artefatos.
-O dataset consolidado versionado é a entrega separada \#153. Hipóteses e
-resultados do piloto mantêm seu contexto histórico; análises da amostra
-encerrada dependem da auditoria e da consolidação local, preservando as
-pendências de comparações e da CFR (b).\par
-\endgroup
+Executamos o pipeline de outro grupo\footnote{\url{https://github.com/matheustitton/lab-medicao-experimentacao-6-periodo},
+pasta \texttt{lab03-metricas-dora}, commit \texttt{9ba3443}.} seguindo apenas
+seu README, com 30 repositórios, e tratamos as issues abertas pelo grupo que
+replicou o nosso. Código, dataset, dicionário de dados, notebooks e registros
+estão no repositório\footnote{\url{https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software},
+pasta \texttt{Lab03}.}, e o planejamento, no GitHub
+Projects\footnote{\url{https://github.com/users/Victorgabrielcruz/projects/7}}.

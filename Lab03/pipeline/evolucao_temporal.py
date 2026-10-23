@@ -247,25 +247,41 @@ def executar(eventos=EVENTOS, dataset=DATASET, saida=None):
     return painel, mensal, semestres, resumo
 
 
+MESES_PT = ('jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez')
+
+
 def figura(mensal, destino):
+    # Formato de artigo: largura de texto do SBC, tons de cinza como as demais
+    # figuras, sem título interno (a legenda do LaTeX descreve a figura).
     import matplotlib.pyplot as plt
-    fig, ax = plt.subplots(figsize=(9, 4.4), layout='constrained')
-    for coorte, cor, estilo in zip(COORTES, ('#1765a0', '#b75b00'), ('-', '--')):
-        d = mensal[mensal['coorte'] == coorte]
-        x = list(range(len(d)))
-        ax.plot(x, d['mediana'].astype(float), estilo, marker='o', color=cor,
-                label=f"{coorte.replace('_', ' ')} (n={int(d['n'].iloc[0])})")
-        if coorte == 'painel_inicial':
-            ax.fill_between(x, d['q1'].astype(float), d['q3'].astype(float), color=cor, alpha=.13, label='IQR do painel inicial')
-    ax.set(xticks=x, xticklabels=d['mes'], ylabel='Releases estáveis / semana / repositório', xlabel='Mês (UTC)',
-           title='RQ08 — Evolução mensal em painéis fixos')
-    ax.tick_params(axis='x', rotation=45)
-    ax.set_ylim(bottom=0)
-    ax.grid(axis='y', alpha=.25)
-    ax.legend(fontsize=8)
-    destino = Path(destino)
-    destino.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(destino, dpi=180)
+    with plt.rc_context({'font.size': 9, 'axes.spines.top': False, 'axes.spines.right': False}):
+        fig, ax = plt.subplots(figsize=(6.3, 2.35), layout='constrained')
+        inicial = mensal[mensal['coorte'] == COORTES[0]]
+        x = list(range(len(inicial)))
+        ax.fill_between(x, inicial['q1'].astype(float), inicial['q3'].astype(float), color='#d9d9d9',
+                        linewidth=0, label='IQR, painel inicial')
+        estilos = {COORTES[0]: dict(color='#1a1a1a', linestyle='-', marker='o', markersize=4.5),
+                   COORTES[1]: dict(color='#6e6e6e', linestyle='--', marker='o', markersize=4.5,
+                                    markerfacecolor='white')}
+        rotulos = {COORTES[0]: 'Mediana, painel inicial', COORTES[1]: 'Mediana, sem alertas'}
+        for coorte in COORTES:
+            d = mensal[mensal['coorte'] == coorte]
+            ax.plot(x, d['mediana'].astype(float), linewidth=1.4,
+                    label=f"{rotulos[coorte]} (n = {int(d['n'].iloc[0])})", **estilos[coorte])
+        meses = [dt.date.fromisoformat(f'{m}-01') for m in inicial['mes']]
+        ax.set_xticks(x, [MESES_PT[m.month - 1] + (f'\n{m.year}' if i == 0 or m.month == 1 else '')
+                          for i, m in enumerate(meses)])
+        ax.set_xlim(-0.4, len(x) - 0.6)
+        ax.set_ylim(0, 1.3)
+        ax.set_ylabel('Releases estáveis por semana')
+        ax.yaxis.set_major_formatter(lambda v, _: f'{v:.1f}'.replace('.', ','))
+        ax.grid(axis='y', color='#e6e6e6', linewidth=0.6)
+        ax.set_axisbelow(True)
+        ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.16), ncol=3, frameon=False, fontsize=8,
+                  handlelength=2.2, columnspacing=1.2)
+        destino = Path(destino)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(destino, dpi=300)
     return fig
 
 

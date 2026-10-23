@@ -134,24 +134,31 @@ def grafico_dispersao(pares, resumo):
     """Dois painéis com os mesmos pares da análise principal; CFR zero preservada."""
     import matplotlib.pyplot as plt
 
-    fig, eixos = plt.subplots(1, 2, figsize=(9, 3.7), sharey=True, layout="constrained")
-    principais = pares.loc[pares["recorte"] == "principal"]
-    for ax, variante in zip(eixos, ("a", "b")):
-        p = principais.loc[principais["variante"] == variante]
-        r = resumo.loc[(resumo["recorte"] == "principal") & (resumo["variante"] == variante)].iloc[0]
-        ax.scatter(p["deployment_frequency"], p["cfr"], s=15, color="#333333", alpha=0.5, edgecolors="none")
-        # O CSV atual tem DF > 0. Em outra execução, symlog mantém zeros visíveis.
-        escala = "log" if not p.empty and p["deployment_frequency"].gt(0).all() else "symlog"
-        ax.set_xscale(escala, **({"linthresh": 0.1} if escala == "symlog" else {}))
-        ax.set_ylim(-0.035, 1.035)
-        ax.set_xlabel(f"Frequência de deploy (releases/semana, {escala})")
-        ax.set_title(f"CFR ({variante}) — {'runs' if variante == 'a' else 'releases corretivas'}")
-        texto = (f"ρ = {r['rho']:.3f}\np = {r['p_valor']:.3g}\nn = {int(r['n'])}"
-                 if pd.notna(r["rho"]) else f"Não estimável\nn = {int(r['n'])}")
-        ax.text(0.04, 0.96, texto, transform=ax.transAxes, va="top", fontsize=9,
-                bbox={"facecolor": "white", "alpha": 0.9, "edgecolor": "none"})
-        ax.grid(True, color="#dddddd", linewidth=0.5)
-        ax.set_axisbelow(True)
-        ax.spines[["top", "right"]].set_visible(False)
-    eixos[0].set_ylabel("Taxa de falha de mudanças (fração)")
+    # Formato de artigo: largura de texto do SBC, fonte de 9 pt e vírgula decimal.
+    with plt.rc_context({"font.size": 9}):
+        fig, eixos = plt.subplots(1, 2, figsize=(6.3, 2.6), sharey=True, layout="constrained")
+        principais = pares.loc[pares["recorte"] == "principal"]
+        for ax, variante in zip(eixos, ("a", "b")):
+            p = principais.loc[principais["variante"] == variante]
+            r = resumo.loc[(resumo["recorte"] == "principal") & (resumo["variante"] == variante)].iloc[0]
+            ax.scatter(p["deployment_frequency"], p["cfr"], s=7, color="#333333", alpha=0.45, edgecolors="none")
+            # O CSV atual tem DF > 0. Em outra execução, symlog mantém zeros visíveis.
+            escala = "log" if not p.empty and p["deployment_frequency"].gt(0).all() else "symlog"
+            ax.set_xscale(escala, **({"linthresh": 0.1} if escala == "symlog" else {}))
+            ax.set_ylim(-0.035, 1.035)
+            ax.yaxis.set_major_formatter(lambda v, _: f"{v:.1f}".replace(".", ","))
+            ax.set_xlabel("Releases estáveis por semana" + (" (log)" if escala == "log" else " (symlog)"))
+            ax.set_title(f"({variante}) {'falhas de CI' if variante == 'a' else 'releases corretivas'}",
+                         fontsize=9, loc="left")
+            if pd.notna(r["rho"]):
+                valor_p = "p < 0,001" if r["p_valor"] < 0.001 else f"p = {r['p_valor']:.3f}".replace(".", ",")
+                texto = f"ρ = {r['rho']:.3f}".replace(".", ",") + f"\n{valor_p}\nn = {int(r['n'])}"
+            else:
+                texto = f"Não estimável\nn = {int(r['n'])}"
+            ax.text(0.04, 0.96, texto, transform=ax.transAxes, va="top", fontsize=8,
+                    bbox={"facecolor": "white", "alpha": 0.9, "edgecolor": "none", "pad": 1.5})
+            ax.grid(True, color="#e6e6e6", linewidth=0.5)
+            ax.set_axisbelow(True)
+            ax.spines[["top", "right"]].set_visible(False)
+        eixos[0].set_ylabel("CFR (fração)")
     return fig

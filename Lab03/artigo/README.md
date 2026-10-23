@@ -1,5 +1,13 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Revisão final — FIN-07 (#186)
+
+O artigo foi condensado de 25 para **10 páginas** com referências (MiKTeX,
+zero erros e zero overfull). A versão em vigor é a dos arquivos `.tex`. As
+seções abaixo registram o histórico de cada entrega e podem citar trechos
+ou números de páginas que não existem mais. O que foi cortado, as correções
+e a compilação estão em [validacao-fin-07-186.md](validacao-fin-07-186.md).
+
 ## Ameaças externas e de conclusão — FIN-05 (#184)
 
 A validade externa de [discussao.tex](discussao.tex) descreve população,
