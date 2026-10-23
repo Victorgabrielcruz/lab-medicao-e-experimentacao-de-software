@@ -410,6 +410,31 @@ O contrato mantém uma linha por ID do manifesto da captura e preserva
 nulos como células vazias;
 diagnósticos de episódios e de comparações permanecem nos JSONs de origem.
 
+\subsection{Procedimento de replicação cruzada}
+\label{sec:metodo-replicacao}
+Na replicação cruzada, executamos o pipeline do grupo de Matheus, Pedro e
+Murilo seguindo somente seu README, no commit \texttt{9ba3443}, pasta
+\texttt{lab03-metricas-dora} do repositório
+\url{https://github.com/matheustitton/lab-medicao-experimentacao-6-periodo}.
+O ambiente registrado foi Windows 11, Git Bash e Python 3.13.6, com ambiente
+virtual novo e dependências do grupo autor. Mantivemos o
+\texttt{config.yaml}, cuja janela declarada era de outubro de 2025 a
+setembro de 2026, e usamos credencial própria e \texttt{--limite 30}.
+Preservamos o CSV de 30 linhas e 37 colunas, o dicionário e o funil em
+\texttt{Lab03/replicacao/fin-01-execucao/}. A comparação com a publicação
+do parceiro é uma etapa separada; a coincidência da janela declarada não
+comprova identidade de filtros, limites temporais ou definições.
+
+No sentido inverso, analisamos quatro issues abertas por
+\texttt{Cardosoooo} sobre nosso commit \texttt{24b366e}, em Windows 11 e
+Python 3.12.10. O replicador usou uma lista de 30 candidatos extraída do
+nosso CSV final, com diretórios de saída isolados. Registramos diagnóstico,
+correção e verificação por issue em
+\texttt{Lab03/replicacao/fin-03-retorno/}. As correções foram verificadas
+localmente, com testes e respostas HTTP simuladas, sem nova coleta da base
+de 500 projetos; esse procedimento distingue tratamento do retorno de uma
+nova replicação independente após as correções.
+
 \subsection{Artefatos e rastreabilidade}
 \begingroup\raggedright
 Código, definições e dicionário estão no repositório público:

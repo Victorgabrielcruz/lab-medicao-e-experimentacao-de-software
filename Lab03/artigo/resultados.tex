@@ -361,3 +361,56 @@ ou melhoria DORA geral. Trata-se de descrição de um único ciclo anual,
 em uma seleção retrospectiva por popularidade e ao menos cinco releases
 anuais; não há teste de tendência ou inferência causal. Não foram
 recalculadas CFR, recuperação ou rework rate nesta análise bônus.
+
+\subsection{Replicação cruzada: execução, diferenças e retorno}
+\label{sec:resultados-replicacao}
+O pipeline parceiro terminou com código zero e 30 repositórios incluídos,
+após cerca de 77 minutos efetivos. Uma interrupção manual com três projetos
+incluídos foi seguida de retomada pelo mesmo comando, sem repetir a busca.
+Dos 8.505 candidatos, 185 foram avaliados: 58 não tinham Actions, 88 tinham
+releases insuficientes e nove tinham runs insuficientes. Os outros 8.320
+não foram processados; não correspondem a exclusões por elegibilidade.
+
+Dos 30 repositórios replicados, 28 constavam no dataset publicado pelo
+parceiro, com 237 linhas; \texttt{itchio/itch} e
+\texttt{n00bcodr/Jellyfin-Enhanced} não constavam. A sobreposição de
+93,33\% é de identidade dos projetos, não de concordância de classificação.
+A publicação observada continha menos projetos que o alvo configurado de
+350 e o mínimo planejado de 300, sem que o registro disponível explique o
+encerramento. Não há, nos artefatos desta revisão, diferenças relativas por
+métrica nem percentual de classes coincidentes calculados para os pares;
+essa comparação permanece na \#181. Assim, a conclusão bem-sucedida do
+comando não estabelece equivalência numérica dos resultados.
+
+A execução revelou instruções de ativação de ambiente incompatíveis com o
+Windows, ausência de estimativa de tempo e consumo de API, silêncio no log
+por até 17 minutos, funil sem etapa explícita de avaliados, caracteres
+corrompidos no console e sobrescrita de saídas versionadas sem aviso.
+Usar diretamente o Python de \texttt{.venv/Scripts/}, observar o processo e
+o cache, consultar o funil gravado e preservar as saídas publicadas foram
+os contornos registrados. Não se afirma que o parceiro já corrigiu esses
+pontos ou recebeu issues sobre todos eles.
+
+No retorno sobre nosso pipeline, as issues \#251--\#254 resultaram nas
+seguintes ações, integradas pelo PR \#256:
+\begin{itemize}
+\item \#251: documentação do JSON de candidatos e de execução com lista
+fixa, janela preservada e saídas isoladas;
+\item \#252: codificação UTF-8 explícita nos testes de reconstrução de
+releases, cuja leitura padrão em Windows produzia divergência textual;
+\item \#253: instruções de clone filtrado sem os grandes binários e
+tratamento explícito da ausência dos scripts de publicação nos testes;
+\item \#254: espera crescente de 60, 120, 240 e 480 segundos quando a cota
+continua esgotada após o reset informado, mantendo o limite de tentativas.
+\end{itemize}
+O replicador havia relatado 1.170 testes aprovados e uma falha de codificação,
+além de uma coleta interrompida por HTTP 403 que terminou com código zero
+após retomada manual, sem perda relatada de dados. Após as correções,
+1.199 testes locais passaram, com 94,67\% de cobertura, em Python 3.12.14;
+dez testes de snapshot passaram também com padrão \texttt{cp1252} e UTF-8
+automático desativado. Os totais são de revisões distintas da suíte e não
+uma contagem pareada de falhas corrigidas. Testes simulados confirmam o
+backoff; não houve nova coleta real nem confirmação de execução externa
+da revisão corrigida. As quatro issues técnicas foram encerradas, mas o
+vínculo ao Project exigido pela \#182 não foi verificado por falta de
+permissão da credencial disponível.
