@@ -1,5 +1,14 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## RQ08 bônus — evolução temporal (#175)
+
+A subseção RQ08 de [resultados.tex](resultados.tex) resume a evolução
+mensal da frequência de releases estáveis, com painel fixo, comparação
+semestral e sensibilidade aos alertas. O gráfico e os números derivam do
+[notebook executado](../analise/s03-09-rq08-evolucao-temporal.ipynb).
+Escolha, fontes, exclusões, reprodução e validação estão no
+[registro da #175](../docs/rq08-evolucao-temporal-175.md).
+
 ## Discussão das hipóteses — S03-13 (#179)
 
 [discussao.tex](discussao.tex) confronta os componentes das sete expectativas

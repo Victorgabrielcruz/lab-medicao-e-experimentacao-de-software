@@ -1,0 +1,23 @@
+{
+  "issue": 175,
+  "escolha": "evolucao_temporal_de_releases_estaveis",
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "dataset_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "releases_origem_sha256": "45edf0a1341c7419195b8a6d3dcf5366d3de5afab7af7b82e651c4ba9aa34d2f",
+  "eventos_sha256": "569914771958ab8c2f882ec1dd2f12e01405e833888c716bc3d4d0a958187131",
+  "repositorios": 500,
+  "releases_estaveis": 34255,
+  "descartes": {
+    "draft_ou_prerelease": 8892
+  },
+  "reconciliacao_df": "zero divergências por ID; contagem/semanas reais da janela",
+  "campos_publicados": [
+    "repo_id",
+    "release_id",
+    "published_at"
+  ],
+  "consultas_api": 0
+}

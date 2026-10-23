@@ -1,0 +1,4 @@
+dados/rq08_releases.csv -text
+dados/rq08_releases.json text eol=lf
+tabelas/rq08_*.csv -text
+tabelas/rq08_proveniencia.json text eol=lf

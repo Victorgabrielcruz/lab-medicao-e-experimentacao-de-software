@@ -322,3 +322,42 @@ Não se alteraram previsões nem rótulos humanos. A unidade de deploy não
 foi variada: pré-releases, tags e a expectativa de maior concordância nas
 classes extremas permanecem fora destes testes, sem inferência causal
 ou conclusão sobre incidentes em produção.
+
+\subsection{RQ08 -- Evolução temporal da frequência de releases (bônus)}
+\label{sec:resultados-rq08}
+Escolheu-se evolução temporal, em vez de rework rate, como análise
+exploratória definida após a coleta. As datas de 34.255 releases estáveis
+dos 500 projetos foram extraídas localmente e suas contagens por ID
+reconciliadas com a frequência anual do CSV. Para não atribuir zeros a
+meses anteriores à criação, o painel principal contém os 429 projetos
+existentes no início da janela; 71 criados depois ficam fora do painel.
+A taxa mensal divide a contagem pelas semanas reais de cada mês, incluindo
+meses sem publicação registrada, sem aproximá-los por quatro semanas.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{rq08_evolucao_mensal.png}
+\caption{RQ08: mediana mensal e IQR no painel inicial de 429 projetos;
+a linha tracejada mostra a mediana dos 398 sem alertas gerais de qualidade}
+\label{fig:rq08-temporal}
+\end{figure}
+
+As medianas mensais variam de 0,226 a 0,467 release por semana, com
+oscilações e dispersão entre projetos (Figura~\ref{fig:rq08-temporal}).
+Dividindo a janela em outubro--março (182 dias) e abril--setembro (183 dias),
+a mediana das taxas semestrais passa de 0,385 para 0,421. A mediana da
+diferença pareada entre taxas é 0,0368 release por semana; 228 projetos
+aumentam e 201 diminuem. Essa mediana não equivale necessariamente à
+diferença entre as duas medianas marginais. As taxas usam a exposição
+real de cada semestre; contagens iguais podem resultar em taxas distintas.
+
+Retirando projetos com coleta incompleta ou cálculo parcial no CSV,
+o painel de sensibilidade tem 398 projetos: a mediana passa de 0,346 para
+0,421, com diferença pareada mediana de 0,0367, 211 aumentos e 187 diminuições.
+Os alertas são gerais, não específicos de releases, de modo que essa
+restrição não prova completude das fontes. A concordância entre painéis
+não demonstra crescimento uniforme, sazonalidade, tendência estatística
+ou melhoria DORA geral. Trata-se de descrição de um único ciclo anual,
+em uma seleção retrospectiva por popularidade e ao menos cinco releases
+anuais; não há teste de tendência ou inferência causal. Não foram
+recalculadas CFR, recuperação ou rework rate nesta análise bônus.
