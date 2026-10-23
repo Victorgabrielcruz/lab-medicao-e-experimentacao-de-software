@@ -224,13 +224,26 @@ longas. Ambos são contados e reportados, e as releases dos últimos sete
 dias da janela são censuradas na CFR (b) em vez de contadas como sem falha.
 
 \subsection{Validade externa}
-Repositórios populares, usuários de Actions e projetos com releases frequentes
-não representam todos os projetos de software. Selecionar os primeiros elegíveis
-na ordem de estrelas introduz viés para projetos populares. As conclusões devem
-ser limitadas à população e à janela estudadas. Idade integra a previsão
-da introdução; o tipo de projeto mencionado no complemento não foi comparado
-nos 500 por falta de rótulos fora da amostra-ouro. Uma análise não substitui
-a outra.
+% FIN-05 (#184): generalização, tamanho da amostra e mitigações.
+Os 500 repositórios públicos selecionados por popularidade, uso de Actions
+e mínimos de releases e runs não constituem uma amostra probabilística de
+todo software. Projetos privados, pouco populares, com outra ferramenta de
+CI ou que entregam sem releases podem ter comportamentos distintos. Os
+primeiros 561 candidatos também sofreram adiamento por custo de coleta.
+Registrar o funil, a ordem e os critérios permite auditar essa seleção,
+mas não elimina seu viés. Restringimos a generalização ao recorte observado;
+replicar com outras ferramentas, faixas de popularidade e seleção aleatória
+é necessário antes de extrapolar para outras populações.
+
+A janela única de outubro de 2025 a setembro de 2026 não cobre outros
+ciclos de manutenção. O painel temporal da RQ08 restringe-se aos 429
+projetos existentes no início e não estabelece sazonalidade. A amostra-ouro
+de 60 projetos foi sorteada nos primeiros 255 elegíveis, não nos 500 finais.
+Suas 300 releases incluem somente 296 pares avaliáveis; portanto F1 e
+concordância não demonstram desempenho da heurística no restante da base.
+Preservamos esses denominadores e recomendamos avaliação em nova amostra
+independente e outras janelas. Tipo de projeto não foi comparado nos 500
+por falta de rótulos; idade não substitui esse fator.
 
 \subsection{Alcance da replicação cruzada}
 A replicação descrita nas Seções~\ref{sec:metodo-replicacao}
@@ -242,13 +255,16 @@ O tratamento das issues melhora essas condições sem alterar os dados ou
 as definições das métricas. Respostas simuladas e testes locais sustentam
 as correções técnicas, sem substituir uma nova execução independente.
 
-A seleção de somente 30 projetos, a presença de dois projetos ausentes na
-publicação parceira e a comparação quantitativa ainda pendente limitam a
-evidência de reprodutibilidade dos resultados. Não se atribuem divergências
-numéricas à evolução da API, à seleção ou à implementação sem comparação
-pareada. A sobreposição de repositórios e o sucesso do comando não validam
-os proxies DORA nem as classificações. A pendência administrativa de
-Projects também é distinta das quatro correções técnicas já integradas.
+A comparação da \#181 encontra a mesma classe C1 nos 28 pares comuns,
+mas diferenças em CFR de entrega em 12 deles, com versões registradas
+v3 na publicação e v1 na replicação. Não isolamos o efeito da versão por
+experimento controlado. Os dois projetos ausentes e a seleção de somente
+30 limitam o alcance da comparação; coincidência de classes C1, que usa
+CFR de CI, não valida CFR de entrega nem os proxies DORA. Devido ao prazo
+reduzido, não conseguimos abrir as issues no repositório parceiro; os
+problemas ficaram documentados localmente, sem confirmação de tratamento
+pelo grupo autor. A pendência administrativa de Projects é distinta das
+quatro correções técnicas já integradas.
 
 \subsection{Validade de conclusão}
 As direções e diferenças discutidas na
@@ -261,6 +277,21 @@ separadas de 18 globais e 108 contrastes. P-valores pequenos não substituem
 os tamanhos de efeito nem removem confundidores; diferenças de distribuição
 não implicam apenas diferenças de mediana. Ausência de rejeição não prova
 equivalência, e o kappa da RQ07 não comprova validade do construto.
+
+O tamanho nominal de 500 não vale para todos os testes: LT(b) tem 499
+estimativas, CFR(b) tem 498 e recuperação tem 469, enquanto comparações
+pareadas exigem casos completos. Menos casos e grupos desbalanceados
+reduzem a capacidade de detectar efeitos; 500 projetos também podem tornar
+significativas associações pequenas. Não foi realizada análise de poder,
+e não afirmamos suficiência amostral para toda hipótese. Como mitigação,
+reportamos $n$ por análise, valores contínuos, tamanhos de efeito e
+sensibilidade à cobertura e às variantes, sem substituir ausências por
+zero. A exclusão por indisponibilidade pode ser informativa e não é
+resolvida por essas verificações. Projetos que compartilham mantenedores
+ou ecossistemas podem violar independência; o desenho não controla esses
+agrupamentos nem confundidores por modelos ajustados. A correção de Holm
+nas famílias declaradas reduz multiplicidade local, sem controlar toda
+exploração feita nas diferentes RQs.
 
 Não houve ajuste da heurística nesta revisão. Os limites de independência
 do consenso, cobertura das métricas, censura e seleção permanecem mesmo

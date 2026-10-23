@@ -1,0 +1,2 @@
+# Preserva os bytes da fonte externa para conferir o SHA-256 registrado.
+dataset_publicado.csv -text

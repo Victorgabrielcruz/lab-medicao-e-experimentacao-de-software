@@ -1,5 +1,26 @@
 # Artigo do Lab03 — SBC 2017 (#150)
 
+## Entregas do Matheus — #179, #181 e #184
+
+A branch `feat/conclusao-tasks-matheus` preserva a discussão da #179,
+já integrada pelo PR #255, e completa o texto de validade externa e de
+conclusão da #184. A [conferência da #184](validacao-fin-05-184.md)
+relaciona ameaças, mitigações e limites de inferência.
+
+A [comparação da #181](../replicacao/fin-02-comparacao/README.md)
+agora contém CSV publicado congelado, hashes, script, diferenças por
+métrica e concordância: 28/28 classes C1 coincidem, mas CFR de entrega
+diverge em 12 pares. A publicação usa v3 e a replicação v1; não foi
+realizado experimento controlado para isolar esse efeito. Não conseguimos
+abrir as issues no parceiro devido ao prazo reduzido; essa limitação foi
+registrada sem declarar cumprido o critério de abertura externa.
+
+Metodologia, resultados e discussão incorporam essa comparação. Os
+registros anteriores que a descrevem como pendente são históricos.
+Cinco testes da comparação passaram e o artigo integral compilou com
+sucesso no editor nativo, com a pasta `artigo` como raiz. A revisão visual
+e o limite de páginas da #186 continuam fora desta entrega.
+
 ## RQ08 bônus — evolução temporal (#175)
 
 A subseção RQ08 de [resultados.tex](resultados.tex) resume a evolução
@@ -226,8 +247,9 @@ O artigo em LaTeX incorpora o procedimento em
 O relato usa a execução registrada na #180 e o retorno tratado na #182,
 sem nova coleta. A sobreposição de 28/30 projetos (93,33%) não representa
 concordância de classes. Diferenças relativas por métrica e concordância
-pareada permanecem pendentes na #181; a narrativa não afirma equivalência
-numérica nem nova execução externa após as correções.
+pareada foram acrescentadas na entrega da #181 descrita no início deste
+README. A conferência histórica da #185 abaixo antecede essa comparação;
+não houve nova execução externa após as correções.
 
 Fontes e conferências desta entrega estão em
 [validacao-fin-06-185.md](validacao-fin-06-185.md).

@@ -377,10 +377,23 @@ parceiro, com 237 linhas; \texttt{itchio/itch} e
 93,33\% é de identidade dos projetos, não de concordância de classificação.
 A publicação observada continha menos projetos que o alvo configurado de
 350 e o mínimo planejado de 300, sem que o registro disponível explique o
-encerramento. Não há, nos artefatos desta revisão, diferenças relativas por
-métrica nem percentual de classes coincidentes calculados para os pares;
-essa comparação permanece na \#181. Assim, a conclusão bem-sucedida do
-comando não estabelece equivalência numérica dos resultados.
+encerramento. A comparação da \#181 usa o CSV publicado no commit
+\texttt{9ba3443}, preservado com hash, e os 28 pares comuns. Frequência,
+LT(a), LT(b) e CFR de CI coincidem em 28/28 pares; recuperação coincide
+em 26/26 pares disponíveis, com duas ausências em ambas as fontes. A
+classe geral C1 coincide em 28/28 (100\%); ela usa LT(a) e CFR de CI na
+definição do parceiro, distinta da C1 usada em nossas análises.
+
+CFR de entrega coincide em 16/28 pares. A diferença relativa é
+$100(r-p)/|p|$, com $p$ publicado e $r$ replicado: a mediana é zero nos
+23 pares com base não nula, mas o maior valor absoluto é 312,5\%, em
+\texttt{signalapp/Signal-Desktop} (0,14545 contra 0,6). Cinco bases zero
+não recebem diferença relativa; em \texttt{nginx/nginx}, o valor passa
+de zero a 0,30435. A publicação registra heurística v3 e a replicação v1
+nos 28 pares. Essa diferença documentada não foi isolada causalmente.
+As demais métricas têm diferença relativa zero nos pares definidos;
+CFR de CI tem duas bases zero. Coincidência da classe C1 não implica
+coincidência da CFR de entrega, que não compõe essa classe.
 
 A execução revelou instruções de ativação de ambiente incompatíveis com o
 Windows, ausência de estimativa de tempo e consumo de API, silêncio no log
@@ -388,8 +401,10 @@ por até 17 minutos, funil sem etapa explícita de avaliados, caracteres
 corrompidos no console e sobrescrita de saídas versionadas sem aviso.
 Usar diretamente o Python de \texttt{.venv/Scripts/}, observar o processo e
 o cache, consultar o funil gravado e preservar as saídas publicadas foram
-os contornos registrados. Não se afirma que o parceiro já corrigiu esses
-pontos ou recebeu issues sobre todos eles.
+os contornos registrados. Devido ao prazo reduzido de que dispusemos, não
+conseguimos abrir as issues no repositório do grupo parceiro. Os problemas
+e as diferenças foram registrados na entrega local da \#181; não há
+confirmação de recebimento ou correção pelo grupo autor.
 
 No retorno sobre nosso pipeline, as issues \#251--\#254 resultaram nas
 seguintes ações, integradas pelo PR \#256:

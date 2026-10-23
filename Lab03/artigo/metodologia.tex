@@ -425,6 +425,15 @@ Preservamos o CSV de 30 linhas e 37 colunas, o dicionário e o funil em
 do parceiro é uma etapa separada; a coincidência da janela declarada não
 comprova identidade de filtros, limites temporais ou definições.
 
+Na comparação da \#181, preservamos também o CSV publicado nesse commit
+e pareamos por nome completo de repositório, sem distinguir maiúsculas.
+Calculamos diferenças por par nas seis métricas/variantes e concordância
+nas classes publicadas, respeitando a definição C1 do parceiro. A diferença
+relativa usa o valor publicado como base; bases zero e ausências ficam
+explicitamente indefinidas. Reportamos mediana e máximo do erro relativo
+absoluto para não ocultar divergências pela mediana assinada. CSVs, hashes,
+script e resultados estão em \texttt{Lab03/replicacao/fin-02-comparacao/}.
+
 No sentido inverso, analisamos quatro issues abertas por
 \texttt{Cardosoooo} sobre nosso commit \texttt{24b366e}, em Windows 11 e
 Python 3.12.10. O replicador usou uma lista de 30 candidatos extraída do
