@@ -1,0 +1,15 @@
+{
+  "escolha": "evolucao_temporal",
+  "dataset_sha256": "2552ba6b0779e895d01bea88742cb668ee1812a8369a224ed5281708140b30bd",
+  "eventos_sha256": "569914771958ab8c2f882ec1dd2f12e01405e833888c716bc3d4d0a958187131",
+  "janela": {
+    "inicio": "2025-10-01T00:00:00Z",
+    "fim_exclusivo": "2026-10-01T00:00:00Z"
+  },
+  "populacao": 500,
+  "painel_inicial": 429,
+  "criados_apos_inicio_excluidos": 71,
+  "painel_sem_alertas": 398,
+  "metodo": "Releases estáveis por semana real do mês; painel fixo; quartis lineares. Semestres pareados por ID com exposição real; análise descritiva, sem teste de tendência.",
+  "limites": "Seleção retrospectiva por popularidade e >=5 releases anuais; não representa todos os projetos. Um ciclo anual não demonstra sazonalidade ou causalidade. Zero observado não prova ausência de publicações omitidas pela fonte. Alertas de qualidade são gerais, não específicos de releases."
+}

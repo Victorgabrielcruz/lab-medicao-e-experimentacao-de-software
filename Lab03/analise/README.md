@@ -13,6 +13,7 @@ Notebooks que leem o dataset final de 500 repositórios
 | [s03-04-rq05-spearman.ipynb](s03-04-rq05-spearman.ipynb) | #170 | Spearman entre DF e CFR (a)/(b): rho, p-valor, n, dispersão, verificação por permutação e sensibilidade aos indicadores de incompletude. |
 | [s03-05-rq06-grupos.ipynb](s03-05-rq06-grupos.ipynb) | #171 | Quartis de estrelas, contribuidores e idade; Kruskal-Wallis por fator e métrica e Mann-Whitney par a par quando há diferença nominal. |
 | [s03-06-rq06-holm-efeitos.ipynb](s03-06-rq06-holm-efeitos.ipynb) | #172 | Correção de Holm dos globais e pares, ε² de Kruskal-Wallis e Cliff's delta com sinal e magnitude. |
+| [s03-09-rq08-evolucao-temporal.ipynb](s03-09-rq08-evolucao-temporal.ipynb) | #175 | Evolução mensal da frequência de releases estáveis em painel fixo, normalização por dias, comparação semestral pareada e sensibilidade aos alertas. |
 
 `dados/rq04_episodios_500.csv` traz os episódios de recuperação por repositório,
 extraídos de `processed/amostra-final-500/tempo_recuperacao.json` (pacote
@@ -335,3 +336,27 @@ O comando reproduz as classificações e gera [o relatório de robustez](rq07/ro
 [a tabela](rq07/robustez.csv) e [as matrizes e hashes](rq07/robustez.json).
 O [método e a interpretação](../docs/rq07-robustez-174.md) registram
 percentuais, kappa ponderado e verificações de disponibilidade e qualidade.
+
+## RQ08 bônus — evolução temporal (#175)
+
+O [notebook](s03-09-rq08-evolucao-temporal.ipynb) escolhe evolução temporal
+da frequência de releases estáveis, com painel fixo dos 429 projetos já
+existentes no início da janela e sensibilidade com 398 sem alertas.
+As taxas usam os dias reais de cada mês; 71 projetos criados depois não
+recebem zeros anteriores à sua criação. A análise é descritiva.
+
+Além do CSV final, lê [a tabela mínima de datas](dados/rq08_releases.csv)
+e [seu manifesto](dados/rq08_releases.json), sem exigir token ou os GB de
+snapshots. A exportação foi reconciliada com a DF anual dos 500 IDs.
+
+```powershell
+# A partir de Lab03
+.venv/Scripts/python.exe -m jupyter nbconvert --to notebook --execute --inplace analise/s03-09-rq08-evolucao-temporal.ipynb
+```
+
+Também funciona com pasta de trabalho `analise/`. `LAB03_RQ08_DATASET`,
+`LAB03_RQ08_EVENTOS` e `LAB03_RQ08_SAIDA` permitem outras entradas/saída.
+O [registro completo](../docs/rq08-evolucao-temporal-175.md) documenta
+escolha, método, resultados, testes e reexportação local das datas.
+Tabelas em `tabelas/rq08_*` e figura em
+[rq08_evolucao_mensal.png](figuras/rq08_evolucao_mensal.png).
