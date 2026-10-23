@@ -23,7 +23,7 @@ os avisos de ano vazio em `statsmodelsFleiss` e `sklearnPrecisionRecall`.
 |---|---|
 | Máximo de 10 páginas no template SBC | 9 páginas, contando as referências; `.sty` e `.bst` sem alteração. |
 | Link do repositório e do GitHub Projects | Notas de rodapé na Seção 2.5, junto com o link do repositório do grupo replicado. |
-| Revisão de texto, figuras e referências | Texto condensado; quatro figuras das RQ01–RQ04 mantidas, e as das RQ05 e RQ08 removidas; anos adicionados a duas referências. |
+| Revisão de texto, figuras e referências | Texto condensado; figuras das RQ01–RQ05 mantidas, e a da RQ08 removida; anos adicionados a duas referências. |
 
 ## O que foi condensado
 
@@ -40,7 +40,7 @@ definição; todos os valores vêm do texto anterior.
   kappa no texto; métodos estatísticos em um parágrafo.
 - **Resultados**: RQ01–RQ04 em texto corrido; a tabela de 18 testes da RQ06
   virou uma matriz de ε² com marca de significância; os contrastes Q1–Q4 e a
-  RQ05 foram para o texto; as duas tabelas da RQ07 foram unidas; RQ08 e
+  RQ05 foram para o texto; as duas tabelas da RQ07 foram unidas; a figura da RQ05 foi mantida; RQ08 e
   replicação viraram um parágrafo cada.
 - **Discussão**: confronto das hipóteses em um parágrafo; literatura e
   implicações juntas; as quatro ameaças em um parágrafo cada, mantendo as
