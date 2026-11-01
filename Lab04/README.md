@@ -39,6 +39,29 @@ Depois, abra o dashboard com um único comando:
 No Linux/macOS, use `.venv/bin/python` no lugar de `.venv/Scripts/python`.
 O dashboard abre em `http://localhost:8501`.
 
+## Amostra de dados reais — S01-02 (#263)
+
+O arquivo [`data/ci_pytest.csv`](data/ci_pytest.csv) contém **243 execuções**
+do workflow `test` do repositório público `pytest-dev/pytest`, na branch `main`,
+disparadas por `push`. Foram inspecionadas 300 execuções consecutivas, de
+20/04/2026 a 30/10/2026 (UTC), e descartadas 57 com conclusão `cancelled`.
+Há **10 falhas (4,12%)**, com **IC nominal de 95% de Wilson: 2,25% a 7,41%**.
+A maior sequência na amostra válida é de **3 falhas** e a autocorrelação
+amostral de lag 1 é **0,2741**. Ao exigir que não haja cancelamentos entre
+as falhas, a maior sequência é 2.
+
+A [documentação da coleta](data/README.md) registra origem, corte temporal,
+paginação, descartes, tratamento das tentativas e as limitações do IC e das
+sequências para calibrar a situação `rajadas` da #265. O
+[`resumo JSON`](data/ci_pytest_resumo.json) mantém as estatísticas sem
+arredondamento. Para regenerar CSV e resumo **sem rede**, a partir de `Lab04`:
+
+```text
+.venv/Scripts/python -m hipotese.dados_reais
+```
+
+No Linux/macOS, use `.venv/bin/python` no lugar de `.venv/Scripts/python`.
+
 ## Reprodutibilidade
 
 Toda geração aleatória parte de `hipotese.config.gerador()`, que usa a semente

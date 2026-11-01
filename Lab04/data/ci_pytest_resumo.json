@@ -1,0 +1,47 @@
+{
+  "issue": 263,
+  "repositorio": "pytest-dev/pytest",
+  "workflow": "test",
+  "workflow_id": 22158026,
+  "branch": "main",
+  "evento": "push",
+  "corte_criado_em_utc": "2026-11-01T17:47:58Z",
+  "coletado_em_utc": "2026-11-01T17:48:34Z",
+  "periodo_candidatas_utc": {
+    "inicio": "2026-04-20T21:31:49Z",
+    "fim": "2026-10-30T10:38:59Z"
+  },
+  "periodo_amostra_utc": {
+    "inicio": "2026-04-20T21:31:49Z",
+    "fim": "2026-10-30T10:38:59Z"
+  },
+  "n_candidatas": 300,
+  "n_descartadas": 57,
+  "descartadas_por_motivo": {
+    "cancelled": 57
+  },
+  "maior_sequencia_falhas_sem_descartes_intermediarios": 2,
+  "estatisticas": {
+    "n_execucoes": 243,
+    "n_sucessos": 233,
+    "n_falhas": 10,
+    "taxa_falha": 0.0411522633744856,
+    "meta_taxa_falha": 0.05,
+    "ic_taxa_falha": {
+      "metodo": "Wilson, sem correção de continuidade",
+      "nivel": 0.95,
+      "inferior": 0.02250418602446622,
+      "superior": 0.07408193421075968
+    },
+    "maior_sequencia_falhas": 3,
+    "autocorrelacao_lag1": 0.2740723078825129,
+    "transicoes": {
+      "00": 226,
+      "01": 7,
+      "10": 6,
+      "11": 3
+    },
+    "p_falha_apos_sucesso": 0.030042918454935622,
+    "p_falha_apos_falha": 0.3333333333333333
+  }
+}
