@@ -18,6 +18,9 @@ ALTERNATIVA = "greater"
 EFEITOS = (0.0, 0.02, 0.04, 0.06, 0.08, 0.10)
 N_AMOSTRA_PEQUENA = 20
 
+# Exemplo da S01-05, escolhido antes de observar seus resultados (#266).
+EFEITO_EXEMPLO = 0.04
+
 TESTE_Z = "Z para proporção"
 TESTE_BINOMIAL = "Binomial exato"
 

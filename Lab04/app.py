@@ -7,9 +7,10 @@ import streamlit as st
 
 from hipotese.cenario import carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
-    ALFA, ALTERNATIVA, EFEITOS, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
+    ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
     URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
+from hipotese.exemplo import gerar_exemplo
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -119,9 +120,72 @@ def exibir_cenario():
     )
 
 
+def exibir_exemplo():
+    exemplo = gerar_exemplo()
+    referencia = exemplo.resultados[0]
+    st.subheader("Aplicação a um conjunto simulado (#266)")
+    st.markdown(
+        f"Uma única amostra **independente de {referencia.n} builds**, com taxa "
+        f"verdadeira de **{exemplo.taxa_verdadeira:.0%}** (meta de 5% + "
+        f"{EFEITO_EXEMPLO * 100:g} pontos percentuais) e semente **{SEMENTE}**. "
+        "Esses parâmetros foram escolhidos antes de observar o resultado, sem "
+        "trocar a semente ou selecionar amostras pela significância. Os dois "
+        "testes recebem exatamente as mesmas builds."
+    )
+    st.markdown(
+        f"A amostra gerada teve **{referencia.falhas} falhas em {referencia.n} builds** "
+        f"(taxa observada: **{referencia.proporcao:.2%}**). O efeito observado é "
+        f"**{referencia.efeito_pp:+.2f} pontos percentuais** em relação à meta; "
+        "ele pode diferir dos 4 pontos percentuais usados na geração por variação amostral."
+    )
+    st.latex(r"Z = \frac{\hat{p} - p_0}{\sqrt{p_0(1-p_0)/n}},\quad p_0=0{,}05")
+    st.markdown(
+        "O Z usa variância sob H₀ e aproximação normal, sem correção de continuidade. "
+        "Para a alternativa à direita, seu p-valor é P(Z ≥ z observado). "
+        "O binomial exato usa X ∼ Binomial(n, 0,05) e p-valor P(X ≥ falhas observadas); "
+        "sua estatística na tabela é a proporção observada p̂, conforme o SciPy. "
+        "Ambos pressupõem builds independentes com probabilidade constante."
+    )
+    st.table([
+        {
+            "Teste": resultado.teste,
+            "Estatística": resultado.nome_estatistica,
+            "Valor da estatística": resultado.estatistica,
+            "p-valor": resultado.pvalor,
+            "Efeito observado (p.p.)": resultado.efeito_pp,
+            "Decisão (α = 0,05)": "Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀",
+        }
+        for resultado in exemplo.resultados
+    ])
+    for resultado in exemplo.resultados:
+        if resultado.rejeita_h0:
+            conclusao = "há evidência de que a taxa de falha ultrapassa 5%"
+        else:
+            conclusao = "não há evidência suficiente de que a taxa de falha ultrapassa 5%"
+        comparacao = "<" if resultado.rejeita_h0 else "≥"
+        st.markdown(
+            f"**{resultado.teste}:** p-valor = {resultado.pvalor:.6g} {comparacao} "
+            f"{ALFA:.2f}; {conclusao} nesta amostra."
+        )
+    if not any(resultado.rejeita_h0 for resultado in exemplo.resultados):
+        st.markdown(
+            "Como sabemos que a taxa usada na geração é 9%, existe um efeito real "
+            "na simulação. Não detectá-lo nesta amostra é uma ocorrência de "
+            "**erro tipo II** para cada teste; um único exemplo não estima sua frequência."
+        )
+    st.caption(
+        "Não rejeitar H₀ não prova que a taxa seja 5%. O p-valor não é a probabilidade "
+        "de H₀ ser verdadeira. Este exemplo simulado não permite concluir sobre o "
+        "workflow real nem comparar o poder dos testes; isso cabe às etapas seguintes."
+    )
+
+
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
         exibir_cenario()
+    elif issue == "#268":
+        exibir_exemplo()
+        st.info("Gráfico G2 em construção (#268); usará o mesmo exemplo acima.")
     else:
         st.info(f"Conteúdo em construção ({issue}).")

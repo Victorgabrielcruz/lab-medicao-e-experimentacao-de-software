@@ -107,6 +107,45 @@ fixa `SEMENTE = 42`. O nível de significância (`ALFA = 0,05`), o número de
 repetições (`N_REPETICOES = 10.000`) e a meta de 5% também ficam nesse módulo.
 O mesmo vale para a cor de cada teste, que é igual em todos os gráficos.
 
+## Aplicação a um conjunto simulado — S01-05 (#266)
+
+A seção **3. Como os testes funcionam** apresenta os dois testes aplicados
+à mesma amostra independente. O protocolo do exemplo foi escolhido antes
+de consultar seu resultado: `n` igual ao tamanho da amostra real (243),
+`EFEITO_EXEMPLO = 0,04` (taxa verdadeira de 9%) e semente 42. A amostra não
+é sorteada novamente até obter significância. O futuro gráfico G2 (#268)
+deve reutilizar `hipotese.exemplo.gerar_exemplo()`.
+
+- Z para proporção: `Z = (p_hat - p0) / sqrt(p0 * (1-p0) / n)`, com
+  variância sob H₀ e **sem correção de continuidade**. Para a alternativa
+  `greater`, o p-valor é a cauda superior da normal padrão, calculada por
+  `scipy.stats.norm.sf(Z)`.
+- Binomial exato: `scipy.stats.binomtest(falhas, n, p=0.05, alternative="greater")`.
+  O p-valor é `P(X >= falhas)` para `X ~ Binomial(n, 0.05)`; a estatística
+  retornada pelo SciPy é `p_hat = falhas/n`, identificada como tal no dashboard.
+- O efeito observado, comum aos dois testes, é `100 * (p_hat - p0)` em
+  **pontos percentuais**, com sinal. Ele não é o efeito verdadeiro usado na
+  geração. A regra de decisão é estritamente `pvalor < ALFA`.
+
+`hipotese.testes.teste_z(falhas, n)` e `teste_binomial(falhas, n)` retornam
+`ResultadoTeste`, com estatística identificada, p-valor, contagens, proporção,
+efeito em p.p. e decisão. Aceitam `meta`, `alternativa` e `alfa` opcionais;
+os padrões vêm do protocolo compartilhado. `aplicar_testes(builds)` valida
+uma amostra binária e aplica ambos. As funções não acessam o dashboard nem
+consomem aleatoriedade: a S02 pode chamar as mesmas funções com as contagens
+de `gerar_lote`, e a #275 pode usá-las nos dados reais.
+
+Neste exemplo, a semente 42 produz **17 falhas em 243 builds (7,00%)**:
+o efeito observado é **+2,00 p.p.**, Z ≈ 1,4276, p-valor Z ≈ 0,07671 e
+p-valor binomial ≈ 0,10400. Ambos não rejeitam H₀ a 5%. Como a taxa verdadeira
+simulada é 9%, trata-se de uma ocorrência de erro tipo II para ambos, não
+de evidência de ausência de efeito. Estimar a frequência desse erro e o
+poder exige as repetições da S02. Nenhuma conclusão sobre o workflow real
+é obtida a partir deste exemplo.
+
+Referências das APIs: [normal padrão do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
+e [teste binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
+
 ## Estrutura
 
 | Caminho | Conteúdo |
