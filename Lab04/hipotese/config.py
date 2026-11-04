@@ -13,6 +13,11 @@ N_REPETICOES = 10_000
 # Par P4: taxa de builds com falha frente a uma meta de 5%.
 META_TAXA_FALHA = 0.05
 
+# Protocolo definido antes das simulações da S02 (#264).
+ALTERNATIVA = "greater"
+EFEITOS = (0.0, 0.02, 0.04, 0.06, 0.08, 0.10)
+N_AMOSTRA_PEQUENA = 20
+
 TESTE_Z = "Z para proporção"
 TESTE_BINOMIAL = "Binomial exato"
 
