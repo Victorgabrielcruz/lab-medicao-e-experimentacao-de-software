@@ -45,7 +45,7 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
     ):
         assert trecho in texto
     assert all("#264" not in info.value for info in app.info)
-    assert len(app.info) == 6
+    assert len(app.info) == 5
     tabela = app.table[0].value
     assert list(tabela["n (builds)"]) == [243, 243, 20]
     assert tabela.iloc[1]["Correlação de lag 1"] == 0.2740723078825129
@@ -72,7 +72,8 @@ def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo()
         )
         assert f"**{resultado.teste}:** p-valor = {resultado.pvalor:.6g}" in texto
         assert conclusao in texto
-    assert any("Gráfico G2 em construção (#268)" in info.value for info in app.info)
+    assert all("#268" not in info.value for info in app.info)
+    assert len(app.get("plotly_chart")) == 2
 
 
 def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):

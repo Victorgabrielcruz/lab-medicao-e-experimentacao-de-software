@@ -113,8 +113,8 @@ A seção **3. Como os testes funcionam** apresenta os dois testes aplicados
 à mesma amostra independente. O protocolo do exemplo foi escolhido antes
 de consultar seu resultado: `n` igual ao tamanho da amostra real (243),
 `EFEITO_EXEMPLO = 0,04` (taxa verdadeira de 9%) e semente 42. A amostra não
-é sorteada novamente até obter significância. O futuro gráfico G2 (#268)
-deve reutilizar `hipotese.exemplo.gerar_exemplo()`.
+é sorteada novamente até obter significância. O gráfico G2 (#268)
+reutiliza `hipotese.exemplo.gerar_exemplo()`.
 
 - Z para proporção: `Z = (p_hat - p0) / sqrt(p0 * (1-p0) / n)`, com
   variância sob H₀ e **sem correção de continuidade**. Para a alternativa
@@ -145,6 +145,42 @@ poder exige as repetições da S02. Nenhuma conclusão sobre o workflow real
 
 Referências das APIs: [normal padrão do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
 e [teste binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
+
+## Gráfico G2 — S01-07 (#268)
+
+A seção 3 apresenta dois painéis Plotly produzidos por
+`hipotese.graficos.construir_g2(exemplo)`, com o mesmo objeto de exemplo
+usado na tabela da #266. Não há novo sorteio nem Monte Carlo para calcular
+as áreas. O azul do Z e o laranja do binomial vêm de `CORES_TESTES`.
+
+- **Z:** curva da normal padrão, referência aproximada usada pelo teste sob
+  H₀. A sombra clara parte do Z observado (1,4276) e representa o p-valor
+  (0,07671); a escura parte de `norm.isf(0.05)` (1,6449), com área 5%.
+  A normal não é apresentada como distribuição exata do Z para n finito.
+- **Binomial exato:** barras das massas de `p_hat = X/n`, em porcentagem
+  no eixo x, com `X ~ Binomial(243, 0.05)`. O eixo y mostra a probabilidade
+  de cada valor em porcentagem. O p-valor é a **soma das massas a partir de
+  17 falhas, incluindo 17**, e não a integral de uma densidade contínua.
+  A rejeição começa em 19 falhas (7,82%), com probabilidade sob H₀ de
+  0,03735. É menor que 5% por discretização, mantendo a regra estrita `p < α`.
+- As regiões de p-valor e rejeição são sobrepostas, em tons da cor do teste;
+  as linhas pontilhada e tracejada identificam observado e limite crítico.
+  Títulos, legendas, nomes dos eixos e unidades ficam nos próprios gráficos.
+  O binomial abre com zoom na região relevante, mas os dados contêm todos
+  os `n+1` valores e as somas usam todo o suporte.
+
+Os gráficos e o texto explicam que ambos comparam a taxa de falha à meta
+e que o p-valor representa extremidade sob H₀ e seus pressupostos, não a
+probabilidade de H₀ ser verdadeira. As decisões permanecem consistentes
+com a tabela da #266.
+
+Validação da #268: **83 testes passaram** no ambiente isolado `Lab04/.venv`,
+com as versões exatas do `requirements.txt`, incluindo as áreas desenhadas,
+as massas binomiais e a fronteira de rejeição para cada contagem. O dashboard
+foi conferido no navegador com os dois gráficos, legendas e textos renderizados.
+
+Referências: [distribuição binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html)
+e [áreas preenchidas no Plotly](https://plotly.com/python/filled-area-plots/).
 
 ## Estrutura
 
