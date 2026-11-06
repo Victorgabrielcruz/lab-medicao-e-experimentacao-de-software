@@ -11,6 +11,7 @@ from hipotese.config import (
     URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
 from hipotese.exemplo import gerar_exemplo
+from hipotese.graficos import construir_g2, regiao_binomial
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -178,6 +179,51 @@ def exibir_exemplo():
         "de H₀ ser verdadeira. Este exemplo simulado não permite concluir sobre o "
         "workflow real nem comparar o poder dos testes; isso cabe às etapas seguintes."
     )
+    return exemplo
+
+
+def exibir_g2(exemplo):
+    normal, binomial = construir_g2(exemplo)
+    referencia, exato = exemplo.resultados
+    k, massas, rejeicao = regiao_binomial(exato.n)
+    criticos = k[rejeicao]
+    st.subheader("G2 · Distribuições sob H₀, rejeição e p-valor (#268)")
+    st.markdown(
+        "Os dois testes comparam a proporção de falhas à meta de 5%: o Z usa uma "
+        "referência normal aproximada, e o binomial exato usa a distribuição "
+        "discreta de p̂ = X/n. A sombra mais escura indica a região de rejeição "
+        "na cauda direita, e a mais clara destaca a cauda a partir do resultado "
+        "observado no mesmo exemplo da #266. O p-valor mede a probabilidade, "
+        "sob H₀ e seus pressupostos, de obter um resultado pelo menos tão "
+        "extremo nessa direção; não é a probabilidade de H₀ ser verdadeira. "
+        "As duas regiões podem se sobrepor: quando o resultado observado fica "
+        "antes do limite crítico, a região de rejeição está contida na cauda do p-valor."
+    )
+    st.plotly_chart(normal, width="stretch", key="g2_z")
+    st.caption(
+        "A curva N(0, 1) é a aproximação usada pelo teste Z, não a distribuição "
+        "discreta exata da estatística em amostras finitas. A área após o limite "
+        "crítico é 5%; a área após o Z observado é o p-valor. As linhas pontilhada "
+        "e tracejada marcam o observado e o limite crítico, respectivamente."
+    )
+    st.plotly_chart(binomial, width="stretch", key="g2_binomial")
+    if criticos.size:
+        limite = int(criticos[0])
+        st.caption(
+            f"No binomial, rejeitamos a partir de {limite} falhas "
+            f"(p̂ ≥ {limite / exato.n:.2%}). A soma das massas nessa região é "
+            f"{massas[rejeicao].sum():.5f}, que pode ser menor que 0,05 pela "
+            "discretização. O p-valor soma as massas das barras a partir das "
+            f"{exato.falhas} falhas do exemplo, incluindo essa observação. "
+            "O eixo mostra um zoom da região relevante; as somas incluem todo o suporte."
+        )
+    else:
+        st.caption("Com este tamanho de amostra, nenhuma contagem tem p-valor < 0,05; a região de rejeição exata é vazia.")
+    st.markdown(
+        f"Neste exemplo, as caudas destacadas correspondem a p = {referencia.pvalor:.5f} "
+        f"no Z e p = {exato.pvalor:.5f} no binomial. A decisão de cada teste "
+        "está na tabela acima; as regiões usam a mesma regra p-valor < 0,05."
+    )
 
 
 for titulo, issue in SECOES:
@@ -185,7 +231,7 @@ for titulo, issue in SECOES:
     if issue == "#264":
         exibir_cenario()
     elif issue == "#268":
-        exibir_exemplo()
-        st.info("Gráfico G2 em construção (#268); usará o mesmo exemplo acima.")
+        exemplo = exibir_exemplo()
+        exibir_g2(exemplo)
     else:
         st.info(f"Conteúdo em construção ({issue}).")
