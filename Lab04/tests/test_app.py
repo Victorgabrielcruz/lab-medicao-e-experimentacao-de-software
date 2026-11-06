@@ -31,3 +31,20 @@ def test_links_no_topo():
     topo = executar().markdown[0].value
     assert URL_REPOSITORIO in topo
     assert URL_PROJECT in topo
+
+
+def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
+    app = executar()
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    for trecho in (
+        "pytest-dev/pytest", "H₀: p = 0,05", "H₁: p > 0,05",
+        "unicaudal à direita", "243 observações", "10 falhas",
+        "0,05 + efeito", "pontos percentuais", "Expectativa registrada antes",
+        "ambos", "não resultados",
+    ):
+        assert trecho in texto
+    assert all("#264" not in info.value for info in app.info)
+    assert len(app.info) == 6
+    tabela = app.table[0].value
+    assert list(tabela["n (builds)"]) == [243, 243, 20]
+    assert tabela.iloc[1]["Correlação de lag 1"] == 0.2740723078825129

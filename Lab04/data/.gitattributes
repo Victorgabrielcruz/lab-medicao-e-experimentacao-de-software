@@ -1,0 +1,2 @@
+# O exportador usa LF; preservar os bytes do CSV também no checkout Windows.
+*.csv text eol=lf

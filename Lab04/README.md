@@ -64,6 +64,44 @@ No Linux/macOS, use `.venv/bin/python` no lugar de `.venv/Scripts/python`.
 
 ## Reprodutibilidade
 
+### Cenário e hipóteses — S01-03 (#264)
+
+Protocolo registrado em 04/11/2026, antes da execução das simulações da S02.
+A seção **1. Cenário** do dashboard apresenta a pergunta, as hipóteses,
+a origem dos dados, os parâmetros e as expectativas anteriores à simulação.
+
+- Pergunta: a taxa de falha do workflow `test` de `pytest-dev/pytest` está acima de 5%?
+- H₀: `p = 0,05`; H₁: `p > 0,05`. A alternativa é unicaudal à direita
+  (`ALTERNATIVA = "greater"`), pois a meta é tratada como teto didático.
+- Cada execução válida é Bernoulli, com taxa marginal `0,05 + efeito`.
+  `EFEITOS = (0; 0,02; 0,04; 0,06; 0,08; 0,10)` são diferenças absolutas
+  de proporção: 0 a 10 pontos percentuais acima da meta, não aumentos relativos.
+- Situações: independente com `n` igual ao tamanho da amostra real; rajadas
+  com o mesmo `n` e correlação de lag 1 estimada na coleta; independente
+  com `N_AMOSTRA_PEQUENA = 20` para desafiar a aproximação normal.
+- `hipotese.cenario.carregar_resumo()` lê os dados versionados offline;
+  `configuracoes_simulacao(resumo)` fornece `n`, `situacao` e `correlacao`
+  para passar explicitamente a `gerar_builds` ou `gerar_lote`. Assim, rajadas
+  usa a estimativa real (aproximadamente 0,2741), não o padrão 0,5 do gerador.
+- A grade será executada com 10.000 repetições por situação e efeito,
+  α = 0,05 e semente 42. Sob H₀, a taxa é 5%, não os 4,12% observados.
+
+**Expectativa anterior à S02:** para dados independentes com `n = 243`,
+esperamos aproximação razoável entre Z e binomial exato: sob H₀,
+`n·p₀ = 12,15` e `n·(1−p₀) = 230,85`. O exato pode ser conservador pela
+discretização; eventual vantagem de poder do Z deve ser avaliada junto do
+seu erro tipo I. Com `n = 20`, esperamos pior aproximação normal e preferimos
+o exato para controlar o erro tipo I, sem garantir maior poder. Sob rajadas,
+ambos perdem a garantia de calibração baseada em independência e podem
+apresentar mais falsos positivos. A comparação de Q1–Q3 deverá confirmar
+ou contrariar essas expectativas antes da recomendação final.
+
+A ACF real é uma referência de calibração com incerteza, não prova de
+dependência: há poucas transições iniciadas por falha e a filtragem remove
+cancelamentos entre observações. O teste exato também pressupõe independência.
+
+### Parâmetros compartilhados
+
 Toda geração aleatória parte de `hipotese.config.gerador()`, que usa a semente
 fixa `SEMENTE = 42`. O nível de significância (`ALFA = 0,05`), o número de
 repetições (`N_REPETICOES = 10.000`) e a meta de 5% também ficam nesse módulo.
