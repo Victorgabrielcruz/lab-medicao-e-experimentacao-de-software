@@ -5,10 +5,11 @@ Execução, a partir da pasta Lab04: ``streamlit run app.py``
 
 import streamlit as st
 
+from hipotese import q3
 from hipotese.cenario import carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
-    URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
+    TESTE_BINOMIAL, TESTE_Z, URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
 from hipotese.exemplo import gerar_exemplo
 from hipotese.graficos import construir_g2, regiao_binomial
@@ -226,6 +227,84 @@ def exibir_g2(exemplo):
     )
 
 
+def _num(valor, casas=2):
+    return f"{valor:.{casas}f}".replace(".", ",")
+
+
+def _pct(valor):
+    return f"{_num(100 * valor)}%"
+
+
+def exibir_q3():
+    resultados = q3.carregar_resultados()
+    st.subheader("Q3 · Quando os dados não se comportam bem (#272)")
+    repeticoes = f"{N_REPETICOES:_}".replace("_", ".")
+    margem = _num(100 * q3.MARGEM_MONTE_CARLO)
+    st.markdown(
+        f"Repetimos Q1 e Q2 em duas situações que violam pressupostos, com {repeticoes} conjuntos "
+        "por configuração, e comparamos com a situação independente (n = 243). Um erro tipo I é "
+        "considerado liberal ou conservador quando se afasta de 5% mais que a margem de Monte Carlo "
+        f"(±{margem} p.p.)."
+    )
+
+    tipo_i = q3.erro_tipo_i(resultados)
+    st.markdown("**Erro tipo I (efeito zero)**")
+    st.table([
+        {
+            "Situação": linha.situacao, "n (builds)": int(linha.n), "Teste": linha.teste,
+            "Erro tipo I": _pct(linha.proporcao_rejeicao),
+            "Desvio de 5% (p.p.)": f"{linha.desvio_pp:+.2f}".replace(".", ","),
+            "Classificação": linha.classificacao,
+        }
+        for linha in tipo_i.itertuples()
+    ])
+
+    n_pequeno = int(tipo_i.loc[tipo_i["situacao"] == "Amostra pequena", "n"].iloc[0])
+    k_z = q3.contagem_minima_rejeicao(TESTE_Z, n_pequeno)
+    k_b = q3.contagem_minima_rejeicao(TESTE_BINOMIAL, n_pequeno)
+    st.markdown(
+        f"**Amostra pequena afeta mais o Z.** Com n = {n_pequeno}, a meta implica só "
+        f"{n_pequeno * META_TAXA_FALHA:.0f} falha esperada, e a distribuição do número de falhas é muito "
+        f"assimétrica; a aproximação normal em que o Z se apoia deixa de valer. O Z rejeita a partir de "
+        f"{k_z} falhas, o que sob H₀ acontece com probabilidade exata de "
+        f"{_pct(q3.erro_tipo_i_exato(TESTE_Z, n_pequeno))}: ele fica liberal. O binomial calcula a cauda "
+        f"exata e só rejeita a partir de {k_b} falhas ({_pct(q3.erro_tipo_i_exato(TESTE_BINOMIAL, n_pequeno))} "
+        "sob H₀); nunca passa de 5%, mas fica conservador porque a contagem é discreta."
+    )
+    rho = float(resultados.loc[resultados["situacao"] == "Rajadas", "correlacao"].iloc[0])
+    st.markdown(
+        f"**Rajadas afetam os dois.** A independência entre builds é pressuposto de ambos os testes. "
+        f"Com correlação de lag 1 de {_num(rho)}, a variância do número de falhas fica cerca de "
+        f"{_num(q3.inflacao_variancia(rho))} vezes maior do que os testes supõem, e os dois passam a "
+        "rejeitar H₀ verdadeira com mais frequência. Ser exato não protege o binomial aqui: a exatidão "
+        "vale só para builds independentes. O Z continua o mais liberal porque já partia acima de 5%."
+    )
+
+    st.markdown("**Poder nas situações de violação (proporção de rejeições)**")
+    poderes = {situacao: q3.poder(resultados, situacao) for situacao in q3.VIOLACOES}
+    for situacao, tabela in poderes.items():
+        st.markdown(f"*{situacao}*")
+        st.table([
+            {
+                "Efeito (p.p.)": f"{100 * linha['efeito']:.0f}", TESTE_Z: _pct(linha[TESTE_Z]),
+                TESTE_BINOMIAL: _pct(linha[TESTE_BINOMIAL]),
+                "Z − binomial (p.p.)": f"{linha['diferenca_pp']:+.2f}".replace(".", ","),
+            }
+            for linha in tabela.to_dict("records")
+        ])
+    pequena = poderes["Amostra pequena"]
+    maior_vantagem = pequena["diferenca_pp"].max()
+    poder_maximo = pequena[[TESTE_Z, TESTE_BINOMIAL]].max().max()
+    efeito_maximo = 100 * pequena["efeito"].max()
+    st.markdown(
+        "Nas duas situações o Z rejeita mais que o binomial em todos os efeitos, com a maior vantagem na "
+        f"amostra pequena (até {_num(maior_vantagem, 0)} p.p.). Essa vantagem não é poder real: vem junto de "
+        "um erro tipo I acima de 5%, então parte das rejeições aconteceria mesmo sem efeito. Com "
+        f"n = {n_pequeno}, o maior poder até +{efeito_maximo:.0f} p.p. é {_pct(poder_maximo)}, e nas rajadas "
+        "o poder com efeitos pequenos fica inflado pelos falsos positivos."
+    )
+
+
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
@@ -235,3 +314,5 @@ for titulo, issue in SECOES:
         exibir_g2(exemplo)
     else:
         st.info(f"Conteúdo em construção ({issue}).")
+    if issue == "#274":
+        exibir_q3()
