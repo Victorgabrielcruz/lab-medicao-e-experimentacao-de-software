@@ -88,3 +88,15 @@ def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):
     assert list(app.table[1].value["Decisão (α = 0,05)"]) == ["Rejeitar H₀", "Rejeitar H₀"]
     texto = "\n".join(elemento.value for elemento in app.markdown)
     assert "há evidência de que a taxa de falha ultrapassa 5%" in texto
+
+
+def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
+    app = executar()
+    subtitulos = [s.value for s in app.subheader]
+    assert "Q3 · Quando os dados não se comportam bem (#272)" in subtitulos
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    for trecho in ("Amostra pequena afeta mais o Z", "Rajadas afetam os dois", "não é poder real", "±0,43 p.p."):
+        assert trecho in texto
+    tipo_i = app.table[2].value
+    assert list(tipo_i["Situação"]) == ["Independente"] * 2 + ["Rajadas"] * 2 + ["Amostra pequena"] * 2
+    assert len(app.table) == 5
