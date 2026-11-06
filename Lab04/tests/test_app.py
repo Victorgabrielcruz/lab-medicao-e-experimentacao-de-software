@@ -3,6 +3,7 @@ from pathlib import Path
 from streamlit.testing.v1 import AppTest
 
 from hipotese.config import URL_PROJECT, URL_REPOSITORIO
+from hipotese.exemplo import gerar_exemplo
 
 APP = Path(__file__).resolve().parents[1] / "app.py"
 
@@ -48,3 +49,41 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
     tabela = app.table[0].value
     assert list(tabela["n (builds)"]) == [243, 243, 20]
     assert tabela.iloc[1]["Correlação de lag 1"] == 0.2740723078825129
+
+
+def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo():
+    app = executar()
+    exemplo = gerar_exemplo()
+    tabela = app.table[1].value
+    assert list(tabela["Teste"]) == [r.teste for r in exemplo.resultados]
+    for indice, resultado in enumerate(exemplo.resultados):
+        linha = tabela.iloc[indice]
+        assert linha["p-valor"] == resultado.pvalor
+        assert linha["Valor da estatística"] == resultado.estatistica
+        assert linha["Efeito observado (p.p.)"] == resultado.efeito_pp
+        assert linha["Decisão (α = 0,05)"] == ("Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀")
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    assert f"{exemplo.resultados[0].falhas} falhas em 243 builds" in texto
+    assert "sem correção de continuidade" in texto
+    for resultado in exemplo.resultados:
+        conclusao = (
+            "há evidência de que a taxa de falha ultrapassa 5%" if resultado.rejeita_h0
+            else "não há evidência suficiente de que a taxa de falha ultrapassa 5%"
+        )
+        assert f"**{resultado.teste}:** p-valor = {resultado.pvalor:.6g}" in texto
+        assert conclusao in texto
+    assert any("Gráfico G2 em construção (#268)" in info.value for info in app.info)
+
+
+def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):
+    import numpy as np
+    from hipotese import exemplo as modulo_exemplo
+    from hipotese.testes import aplicar_testes
+
+    builds = np.array([1] * 40 + [0] * 203)
+    exemplo = modulo_exemplo.ExemploSimulado(builds, 0.09, aplicar_testes(builds))
+    monkeypatch.setattr(modulo_exemplo, "gerar_exemplo", lambda: exemplo)
+    app = executar()
+    assert list(app.table[1].value["Decisão (α = 0,05)"]) == ["Rejeitar H₀", "Rejeitar H₀"]
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    assert "há evidência de que a taxa de falha ultrapassa 5%" in texto
