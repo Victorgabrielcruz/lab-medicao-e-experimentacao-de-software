@@ -182,13 +182,45 @@ foi conferido no navegador com os dois gráficos, legendas e textos renderizados
 Referências: [distribuição binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html)
 e [áreas preenchidas no Plotly](https://plotly.com/python/filled-area-plots/).
 
+## Motor de simulação Monte Carlo — S02-01 (#269)
+
+`hipotese/simulacao.py` gera **10.000 conjuntos** por configuração. São 3
+situações (Independente com n = 243, Rajadas com n = 243 e ACF da amostra real,
+Amostra pequena com n = 20) e os 6 efeitos de `EFEITOS`, de 0 a 10 p.p. Os dois
+testes são aplicados ao **mesmo** conjunto, e a saída é a proporção de
+p-valores abaixo de α = 0,05: com efeito zero é o erro tipo I, e com efeito
+positivo é o poder.
+
+- Os p-valores vêm das mesmas funções `teste_z` e `teste_binomial` da S01. Como
+  a contagem de falhas é um inteiro de 0 a n, cada contagem distinta é testada
+  uma única vez e o p-valor é reaproveitado.
+- Cada configuração tem um gerador próprio, derivado de `SEMENTE` por
+  `SeedSequence(SEMENTE, spawn_key=(situação, efeito))`. O resultado de uma
+  configuração não depende da ordem das demais.
+- A saída [`data/simulacao.csv`](data/simulacao.csv) tem uma linha por
+  situação × efeito × teste (36 linhas), com rejeições, proporção e erro-padrão
+  de Monte Carlo `sqrt(p(1−p)/10.000)`. O dashboard lê esse arquivo sem
+  recalcular.
+
+Para regenerar, a partir de `Lab04` (cerca de 7 segundos):
+
+```text
+.venv/Scripts/python -m hipotese.simulacao
+```
+
+Os testes conferem a igualdade dos p-valores com os da S01, a
+reprodutibilidade, a independência entre configurações e o erro tipo I
+simulado contra o valor exato, que é a soma das massas binomiais das contagens
+rejeitadas: 6,39% para o Z e 3,73% para o binomial com n = 243. Também
+conferem que o CSV versionado é o que a semente fixa gera.
+
 ## Estrutura
 
 | Caminho | Conteúdo |
 |---|---|
 | `app.py` | Dashboard em Streamlit |
 | `hipotese/` | Código de simulação, testes e parâmetros compartilhados |
-| `data/` | Amostra de dados reais (CSV) e sua origem |
+| `data/` | Amostra de dados reais (CSV), sua origem e os resultados da simulação |
 | `tests/` | Testes automatizados |
 
 ## Testes
