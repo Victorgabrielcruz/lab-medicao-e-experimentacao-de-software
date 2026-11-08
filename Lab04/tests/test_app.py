@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from streamlit.testing.v1 import AppTest
 
@@ -19,7 +20,7 @@ SECOES_ESPERADAS = [
 
 
 def executar():
-    app = AppTest.from_file(str(APP)).run()
+    app = AppTest.from_file(str(APP)).run(timeout=10)
     assert not app.exception
     return app
 
@@ -45,7 +46,7 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
     ):
         assert trecho in texto
     assert all("#264" not in info.value for info in app.info)
-    assert len(app.info) == 5
+    assert len(app.info) == 4
     tabela = app.table[0].value
     assert list(tabela["n (builds)"]) == [243, 243, 20]
     assert tabela.iloc[1]["Correlação de lag 1"] == 0.2740723078825129
@@ -73,7 +74,24 @@ def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo()
         assert f"**{resultado.teste}:** p-valor = {resultado.pvalor:.6g}" in texto
         assert conclusao in texto
     assert all("#268" not in info.value for info in app.info)
-    assert len(app.get("plotly_chart")) == 2
+    assert len(app.get("plotly_chart")) == 3
+
+
+def test_secao_dados_exibe_g1_e_interpreta_as_amostras_em_quatro_frases():
+    app = executar()
+    assert all("#267" not in info.value for info in app.info)
+    texto = next(elemento.value for elemento in app.markdown if "Os dados reais são binários" in elemento.value)
+    assert len(texto.split(". ")) == 4
+    for trecho in (
+        "10 falhas em 243 builds", "4,12%", "assimetria à direita", "não são outliers",
+        "n = 243", "p = 5%", "H₀", "semente 42", "não substituem a meta", "rajadas",
+    ):
+        assert trecho in texto
+    graficos = [json.loads(elemento.proto.spec) for elemento in app.get("plotly_chart")]
+    assert [figura["layout"]["title"]["text"][:2] for figura in graficos] == ["G1", "G2", "G2"]
+    real, simulado = graficos[0]["data"]
+    assert real["customdata"] == [[233, 243], [10, 243]]
+    assert simulado["customdata"] == [[231, 243], [12, 243]]
 
 
 def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):

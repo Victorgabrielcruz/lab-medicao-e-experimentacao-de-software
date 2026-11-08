@@ -5,13 +5,13 @@ Execução, a partir da pasta Lab04: ``streamlit run app.py``
 
 import streamlit as st
 
-from hipotese.cenario import carregar_resumo, configuracoes_simulacao
+from hipotese.cenario import carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
     URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
 from hipotese.exemplo import gerar_exemplo
-from hipotese.graficos import construir_g2, regiao_binomial
+from hipotese.graficos import construir_g1, construir_g2, regiao_binomial
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -119,6 +119,24 @@ def exibir_cenario():
         "garante controle de 5%, e esperamos mais falsos positivos. A recomendação "
         "final dependerá de Q1, Q2 e Q3; estas são expectativas, não resultados."
     )
+
+
+def exibir_dados():
+    reais, simulados = carregar_amostras_g1()
+    taxa_real = f"{reais.mean():.2%}".replace(".", ",")
+    st.subheader("G1 · Dados reais ao lado dos simulados")
+    st.markdown(
+        f"Os dados reais são binários: **{int(reais.sum())} falhas em {reais.size} builds "
+        f"({taxa_real})**. "
+        "Há concentração em 0 (passou), com assimetria à direita; 1 (falhou) "
+        "é uma categoria válida, e as falhas não são outliers. "
+        f"Para preservar esse formato, simulamos uma Bernoulli independente com "
+        f"**n = {reais.size}**, igual à coleta, **p = {META_TAXA_FALHA:.0%}**, definido "
+        f"por H₀, e **semente {SEMENTE}**; os {taxa_real} observados não substituem a meta. "
+        "Os histogramas mostram frequências percentuais em escalas idênticas, "
+        "mas não a dependência temporal, estudada na situação de rajadas."
+    )
+    st.plotly_chart(construir_g1(reais, simulados), width="stretch", key="g1_dados")
 
 
 def exibir_exemplo():
@@ -230,6 +248,8 @@ for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
         exibir_cenario()
+    elif issue == "#267":
+        exibir_dados()
     elif issue == "#268":
         exemplo = exibir_exemplo()
         exibir_g2(exemplo)

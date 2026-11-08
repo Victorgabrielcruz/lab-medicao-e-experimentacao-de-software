@@ -146,6 +146,39 @@ poder exige as repetições da S02. Nenhuma conclusão sobre o workflow real
 Referências das APIs: [normal padrão do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
 e [teste binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
 
+## Gráfico G1 — S01-06 (#267)
+
+A seção **2. Os dados** apresenta os histogramas das observações reais e
+simuladas lado a lado, com título, legenda, contagens no hover e percentuais
+nas barras. Como o par P4 compara uma proporção à meta, há um grupo real
+de execuções de CI; os dois testes são aplicados a esse mesmo tipo de dado.
+
+- `hipotese.cenario.carregar_amostras_g1()` lê a coluna `falhou` do CSV
+  congelado e usa `gerar_builds` com um gerador próprio de semente 42,
+  `n` igual ao tamanho efetivo da coleta e taxa de falha igual à meta de 5%.
+  A amostra independente sob H₀ tem **12 falhas em 243 builds (4,94%)**;
+  a real tem **10 em 243 (4,12%)**. Não há seleção por proximidade entre
+  as taxas nem alteração do exemplo com taxa de 9% usado na seção 3.
+- `hipotese.graficos.construir_g1(reais, simulados)` usa dois bins fixos,
+  `[-0,5; 0,5)` e `[0,5; 1,5]`, centrados em 0 (passou) e 1 (falhou).
+  As contagens são calculadas com `numpy.histogram` e desenhadas em barras
+  Plotly; categorias vazias permanecem visíveis com frequência zero.
+  Os eixos mostram o resultado binário adimensional e a frequência relativa
+  em porcentagem, com as mesmas escalas nos dois painéis. Cinza identifica
+  os dados reais e verde os simulados; as cores dos testes permanecem no G2.
+- O texto de quatro frases explica a concentração em zero, a assimetria
+  à direita e que falhas são uma categoria válida, não outliers. Justifica
+  a Bernoulli pelo suporte binário, `n = 243` pela coleta e `p = 5%` por H₀:
+  a taxa empírica não substitui a referência do protocolo. Também explicita
+  que histogramas não exibem a ordem temporal nem a dependência das rajadas.
+
+O G1 é regenerado ao abrir o dashboard, sem rede, com a mesma amostra a
+cada execução. As contagens, a normalização, a reprodução e a integração
+na seção 2 são verificadas pela suíte do Lab04.
+
+Referências: [histogramas com contagens calculadas em Python](https://plotly.com/python/histograms/#accessing-the-counts-y-axis-values)
+e [painéis lado a lado no Plotly](https://plotly.com/python/subplots/).
+
 ## Gráfico G2 — S01-07 (#268)
 
 A seção 3 apresenta dois painéis Plotly produzidos por
