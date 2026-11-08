@@ -7,10 +7,12 @@ import streamlit as st
 
 from hipotese.cenario import carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
-    ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
+    ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, MARGEM_ERRO_TIPO_I_PP,
+    META_TAXA_FALHA, N_REPETICOES, SEMENTE,
     URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
 from hipotese.exemplo import gerar_exemplo
+from hipotese.erro_tipo_i import analisar_erro_tipo_i
 from hipotese.graficos import construir_g1, construir_g2, regiao_binomial
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
@@ -244,6 +246,58 @@ def exibir_g2(exemplo):
     )
 
 
+def exibir_q1():
+    resultados = analisar_erro_tipo_i()
+    z, binomial = resultados
+
+    def percentual(valor):
+        return f"{100 * valor:.2f}%".replace(".", ",")
+
+    inferior = ALFA - MARGEM_ERRO_TIPO_I_PP / 100
+    superior = ALFA + MARGEM_ERRO_TIPO_I_PP / 100
+    faixa = f"{percentual(inferior)} a {percentual(superior)}"
+    margem = f"{MARGEM_ERRO_TIPO_I_PP:g}".replace(".", ",")
+    repeticoes = f"{z.repeticoes:,}".replace(",", ".")
+    posicao = {"Liberal": "acima da faixa", "Conservador": "abaixo da faixa", "Dentro da margem": "dentro da faixa"}
+    st.subheader("Q1 · Falsos positivos com H₀ verdadeira")
+    st.markdown(
+        f"Foram simuladas **{repeticoes} amostras independentes de {z.n} builds**, "
+        f"com H₀ verdadeira (p = {META_TAXA_FALHA:.0%}), efeito zero e semente {SEMENTE}. "
+        f"Cada rejeição com p-valor < {ALFA:.2f} é um **erro tipo I**: o teste "
+        "encontra um aumento da taxa de falha quando ele não existe. "
+        f"A referência é **{ALFA:.0%} ± {margem} p.p.**, "
+        f"ou **{faixa}**, incluindo os limites. "
+        f"O Z teve **{percentual(z.taxa_erro)}**, {posicao[z.classificacao]} "
+        f"(**{z.classificacao.lower()}**), e o binomial exato "
+        f"**{percentual(binomial.taxa_erro)}**, {posicao[binomial.classificacao]} "
+        f"(**{binomial.classificacao.lower()}**)."
+    )
+    st.table([
+        {
+            "Teste": resultado.teste,
+            "Falsos positivos": resultado.rejeicoes,
+            "Erro tipo I (%)": round(100 * resultado.taxa_erro, 2),
+            "Desvio de 5% (p.p.)": round(resultado.desvio_pp, 2),
+            "Classificação": resultado.classificacao,
+        }
+        for resultado in resultados
+    ])
+    st.markdown(
+        f"No Z, a rejeição começa em **{z.primeira_contagem_rejeitada} falhas**; "
+        f"no binomial, em **{binomial.primeira_contagem_rejeitada}**. "
+        "Somando as probabilidades dessas contagens sob H₀, os erros tipo I "
+        f"teóricos são **{percentual(z.taxa_teorica)}** e "
+        f"**{percentual(binomial.taxa_teorica)}**, respectivamente: a aproximação "
+        "normal e os limiares discretos ajudam a explicar os desvios observados "
+        "mesmo com builds independentes."
+    )
+    st.caption(
+        "A margem de ±0,4 p.p. é a faixa de comparação definida para Q1, "
+        "não um intervalo de confiança da taxa real de falhas. "
+        "Resultados lidos da simulação congelada, sem novos sorteios ao abrir a página."
+    )
+
+
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
@@ -253,5 +307,8 @@ for titulo, issue in SECOES:
     elif issue == "#268":
         exemplo = exibir_exemplo()
         exibir_g2(exemplo)
+    elif issue == "#273":
+        exibir_q1()
+        st.info("Gráfico G3 em construção (#273).")
     else:
         st.info(f"Conteúdo em construção ({issue}).")

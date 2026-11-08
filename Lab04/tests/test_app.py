@@ -106,3 +106,34 @@ def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):
     assert list(app.table[1].value["Decisão (α = 0,05)"]) == ["Rejeitar H₀", "Rejeitar H₀"]
     texto = "\n".join(elemento.value for elemento in app.markdown)
     assert "há evidência de que a taxa de falha ultrapassa 5%" in texto
+
+
+def test_q1_exibe_taxas_da_situacao_independente_e_comparacao_com_a_margem():
+    app = executar()
+    tabela = app.table[2].value
+    assert list(tabela["Falsos positivos"]) == [655, 396]
+    assert list(tabela["Erro tipo I (%)"]) == [6.55, 3.96]
+    assert list(tabela["Desvio de 5% (p.p.)"]) == [1.55, -1.04]
+    assert list(tabela["Classificação"]) == ["Liberal", "Conservador"]
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    for trecho in (
+        "10.000 amostras independentes de 243 builds", "efeito zero",
+        "5% ± 0,4 p.p.", "4,60% a 5,40%", "incluindo os limites",
+        "6,55%", "3,96%", "liberal", "conservador", "6,39%", "3,73%",
+    ):
+        assert trecho in texto
+    assert any("Gráfico G3" in info.value for info in app.info)
+
+
+def test_q1_interpreta_taxas_dentro_da_margem_sem_rotulos_fixos(monkeypatch):
+    from dataclasses import replace
+    from hipotese import erro_tipo_i
+
+    resultados = [replace(r, rejeicoes=500, taxa_erro=0.05, desvio_pp=0,
+                         classificacao="Dentro da margem") for r in erro_tipo_i.analisar_erro_tipo_i()]
+    monkeypatch.setattr(erro_tipo_i, "analisar_erro_tipo_i", lambda: resultados)
+    app = executar()
+    assert list(app.table[2].value["Classificação"]) == ["Dentro da margem", "Dentro da margem"]
+    texto = next(elemento.value for elemento in app.markdown if "O Z teve" in elemento.value)
+    assert "liberal" not in texto and "conservador" not in texto
+    assert texto.count("dentro da faixa") == 2
