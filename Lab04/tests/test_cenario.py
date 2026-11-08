@@ -4,7 +4,7 @@ import csv
 
 import pytest
 
-from hipotese.cenario import RESUMO, carregar_resumo, configuracoes_simulacao
+from hipotese.cenario import RESUMO, carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
 from hipotese.config import ALTERNATIVA, EFEITOS, META_TAXA_FALHA, gerador
 from hipotese.gerador import gerar_builds, taxa_com_efeito
 
@@ -36,3 +36,22 @@ def test_todas_as_configuracoes_e_efeitos_podem_ser_usados_no_gerador():
             builds = gerar_builds(gerador(), taxa_falha=taxa_com_efeito(efeito), **parametros)
             assert builds.shape == (parametros["n"],)
             assert set(builds) <= {0, 1}
+
+
+def test_g1_usa_o_csv_real_e_uma_amostra_fixa_sob_h0():
+    import numpy as np
+    from hipotese.exemplo import gerar_exemplo
+
+    exemplo_antes = gerar_exemplo().builds.copy()
+    reais, simulados = carregar_amostras_g1()
+    with (RESUMO.parent / "ci_pytest.csv").open(encoding="utf-8", newline="") as arquivo:
+        valores_csv = [int(linha["falhou"]) for linha in csv.DictReader(arquivo)]
+    assert np.array_equal(reais, valores_csv)
+    assert reais.size == simulados.size == 243
+    assert reais.sum() == 10
+    # Resultado da amostra Bernoulli(0,05) com a semente 42, sem novos sorteios.
+    assert simulados.sum() == 12
+    outros_reais, outros_simulados = carregar_amostras_g1()
+    assert np.array_equal(reais, outros_reais)
+    assert np.array_equal(simulados, outros_simulados)
+    assert np.array_equal(gerar_exemplo().builds, exemplo_antes)
