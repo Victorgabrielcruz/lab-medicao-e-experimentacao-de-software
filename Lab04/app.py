@@ -15,7 +15,7 @@ from hipotese.config import (
 )
 from hipotese.exemplo import gerar_exemplo
 from hipotese.erro_tipo_i import analisar_erro_tipo_i
-from hipotese.graficos import construir_g1, construir_g2, regiao_binomial
+from hipotese.graficos import construir_g1, construir_g2, construir_g4, regiao_binomial
 from hipotese.simulacao import ARQUIVO
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
@@ -301,8 +301,7 @@ def exibir_q1():
     )
 
 
-def exibir_q2():
-    simulacao = pd.read_csv(ARQUIVO)
+def exibir_q2(simulacao):
     independente = simulacao.loc[simulacao["situacao"] == "Independente"]
     taxas = independente.pivot(index="efeito", columns="teste", values="proporcao_rejeicao")
     taxas = 100 * taxas.loc[sorted(EFEITOS), [TESTE_Z, TESTE_BINOMIAL]]
@@ -337,6 +336,20 @@ def exibir_q2():
     )
 
 
+def exibir_g4(simulacao):
+    st.plotly_chart(construir_g4(simulacao), width="stretch", key="g4_poder")
+    st.caption("Em 0 p.p., os pontos representam erro tipo I. A partir de 2 p.p., representam poder estimado.")
+    st.markdown(
+        "O **Z detectou mais aumentos** que o binomial exato em todos os efeitos positivos "
+        "simulados. A vantagem não se inverteu entre as três situações. Com efeito de +4 p.p., "
+        "a diferença foi de 6,67 p.p. em amostras independentes, 6,07 p.p. em rajadas e "
+        "16,70 p.p. na amostra pequena. Nas duas situações com 243 builds, as curvas "
+        "quase coincidem perto de 100% em +10 p.p. Na amostra pequena, a diferença "
+        "chega a 24,27 p.p. nesse efeito. Em efeito zero, o Z também apresentou mais "
+        "falsos positivos nas três situações, o que ajuda a contextualizar a diferença de poder."
+    )
+
+
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
@@ -350,7 +363,8 @@ for titulo, issue in SECOES:
         exibir_q1()
         st.info("Gráfico G3 em construção (#273).")
     elif issue == "#274":
-        exibir_q2()
-        st.info("Gráfico G4 em construção (#274).")
+        simulacao = pd.read_csv(ARQUIVO)
+        exibir_q2(simulacao)
+        exibir_g4(simulacao)
     else:
         st.info(f"Conteúdo em construção ({issue}).")
