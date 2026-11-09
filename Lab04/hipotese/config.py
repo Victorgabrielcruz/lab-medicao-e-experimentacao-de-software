@@ -10,6 +10,9 @@ SEMENTE = 42
 ALFA = 0.05
 N_REPETICOES = 10_000
 
+# Comparação de Q1 com o nível nominal: ±0,4 ponto percentual (#270).
+MARGEM_ERRO_TIPO_I_PP = 0.4
+
 # Par P4: taxa de builds com falha frente a uma meta de 5%.
 META_TAXA_FALHA = 0.05
 

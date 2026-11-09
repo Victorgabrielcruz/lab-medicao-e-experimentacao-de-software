@@ -247,6 +247,50 @@ simulado contra o valor exato, que é a soma das massas binomiais das contagens
 rejeitadas: 6,39% para o Z e 3,73% para o binomial com n = 243. Também
 conferem que o CSV versionado é o que a semente fixa gera.
 
+## Q1 — Erro tipo I na situação bem-comportada — S02-02 (#270)
+
+A seção **4. Erro tipo I** responde à Q1 com as duas linhas de
+[`data/simulacao.csv`](data/simulacao.csv) em que a situação é `Independente`
+e o efeito é zero. São **10.000 amostras de 243 builds**, Bernoulli i.i.d.
+com `p = 0,05`, semente 42, alternativa à direita e rejeição quando
+`p-valor < ALFA = 0,05`. Como H₀ é verdadeira, cada rejeição é um falso
+positivo, e sua frequência estima o erro tipo I do teste.
+
+| Teste | Falsos positivos / 10.000 | Erro tipo I | Desvio de 5% | Comparação |
+|---|---:|---:|---:|---|
+| Z para proporção | 655 | 6,55% | +1,55 p.p. | Acima da faixa: liberal |
+| Binomial exato | 396 | 3,96% | −1,04 p.p. | Abaixo da faixa: conservador |
+
+A margem exigida de **±0,4 ponto percentual** ao redor de 5% define a faixa
+**[4,6%; 5,4%]**, incluindo os dois limites. É uma diferença absoluta de
+proporção de 0,004, e não 0,4% relativo. Nenhum dos testes fica dentro dessa
+faixa nesta simulação; o Z encontra efeitos inexistentes com maior frequência
+que o nível nominal, enquanto o exato é mais conservador.
+
+Para verificar a explicação, o módulo soma as massas de `Binomial(243, 0.05)`
+nas contagens rejeitadas pelas mesmas funções dos testes. O Z rejeita a partir
+de **18 falhas**, com probabilidade teórica de erro tipo I **6,3870%**;
+o binomial exato rejeita a partir de **19**, com probabilidade **3,7349%**.
+Assim, os desvios de 5% também aparecem nas probabilidades teóricas: a
+aproximação normal do Z e a discretização dos limiares ajudam a explicar
+o resultado, além da variação de Monte Carlo. A margem de comparação não
+é um intervalo de confiança para a taxa real de falhas do projeto.
+
+`hipotese.erro_tipo_i.analisar_erro_tipo_i()` lê e valida o CSV, calcula
+as taxas por `rejeicoes / repeticoes`, o desvio em p.p. e a classificação.
+Confere o tamanho da amostra, a independência, a taxa sob H₀, o número de
+repetições e a semente; exige exatamente uma linha por teste.
+`classificar_erro_tipo_i()` usa frações para preservar as fronteiras de
+4,6% e 5,4% sem classificar com taxas arredondadas.
+
+O dashboard não executa novos sorteios. Para reproduzir a origem dos
+resultados, execute `python -m hipotese.simulacao` no ambiente do Lab04;
+para conferir a análise, execute `python -m pytest`. Os testes verificam as
+fronteiras da margem, os resultados, a seleção de H₀ independente e a exibição
+da tabela e da interpretação. O gráfico G3 é tratado na tarefa #273.
+
+Referência: [massas e caudas da distribuição binomial no SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html).
+
 ## Estrutura
 
 | Caminho | Conteúdo |
