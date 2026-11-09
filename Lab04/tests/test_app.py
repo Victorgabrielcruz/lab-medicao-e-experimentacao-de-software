@@ -137,3 +137,12 @@ def test_q1_interpreta_taxas_dentro_da_margem_sem_rotulos_fixos(monkeypatch):
     texto = next(elemento.value for elemento in app.markdown if "O Z teve" in elemento.value)
     assert "liberal" not in texto and "conservador" not in texto
     assert texto.count("dentro da faixa") == 2
+
+
+def test_q2_exibe_os_seis_efeitos_e_as_taxas_independentes():
+    app = executar()
+    tabela = app.table[3].value
+    assert list(tabela["Efeito (p.p.)"]) == [0, 2, 4, 6, 8, 10]
+    assert list(tabela["Medida"]) == ["Erro tipo I"] + ["Poder"] * 5
+    assert list(tabela["Z para proporção (%)"]) == [6.55, 43.58, 83.4, 97.59, 99.67, 99.98]
+    assert list(tabela["Binomial exato (%)"]) == [3.96, 34.28, 76.73, 96.16, 99.47, 99.97]

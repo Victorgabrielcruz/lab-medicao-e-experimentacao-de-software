@@ -3,17 +3,20 @@
 Execução, a partir da pasta Lab04: ``streamlit run app.py``
 """
 
+import pandas as pd
 import streamlit as st
 
 from hipotese.cenario import carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, MARGEM_ERRO_TIPO_I_PP,
     META_TAXA_FALHA, N_REPETICOES, SEMENTE,
+    TESTE_BINOMIAL, TESTE_Z,
     URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 )
 from hipotese.exemplo import gerar_exemplo
 from hipotese.erro_tipo_i import analisar_erro_tipo_i
 from hipotese.graficos import construir_g1, construir_g2, regiao_binomial
+from hipotese.simulacao import ARQUIVO
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -298,6 +301,42 @@ def exibir_q1():
     )
 
 
+def exibir_q2():
+    simulacao = pd.read_csv(ARQUIVO)
+    independente = simulacao.loc[simulacao["situacao"] == "Independente"]
+    taxas = independente.pivot(index="efeito", columns="teste", values="proporcao_rejeicao")
+    taxas = 100 * taxas.loc[sorted(EFEITOS), [TESTE_Z, TESTE_BINOMIAL]]
+    amostra = independente.iloc[0]
+    repeticoes = f"{amostra['repeticoes']:,}".replace(",", ".")
+
+    st.subheader("Q2 · Poder dos testes na situação independente")
+    st.markdown(
+        f"A tabela mostra a porcentagem de amostras que rejeitaram H₀ a {ALFA:.0%} "
+        f"em **{repeticoes} repetições de {amostra['n']} builds independentes por efeito**. "
+        "O efeito é o aumento da taxa verdadeira de falhas acima da meta de 5%, em pontos "
+        "percentuais. A linha de efeito zero mede o **erro tipo I**. As demais estimam "
+        "o **poder**, a frequência com que cada teste detecta um aumento real."
+    )
+    st.table([
+        {
+            "Efeito (p.p.)": round(100 * efeito, 2),
+            "Medida": "Erro tipo I" if efeito == 0 else "Poder",
+            f"{TESTE_Z} (%)": round(linha[TESTE_Z], 2),
+            f"{TESTE_BINOMIAL} (%)": round(linha[TESTE_BINOMIAL], 2),
+        }
+        for efeito, linha in taxas.iterrows()
+    ])
+    z, binomial = taxas.loc[EFEITO_EXEMPLO]
+    efeito_pp = f"{100 * EFEITO_EXEMPLO:g}"
+    comparacao = f"{z:.2f}% no Z e {binomial:.2f}% no binomial exato".replace(".", ",")
+    st.markdown(
+        f"Com efeito de **+{efeito_pp} p.p.**, o poder foi de **{comparacao}**. "
+        "À medida que o efeito aumenta, os dois testes passam a detectá-lo com mais "
+        "frequência e chegam perto de 100%. Na comparação a 5% nominal, vale considerar "
+        "também o erro tipo I de cada teste na linha de efeito zero e na análise de Q1."
+    )
+
+
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
@@ -310,5 +349,8 @@ for titulo, issue in SECOES:
     elif issue == "#273":
         exibir_q1()
         st.info("Gráfico G3 em construção (#273).")
+    elif issue == "#274":
+        exibir_q2()
+        st.info("Gráfico G4 em construção (#274).")
     else:
         st.info(f"Conteúdo em construção ({issue}).")
