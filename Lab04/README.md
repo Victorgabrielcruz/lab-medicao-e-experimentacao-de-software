@@ -11,6 +11,7 @@ Conclusão.
 
 - Board: [GitHub Projects](https://github.com/users/Victorgabrielcruz/projects/7)
 - Dashboard publicado: em breve (#277)
+- [Roteiro da apresentação oral](APRESENTACAO.md) (#279)
 
 ## Como executar
 
