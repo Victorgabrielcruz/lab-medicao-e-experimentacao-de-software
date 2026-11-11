@@ -6,7 +6,7 @@ Execução, a partir da pasta Lab04: ``streamlit run app.py``
 import streamlit as st
 
 from hipotese import q3
-from hipotese.cenario import carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
+from hipotese.cenario import carregar_amostras_g1, carregar_builds_reais, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, MARGEM_ERRO_TIPO_I_PP,
     META_TAXA_FALHA, N_REPETICOES, SEMENTE,
@@ -16,6 +16,7 @@ from hipotese.config import (
 from hipotese.exemplo import gerar_exemplo
 from hipotese.erro_tipo_i import analisar_erro_tipo_i
 from hipotese.graficos import construir_g1, construir_g2, construir_g3, construir_g4, regiao_binomial
+from hipotese.testes import aplicar_testes
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -447,6 +448,58 @@ def exibir_g4(simulacao):
     )
 
 
+def exibir_testes_reais():
+    resultados = aplicar_testes(carregar_builds_reais())
+    observado = resultados[0]
+    meta = _pct(META_TAXA_FALHA)
+    st.markdown(
+        f"A amostra real teve **{observado.falhas} falhas em {observado.n} builds "
+        f"({_pct(observado.proporcao)})**. Os dois testes avaliam se a taxa de falha "
+        f"supera a meta de **{meta}**, com alternativa à direita e α = {_num(ALFA)}."
+    )
+    st.table([
+        {
+            "Teste": resultado.teste,
+            "Estatística": resultado.nome_estatistica,
+            "Valor da estatística": resultado.estatistica,
+            "p-valor": resultado.pvalor,
+            "Efeito (p.p.)": round(resultado.efeito_pp, 2),
+            "Conclusão": "Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀",
+        }
+        for resultado in resultados
+    ])
+
+    rejeitaram = [resultado.teste for resultado in resultados if resultado.rejeita_h0]
+    if len(rejeitaram) == len(resultados):
+        conclusao = f"Os dois testes encontraram evidência de que a taxa de falha supera {meta}."
+    elif rejeitaram:
+        conclusao = f"Apenas o teste {rejeitaram[0]} encontrou evidência de que a taxa de falha supera {meta}."
+    else:
+        conclusao = (
+            f"Nenhum dos testes encontrou evidência de que a taxa de falha supera {meta}. "
+            "Não rejeitar H₀ não comprova que a meta seja cumprida."
+        )
+    st.markdown(conclusao)
+
+    efeito = observado.efeito_pp
+    efeito_assinado = f"{efeito:+.2f}".replace(".", ",").replace("-", "−") if efeito else "0,00"
+    if efeito:
+        direcao = "a mais" if efeito > 0 else "a menos"
+        unidade = "falha" if abs(efeito) <= 1 else "falhas"
+        impacto = f"São cerca de **{_num(abs(efeito))} {unidade} {direcao} por 100 builds** em relação à meta."
+    else:
+        impacto = "Na amostra, a taxa observada coincide com a meta."
+    st.markdown(
+        f"**Importância prática:** a diferença entre a taxa observada e a meta foi de "
+        f"**{efeito_assinado} p.p.** {impacto} Mesmo uma diferença pequena por 100 builds "
+        "pode importar quando o volume de execuções ou o custo de uma falha é alto."
+    )
+    st.caption(
+        "Os dois testes pressupõem builds independentes. O agrupamento de falhas observado "
+        "na coleta pode limitar a interpretação dos p-valores."
+    )
+
+
 simulacao = q3.carregar_resultados()
 tipo_i = q3.erro_tipo_i(simulacao)
 for titulo, issue in SECOES:
@@ -465,5 +518,7 @@ for titulo, issue in SECOES:
         exibir_q2(simulacao)
         exibir_g4(simulacao)
         exibir_q3(simulacao, tipo_i)
+    elif issue == "#275":
+        exibir_testes_reais()
     else:
         st.info(f"Conteúdo em construção ({issue}).")
