@@ -1,11 +1,15 @@
-"""G2: distribuições de referência, rejeição e p-valor do exemplo (#268)."""
+"""Gráficos do dashboard de testes de hipótese."""
 
 import numpy as np
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+from pandas import DataFrame
 from scipy.stats import binom, norm
 
-from hipotese.config import ALFA, ALTERNATIVA, CORES_TESTES, META_TAXA_FALHA, TESTE_BINOMIAL, TESTE_Z
+from hipotese.config import ALFA, ALTERNATIVA, CORES_TESTES, META_TAXA_FALHA, SEMENTE, TESTE_BINOMIAL, TESTE_Z
 from hipotese.exemplo import ExemploSimulado
+
+CORES_DADOS = {"Real": "#64748b", "Simulado sob H₀": "#0f766e"}
 
 
 def _cor(nome: str, opacidade: float) -> str:
@@ -36,6 +40,80 @@ def _layout(figura: go.Figure, titulo: str, eixo_x: str, eixo_y: str) -> None:
         hovermode="closest",
     )
     figura.update_yaxes(rangemode="tozero")
+
+
+def construir_g1(reais, simulados) -> go.Figure:
+    """Histogramas binários lado a lado, com bins e escalas idênticos (#267).
+
+    As frequências são calculadas em Python nos bins [-0,5; 0,5; 1,5],
+    incluindo categorias vazias. O hover preserva também as contagens.
+    """
+    amostras = [np.asarray(reais), np.asarray(simulados)]
+    for amostra in amostras:
+        if amostra.ndim != 1 or amostra.size == 0 or not np.isin(amostra, (0, 1)).all():
+            raise ValueError("O G1 requer amostras unidimensionais não vazias de 0 e 1.")
+    nomes = tuple(CORES_DADOS)
+    figura = make_subplots(
+        rows=1, cols=2, shared_yaxes=True, horizontal_spacing=0.15,
+        subplot_titles=tuple(f"{nome} · {amostra.size} builds" for nome, amostra in zip(nomes, amostras)),
+    )
+    for coluna, (nome, amostra) in enumerate(zip(nomes, amostras), 1):
+        contagens, _ = np.histogram(amostra, bins=[-0.5, 0.5, 1.5])
+        frequencias = 100 * contagens / amostra.size
+        figura.add_trace(go.Bar(
+            x=[0, 1], y=frequencias.tolist(), width=0.9,
+            name=nome, marker_color=CORES_DADOS[nome], showlegend=True,
+            text=[f"{valor:.2f}%".replace(".", ",") for valor in frequencias],
+            textposition="outside", cliponaxis=False,
+            customdata=[[int(contagem), int(amostra.size)] for contagem in contagens],
+            hovertemplate=(
+                "Resultado (0 = passou; 1 = falhou): %{x}<br>"
+                "Execuções: %{customdata[0]} de %{customdata[1]}<br>"
+                "Frequência: %{y:.2f}%<extra>%{fullData.name}</extra>"
+            ),
+        ), row=1, col=coluna)
+    eixo_x = "Resultado da build (0/1; adimensional)"
+    eixo_y = "Frequência relativa de builds (%)"
+    _layout(
+        figura,
+        "G1 · Dados reais × simulados<br>"
+        f"<sup>Simulação independente sob H₀: p = {META_TAXA_FALHA:.0%}; semente {SEMENTE}</sup>",
+        eixo_x, eixo_y,
+    )
+    figura.update_annotations(font_size=14)
+    figura.update_xaxes(
+        title_text=eixo_x, range=[-0.65, 1.65], tickvals=[0, 1],
+        ticktext=["0 · Passou", "1 · Falhou"], showgrid=False,
+    )
+    figura.update_yaxes(
+        title_text=eixo_y, range=[0, 110], tickvals=[0, 20, 40, 60, 80, 100],
+        ticksuffix="%", showticklabels=True, fixedrange=True,
+    )
+    return figura
+
+
+def construir_g4(simulacao: DataFrame) -> go.Figure:
+    """Compara os dois testes em cada situação, na mesma escala (#274)."""
+    paineis = list(simulacao.groupby(["situacao", "n"], sort=False))
+    figura = make_subplots(
+        rows=1, cols=len(paineis), shared_yaxes=True, horizontal_spacing=0.07,
+        subplot_titles=[f"{situacao} · n = {n}" for (situacao, n), _ in paineis],
+    )
+    for coluna, (_, painel) in enumerate(paineis, 1):
+        for teste, simbolo in ((TESTE_Z, "circle"), (TESTE_BINOMIAL, "diamond")):
+            curva = painel.loc[painel["teste"] == teste].sort_values("efeito")
+            figura.add_trace(go.Scatter(
+                x=(100 * curva["efeito"]).tolist(),
+                y=(100 * curva["proporcao_rejeicao"]).tolist(),
+                mode="lines+markers", name=teste, legendgroup=teste, showlegend=coluna == 1,
+                line={"color": CORES_TESTES[teste]}, marker={"symbol": simbolo},
+                hovertemplate="Efeito: %{x:g} p.p.<br>Rejeições: %{y:.2f}%<extra>%{fullData.name}</extra>",
+            ), row=1, col=coluna)
+    _layout(figura, "G4 · Curvas de poder por situação", "Efeito (p.p.)", "Proporção de rejeições (%)")
+    figura.update_annotations(font_size=14)
+    figura.update_xaxes(title_text="Efeito (p.p.)", tickvals=sorted(set(100 * simulacao["efeito"])))
+    figura.update_yaxes(range=[0, 104], tickvals=[0, 20, 40, 60, 80, 100], ticksuffix="%")
+    return figura
 
 
 def construir_g2(exemplo: ExemploSimulado) -> tuple[go.Figure, go.Figure]:

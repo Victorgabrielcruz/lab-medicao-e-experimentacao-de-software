@@ -146,6 +146,39 @@ poder exige as repetições da S02. Nenhuma conclusão sobre o workflow real
 Referências das APIs: [normal padrão do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
 e [teste binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
 
+## Gráfico G1 — S01-06 (#267)
+
+A seção **2. Os dados** apresenta os histogramas das observações reais e
+simuladas lado a lado, com título, legenda, contagens no hover e percentuais
+nas barras. Como o par P4 compara uma proporção à meta, há um grupo real
+de execuções de CI; os dois testes são aplicados a esse mesmo tipo de dado.
+
+- `hipotese.cenario.carregar_amostras_g1()` lê a coluna `falhou` do CSV
+  congelado e usa `gerar_builds` com um gerador próprio de semente 42,
+  `n` igual ao tamanho efetivo da coleta e taxa de falha igual à meta de 5%.
+  A amostra independente sob H₀ tem **12 falhas em 243 builds (4,94%)**;
+  a real tem **10 em 243 (4,12%)**. Não há seleção por proximidade entre
+  as taxas nem alteração do exemplo com taxa de 9% usado na seção 3.
+- `hipotese.graficos.construir_g1(reais, simulados)` usa dois bins fixos,
+  `[-0,5; 0,5)` e `[0,5; 1,5]`, centrados em 0 (passou) e 1 (falhou).
+  As contagens são calculadas com `numpy.histogram` e desenhadas em barras
+  Plotly; categorias vazias permanecem visíveis com frequência zero.
+  Os eixos mostram o resultado binário adimensional e a frequência relativa
+  em porcentagem, com as mesmas escalas nos dois painéis. Cinza identifica
+  os dados reais e verde os simulados; as cores dos testes permanecem no G2.
+- O texto de quatro frases explica a concentração em zero, a assimetria
+  à direita e que falhas são uma categoria válida, não outliers. Justifica
+  a Bernoulli pelo suporte binário, `n = 243` pela coleta e `p = 5%` por H₀:
+  a taxa empírica não substitui a referência do protocolo. Também explicita
+  que histogramas não exibem a ordem temporal nem a dependência das rajadas.
+
+O G1 é regenerado ao abrir o dashboard, sem rede, com a mesma amostra a
+cada execução. As contagens, a normalização, a reprodução e a integração
+na seção 2 são verificadas pela suíte do Lab04.
+
+Referências: [histogramas com contagens calculadas em Python](https://plotly.com/python/histograms/#accessing-the-counts-y-axis-values)
+e [painéis lado a lado no Plotly](https://plotly.com/python/subplots/).
+
 ## Gráfico G2 — S01-07 (#268)
 
 A seção 3 apresenta dois painéis Plotly produzidos por
@@ -245,6 +278,63 @@ conservador quando se afasta de 5% mais que a margem de Monte Carlo,
 Os testes conferem a classificação, os limiares de rejeição e os erros exatos
 com n = 20, e que os fatos usados no texto do dashboard valem nos resultados
 simulados.
+## Q1 — Erro tipo I na situação bem-comportada — S02-02 (#270)
+
+A seção **4. Erro tipo I** responde à Q1 com as duas linhas de
+[`data/simulacao.csv`](data/simulacao.csv) em que a situação é `Independente`
+e o efeito é zero. São **10.000 amostras de 243 builds**, Bernoulli i.i.d.
+com `p = 0,05`, semente 42, alternativa à direita e rejeição quando
+`p-valor < ALFA = 0,05`. Como H₀ é verdadeira, cada rejeição é um falso
+positivo, e sua frequência estima o erro tipo I do teste.
+
+| Teste | Falsos positivos / 10.000 | Erro tipo I | Desvio de 5% | Comparação |
+|---|---:|---:|---:|---|
+| Z para proporção | 655 | 6,55% | +1,55 p.p. | Acima da faixa: liberal |
+| Binomial exato | 396 | 3,96% | −1,04 p.p. | Abaixo da faixa: conservador |
+
+A margem exigida de **±0,4 ponto percentual** ao redor de 5% define a faixa
+**[4,6%; 5,4%]**, incluindo os dois limites. É uma diferença absoluta de
+proporção de 0,004, e não 0,4% relativo. Nenhum dos testes fica dentro dessa
+faixa nesta simulação; o Z encontra efeitos inexistentes com maior frequência
+que o nível nominal, enquanto o exato é mais conservador.
+
+Para verificar a explicação, o módulo soma as massas de `Binomial(243, 0.05)`
+nas contagens rejeitadas pelas mesmas funções dos testes. O Z rejeita a partir
+de **18 falhas**, com probabilidade teórica de erro tipo I **6,3870%**;
+o binomial exato rejeita a partir de **19**, com probabilidade **3,7349%**.
+Assim, os desvios de 5% também aparecem nas probabilidades teóricas: a
+aproximação normal do Z e a discretização dos limiares ajudam a explicar
+o resultado, além da variação de Monte Carlo. A margem de comparação não
+é um intervalo de confiança para a taxa real de falhas do projeto.
+
+`hipotese.erro_tipo_i.analisar_erro_tipo_i()` lê e valida o CSV, calcula
+as taxas por `rejeicoes / repeticoes`, o desvio em p.p. e a classificação.
+Confere o tamanho da amostra, a independência, a taxa sob H₀, o número de
+repetições e a semente; exige exatamente uma linha por teste.
+`classificar_erro_tipo_i()` usa frações para preservar as fronteiras de
+4,6% e 5,4% sem classificar com taxas arredondadas.
+
+O dashboard não executa novos sorteios. Para reproduzir a origem dos
+resultados, execute `python -m hipotese.simulacao` no ambiente do Lab04;
+para conferir a análise, execute `python -m pytest`. Os testes verificam as
+fronteiras da margem, os resultados, a seleção de H₀ independente e a exibição
+da tabela e da interpretação. O gráfico G3 é tratado na tarefa #273.
+
+Referência: [massas e caudas da distribuição binomial no SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html).
+
+## Q2 — Poder dos testes na situação independente (#271)
+
+A seção **5. Poder** do dashboard lê o [CSV da simulação](data/simulacao.csv)
+e compara o Z para proporção com o binomial exato nos seis efeitos de 0 a 10
+pontos percentuais. A simulação usa 10.000 repetições de 243 builds
+independentes por efeito, com rejeição quando `p < 0,05`.
+
+Em **+4 p.p.** (taxa verdadeira de falhas de 9%), o Z detectou o aumento em
+**83,40%** das amostras e o binomial exato em **76,73%**. As proporções sobem
+com o efeito e chegam a **99,98%** e **99,97%**, respectivamente, em +10 p.p.
+Na linha de efeito zero, os **6,55%** do Z e os **3,96%** do binomial exato
+são taxas de erro tipo I. Essa diferença de calibração deve ser considerada
+ao comparar o poder sob o mesmo nível nominal de 5%.
 
 ## Estrutura
 

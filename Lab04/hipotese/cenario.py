@@ -1,10 +1,13 @@
-"""Calibração do cenário P4 a partir da coleta congelada (#264)."""
+"""Calibração do cenário P4 e amostras do G1 a partir da coleta (#264, #267)."""
 
+import csv
 import json
 from pathlib import Path
 
-from hipotese.config import N_AMOSTRA_PEQUENA
-from hipotese.gerador import INDEPENDENTE, RAJADAS
+import numpy as np
+
+from hipotese.config import META_TAXA_FALHA, N_AMOSTRA_PEQUENA, gerador
+from hipotese.gerador import INDEPENDENTE, RAJADAS, gerar_builds
 
 RESUMO = Path(__file__).resolve().parents[1] / "data" / "ci_pytest_resumo.json"
 
@@ -12,6 +15,21 @@ RESUMO = Path(__file__).resolve().parents[1] / "data" / "ci_pytest_resumo.json"
 def carregar_resumo() -> dict:
     """Lê a origem e as estatísticas versionadas, sem rede ou simulação."""
     return json.loads(RESUMO.read_text(encoding="utf-8"))
+
+
+def carregar_amostras_g1() -> tuple[np.ndarray, np.ndarray]:
+    """Lê as builds reais e gera uma amostra independente sob H₀ (#267).
+
+    Usa o tamanho efetivo do CSV e um gerador próprio com a semente fixa.
+    A taxa permanece a meta do protocolo, sem ajustar o sorteio ao resultado.
+    """
+    with RESUMO.with_name("ci_pytest.csv").open(encoding="utf-8", newline="") as arquivo:
+        reais = np.array([int(linha["falhou"]) for linha in csv.DictReader(arquivo)])
+    simulados = gerar_builds(
+        gerador(), n=reais.size, taxa_falha=META_TAXA_FALHA,
+        situacao=INDEPENDENTE, correlacao=0.0,
+    )
+    return reais, simulados
 
 
 def configuracoes_simulacao(resumo: dict) -> dict[str, dict]:
