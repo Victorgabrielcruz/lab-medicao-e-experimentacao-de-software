@@ -247,6 +247,37 @@ simulado contra o valor exato, que é a soma das massas binomiais das contagens
 rejeitadas: 6,39% para o Z e 3,73% para o binomial com n = 243. Também
 conferem que o CSV versionado é o que a semente fixa gera.
 
+## Q3: violação de pressupostos — S02-04 (#272)
+
+`hipotese/q3.py` lê `data/simulacao.csv`, sem simular de novo, e compara o erro
+tipo I e o poder nas duas situações de violação com a situação independente.
+O resultado aparece no dashboard, na seção 5, como a subseção
+"Q3 · Quando os dados não se comportam bem". Um erro tipo I é liberal ou
+conservador quando se afasta de 5% mais que a margem de Monte Carlo,
+`1,96·sqrt(0,05·0,95/10.000)` ≈ ±0,43 p.p.
+
+| Situação | Erro tipo I do Z | Erro tipo I do binomial |
+|---|---|---|
+| Independente (n = 243) | 6,55% (liberal) | 3,96% (conservador) |
+| Rajadas (n = 243, ρ = 0,27) | 11,83% (liberal) | 8,60% (liberal) |
+| Amostra pequena (n = 20) | 7,35% (liberal) | 1,49% (conservador) |
+
+- **Amostra pequena afeta mais o Z.** Com n = 20, a meta implica só 1 falha
+  esperada, e a aproximação normal do Z deixa de valer. O Z rejeita a partir
+  de 3 falhas, com erro tipo I exato de 7,55%. O binomial calcula a cauda
+  exata, rejeita a partir de 4 falhas (1,59%) e fica conservador pela
+  discretização.
+- **Rajadas afetam os dois.** A independência é pressuposto de ambos, e a
+  correlação de lag 1 de 0,27 multiplica a variância do número de falhas por
+  cerca de (1+ρ)/(1−ρ) ≈ 1,76. Os dois ficam liberais; ser exato não protege
+  o binomial.
+- **Poder:** o Z rejeita mais nas duas situações, com até 24 p.p. a mais na
+  amostra pequena. Isso vem junto de erro tipo I acima de 5%, então não é poder
+  real.
+
+Os testes conferem a classificação, os limiares de rejeição e os erros exatos
+com n = 20, e que os fatos usados no texto do dashboard valem nos resultados
+simulados.
 ## Q1 — Erro tipo I na situação bem-comportada — S02-02 (#270)
 
 A seção **4. Erro tipo I** responde à Q1 com as duas linhas de
