@@ -3,14 +3,9 @@
 Execução, a partir da pasta Lab04: ``streamlit run app.py``
 """
 
-import pandas as pd
 import streamlit as st
 
 from hipotese import q3
-from hipotese.cenario import carregar_resumo, configuracoes_simulacao
-from hipotese.config import (
-    ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, META_TAXA_FALHA, N_REPETICOES, SEMENTE,
-    TESTE_BINOMIAL, TESTE_Z, URL_DASHBOARD, URL_PROJECT, URL_REPOSITORIO,
 from hipotese.cenario import carregar_amostras_g1, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, ALTERNATIVA, EFEITOS, EFEITO_EXEMPLO, MARGEM_ERRO_TIPO_I_PP,
@@ -20,8 +15,7 @@ from hipotese.config import (
 )
 from hipotese.exemplo import gerar_exemplo
 from hipotese.erro_tipo_i import analisar_erro_tipo_i
-from hipotese.graficos import construir_g1, construir_g2, construir_g4, regiao_binomial
-from hipotese.simulacao import ARQUIVO
+from hipotese.graficos import construir_g1, construir_g2, construir_g3, construir_g4, regiao_binomial
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -262,8 +256,7 @@ def _pct(valor):
     return f"{_num(100 * valor)}%"
 
 
-def exibir_q3():
-    resultados = q3.carregar_resultados()
+def exibir_q3(resultados, tipo_i):
     st.subheader("Q3 · Quando os dados não se comportam bem (#272)")
     repeticoes = f"{N_REPETICOES:_}".replace("_", ".")
     margem = _num(100 * q3.MARGEM_MONTE_CARLO)
@@ -274,7 +267,6 @@ def exibir_q3():
         f"(±{margem} p.p.)."
     )
 
-    tipo_i = q3.erro_tipo_i(resultados)
     st.markdown("**Erro tipo I (efeito zero)**")
     st.table([
         {
@@ -329,6 +321,9 @@ def exibir_q3():
         "um erro tipo I acima de 5%, então parte das rejeições aconteceria mesmo sem efeito. Com "
         f"n = {n_pequeno}, o maior poder até +{efeito_maximo:.0f} p.p. é {_pct(poder_maximo)}, e nas rajadas "
         "o poder com efeitos pequenos fica inflado pelos falsos positivos."
+    )
+
+
 def exibir_q1():
     resultados = analisar_erro_tipo_i()
     z, binomial = resultados
@@ -381,6 +376,28 @@ def exibir_q1():
     )
 
 
+def exibir_g3(tipo_i):
+    st.subheader("G3 · Comparação das situações")
+    st.plotly_chart(construir_g3(tipo_i), width="stretch", key="g3_erro_tipo_i")
+
+    perto = int((tipo_i["classificacao"] == q3.PROXIMO).sum())
+    margem = _num(100 * q3.MARGEM_MONTE_CARLO)
+    resumo = (
+        f"{perto} de {len(tipo_i)} taxas ficaram perto de **{ALFA:.0%}**" if perto
+        else f"Nenhuma das taxas ficou perto de **{ALFA:.0%}**"
+    )
+    frases = [f"{resumo} pela margem de ±{margem} p.p. usada na Q3."]
+    dados = tipo_i.set_index(["situacao", "teste"])
+    for situacao in (q3.REFERENCIA, *q3.VIOLACOES):
+        z = dados.loc[(situacao, TESTE_Z)]
+        binomial = dados.loc[(situacao, TESTE_BINOMIAL)]
+        frases.append(
+            f"**{situacao}**: o Z ficou {z.classificacao} ({_pct(z.proporcao_rejeicao)}) "
+            f"e o binomial exato ficou {binomial.classificacao} ({_pct(binomial.proporcao_rejeicao)})."
+        )
+    st.markdown(" ".join(frases))
+
+
 def exibir_q2(simulacao):
     independente = simulacao.loc[simulacao["situacao"] == "Independente"]
     taxas = independente.pivot(index="efeito", columns="teste", values="proporcao_rejeicao")
@@ -430,6 +447,8 @@ def exibir_g4(simulacao):
     )
 
 
+simulacao = q3.carregar_resultados()
+tipo_i = q3.erro_tipo_i(simulacao)
 for titulo, issue in SECOES:
     st.header(titulo)
     if issue == "#264":
@@ -441,12 +460,10 @@ for titulo, issue in SECOES:
         exibir_g2(exemplo)
     elif issue == "#273":
         exibir_q1()
-        st.info("Gráfico G3 em construção (#273).")
+        exibir_g3(tipo_i)
     elif issue == "#274":
-        simulacao = pd.read_csv(ARQUIVO)
         exibir_q2(simulacao)
         exibir_g4(simulacao)
+        exibir_q3(simulacao, tipo_i)
     else:
         st.info(f"Conteúdo em construção ({issue}).")
-    if issue == "#274":
-        exibir_q3()
