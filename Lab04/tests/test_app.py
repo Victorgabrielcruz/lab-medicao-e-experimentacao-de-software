@@ -115,9 +115,14 @@ def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
     texto = "\n".join(elemento.value for elemento in app.markdown)
     for trecho in ("Amostra pequena afeta mais o Z", "Rajadas afetam os dois", "não é poder real", "±0,43 p.p."):
         assert trecho in texto
-    tipo_i = app.table[2].value
+    tabelas = [elemento.value for elemento in app.table]
+    tipo_i = next(tabela for tabela in tabelas if {"Situação", "Erro tipo I"} <= set(tabela.columns))
     assert list(tipo_i["Situação"]) == ["Independente"] * 2 + ["Rajadas"] * 2 + ["Amostra pequena"] * 2
-    assert len(app.table) == 5
+    poderes = [tabela for tabela in tabelas if "Z − binomial (p.p.)" in tabela.columns]
+    assert len(poderes) == 2
+    assert all(list(tabela["Efeito (p.p.)"]) == ["0", "2", "4", "6", "8", "10"] for tabela in poderes)
+
+
 def test_q1_exibe_taxas_da_situacao_independente_e_comparacao_com_a_margem():
     app = executar()
     tabela = app.table[2].value
@@ -132,7 +137,40 @@ def test_q1_exibe_taxas_da_situacao_independente_e_comparacao_com_a_margem():
         "6,55%", "3,96%", "liberal", "conservador", "6,39%", "3,73%",
     ):
         assert trecho in texto
-    assert any("Gráfico G3" in info.value for info in app.info)
+
+
+def test_g3_exibe_as_seis_taxas_sob_h0_e_a_referencia_de_5_por_cento():
+    app = executar()
+    graficos = [json.loads(elemento.proto.spec) for elemento in app.get("plotly_chart")]
+    g3 = next(figura for figura in graficos if figura["layout"]["title"]["text"].startswith("G3"))
+    situacoes = ["Independente", "Rajadas", "Amostra pequena"]
+    with ARQUIVO.open(encoding="utf-8", newline="") as arquivo:
+        taxas = {(linha["situacao"], linha["teste"]): 100 * float(linha["proporcao_rejeicao"])
+                 for linha in csv.DictReader(arquivo) if float(linha["efeito"]) == 0}
+    assert len(g3["data"]) == 2
+    assert {barra["name"] for barra in g3["data"]} == set(CORES_TESTES)
+    for barra in g3["data"]:
+        assert barra["x"] == situacoes
+        assert barra["y"] == [taxas[situacao, barra["name"]] for situacao in situacoes]
+        assert barra["marker"]["color"] == CORES_TESTES[barra["name"]]
+    layout = g3["layout"]
+    assert layout["barmode"] == "group"
+    assert "categoria" in layout["xaxis"]["title"]["text"]
+    assert "%" in layout["yaxis"]["title"]["text"]
+    referencia, = layout["shapes"]
+    assert referencia["y0"] == referencia["y1"] == 5
+    assert referencia["line"]["dash"] == "dash" and referencia["showlegend"]
+    assert referencia["name"] == "Referência: 5%"
+    assert all("#273" not in info.value for info in app.info)
+
+    texto = next(elemento.value for elemento in app.markdown if "Nenhuma das taxas ficou perto" in elemento.value)
+    assert "±0,43 p.p." in texto
+    for trecho in (
+        "Independente**: o Z ficou liberal (6,55%) e o binomial exato ficou conservador (3,96%)",
+        "Rajadas**: o Z ficou liberal (11,83%) e o binomial exato ficou liberal (8,60%)",
+        "Amostra pequena**: o Z ficou liberal (7,35%) e o binomial exato ficou conservador (1,49%)",
+    ):
+        assert trecho in texto
 
 
 def test_q1_interpreta_taxas_dentro_da_margem_sem_rotulos_fixos(monkeypatch):

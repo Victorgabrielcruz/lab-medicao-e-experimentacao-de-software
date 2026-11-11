@@ -8,6 +8,7 @@ from scipy.stats import binom, norm
 
 from hipotese.config import ALFA, ALTERNATIVA, CORES_TESTES, META_TAXA_FALHA, SEMENTE, TESTE_BINOMIAL, TESTE_Z
 from hipotese.exemplo import ExemploSimulado
+from hipotese.q3 import REFERENCIA, VIOLACOES
 
 CORES_DADOS = {"Real": "#64748b", "Simulado sob H₀": "#0f766e"}
 
@@ -89,6 +90,33 @@ def construir_g1(reais, simulados) -> go.Figure:
         title_text=eixo_y, range=[0, 110], tickvals=[0, 20, 40, 60, 80, 100],
         ticksuffix="%", showticklabels=True, fixedrange=True,
     )
+    return figura
+
+
+def construir_g3(tipo_i: DataFrame) -> go.Figure:
+    """Compara as taxas sob H₀ de Q1 e Q3 com o nível nominal (#273)."""
+    situacoes = [REFERENCIA, *VIOLACOES]
+    figura = go.Figure()
+    for teste in (TESTE_Z, TESTE_BINOMIAL):
+        dados = tipo_i.loc[tipo_i["teste"] == teste].set_index("situacao").loc[situacoes]
+        taxas = (100 * dados["proporcao_rejeicao"]).tolist()
+        figura.add_bar(
+            x=situacoes, y=taxas, name=teste, marker_color=CORES_TESTES[teste],
+            text=[f"{taxa:.2f}%".replace(".", ",") for taxa in taxas],
+            textposition="outside", cliponaxis=False,
+            customdata=list(zip(dados["n"], dados["classificacao"])),
+            hovertemplate=(
+                "%{x} · %{customdata[0]} builds por amostra<br>"
+                "Erro tipo I: %{text} (%{customdata[1]})<extra>%{fullData.name}</extra>"
+            ),
+        )
+    _layout(figura, "G3 · Erro tipo I por situação", "Situação simulada (categoria)", "Taxa de erro tipo I (%)")
+    figura.add_hline(
+        y=100 * ALFA, line_color="#8b8f97", line_dash="dash", line_width=2,
+        name=f"Referência: {ALFA:.0%}", showlegend=True,
+    )
+    figura.update_layout(barmode="group", margin={"t": 70, "b": 110})
+    figura.update_yaxes(range=[0, 1.18 * 100 * max(ALFA, tipo_i["proporcao_rejeicao"].max())], ticksuffix="%")
     return figura
 
 

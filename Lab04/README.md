@@ -336,6 +336,25 @@ Na linha de efeito zero, os **6,55%** do Z e os **3,96%** do binomial exato
 são taxas de erro tipo I. Essa diferença de calibração deve ser considerada
 ao comparar o poder sob o mesmo nível nominal de 5%.
 
+## Gráfico G3 — Erro tipo I por situação — S02-05 (#273)
+
+A seção **4. Erro tipo I** compara as seis taxas observadas com H₀ verdadeira
+(efeito zero), usando os resultados versionados de Q1 e Q3. O G3 usa barras
+agrupadas, eixo vertical em porcentagem, a paleta compartilhada dos testes e
+uma linha tracejada em **5%**. O dashboard lê `data/simulacao.csv` sem repetir
+as simulações e usa os mesmos dados na tabela da Q3.
+
+| Situação | Z para proporção | Binomial exato |
+|---|---:|---:|
+| Independente (Q1) | 6,55% — liberal | 3,96% — conservador |
+| Rajadas (Q3) | 11,83% — liberal | 8,60% — liberal |
+| Amostra pequena (Q3) | 7,35% — liberal | 1,49% — conservador |
+
+Nenhuma taxa ficou perto de 5% pela margem de Monte Carlo da Q3 (±0,43 p.p.).
+As mesmas classificações se mantêm com a tolerância de ±0,4 p.p. usada na Q1.
+Os testes do dashboard verificam as taxas do CSV, a linha nominal, as cores
+e a interpretação das três situações.
+
 ## Estrutura
 
 | Caminho | Conteúdo |
