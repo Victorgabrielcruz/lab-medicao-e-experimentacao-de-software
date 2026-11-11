@@ -291,6 +291,20 @@ da tabela e da interpretação. O gráfico G3 é tratado na tarefa #273.
 
 Referência: [massas e caudas da distribuição binomial no SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html).
 
+## Q2 — Poder dos testes na situação independente (#271)
+
+A seção **5. Poder** do dashboard lê o [CSV da simulação](data/simulacao.csv)
+e compara o Z para proporção com o binomial exato nos seis efeitos de 0 a 10
+pontos percentuais. A simulação usa 10.000 repetições de 243 builds
+independentes por efeito, com rejeição quando `p < 0,05`.
+
+Em **+4 p.p.** (taxa verdadeira de falhas de 9%), o Z detectou o aumento em
+**83,40%** das amostras e o binomial exato em **76,73%**. As proporções sobem
+com o efeito e chegam a **99,98%** e **99,97%**, respectivamente, em +10 p.p.
+Na linha de efeito zero, os **6,55%** do Z e os **3,96%** do binomial exato
+são taxas de erro tipo I. Essa diferença de calibração deve ser considerada
+ao comparar o poder sob o mesmo nível nominal de 5%.
+
 ## Estrutura
 
 | Caminho | Conteúdo |

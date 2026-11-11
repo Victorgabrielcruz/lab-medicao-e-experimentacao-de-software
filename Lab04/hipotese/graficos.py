@@ -1,8 +1,9 @@
-"""G1: dados reais × simulados; G2: referência, rejeição e p-valor (#267, #268)."""
+"""Gráficos do dashboard de testes de hipótese."""
 
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from pandas import DataFrame
 from scipy.stats import binom, norm
 
 from hipotese.config import ALFA, ALTERNATIVA, CORES_TESTES, META_TAXA_FALHA, SEMENTE, TESTE_BINOMIAL, TESTE_Z
@@ -88,6 +89,30 @@ def construir_g1(reais, simulados) -> go.Figure:
         title_text=eixo_y, range=[0, 110], tickvals=[0, 20, 40, 60, 80, 100],
         ticksuffix="%", showticklabels=True, fixedrange=True,
     )
+    return figura
+
+
+def construir_g4(simulacao: DataFrame) -> go.Figure:
+    """Compara os dois testes em cada situação, na mesma escala (#274)."""
+    paineis = list(simulacao.groupby(["situacao", "n"], sort=False))
+    figura = make_subplots(
+        rows=1, cols=len(paineis), shared_yaxes=True, horizontal_spacing=0.07,
+        subplot_titles=[f"{situacao} · n = {n}" for (situacao, n), _ in paineis],
+    )
+    for coluna, (_, painel) in enumerate(paineis, 1):
+        for teste, simbolo in ((TESTE_Z, "circle"), (TESTE_BINOMIAL, "diamond")):
+            curva = painel.loc[painel["teste"] == teste].sort_values("efeito")
+            figura.add_trace(go.Scatter(
+                x=(100 * curva["efeito"]).tolist(),
+                y=(100 * curva["proporcao_rejeicao"]).tolist(),
+                mode="lines+markers", name=teste, legendgroup=teste, showlegend=coluna == 1,
+                line={"color": CORES_TESTES[teste]}, marker={"symbol": simbolo},
+                hovertemplate="Efeito: %{x:g} p.p.<br>Rejeições: %{y:.2f}%<extra>%{fullData.name}</extra>",
+            ), row=1, col=coluna)
+    _layout(figura, "G4 · Curvas de poder por situação", "Efeito (p.p.)", "Proporção de rejeições (%)")
+    figura.update_annotations(font_size=14)
+    figura.update_xaxes(title_text="Efeito (p.p.)", tickvals=sorted(set(100 * simulacao["efeito"])))
+    figura.update_yaxes(range=[0, 104], tickvals=[0, 20, 40, 60, 80, 100], ticksuffix="%")
     return figura
 
 
