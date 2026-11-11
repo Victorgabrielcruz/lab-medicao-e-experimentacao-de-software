@@ -1,7 +1,7 @@
 """Parâmetros compartilhados por simulação, testes e dashboard.
 
-Toda geração de números aleatórios deve partir de ``gerador()`` para que os
-resultados sejam reproduzíveis com um único comando.
+Os geradores usam ``SEMENTE`` ou sequências derivadas dela para reproduzir
+os resultados com o mesmo protocolo.
 """
 
 import numpy as np
@@ -35,8 +35,6 @@ CORES_TESTES = {
 
 URL_REPOSITORIO = "https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software/tree/main/Lab04"
 URL_PROJECT = "https://github.com/users/Victorgabrielcruz/projects/7"
-# Preenchido quando o dashboard for publicado (#277).
-URL_DASHBOARD = None
 
 
 def gerador(semente: int = SEMENTE) -> np.random.Generator:

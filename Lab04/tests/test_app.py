@@ -32,8 +32,13 @@ def test_secoes_na_ordem_do_roteiro():
     assert [h.value for h in executar().header] == SECOES_ESPERADAS
 
 
-def test_links_no_topo():
+@pytest.mark.parametrize("url", ["http://127.0.0.1:8502/", "https://lab04.example.org/"])
+def test_links_no_topo(monkeypatch, url):
+    import streamlit as st
+
+    monkeypatch.setattr(type(st.context), "url", property(lambda _: url))
     topo = executar().markdown[0].value
+    assert f"[Dashboard]({url})" in topo
     assert URL_REPOSITORIO in topo
     assert URL_PROJECT in topo
 
@@ -45,7 +50,7 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
         "pytest-dev/pytest", "H₀: p = 0,05", "H₁: p > 0,05",
         "unicaudal à direita", "243 observações", "10 falhas",
         "0,05 + efeito", "pontos percentuais", "Expectativa registrada antes",
-        "ambos", "não resultados",
+        "ambos", "compara essas expectativas com os resultados",
     ):
         assert trecho in texto
     assert all("#264" not in info.value for info in app.info)
@@ -114,7 +119,10 @@ def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
     subtitulos = [s.value for s in app.subheader]
     assert "Q3 · Quando os dados não se comportam bem (#272)" in subtitulos
     texto = "\n".join(elemento.value for elemento in app.markdown)
-    for trecho in ("Amostra pequena afeta mais o Z", "Rajadas afetam os dois", "não é poder real", "±0,43 p.p."):
+    for trecho in (
+        "Amostra pequena prejudica a aproximação do Z", "Rajadas afetam os dois",
+        "níveis efetivos de erro tipo I diferentes", "±0,43 p.p.",
+    ):
         assert trecho in texto
     tabelas = [elemento.value for elemento in app.table]
     tipo_i = next(tabela for tabela in tabelas if {"Situação", "Erro tipo I"} <= set(tabela.columns))
@@ -245,3 +253,13 @@ def test_secao_6_apresenta_conclusoes_distintas_quando_so_o_z_rejeita(monkeypatc
     texto = "\n".join(elemento.value for elemento in app.markdown)
     assert "Apenas o teste Z para proporção encontrou evidência" in texto
     assert "2,41 falhas a mais por 100 builds" in texto
+
+
+def test_dashboard_final_apresenta_recomendacao_e_limitacao_sem_placeholders():
+    app = executar()
+    assert not app.info
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    assert "**Expectativa e resultado.**" in texto
+    assert "prefira o **binomial exato**" in texto
+    assert "leve em conta a dependência" in texto
+    assert "A coleta cobre um único workflow" in texto

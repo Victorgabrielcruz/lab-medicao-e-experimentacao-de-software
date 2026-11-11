@@ -1,390 +1,149 @@
 # Lab04 — Testes de hipótese por dentro
 
-Comparação entre o **teste Z para proporção** e o **teste binomial exato** (par P4)
-por simulação. Cenário: a taxa de builds com falha de um projeto open-source
-frente a uma meta de 5%. Uma amostra pequena de execuções reais de CI calibra
-a simulação e serve para aplicar os dois testes no fim.
+Comparamos o **teste Z para proporção** e o **teste binomial exato** (par P4)
+para investigar se a taxa de falha do CI do pytest ultrapassa 5%. O dashboard
+reúne o cenário, a coleta, as simulações, os quatro gráficos e a recomendação
+em sete seções.
 
-O resultado é um dashboard em Streamlit, com sete seções na ordem do enunciado:
-Cenário, Os dados, Como os testes funcionam, Erro tipo I, Poder, Dados reais e
-Conclusão.
+[Dashboard local](http://127.0.0.1:8501/) ·
+[Repositório](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software) ·
+[GitHub Projects](https://github.com/users/Victorgabrielcruz/projects/7) ·
+[Roteiro da apresentação](APRESENTACAO.md)
 
-- Board: [GitHub Projects](https://github.com/users/Victorgabrielcruz/projects/7)
-- Dashboard publicado: em breve (#277)
-- [Roteiro da apresentação oral](APRESENTACAO.md) (#279)
+## Executar em um comando
 
-## Como executar
-
-Requer Python 3.11 ou superior. Na pasta `Lab04`, prepare o ambiente uma vez.
-
-No Windows (PowerShell):
-
-```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
-```
-
-No Linux/macOS:
-
-```bash
-python -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-```
-
-Depois, abra o dashboard com um único comando:
+Use Python 3.12 ou superior (validado com Python 3.14). Na raiz do repositório:
 
 ```text
-.venv/Scripts/python -m streamlit run app.py
+python Lab04/executar.py
 ```
 
-No Linux/macOS, use `.venv/bin/python` no lugar de `.venv/Scripts/python`.
-O dashboard abre em `http://localhost:8501`.
+Use `python3` no macOS/Linux se o executável se chamar assim, ou
+`py -3.14` no Windows se usar o Python Launcher. O comando cria o ambiente
+isolado em `Lab04/.venv`, instala as versões fixadas em `requirements.txt`
+e inicia o [dashboard local](http://127.0.0.1:8501/). A primeira instalação
+precisa de acesso à internet para baixar as dependências. Se a porta 8501
+estiver ocupada, acrescente `--porta 8502`.
 
-## Amostra de dados reais — S01-02 (#263)
+## Reproduzir a análise
 
-O arquivo [`data/ci_pytest.csv`](data/ci_pytest.csv) contém **243 execuções**
-do workflow `test` do repositório público `pytest-dev/pytest`, na branch `main`,
-disparadas por `push`. Foram inspecionadas 300 execuções consecutivas, de
-20/04/2026 a 30/10/2026 (UTC), e descartadas 57 com conclusão `cancelled`.
-Há **10 falhas (4,12%)**, com **IC nominal de 95% de Wilson: 2,25% a 7,41%**.
-A maior sequência na amostra válida é de **3 falhas** e a autocorrelação
-amostral de lag 1 é **0,2741**. Ao exigir que não haja cancelamentos entre
-as falhas, a maior sequência é 2.
-
-A [documentação da coleta](data/README.md) registra origem, corte temporal,
-paginação, descartes, tratamento das tentativas e as limitações do IC e das
-sequências para calibrar a situação `rajadas` da #265. O
-[`resumo JSON`](data/ci_pytest_resumo.json) mantém as estatísticas sem
-arredondamento. Para regenerar CSV e resumo **sem rede**, a partir de `Lab04`:
+O dashboard usa o snapshot da coleta e os resultados de simulação versionados.
+Para regenerar os dados tratados e a simulação a partir do snapshot e abrir
+o dashboard no mesmo comando, execute:
 
 ```text
-.venv/Scripts/python -m hipotese.dados_reais
+python Lab04/executar.py --reproduzir
 ```
 
-No Linux/macOS, use `.venv/bin/python` no lugar de `.venv/Scripts/python`.
+A regeneração da análise não consulta a API do GitHub. A semente **42**,
+a referência de **5%**, o nível de significância **α = 0,05** e a paleta
+dos testes são definidos em `hipotese/config.py`. A simulação deriva cada
+gerador de `SeedSequence(SEMENTE, spawn_key=(situação, efeito))`, de modo que
+a ordem de execução das configurações não altera seus resultados.
 
-## Reprodutibilidade
+## Publicação no Streamlit Community Cloud
 
-### Cenário e hipóteses — S01-03 (#264)
+Após incorporar a entrega à `main`, uma conta com acesso administrativo
+ao repositório pode criar o app no [Streamlit Community Cloud](https://share.streamlit.io/):
 
-Protocolo registrado em 04/11/2026, antes da execução das simulações da S02.
-A seção **1. Cenário** do dashboard apresenta a pergunta, as hipóteses,
-a origem dos dados, os parâmetros e as expectativas anteriores à simulação.
+| Campo | Valor |
+|---|---|
+| Repositório | `Victorgabrielcruz/lab-medicao-e-experimentacao-de-software` |
+| Branch | `main` |
+| Arquivo de entrada | `Lab04/app.py` |
+| Versão do Python | `3.14` |
 
-- Pergunta: a taxa de falha do workflow `test` de `pytest-dev/pytest` está acima de 5%?
-- H₀: `p = 0,05`; H₁: `p > 0,05`. A alternativa é unicaudal à direita
-  (`ALTERNATIVA = "greater"`), pois a meta é tratada como teto didático.
-- Cada execução válida é Bernoulli, com taxa marginal `0,05 + efeito`.
-  `EFEITOS = (0; 0,02; 0,04; 0,06; 0,08; 0,10)` são diferenças absolutas
-  de proporção: 0 a 10 pontos percentuais acima da meta, não aumentos relativos.
-- Situações: independente com `n` igual ao tamanho da amostra real; rajadas
-  com o mesmo `n` e correlação de lag 1 estimada na coleta; independente
-  com `N_AMOSTRA_PEQUENA = 20` para desafiar a aproximação normal.
-- `hipotese.cenario.carregar_resumo()` lê os dados versionados offline;
-  `configuracoes_simulacao(resumo)` fornece `n`, `situacao` e `correlacao`
-  para passar explicitamente a `gerar_builds` ou `gerar_lote`. Assim, rajadas
-  usa a estimativa real (aproximadamente 0,2741), não o padrão 0,5 do gerador.
-- A grade será executada com 10.000 repetições por situação e efeito,
-  α = 0,05 e semente 42. Sob H₀, a taxa é 5%, não os 4,12% observados.
+As dependências ficam ao lado do arquivo de entrada e o app usa apenas
+dados versionados. O link **Dashboard** no topo aponta para a URL pela qual
+o app foi aberto, local ou hospedada. Depois da publicação, confirme que a
+URL pública abre as sete seções e registre-a no README.
+[Documentação de publicação](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy).
 
-**Expectativa anterior à S02:** para dados independentes com `n = 243`,
-esperamos aproximação razoável entre Z e binomial exato: sob H₀,
-`n·p₀ = 12,15` e `n·(1−p₀) = 230,85`. O exato pode ser conservador pela
-discretização; eventual vantagem de poder do Z deve ser avaliada junto do
-seu erro tipo I. Com `n = 20`, esperamos pior aproximação normal e preferimos
-o exato para controlar o erro tipo I, sem garantir maior poder. Sob rajadas,
-ambos perdem a garantia de calibração baseada em independência e podem
-apresentar mais falsos positivos. A comparação de Q1–Q3 deverá confirmar
-ou contrariar essas expectativas antes da recomendação final.
+## Cenário e coleta
 
-A ACF real é uma referência de calibração com incerteza, não prova de
-dependência: há poucas transições iniciadas por falha e a filtragem remove
-cancelamentos entre observações. O teste exato também pressupõe independência.
+- **Hipóteses:** H₀: p = 5%; H₁: p > 5%. A alternativa é à direita e rejeitamos
+  H₀ quando `p-valor < α`. Os 5% são uma referência do laboratório.
+- **Dados:** workflow `test` de `pytest-dev/pytest`, na `main`, por push,
+  de 20/04/2026 a 30/10/2026 (UTC). Das 300 execuções consecutivas, 57 foram
+  descartadas por cancelamento; sobraram 243, com 10 falhas (4,12%).
+- **Modelo:** resultado binário, com taxa marginal de 5% mais o efeito.
+  Foram 10.000 repetições por combinação de situação e efeito, de 0 a 10
+  pontos percentuais. Comparamos builds independentes (n = 243), rajadas
+  (n = 243, autocorrelação de lag 1 de aproximadamente 0,27) e amostra
+  independente pequena (n = 20).
+- **Testes:** o Z usa a variância sob H₀ e a aproximação normal sem correção
+  de continuidade. O binomial exato usa a probabilidade de observar pelo
+  menos o número de falhas da amostra. Ambos pressupõem independência.
 
-### Parâmetros compartilhados
+A [documentação da coleta](data/README.md) detalha os critérios de seleção,
+a cronologia e o tratamento de reexecuções. Os dados tratados estão em
+[`data/ci_pytest.csv`](data/ci_pytest.csv), e as 36 linhas de resultados em
+[`data/simulacao.csv`](data/simulacao.csv).
 
-Toda geração aleatória parte de `hipotese.config.gerador()`, que usa a semente
-fixa `SEMENTE = 42`. O nível de significância (`ALFA = 0,05`), o número de
-repetições (`N_REPETICOES = 10.000`) e a meta de 5% também ficam nesse módulo.
-O mesmo vale para a cor de cada teste, que é igual em todos os gráficos.
+## Como ler os resultados
 
-## Aplicação a um conjunto simulado — S01-05 (#266)
-
-A seção **3. Como os testes funcionam** apresenta os dois testes aplicados
-à mesma amostra independente. O protocolo do exemplo foi escolhido antes
-de consultar seu resultado: `n` igual ao tamanho da amostra real (243),
-`EFEITO_EXEMPLO = 0,04` (taxa verdadeira de 9%) e semente 42. A amostra não
-é sorteada novamente até obter significância. O gráfico G2 (#268)
-reutiliza `hipotese.exemplo.gerar_exemplo()`.
-
-- Z para proporção: `Z = (p_hat - p0) / sqrt(p0 * (1-p0) / n)`, com
-  variância sob H₀ e **sem correção de continuidade**. Para a alternativa
-  `greater`, o p-valor é a cauda superior da normal padrão, calculada por
-  `scipy.stats.norm.sf(Z)`.
-- Binomial exato: `scipy.stats.binomtest(falhas, n, p=0.05, alternative="greater")`.
-  O p-valor é `P(X >= falhas)` para `X ~ Binomial(n, 0.05)`; a estatística
-  retornada pelo SciPy é `p_hat = falhas/n`, identificada como tal no dashboard.
-- O efeito observado, comum aos dois testes, é `100 * (p_hat - p0)` em
-  **pontos percentuais**, com sinal. Ele não é o efeito verdadeiro usado na
-  geração. A regra de decisão é estritamente `pvalor < ALFA`.
-
-`hipotese.testes.teste_z(falhas, n)` e `teste_binomial(falhas, n)` retornam
-`ResultadoTeste`, com estatística identificada, p-valor, contagens, proporção,
-efeito em p.p. e decisão. Aceitam `meta`, `alternativa` e `alfa` opcionais;
-os padrões vêm do protocolo compartilhado. `aplicar_testes(builds)` valida
-uma amostra binária e aplica ambos. As funções não acessam o dashboard nem
-consomem aleatoriedade: a S02 pode chamar as mesmas funções com as contagens
-de `gerar_lote`, e a seção 6 (#275) as reutiliza na amostra real.
-
-Neste exemplo, a semente 42 produz **17 falhas em 243 builds (7,00%)**:
-o efeito observado é **+2,00 p.p.**, Z ≈ 1,4276, p-valor Z ≈ 0,07671 e
-p-valor binomial ≈ 0,10400. Ambos não rejeitam H₀ a 5%. Como a taxa verdadeira
-simulada é 9%, trata-se de uma ocorrência de erro tipo II para ambos, não
-de evidência de ausência de efeito. Estimar a frequência desse erro e o
-poder exige as repetições da S02. Nenhuma conclusão sobre o workflow real
-é obtida a partir deste exemplo.
-
-Referências das APIs: [normal padrão do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html)
-e [teste binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
-
-## Gráfico G1 — S01-06 (#267)
-
-A seção **2. Os dados** apresenta os histogramas das observações reais e
-simuladas lado a lado, com título, legenda, contagens no hover e percentuais
-nas barras. Como o par P4 compara uma proporção à meta, há um grupo real
-de execuções de CI; os dois testes são aplicados a esse mesmo tipo de dado.
-
-- `hipotese.cenario.carregar_amostras_g1()` lê a coluna `falhou` do CSV
-  congelado e usa `gerar_builds` com um gerador próprio de semente 42,
-  `n` igual ao tamanho efetivo da coleta e taxa de falha igual à meta de 5%.
-  A amostra independente sob H₀ tem **12 falhas em 243 builds (4,94%)**;
-  a real tem **10 em 243 (4,12%)**. Não há seleção por proximidade entre
-  as taxas nem alteração do exemplo com taxa de 9% usado na seção 3.
-- `hipotese.graficos.construir_g1(reais, simulados)` usa dois bins fixos,
-  `[-0,5; 0,5)` e `[0,5; 1,5]`, centrados em 0 (passou) e 1 (falhou).
-  As contagens são calculadas com `numpy.histogram` e desenhadas em barras
-  Plotly; categorias vazias permanecem visíveis com frequência zero.
-  Os eixos mostram o resultado binário adimensional e a frequência relativa
-  em porcentagem, com as mesmas escalas nos dois painéis. Cinza identifica
-  os dados reais e verde os simulados; as cores dos testes permanecem no G2.
-- O texto de quatro frases explica a concentração em zero, a assimetria
-  à direita e que falhas são uma categoria válida, não outliers. Justifica
-  a Bernoulli pelo suporte binário, `n = 243` pela coleta e `p = 5%` por H₀:
-  a taxa empírica não substitui a referência do protocolo. Também explicita
-  que histogramas não exibem a ordem temporal nem a dependência das rajadas.
-
-O G1 é regenerado ao abrir o dashboard, sem rede, com a mesma amostra a
-cada execução. As contagens, a normalização, a reprodução e a integração
-na seção 2 são verificadas pela suíte do Lab04.
-
-Referências: [histogramas com contagens calculadas em Python](https://plotly.com/python/histograms/#accessing-the-counts-y-axis-values)
-e [painéis lado a lado no Plotly](https://plotly.com/python/subplots/).
-
-## Gráfico G2 — S01-07 (#268)
-
-A seção 3 apresenta dois painéis Plotly produzidos por
-`hipotese.graficos.construir_g2(exemplo)`, com o mesmo objeto de exemplo
-usado na tabela da #266. Não há novo sorteio nem Monte Carlo para calcular
-as áreas. O azul do Z e o laranja do binomial vêm de `CORES_TESTES`.
-
-- **Z:** curva da normal padrão, referência aproximada usada pelo teste sob
-  H₀. A sombra clara parte do Z observado (1,4276) e representa o p-valor
-  (0,07671); a escura parte de `norm.isf(0.05)` (1,6449), com área 5%.
-  A normal não é apresentada como distribuição exata do Z para n finito.
-- **Binomial exato:** barras das massas de `p_hat = X/n`, em porcentagem
-  no eixo x, com `X ~ Binomial(243, 0.05)`. O eixo y mostra a probabilidade
-  de cada valor em porcentagem. O p-valor é a **soma das massas a partir de
-  17 falhas, incluindo 17**, e não a integral de uma densidade contínua.
-  A rejeição começa em 19 falhas (7,82%), com probabilidade sob H₀ de
-  0,03735. É menor que 5% por discretização, mantendo a regra estrita `p < α`.
-- As regiões de p-valor e rejeição são sobrepostas, em tons da cor do teste;
-  as linhas pontilhada e tracejada identificam observado e limite crítico.
-  Títulos, legendas, nomes dos eixos e unidades ficam nos próprios gráficos.
-  O binomial abre com zoom na região relevante, mas os dados contêm todos
-  os `n+1` valores e as somas usam todo o suporte.
-
-Os gráficos e o texto explicam que ambos comparam a taxa de falha à meta
-e que o p-valor representa extremidade sob H₀ e seus pressupostos, não a
-probabilidade de H₀ ser verdadeira. As decisões permanecem consistentes
-com a tabela da #266.
-
-Validação da #268: **83 testes passaram** no ambiente isolado `Lab04/.venv`,
-com as versões exatas do `requirements.txt`, incluindo as áreas desenhadas,
-as massas binomiais e a fronteira de rejeição para cada contagem. O dashboard
-foi conferido no navegador com os dois gráficos, legendas e textos renderizados.
-
-Referências: [distribuição binomial do SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html)
-e [áreas preenchidas no Plotly](https://plotly.com/python/filled-area-plots/).
-
-## Motor de simulação Monte Carlo — S02-01 (#269)
-
-`hipotese/simulacao.py` gera **10.000 conjuntos** por configuração. São 3
-situações (Independente com n = 243, Rajadas com n = 243 e ACF da amostra real,
-Amostra pequena com n = 20) e os 6 efeitos de `EFEITOS`, de 0 a 10 p.p. Os dois
-testes são aplicados ao **mesmo** conjunto, e a saída é a proporção de
-p-valores abaixo de α = 0,05: com efeito zero é o erro tipo I, e com efeito
-positivo é o poder.
-
-- Os p-valores vêm das mesmas funções `teste_z` e `teste_binomial` da S01. Como
-  a contagem de falhas é um inteiro de 0 a n, cada contagem distinta é testada
-  uma única vez e o p-valor é reaproveitado.
-- Cada configuração tem um gerador próprio, derivado de `SEMENTE` por
-  `SeedSequence(SEMENTE, spawn_key=(situação, efeito))`. O resultado de uma
-  configuração não depende da ordem das demais.
-- A saída [`data/simulacao.csv`](data/simulacao.csv) tem uma linha por
-  situação × efeito × teste (36 linhas), com rejeições, proporção e erro-padrão
-  de Monte Carlo `sqrt(p(1−p)/10.000)`. O dashboard lê esse arquivo sem
-  recalcular.
-
-Para regenerar, a partir de `Lab04` (cerca de 7 segundos):
-
-```text
-.venv/Scripts/python -m hipotese.simulacao
-```
-
-Os testes conferem a igualdade dos p-valores com os da S01, a
-reprodutibilidade, a independência entre configurações e o erro tipo I
-simulado contra o valor exato, que é a soma das massas binomiais das contagens
-rejeitadas: 6,39% para o Z e 3,73% para o binomial com n = 243. Também
-conferem que o CSV versionado é o que a semente fixa gera.
-
-## Q3: violação de pressupostos — S02-04 (#272)
-
-`hipotese/q3.py` lê `data/simulacao.csv`, sem simular de novo, e compara o erro
-tipo I e o poder nas duas situações de violação com a situação independente.
-O resultado aparece no dashboard, na seção 5, como a subseção
-"Q3 · Quando os dados não se comportam bem". Um erro tipo I é liberal ou
-conservador quando se afasta de 5% mais que a margem de Monte Carlo,
-`1,96·sqrt(0,05·0,95/10.000)` ≈ ±0,43 p.p.
-
-| Situação | Erro tipo I do Z | Erro tipo I do binomial |
-|---|---|---|
-| Independente (n = 243) | 6,55% (liberal) | 3,96% (conservador) |
-| Rajadas (n = 243, ρ = 0,27) | 11,83% (liberal) | 8,60% (liberal) |
-| Amostra pequena (n = 20) | 7,35% (liberal) | 1,49% (conservador) |
-
-- **Amostra pequena afeta mais o Z.** Com n = 20, a meta implica só 1 falha
-  esperada, e a aproximação normal do Z deixa de valer. O Z rejeita a partir
-  de 3 falhas, com erro tipo I exato de 7,55%. O binomial calcula a cauda
-  exata, rejeita a partir de 4 falhas (1,59%) e fica conservador pela
-  discretização.
-- **Rajadas afetam os dois.** A independência é pressuposto de ambos, e a
-  correlação de lag 1 de 0,27 multiplica a variância do número de falhas por
-  cerca de (1+ρ)/(1−ρ) ≈ 1,76. Os dois ficam liberais; ser exato não protege
-  o binomial.
-- **Poder:** o Z rejeita mais nas duas situações, com até 24 p.p. a mais na
-  amostra pequena. Isso vem junto de erro tipo I acima de 5%, então não é poder
-  real.
-
-Os testes conferem a classificação, os limiares de rejeição e os erros exatos
-com n = 20, e que os fatos usados no texto do dashboard valem nos resultados
-simulados.
-## Q1 — Erro tipo I na situação bem-comportada — S02-02 (#270)
-
-A seção **4. Erro tipo I** responde à Q1 com as duas linhas de
-[`data/simulacao.csv`](data/simulacao.csv) em que a situação é `Independente`
-e o efeito é zero. São **10.000 amostras de 243 builds**, Bernoulli i.i.d.
-com `p = 0,05`, semente 42, alternativa à direita e rejeição quando
-`p-valor < ALFA = 0,05`. Como H₀ é verdadeira, cada rejeição é um falso
-positivo, e sua frequência estima o erro tipo I do teste.
-
-| Teste | Falsos positivos / 10.000 | Erro tipo I | Desvio de 5% | Comparação |
-|---|---:|---:|---:|---|
-| Z para proporção | 655 | 6,55% | +1,55 p.p. | Acima da faixa: liberal |
-| Binomial exato | 396 | 3,96% | −1,04 p.p. | Abaixo da faixa: conservador |
-
-A margem exigida de **±0,4 ponto percentual** ao redor de 5% define a faixa
-**[4,6%; 5,4%]**, incluindo os dois limites. É uma diferença absoluta de
-proporção de 0,004, e não 0,4% relativo. Nenhum dos testes fica dentro dessa
-faixa nesta simulação; o Z encontra efeitos inexistentes com maior frequência
-que o nível nominal, enquanto o exato é mais conservador.
-
-Para verificar a explicação, o módulo soma as massas de `Binomial(243, 0.05)`
-nas contagens rejeitadas pelas mesmas funções dos testes. O Z rejeita a partir
-de **18 falhas**, com probabilidade teórica de erro tipo I **6,3870%**;
-o binomial exato rejeita a partir de **19**, com probabilidade **3,7349%**.
-Assim, os desvios de 5% também aparecem nas probabilidades teóricas: a
-aproximação normal do Z e a discretização dos limiares ajudam a explicar
-o resultado, além da variação de Monte Carlo. A margem de comparação não
-é um intervalo de confiança para a taxa real de falhas do projeto.
-
-`hipotese.erro_tipo_i.analisar_erro_tipo_i()` lê e valida o CSV, calcula
-as taxas por `rejeicoes / repeticoes`, o desvio em p.p. e a classificação.
-Confere o tamanho da amostra, a independência, a taxa sob H₀, o número de
-repetições e a semente; exige exatamente uma linha por teste.
-`classificar_erro_tipo_i()` usa frações para preservar as fronteiras de
-4,6% e 5,4% sem classificar com taxas arredondadas.
-
-O dashboard não executa novos sorteios. Para reproduzir a origem dos
-resultados, execute `python -m hipotese.simulacao` no ambiente do Lab04;
-para conferir a análise, execute `python -m pytest`. Os testes verificam as
-fronteiras da margem, os resultados, a seleção de H₀ independente e a exibição
-da tabela e da interpretação. O gráfico G3 é tratado na tarefa #273.
-
-Referência: [massas e caudas da distribuição binomial no SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html).
-
-## Q2 — Poder dos testes na situação independente (#271)
-
-A seção **5. Poder** do dashboard lê o [CSV da simulação](data/simulacao.csv)
-e compara o Z para proporção com o binomial exato nos seis efeitos de 0 a 10
-pontos percentuais. A simulação usa 10.000 repetições de 243 builds
-independentes por efeito, com rejeição quando `p < 0,05`.
-
-Em **+4 p.p.** (taxa verdadeira de falhas de 9%), o Z detectou o aumento em
-**83,40%** das amostras e o binomial exato em **76,73%**. As proporções sobem
-com o efeito e chegam a **99,98%** e **99,97%**, respectivamente, em +10 p.p.
-Na linha de efeito zero, os **6,55%** do Z e os **3,96%** do binomial exato
-são taxas de erro tipo I. Essa diferença de calibração deve ser considerada
-ao comparar o poder sob o mesmo nível nominal de 5%.
-
-## Gráfico G3 — Erro tipo I por situação — S02-05 (#273)
-
-A seção **4. Erro tipo I** compara as seis taxas observadas com H₀ verdadeira
-(efeito zero), usando os resultados versionados de Q1 e Q3. O G3 usa barras
-agrupadas, eixo vertical em porcentagem, a paleta compartilhada dos testes e
-uma linha tracejada em **5%**. O dashboard lê `data/simulacao.csv` sem repetir
-as simulações e usa os mesmos dados na tabela da Q3.
+- **G1 — Dados reais e simulados:** a distribuição binária se concentra nos
+  sucessos. Com 243 builds e semente 42, a amostra independente sob H₀ tem
+  12 falhas (4,94%), contra 10 (4,12%) na coleta.
+- **G2 — Distribuições sob H₀:** o exemplo independente com taxa verdadeira
+  de 9% teve 17 falhas. As caudas destacadas dão p-valores de 7,67% para o Z
+  e 10,40% para o binomial; nenhum rejeita H₀. Como nesse exemplo havia um
+  aumento real na simulação, os dois cometeram erro tipo II.
+- **G3 — Erro tipo I:** o Z foi liberal nas três situações. O binomial foi
+  conservador sob independência e liberal nas rajadas.
 
 | Situação | Z para proporção | Binomial exato |
 |---|---:|---:|
-| Independente (Q1) | 6,55% — liberal | 3,96% — conservador |
-| Rajadas (Q3) | 11,83% — liberal | 8,60% — liberal |
-| Amostra pequena (Q3) | 7,35% — liberal | 1,49% — conservador |
+| Independente | 6,55% | 3,96% |
+| Rajadas | 11,83% | 8,60% |
+| Amostra pequena | 7,35% | 1,49% |
 
-Nenhuma taxa ficou perto de 5% pela margem de Monte Carlo da Q3 (±0,43 p.p.).
-As mesmas classificações se mantêm com a tolerância de ±0,4 p.p. usada na Q1.
-Os testes do dashboard verificam as taxas do CSV, a linha nominal, as cores
-e a interpretação das três situações.
+Na Q1, a margem de ±0,4 ponto percentual define a faixa de 4,6% a 5,4%.
+Na Q3, a margem de Monte Carlo é de aproximadamente ±0,43 ponto percentual.
+Nenhuma das seis taxas fica perto de 5% por esses critérios.
 
-## Testes nos dados reais — S02-07 (#275)
+- **G4 — Poder:** com efeito de +4 pontos percentuais e 243 builds
+  independentes, o Z detectou o aumento em 83,40% das amostras e o binomial
+  em 76,73%. O Z teve maior poder nos efeitos simulados e também mais
+  falsos positivos; os testes têm níveis efetivos de erro tipo I diferentes.
 
-A seção **6. Dados reais** aplica os dois testes à mesma coluna `falhou` de
-[`data/ci_pytest.csv`](data/ci_pytest.csv): 10 falhas em 243 builds (4,12%).
-O protocolo é o mesmo do cenário: H₀: p = 0,05, H₁: p > 0,05 e α = 0,05.
+### Aplicação aos dados reais
 
-| Teste | Estatística | p-valor | Efeito (p.p.) | Conclusão |
+| Teste | Estatística | p-valor | Efeito em relação à meta | Conclusão |
 |---|---:|---:|---:|---|
-| Z para proporção | Z = −0,6328 | 0,7366 | −0,88 | Não rejeitar H₀ |
-| Binomial exato | p̂ = 0,0412 | 0,7773 | −0,88 | Não rejeitar H₀ |
+| Z para proporção | Z = −0,6328 | 0,7366 | −0,88 p.p. | Não rejeitar H₀ |
+| Binomial exato | p̂ = 0,0412 | 0,7773 | −0,88 p.p. | Não rejeitar H₀ |
 
-Não há evidência de que a taxa supere 5%. O efeito estimado é a diferença
-assinada para a meta (`100 × (p̂ − 0,05)`): cerca de 0,88 falha a menos por
-100 builds. A relevância prática depende do volume de builds e do custo das
-falhas. A diferença observada não comprova que a meta seja cumprida, e o
-agrupamento de falhas na coleta pode limitar a interpretação dos p-valores
-sob independência.
+Nenhum teste encontrou evidência de taxa superior a 5%. A diferença
+observada equivale a cerca de 0,88 falha a menos por 100 builds em relação
+à meta, com importância prática ligada ao volume e ao custo das falhas.
+Não rejeitar H₀ não demonstra que a meta seja cumprida.
 
-## Estrutura
+### Recomendação e limitação
+
+O binomial exato controlou falsos positivos sob independência, como
+esperado; o Z ficou acima de 5% mesmo com 243 builds. Prefira o binomial
+quando controlar falsos alertas for a prioridade. Considere o Z para
+amostras maiores se a aproximação estiver bem calibrada; nas rajadas,
+considere um método que leve em conta a dependência.
+
+A coleta de um único workflow, com poucas falhas, limita a estimativa
+de dependência e a generalização para outros projetos ou períodos.
+
+## Arquivos e testes
 
 | Caminho | Conteúdo |
 |---|---|
-| `app.py` | Dashboard em Streamlit |
-| `hipotese/` | Código de simulação, testes e parâmetros compartilhados |
-| `data/` | Amostra de dados reais (CSV), sua origem e os resultados da simulação |
-| `tests/` | Testes automatizados |
+| [`app.py`](app.py) | Dashboard em Streamlit |
+| [`executar.py`](executar.py) | Execução local e regeneração opcional |
+| [`hipotese/`](hipotese/) | Configuração, simulações, testes estatísticos e gráficos |
+| [`data/`](data/) | Snapshot, amostra tratada e resultados da simulação |
+| [`tests/`](tests/) | Testes automatizados, incluindo renderização e reprodutibilidade |
 
-## Testes
+Depois de preparar o ambiente, execute os testes na pasta `Lab04`:
 
 ```text
-.venv/Scripts/python -m pytest
+.venv/bin/python -m pytest
 ```
+
+No Windows, use `.venv\Scripts\python.exe -m pytest`.
