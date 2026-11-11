@@ -133,7 +133,7 @@ efeito em p.p. e decisão. Aceitam `meta`, `alternativa` e `alfa` opcionais;
 os padrões vêm do protocolo compartilhado. `aplicar_testes(builds)` valida
 uma amostra binária e aplica ambos. As funções não acessam o dashboard nem
 consomem aleatoriedade: a S02 pode chamar as mesmas funções com as contagens
-de `gerar_lote`, e a #275 pode usá-las nos dados reais.
+de `gerar_lote`, e a seção 6 (#275) as reutiliza na amostra real.
 
 Neste exemplo, a semente 42 produz **17 falhas em 243 builds (7,00%)**:
 o efeito observado é **+2,00 p.p.**, Z ≈ 1,4276, p-valor Z ≈ 0,07671 e
@@ -354,6 +354,24 @@ Nenhuma taxa ficou perto de 5% pela margem de Monte Carlo da Q3 (±0,43 p.p.).
 As mesmas classificações se mantêm com a tolerância de ±0,4 p.p. usada na Q1.
 Os testes do dashboard verificam as taxas do CSV, a linha nominal, as cores
 e a interpretação das três situações.
+
+## Testes nos dados reais — S02-07 (#275)
+
+A seção **6. Dados reais** aplica os dois testes à mesma coluna `falhou` de
+[`data/ci_pytest.csv`](data/ci_pytest.csv): 10 falhas em 243 builds (4,12%).
+O protocolo é o mesmo do cenário: H₀: p = 0,05, H₁: p > 0,05 e α = 0,05.
+
+| Teste | Estatística | p-valor | Efeito (p.p.) | Conclusão |
+|---|---:|---:|---:|---|
+| Z para proporção | Z = −0,6328 | 0,7366 | −0,88 | Não rejeitar H₀ |
+| Binomial exato | p̂ = 0,0412 | 0,7773 | −0,88 | Não rejeitar H₀ |
+
+Não há evidência de que a taxa supere 5%. O efeito estimado é a diferença
+assinada para a meta (`100 × (p̂ − 0,05)`): cerca de 0,88 falha a menos por
+100 builds. A relevância prática depende do volume de builds e do custo das
+falhas. A diferença observada não comprova que a meta seja cumprida, e o
+agrupamento de falhas na coleta pode limitar a interpretação dos p-valores
+sob independência.
 
 ## Estrutura
 

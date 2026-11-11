@@ -17,14 +17,19 @@ def carregar_resumo() -> dict:
     return json.loads(RESUMO.read_text(encoding="utf-8"))
 
 
+def carregar_builds_reais() -> np.ndarray:
+    """Lê as observações binárias do CSV da coleta, em ordem cronológica."""
+    with RESUMO.with_name("ci_pytest.csv").open(encoding="utf-8", newline="") as arquivo:
+        return np.array([int(linha["falhou"]) for linha in csv.DictReader(arquivo)], dtype=int)
+
+
 def carregar_amostras_g1() -> tuple[np.ndarray, np.ndarray]:
     """Lê as builds reais e gera uma amostra independente sob H₀ (#267).
 
     Usa o tamanho efetivo do CSV e um gerador próprio com a semente fixa.
     A taxa permanece a meta do protocolo, sem ajustar o sorteio ao resultado.
     """
-    with RESUMO.with_name("ci_pytest.csv").open(encoding="utf-8", newline="") as arquivo:
-        reais = np.array([int(linha["falhou"]) for linha in csv.DictReader(arquivo)])
+    reais = carregar_builds_reais()
     simulados = gerar_builds(
         gerador(), n=reais.size, taxa_falha=META_TAXA_FALHA,
         situacao=INDEPENDENTE, correlacao=0.0,

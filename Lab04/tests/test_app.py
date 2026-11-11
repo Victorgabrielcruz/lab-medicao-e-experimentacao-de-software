@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 import json
 
+import pytest
 from streamlit.testing.v1 import AppTest
 
 from hipotese.config import CORES_TESTES, URL_PROJECT, URL_REPOSITORIO
@@ -214,3 +215,33 @@ def test_g4_exibe_os_dois_testes_por_situacao_com_os_valores_do_csv():
             )
             assert list(zip(curva["x"], curva["y"])) == esperado
             assert curva["line"]["color"] == CORES_TESTES[curva["name"]]
+
+
+def test_secao_6_aplica_os_testes_ao_csv_real_e_interpreta_o_efeito():
+    app = executar()
+    tabela = next(t.value for t in app.table if "Conclusão" in t.value.columns)
+    assert list(tabela["Teste"]) == ["Z para proporção", "Binomial exato"]
+    assert list(tabela["Estatística"]) == ["Z", "Proporção observada (p̂)"]
+    assert list(tabela["Valor da estatística"]) == pytest.approx([-0.6328321262, 10 / 243])
+    assert list(tabela["p-valor"]) == pytest.approx([0.7365783625, 0.7772541895])
+    assert list(tabela["Efeito (p.p.)"]) == [-0.88, -0.88]
+    assert list(tabela["Conclusão"]) == ["Não rejeitar H₀", "Não rejeitar H₀"]
+    assert all("#275" not in info.value for info in app.info)
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    for trecho in ("10 falhas em 243 builds (4,12%)", "não comprova que a meta seja cumprida",
+                   "−0,88 p.p.", "0,88 falha a menos por 100 builds", "custo de uma falha"):
+        assert trecho in texto
+
+
+def test_secao_6_apresenta_conclusoes_distintas_quando_so_o_z_rejeita(monkeypatch):
+    import numpy as np
+    from hipotese import cenario
+
+    # Com 18 falhas em 243 builds, o Z rejeita e o binomial ainda não.
+    monkeypatch.setattr(cenario, "carregar_builds_reais", lambda: np.array([1] * 18 + [0] * 225))
+    app = executar()
+    tabela = next(t.value for t in app.table if "Conclusão" in t.value.columns)
+    assert list(tabela["Conclusão"]) == ["Rejeitar H₀", "Não rejeitar H₀"]
+    texto = "\n".join(elemento.value for elemento in app.markdown)
+    assert "Apenas o teste Z para proporção encontrou evidência" in texto
+    assert "2,41 falhas a mais por 100 builds" in texto
