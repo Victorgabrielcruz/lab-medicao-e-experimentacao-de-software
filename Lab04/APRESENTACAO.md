@@ -1,6 +1,6 @@
 # Roteiro da apresentação oral do Lab04
 
-Use o próprio dashboard durante a apresentação. Os títulos abaixo seguem as 15 perguntas da seção 5 do enunciado. Abra o dashboard antes de iniciar o cronômetro. As respostas 13 e 15 também servem de referência para a seção 7, cuja implementação está na #276.
+Use o próprio dashboard durante a apresentação. Os títulos abaixo seguem as 15 perguntas da seção 5 do enunciado.
 
 | Tempo acumulado | Quem fala | Conteúdo |
 |---|---|---|
@@ -88,11 +88,3 @@ Os valores de 1% foram recalculados com `simular_configuracao` usando as mesmas 
 |---|---:|---:|---:|---:|
 | Erro tipo I, efeito zero (G3) | 6,55% | 1,18% | 3,96% | 0,66% |
 | Poder, efeito de +4 p.p. (G4) | 83,40% | 60,31% | 76,73% | 51,70% |
-
-## Ensaio do grupo
-
-Percorram as 15 perguntas na ordem, com a navegação no dashboard e as duas trocas de fala incluídas no cronômetro. Anotem o tempo de cada bloco e o total. Se passar de 7 minutos, encurtem as respostas que mais excederam o tempo planejado e repitam. Como qualquer integrante pode receber qualquer pergunta, façam uma rodada separada de perguntas trocadas.
-
-| Ensaio | Victor | Matheus | Jonatha | Total com navegação e transições |
-|---|---|---|---|---|
-| A registrar pelo grupo | | | | |
