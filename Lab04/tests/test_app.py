@@ -50,7 +50,7 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
         "pytest-dev/pytest", "H₀: p = 0,05", "H₁: p > 0,05",
         "unicaudal à direita", "243 observações", "10 falhas",
         "0,05 + efeito", "pontos percentuais", "Expectativa registrada antes",
-        "ambos", "compara essas expectativas com os resultados",
+        "ambos acima de 5%",
     ):
         assert trecho in texto
     assert all("#264" not in info.value for info in app.info)
@@ -86,11 +86,11 @@ def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo()
 def test_secao_dados_exibe_g1_e_interpreta_as_amostras_em_quatro_frases():
     app = executar()
     assert all("#267" not in info.value for info in app.info)
-    texto = next(elemento.value for elemento in app.markdown if "Os dados reais são binários" in elemento.value)
+    texto = next(elemento.value for elemento in app.markdown if "Dados binários" in elemento.value)
     assert len(texto.split(". ")) == 4
     for trecho in (
-        "10 falhas em 243 builds", "4,12%", "assimetria à direita", "não são outliers",
-        "n = 243", "p = 5%", "H₀", "semente 42", "não substituem a meta", "rajadas",
+        "10 falhas em 243 builds", "4,12%", "assimetria à direita", "não outliers",
+        "n = 243", "p = 5%", "H₀", "semente 42", "não substitui a meta", "rajadas",
     ):
         assert trecho in texto
     graficos = [json.loads(elemento.proto.spec) for elemento in app.get("plotly_chart")]
@@ -117,11 +117,11 @@ def test_dashboard_interpreta_tambem_um_resultado_com_rejeicao(monkeypatch):
 def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
     app = executar()
     subtitulos = [s.value for s in app.subheader]
-    assert "Q3 · Quando os dados não se comportam bem (#272)" in subtitulos
+    assert "Q3 · Violação de pressupostos" in subtitulos
     texto = "\n".join(elemento.value for elemento in app.markdown)
     for trecho in (
-        "Amostra pequena prejudica a aproximação do Z", "Rajadas afetam os dois",
-        "níveis efetivos de erro tipo I diferentes", "±0,43 p.p.",
+        "Amostra pequena (n = 20):**", "Rajadas (ρ = 0,27):**",
+        "opera com erro tipo I maior", "± 0,43 p.p.",
     ):
         assert trecho in texto
     tabelas = [elemento.value for elemento in app.table]
@@ -142,7 +142,7 @@ def test_q1_exibe_taxas_da_situacao_independente_e_comparacao_com_a_margem():
     texto = "\n".join(elemento.value for elemento in app.markdown)
     for trecho in (
         "10.000 amostras independentes de 243 builds", "efeito zero",
-        "5% ± 0,4 p.p.", "4,60% a 5,40%", "incluindo os limites",
+        "5% ± 0,4 p.p.", "4,60% a 5,40%",
         "6,55%", "3,96%", "liberal", "conservador", "6,39%", "3,73%",
     ):
         assert trecho in texto
@@ -172,12 +172,13 @@ def test_g3_exibe_as_seis_taxas_sob_h0_e_a_referencia_de_5_por_cento():
     assert referencia["name"] == "Referência: 5%"
     assert all("#273" not in info.value for info in app.info)
 
-    texto = next(elemento.value for elemento in app.markdown if "Nenhuma das taxas ficou perto" in elemento.value)
-    assert "±0,43 p.p." in texto
+    texto = next(elemento.value for elemento in app.markdown if "Nenhuma das 6 taxas" in elemento.value)
+    assert "5% ± 0,43 p.p." in texto
+    assert "O Z para proporção é liberal em todas as situações" in texto
     for trecho in (
-        "Independente**: o Z ficou liberal (6,55%) e o binomial exato ficou conservador (3,96%)",
-        "Rajadas**: o Z ficou liberal (11,83%) e o binomial exato ficou liberal (8,60%)",
-        "Amostra pequena**: o Z ficou liberal (7,35%) e o binomial exato ficou conservador (1,49%)",
+        "**Independente:** Z 6,55% (liberal) · binomial 3,96% (conservador)",
+        "**Rajadas:** Z 11,83% (liberal) · binomial 8,60% (liberal)",
+        "**Amostra pequena:** Z 7,35% (liberal) · binomial 1,49% (conservador)",
     ):
         assert trecho in texto
 
@@ -191,7 +192,7 @@ def test_q1_interpreta_taxas_dentro_da_margem_sem_rotulos_fixos(monkeypatch):
     monkeypatch.setattr(erro_tipo_i, "analisar_erro_tipo_i", lambda: resultados)
     app = executar()
     assert list(app.table[2].value["Classificação"]) == ["Dentro da margem", "Dentro da margem"]
-    texto = next(elemento.value for elemento in app.markdown if "O Z teve" in elemento.value)
+    texto = next(elemento.value for elemento in app.markdown if "**Resultado:**" in elemento.value)
     assert "liberal" not in texto and "conservador" not in texto
     assert texto.count("dentro da faixa") == 2
 
@@ -262,10 +263,12 @@ def test_dashboard_final_apresenta_recomendacao_e_limitacao_sem_placeholders():
     app = executar()
     assert not app.info
     texto = "\n".join(elemento.value for elemento in app.markdown)
-    assert "**Expectativa e resultado.**" in texto
-    assert "prefira o **binomial exato**" in texto
+    assert "**Recomendação:** **binomial exato**" in texto
     assert "leve em conta a dependência" in texto
-    assert "A coleta cobre um único workflow" in texto
+    assert "**Limitação:** um único workflow" in texto
+    conclusao = next(t.value for t in app.table if "Confirmou?" in t.value.columns)
+    assert list(conclusao["Situação"]) == ["Independente", "Amostra pequena", "Rajadas"]
+    assert conclusao.iloc[2]["Encontrado (erro tipo I)"] == "Z 11,83% · binomial 8,60%"
 
 
 def _grafico_bonus(app):
@@ -281,8 +284,8 @@ def test_bonus_fica_na_secao_5_com_controles_de_amostra_efeito_e_alfa():
     assert [s.value for s in app.slider] == [243, 4.0]
     assert app.select_slider[0].value == 0.05
     subtitulos = [s.value for s in app.subheader]
-    assert subtitulos.index("Bônus · Poder interativo (#278)") == subtitulos.index(
-        "Q3 · Quando os dados não se comportam bem (#272)"
+    assert subtitulos.index("Poder interativo") == subtitulos.index(
+        "Q3 · Violação de pressupostos"
     ) + 1
     grafico = _grafico_bonus(app)
     curvas = [traco for traco in grafico["data"] if traco["mode"] == "lines"]
@@ -300,7 +303,7 @@ def test_bonus_atualiza_o_poder_ao_mudar_amostra_efeito_e_alfa():
     app.slider(key="bonus_n").set_value(250).run(timeout=10)
     assert not app.exception
     assert app.metric[0].value == app.metric[1].value == "81,00%"
-    assert "os dois testes rejeitam H₀ a partir de **19 falhas**" in "\n".join(m.value for m in app.markdown)
+    assert "os dois testes rejeitam H₀ a partir de **19 falhas**: mesmo erro tipo I" in "\n".join(m.value for m in app.markdown)
     app.slider(key="bonus_efeito").set_value(8.0)
     app.select_slider(key="bonus_alfa").set_value(0.01)
     app.run(timeout=10)
