@@ -44,6 +44,39 @@ st.markdown(
 )
 
 
+def _num(valor, casas=2):
+    return f"{valor:.{casas}f}".replace(".", ",").replace("-", "−")
+
+
+def _pct(valor):
+    return f"{_num(100 * valor)}%"
+
+
+def _pp(valor):
+    return f"{valor:+.2f} p.p.".replace(".", ",", 1).replace("-", "−")
+
+
+def exibir_resumo():
+    """Faixa de indicadores com os números finais do estudo."""
+    reais = aplicar_testes(carregar_builds_reais())
+    observado = reais[0]
+    decisao = "Rejeitar H₀" if any(r.rejeita_h0 for r in reais) else "Não rejeitar H₀"
+    colunas = st.columns(4)
+    colunas[0].metric("Builds analisadas", f"{observado.n}", f"{observado.falhas} falhas", delta_color="off", delta_arrow="off", border=True)
+    colunas[1].metric(
+        "Taxa de falha observada", _pct(observado.proporcao), f"{_pp(observado.efeito_pp).replace('−', '-')} vs. meta de 5%",
+        delta_color="inverse", border=True,
+    )
+    colunas[2].metric(
+        "Decisão nos dados reais", decisao,
+        f"p = {_num(reais[0].pvalor, 3)} (Z) · {_num(reais[1].pvalor, 3)} (binomial)", delta_color="off", delta_arrow="off", border=True,
+    )
+    colunas[3].metric("Teste recomendado", TESTE_BINOMIAL, "controla o erro tipo I", delta_color="off", delta_arrow="off", border=True)
+
+
+exibir_resumo()
+
+
 def exibir_cenario():
     resumo = carregar_resumo()
     estatisticas = resumo["estatisticas"]
@@ -81,7 +114,7 @@ def exibir_cenario():
         {
             "Situação": nome,
             "n (builds)": parametros["n"],
-            "Correlação de lag 1": parametros["correlacao"],
+            "Correlação de lag 1": _num(parametros["correlacao"], 3) if parametros["correlacao"] else "—",
             "Finalidade": finalidade,
         }
         for (nome, parametros), finalidade in zip(configuracoes.items(), [
@@ -140,9 +173,9 @@ def exibir_exemplo():
         {
             "Teste": resultado.teste,
             "Estatística": resultado.nome_estatistica,
-            "Valor da estatística": resultado.estatistica,
-            "p-valor": resultado.pvalor,
-            "Efeito observado (p.p.)": resultado.efeito_pp,
+            "Valor da estatística": _num(resultado.estatistica, 4),
+            "p-valor": _num(resultado.pvalor, 4),
+            "Efeito observado": _pp(resultado.efeito_pp),
             "Decisão (α = 0,05)": "Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀",
         }
         for resultado in exemplo.resultados
@@ -195,14 +228,6 @@ def exibir_g2(exemplo):
     )
 
 
-def _num(valor, casas=2):
-    return f"{valor:.{casas}f}".replace(".", ",")
-
-
-def _pct(valor):
-    return f"{_num(100 * valor)}%"
-
-
 def exibir_q3(resultados, tipo_i):
     st.subheader("Q3 · Violação de pressupostos")
     repeticoes = f"{N_REPETICOES:_}".replace("_", ".")
@@ -213,16 +238,16 @@ def exibir_q3(resultados, tipo_i):
         f"± {margem} p.p. (margem de Monte Carlo) é classificado como liberal ou conservador."
     )
 
-    st.markdown("**Erro tipo I (efeito zero)**")
-    st.table([
-        {
-            "Situação": linha.situacao, "n (builds)": int(linha.n), "Teste": linha.teste,
-            "Erro tipo I": _pct(linha.proporcao_rejeicao),
-            "Desvio de 5% (p.p.)": f"{linha.desvio_pp:+.2f}".replace(".", ","),
-            "Classificação": linha.classificacao,
-        }
-        for linha in tipo_i.itertuples()
-    ])
+    with st.expander("Tabela · erro tipo I por situação (valores do G3)"):
+        st.table([
+            {
+                "Situação": linha.situacao, "n (builds)": int(linha.n), "Teste": linha.teste,
+                "Erro tipo I": _pct(linha.proporcao_rejeicao),
+                "Desvio de 5%": _pp(linha.desvio_pp),
+                "Classificação": linha.classificacao,
+            }
+            for linha in tipo_i.itertuples()
+        ])
 
     n_pequeno = int(tipo_i.loc[tipo_i["situacao"] == "Amostra pequena", "n"].iloc[0])
     k_z = q3.contagem_minima_rejeicao(TESTE_Z, n_pequeno)
@@ -241,18 +266,18 @@ def exibir_q3(resultados, tipo_i):
         "O binomial é exato apenas sob independência."
     )
 
-    st.markdown("**Poder nas situações de violação (proporção de rejeições)**")
     poderes = {situacao: q3.poder(resultados, situacao) for situacao in q3.VIOLACOES}
-    for situacao, tabela in poderes.items():
-        st.markdown(f"*{situacao}*")
-        st.table([
-            {
-                "Efeito (p.p.)": f"{100 * linha['efeito']:.0f}", TESTE_Z: _pct(linha[TESTE_Z]),
-                TESTE_BINOMIAL: _pct(linha[TESTE_BINOMIAL]),
-                "Z − binomial (p.p.)": f"{linha['diferenca_pp']:+.2f}".replace(".", ","),
-            }
-            for linha in tabela.to_dict("records")
-        ])
+    with st.expander("Tabelas · poder nas situações de violação (valores do G4)"):
+        for coluna, (situacao, tabela) in zip(st.columns(len(poderes)), poderes.items()):
+            coluna.markdown(f"**{situacao}**")
+            coluna.table([
+                {
+                    "Efeito (p.p.)": f"{100 * linha['efeito']:.0f}", TESTE_Z: _pct(linha[TESTE_Z]),
+                    TESTE_BINOMIAL: _pct(linha[TESTE_BINOMIAL]),
+                    "Z − binomial": _pp(linha["diferenca_pp"]),
+                }
+                for linha in tabela.to_dict("records")
+            ])
     pequena = poderes["Amostra pequena"]
     maior_vantagem = pequena["diferenca_pp"].max()
     poder_maximo = pequena[[TESTE_Z, TESTE_BINOMIAL]].max().max()
@@ -294,9 +319,9 @@ def exibir_poder_interativo():
     )
     metricas = st.columns(4)
     for coluna, teste in zip(metricas, poder.TESTES):
-        coluna.metric(f"Poder · {teste}", _pct(poder.poder_exato(teste, n, efeito, alfa)))
+        coluna.metric(f"Poder · {teste}", _pct(poder.poder_exato(teste, n, efeito, alfa)), border=True)
     for coluna, teste in zip(metricas[2:], poder.TESTES):
-        coluna.metric(f"Erro tipo I · {teste}", _pct(poder.poder_exato(teste, n, 0.0, alfa)))
+        coluna.metric(f"Erro tipo I exato · {teste}", _pct(poder.poder_exato(teste, n, 0.0, alfa)), border=True)
 
     minimo_z, minimo_binomial = (poder.contagem_minima_rejeicao(teste, n, alfa) for teste in poder.TESTES)
 
@@ -336,21 +361,25 @@ def exibir_q1():
     st.subheader("Q1 · Falsos positivos com H₀ verdadeira")
     st.markdown(
         f"**{repeticoes} amostras independentes de {z.n} builds** com efeito zero (p = {META_TAXA_FALHA:.0%}). "
-        f"Faixa de referência: **{ALFA:.0%} ± {margem} p.p.** ({faixa}). "
-        f"**Resultado:** Z **{percentual(z.taxa_erro)}**, {posicao[z.classificacao]} "
-        f"(**{z.classificacao.lower()}**); binomial exato **{percentual(binomial.taxa_erro)}**, "
-        f"{posicao[binomial.classificacao]} (**{binomial.classificacao.lower()}**)."
+        f"Faixa de referência: **{ALFA:.0%} ± {margem} p.p.** ({faixa}); acima é liberal, abaixo é conservador."
     )
-    st.table([
-        {
-            "Teste": resultado.teste,
-            "Falsos positivos": resultado.rejeicoes,
-            "Erro tipo I (%)": round(100 * resultado.taxa_erro, 2),
-            "Desvio de 5% (p.p.)": round(resultado.desvio_pp, 2),
-            "Classificação": resultado.classificacao,
-        }
-        for resultado in resultados
-    ])
+    for coluna, resultado in zip(st.columns(4), resultados):
+        coluna.metric(
+            f"Erro tipo I simulado · {resultado.teste}", percentual(resultado.taxa_erro),
+            f"{_pp(resultado.desvio_pp).replace('−', '-')} vs. 5% · {posicao[resultado.classificacao]}",
+            delta_color="inverse", border=True,
+        )
+    with st.expander("Tabela · contagens de falsos positivos"):
+        st.table([
+            {
+                "Teste": resultado.teste,
+                "Falsos positivos": f"{resultado.rejeicoes} de {repeticoes}",
+                "Erro tipo I": percentual(resultado.taxa_erro),
+                "Desvio de 5%": _pp(resultado.desvio_pp),
+                "Classificação": resultado.classificacao,
+            }
+            for resultado in resultados
+        ])
     st.markdown(
         f"Limiares de rejeição: Z com X ≥ **{z.primeira_contagem_rejeitada}**, binomial com "
         f"X ≥ **{binomial.primeira_contagem_rejeitada}**. Erro tipo I exato: **{percentual(z.taxa_teorica)}** "
@@ -408,17 +437,30 @@ def exibir_q2(simulacao):
         "independentes por efeito** (aumento da taxa sobre 5%, em p.p.). Efeito zero mede o erro tipo I; "
         "os demais, o poder."
     )
-    st.table([
-        {
-            "Efeito (p.p.)": round(100 * efeito, 2),
-            "Medida": "Erro tipo I" if efeito == 0 else "Poder",
-            f"{TESTE_Z} (%)": round(linha[TESTE_Z], 2),
-            f"{TESTE_BINOMIAL} (%)": round(linha[TESTE_BINOMIAL], 2),
-        }
-        for efeito, linha in taxas.iterrows()
-    ])
     z, binomial = taxas.loc[EFEITO_EXEMPLO]
     efeito_pp = f"{100 * EFEITO_EXEMPLO:g}"
+    colunas = st.columns(4)
+    for coluna, teste, valor in ((colunas[0], TESTE_Z, z), (colunas[1], TESTE_BINOMIAL, binomial)):
+        coluna.metric(
+            f"Poder em +{efeito_pp} p.p. · {teste}", f"{_num(valor)}%", "curva de 0 a +10 p.p.",
+            delta_color="off", delta_arrow="off", border=True,
+            chart_data=taxas[teste].round(2).tolist(), chart_type="area",
+        )
+    colunas[2].metric(
+        f"Vantagem do Z em +{efeito_pp} p.p.", _pp(z - binomial),
+        f"custo: {_pp(taxas.loc[0.0, TESTE_Z] - taxas.loc[0.0, TESTE_BINOMIAL])} de erro tipo I",
+        delta_color="off", delta_arrow="off", border=True,
+    )
+    with st.expander("Tabela · proporção de rejeições por efeito (valores do G4, painel independente)"):
+        st.table([
+            {
+                "Efeito (p.p.)": f"{100 * efeito:g}",
+                "Medida": "Erro tipo I" if efeito == 0 else "Poder",
+                TESTE_Z: f"{_num(linha[TESTE_Z])}%",
+                TESTE_BINOMIAL: f"{_num(linha[TESTE_BINOMIAL])}%",
+            }
+            for efeito, linha in taxas.iterrows()
+        ])
     comparacao = f"Z {z:.2f}% e binomial {binomial:.2f}%".replace(".", ",")
     acima_99 = taxas[(taxas[TESTE_Z] >= 99) & (taxas[TESTE_BINOMIAL] >= 99)].index
     saturacao = (
@@ -453,13 +495,25 @@ def exibir_testes_reais():
         f"Amostra real: **{observado.falhas} falhas em {observado.n} builds ({_pct(observado.proporcao)})**. "
         f"H₁: p > {meta}; α = {_num(ALFA)}."
     )
+    colunas = st.columns(4)
+    for coluna, resultado in zip(colunas, resultados):
+        coluna.metric(
+            f"p-valor · {resultado.teste}", _num(resultado.pvalor, 4),
+            "Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀", delta_color="off", delta_arrow="off", border=True,
+        )
+    colunas[2].metric(
+        "Efeito vs. meta", _pp(observado.efeito_pp),
+        "abaixo da meta" if observado.efeito_pp < 0 else "acima da meta", delta_color="off", delta_arrow="off", border=True,
+    )
+    colunas[3].metric("Taxa observada", _pct(observado.proporcao), f"{observado.falhas} de {observado.n} builds",
+                      delta_color="off", delta_arrow="off", border=True)
     st.table([
         {
             "Teste": resultado.teste,
             "Estatística": resultado.nome_estatistica,
-            "Valor da estatística": resultado.estatistica,
-            "p-valor": resultado.pvalor,
-            "Efeito (p.p.)": round(resultado.efeito_pp, 2),
+            "Valor da estatística": _num(resultado.estatistica, 4),
+            "p-valor": _num(resultado.pvalor, 4),
+            "Efeito": _pp(resultado.efeito_pp),
             "Conclusão": "Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀",
         }
         for resultado in resultados

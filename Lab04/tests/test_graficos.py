@@ -19,17 +19,16 @@ def test_g1_normaliza_os_dois_grupos_e_preserva_as_contagens():
     assert list(simulado.y) == [50, 50]
     assert np.array_equal(real.customdata, [[3, 4], [1, 4]])
     assert np.array_equal(simulado.customdata, [[1, 2], [1, 2]])
-    assert real.xaxis != simulado.xaxis  # Painéis distintos, lado a lado.
+    assert real.xaxis == simulado.xaxis  # Mesmo eixo: barras agrupadas por resultado.
+    assert figura.layout.barmode == "group"
     assert real.marker.color == CORES_DADOS["Real"]
     assert simulado.marker.color == CORES_DADOS["Simulado sob H₀"]
     assert all(trace.showlegend and trace.name for trace in figura.data)
     assert "G1" in figura.layout.title.text and "5%" in figura.layout.title.text
-    for eixo in (figura.layout.xaxis, figura.layout.xaxis2):
-        assert "adimensional" in eixo.title.text
-        assert list(eixo.ticktext) == ["0 · Passou", "1 · Falhou"]
-    for eixo in (figura.layout.yaxis, figura.layout.yaxis2):
-        assert "%" in eixo.title.text
-        assert list(eixo.range) == [0, 110]
+    assert "adimensional" in figura.layout.xaxis.title.text
+    assert list(figura.layout.xaxis.ticktext) == ["0 · Passou", "1 · Falhou"]
+    assert "%" in figura.layout.yaxis.title.text
+    assert list(figura.layout.yaxis.range) == [0, 110]
 
 
 @pytest.mark.parametrize("amostra,frequencias", [([0, 0], [100, 0]), ([1, 1], [0, 100])])

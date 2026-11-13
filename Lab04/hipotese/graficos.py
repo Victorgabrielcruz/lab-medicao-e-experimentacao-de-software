@@ -44,7 +44,7 @@ def _layout(figura: go.Figure, titulo: str, eixo_x: str, eixo_y: str) -> None:
 
 
 def construir_g1(reais, simulados) -> go.Figure:
-    """Histogramas binários lado a lado, com bins e escalas idênticos (#267).
+    """Histogramas binários dos dois grupos no mesmo eixo, barras agrupadas por resultado (#267).
 
     As frequências são calculadas em Python nos bins [-0,5; 0,5; 1,5],
     incluindo categorias vazias. O hover preserva também as contagens.
@@ -53,17 +53,13 @@ def construir_g1(reais, simulados) -> go.Figure:
     for amostra in amostras:
         if amostra.ndim != 1 or amostra.size == 0 or not np.isin(amostra, (0, 1)).all():
             raise ValueError("O G1 requer amostras unidimensionais não vazias de 0 e 1.")
-    nomes = tuple(CORES_DADOS)
-    figura = make_subplots(
-        rows=1, cols=2, shared_yaxes=True, horizontal_spacing=0.15,
-        subplot_titles=tuple(f"{nome} · {amostra.size} builds" for nome, amostra in zip(nomes, amostras)),
-    )
-    for coluna, (nome, amostra) in enumerate(zip(nomes, amostras), 1):
+    figura = go.Figure()
+    for nome, amostra in zip(CORES_DADOS, amostras):
         contagens, _ = np.histogram(amostra, bins=[-0.5, 0.5, 1.5])
         frequencias = 100 * contagens / amostra.size
         figura.add_trace(go.Bar(
-            x=[0, 1], y=frequencias.tolist(), width=0.9,
-            name=nome, marker_color=CORES_DADOS[nome], showlegend=True,
+            x=[0, 1], y=frequencias.tolist(),
+            name=f"{nome} · {amostra.size} builds", marker_color=CORES_DADOS[nome], showlegend=True,
             text=[f"{valor:.2f}%".replace(".", ",") for valor in frequencias],
             textposition="outside", cliponaxis=False,
             customdata=[[int(contagem), int(amostra.size)] for contagem in contagens],
@@ -72,24 +68,16 @@ def construir_g1(reais, simulados) -> go.Figure:
                 "Execuções: %{customdata[0]} de %{customdata[1]}<br>"
                 "Frequência: %{y:.2f}%<extra>%{fullData.name}</extra>"
             ),
-        ), row=1, col=coluna)
-    eixo_x = "Resultado da build (0/1; adimensional)"
-    eixo_y = "Frequência relativa de builds (%)"
+        ))
     _layout(
         figura,
         "G1 · Dados reais × simulados<br>"
         f"<sup>Simulação independente sob H₀: p = {META_TAXA_FALHA:.0%}; semente {SEMENTE}</sup>",
-        eixo_x, eixo_y,
+        "Resultado da build (0/1; adimensional)", "Frequência relativa de builds (%)",
     )
-    figura.update_annotations(font_size=14)
-    figura.update_xaxes(
-        title_text=eixo_x, range=[-0.65, 1.65], tickvals=[0, 1],
-        ticktext=["0 · Passou", "1 · Falhou"], showgrid=False,
-    )
-    figura.update_yaxes(
-        title_text=eixo_y, range=[0, 110], tickvals=[0, 20, 40, 60, 80, 100],
-        ticksuffix="%", showticklabels=True, fixedrange=True,
-    )
+    figura.update_layout(barmode="group", bargap=0.35, bargroupgap=0.06, height=440)
+    figura.update_xaxes(tickvals=[0, 1], ticktext=["0 · Passou", "1 · Falhou"], showgrid=False)
+    figura.update_yaxes(range=[0, 110], tickvals=[0, 20, 40, 60, 80, 100], ticksuffix="%", fixedrange=True)
     return figura
 
 

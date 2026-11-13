@@ -56,7 +56,7 @@ def test_cenario_apresenta_protocolo_e_calibracao_sem_placeholder():
     assert all("#264" not in info.value for info in app.info)
     tabela = app.table[0].value
     assert list(tabela["n (builds)"]) == [243, 243, 20]
-    assert tabela.iloc[1]["Correlação de lag 1"] == 0.2740723078825129
+    assert list(tabela["Correlação de lag 1"]) == ["—", "0,274", "—"]
 
 
 def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo():
@@ -66,9 +66,9 @@ def test_dashboard_exibe_os_resultados_calculados_e_a_interpretacao_do_exemplo()
     assert list(tabela["Teste"]) == [r.teste for r in exemplo.resultados]
     for indice, resultado in enumerate(exemplo.resultados):
         linha = tabela.iloc[indice]
-        assert linha["p-valor"] == resultado.pvalor
-        assert linha["Valor da estatística"] == resultado.estatistica
-        assert linha["Efeito observado (p.p.)"] == resultado.efeito_pp
+        assert linha["p-valor"] == f"{resultado.pvalor:.4f}".replace(".", ",")
+        assert linha["Valor da estatística"] == f"{resultado.estatistica:.4f}".replace(".", ",")
+        assert linha["Efeito observado"] == f"{resultado.efeito_pp:+.2f}".replace(".", ",") + " p.p."
         assert linha["Decisão (α = 0,05)"] == ("Rejeitar H₀" if resultado.rejeita_h0 else "Não rejeitar H₀")
     texto = "\n".join(elemento.value for elemento in app.markdown)
     assert f"{exemplo.resultados[0].falhas} falhas em 243 builds" in texto
@@ -127,7 +127,7 @@ def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
     tabelas = [elemento.value for elemento in app.table]
     tipo_i = next(tabela for tabela in tabelas if {"Situação", "Erro tipo I"} <= set(tabela.columns))
     assert list(tipo_i["Situação"]) == ["Independente"] * 2 + ["Rajadas"] * 2 + ["Amostra pequena"] * 2
-    poderes = [tabela for tabela in tabelas if "Z − binomial (p.p.)" in tabela.columns]
+    poderes = [tabela for tabela in tabelas if "Z − binomial" in tabela.columns]
     assert len(poderes) == 2
     assert all(list(tabela["Efeito (p.p.)"]) == ["0", "2", "4", "6", "8", "10"] for tabela in poderes)
 
@@ -135,15 +135,21 @@ def test_q3_aparece_na_secao_de_poder_com_tabelas_e_explicacao():
 def test_q1_exibe_taxas_da_situacao_independente_e_comparacao_com_a_margem():
     app = executar()
     tabela = app.table[2].value
-    assert list(tabela["Falsos positivos"]) == [655, 396]
-    assert list(tabela["Erro tipo I (%)"]) == [6.55, 3.96]
-    assert list(tabela["Desvio de 5% (p.p.)"]) == [1.55, -1.04]
+    assert list(tabela["Falsos positivos"]) == ["655 de 10.000", "396 de 10.000"]
+    assert list(tabela["Erro tipo I"]) == ["6,55%", "3,96%"]
+    assert list(tabela["Desvio de 5%"]) == ["+1,55 p.p.", "−1,04 p.p."]
+    metricas = {m.label: m.value for m in app.metric}
+    assert metricas["Erro tipo I simulado · Z para proporção"] == "6,55%"
+    assert metricas["Erro tipo I simulado · Binomial exato"] == "3,96%"
     assert list(tabela["Classificação"]) == ["Liberal", "Conservador"]
-    texto = "\n".join(elemento.value for elemento in app.markdown)
+    texto = "\n".join(
+        [elemento.value for elemento in app.markdown]
+        + [f"{m.value} {m.proto.delta}" for m in app.metric]
+    )
     for trecho in (
         "10.000 amostras independentes de 243 builds", "efeito zero",
         "5% ± 0,4 p.p.", "4,60% a 5,40%",
-        "6,55%", "3,96%", "liberal", "conservador", "6,39%", "3,73%",
+        "6,55%", "3,96%", "liberal", "conservador", "6,39%", "3,73%", "acima da faixa", "abaixo da faixa",
     ):
         assert trecho in texto
 
@@ -192,18 +198,20 @@ def test_q1_interpreta_taxas_dentro_da_margem_sem_rotulos_fixos(monkeypatch):
     monkeypatch.setattr(erro_tipo_i, "analisar_erro_tipo_i", lambda: resultados)
     app = executar()
     assert list(app.table[2].value["Classificação"]) == ["Dentro da margem", "Dentro da margem"]
-    texto = next(elemento.value for elemento in app.markdown if "**Resultado:**" in elemento.value)
-    assert "liberal" not in texto and "conservador" not in texto
-    assert texto.count("dentro da faixa") == 2
+    deltas = [m.proto.delta for m in app.metric if m.label.startswith("Erro tipo I simulado")]
+    assert len(deltas) == 2 and all(d.endswith("dentro da faixa") for d in deltas)
 
 
 def test_q2_exibe_os_seis_efeitos_e_as_taxas_independentes():
     app = executar()
     tabela = app.table[3].value
-    assert list(tabela["Efeito (p.p.)"]) == [0, 2, 4, 6, 8, 10]
+    assert list(tabela["Efeito (p.p.)"]) == ["0", "2", "4", "6", "8", "10"]
     assert list(tabela["Medida"]) == ["Erro tipo I"] + ["Poder"] * 5
-    assert list(tabela["Z para proporção (%)"]) == [6.55, 43.58, 83.4, 97.59, 99.67, 99.98]
-    assert list(tabela["Binomial exato (%)"]) == [3.96, 34.28, 76.73, 96.16, 99.47, 99.97]
+    assert list(tabela["Z para proporção"]) == ["6,55%", "43,58%", "83,40%", "97,59%", "99,67%", "99,98%"]
+    assert list(tabela["Binomial exato"]) == ["3,96%", "34,28%", "76,73%", "96,16%", "99,47%", "99,97%"]
+    metricas = {m.label: m.value for m in app.metric}
+    assert metricas["Poder em +4 p.p. · Z para proporção"] == "83,40%"
+    assert metricas["Vantagem do Z em +4 p.p."] == "+6,67 p.p."
 
 
 def test_g4_exibe_os_dois_testes_por_situacao_com_os_valores_do_csv():
@@ -234,9 +242,9 @@ def test_secao_6_aplica_os_testes_ao_csv_real_e_interpreta_o_efeito():
     tabela = next(t.value for t in app.table if "Conclusão" in t.value.columns)
     assert list(tabela["Teste"]) == ["Z para proporção", "Binomial exato"]
     assert list(tabela["Estatística"]) == ["Z", "Proporção observada (p̂)"]
-    assert list(tabela["Valor da estatística"]) == pytest.approx([-0.6328321262, 10 / 243])
-    assert list(tabela["p-valor"]) == pytest.approx([0.7365783625, 0.7772541895])
-    assert list(tabela["Efeito (p.p.)"]) == [-0.88, -0.88]
+    assert list(tabela["Valor da estatística"]) == ["−0,6328", "0,0412"]
+    assert list(tabela["p-valor"]) == ["0,7366", "0,7773"]
+    assert list(tabela["Efeito"]) == ["−0,88 p.p.", "−0,88 p.p."]
     assert list(tabela["Conclusão"]) == ["Não rejeitar H₀", "Não rejeitar H₀"]
     assert all("#275" not in info.value for info in app.info)
     texto = "\n".join(elemento.value for elemento in app.markdown)
@@ -298,11 +306,14 @@ def test_bonus_fica_na_secao_5_com_controles_de_amostra_efeito_e_alfa():
 
 def test_bonus_atualiza_o_poder_ao_mudar_amostra_efeito_e_alfa():
     app = executar()
-    padrao = [m.value for m in app.metric]
-    assert padrao[:2] == ["83,64%", "77,10%"]
+    def poderes():
+        return {m.label: m.value for m in app.metric if m.label.startswith("Poder · ")}
+
+    padrao = poderes()
+    assert list(padrao.values()) == ["83,64%", "77,10%"]
     app.slider(key="bonus_n").set_value(250).run(timeout=10)
     assert not app.exception
-    assert app.metric[0].value == app.metric[1].value == "81,00%"
+    assert list(poderes().values()) == ["81,00%", "81,00%"]
     assert "os dois testes rejeitam H₀ a partir de **19 falhas**: mesmo erro tipo I" in "\n".join(m.value for m in app.markdown)
     app.slider(key="bonus_efeito").set_value(8.0)
     app.select_slider(key="bonus_alfa").set_value(0.01)
@@ -310,4 +321,15 @@ def test_bonus_atualiza_o_poder_ao_mudar_amostra_efeito_e_alfa():
     assert not app.exception
     titulo = _grafico_bonus(app)["layout"]["title"]["text"]
     assert "250 builds" in titulo and "α = 1%" in titulo
-    assert [m.value for m in app.metric] != padrao
+    assert poderes() != padrao
+
+
+def test_resumo_no_topo_mostra_os_numeros_finais():
+    app = executar()
+    metricas = {m.label: m.value for m in app.metric[:4]}
+    assert metricas == {
+        "Builds analisadas": "243",
+        "Taxa de falha observada": "4,12%",
+        "Decisão nos dados reais": "Não rejeitar H₀",
+        "Teste recomendado": "Binomial exato",
+    }
