@@ -7,8 +7,7 @@ em sete seções.
 
 [Dashboard local](http://127.0.0.1:8501/) ·
 [Repositório](https://github.com/Victorgabrielcruz/lab-medicao-e-experimentacao-de-software) ·
-[GitHub Projects](https://github.com/users/Victorgabrielcruz/projects/7) ·
-[Roteiro da apresentação](APRESENTACAO.md)
+[GitHub Projects](https://github.com/users/Victorgabrielcruz/projects/7)
 
 ## Executar em um comando
 
