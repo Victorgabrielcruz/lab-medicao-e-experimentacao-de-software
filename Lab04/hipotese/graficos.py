@@ -227,3 +227,40 @@ def construir_g2(exemplo: ExemploSimulado) -> tuple[go.Figure, go.Figure]:
     binomial.update_layout(barmode="overlay")
     binomial.update_xaxes(range=[-50 / exato.n, 100 * (maior_k + 0.5) / exato.n])
     return normal, binomial
+
+
+def construir_poder_interativo(curva: DataFrame, n: int, efeito: float, alfa: float) -> go.Figure:
+    """Curvas de poder exato dos dois testes para o n e o α escolhidos no dashboard (bônus, #278).
+
+    ``curva`` vem de ``hipotese.poder.curva_poder``; o efeito escolhido é marcado
+    em cada curva e o α escolhido aparece como linha de referência.
+    """
+    figura = go.Figure()
+    for teste, simbolo in ((TESTE_Z, "circle"), (TESTE_BINOMIAL, "diamond")):
+        dados = curva.loc[curva["teste"] == teste].sort_values("efeito")
+        x = (100 * dados["efeito"]).to_numpy()
+        y = (100 * dados["poder"]).to_numpy()
+        figura.add_trace(go.Scatter(
+            x=x, y=y, mode="lines", name=teste, legendgroup=teste,
+            line={"color": CORES_TESTES[teste], "width": 3},
+            hovertemplate="Efeito: %{x:.1f} p.p.<br>Rejeições: %{y:.2f}%<extra>%{fullData.name}</extra>",
+        ))
+        escolhido = float(np.interp(100 * efeito, x, y))
+        figura.add_trace(go.Scatter(
+            x=[100 * efeito], y=[escolhido], mode="markers", name=f"{teste} no efeito escolhido",
+            legendgroup=teste, showlegend=False,
+            marker={"color": CORES_TESTES[teste], "size": 13, "symbol": simbolo, "line": {"color": "white", "width": 2}},
+            hovertemplate="Efeito escolhido: %{x:.1f} p.p.<br>Rejeições: %{y:.2f}%<extra>" + teste + "</extra>",
+        ))
+    alfa_texto = f"{100 * alfa:g}".replace(".", ",")
+    _layout(
+        figura, f"Poder interativo · {n} builds independentes, α = {alfa_texto}%",
+        "Efeito: aumento da taxa de falha acima de 5% (p.p.)", "Proporção de rejeições (%)",
+    )
+    figura.add_vline(x=100 * efeito, line_color="#8b8f97", line_dash="dot", line_width=2)
+    figura.add_hline(
+        y=100 * alfa, line_color="#8b8f97", line_dash="dash", line_width=2,
+        name=f"α nominal: {alfa_texto}%", showlegend=True,
+    )
+    figura.update_yaxes(range=[0, 104], tickvals=[0, 20, 40, 60, 80, 100], ticksuffix="%")
+    return figura

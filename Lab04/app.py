@@ -5,7 +5,7 @@ Execução, a partir da pasta Lab04: ``python executar.py``
 
 import streamlit as st
 
-from hipotese import q3
+from hipotese import poder, q3
 from hipotese.cenario import carregar_amostras_g1, carregar_builds_reais, carregar_resumo, configuracoes_simulacao
 from hipotese.config import (
     ALFA, EFEITOS, EFEITO_EXEMPLO, MARGEM_ERRO_TIPO_I_PP,
@@ -15,8 +15,13 @@ from hipotese.config import (
 )
 from hipotese.exemplo import gerar_exemplo
 from hipotese.erro_tipo_i import analisar_erro_tipo_i
-from hipotese.graficos import construir_g1, construir_g2, construir_g3, construir_g4, regiao_binomial
+from hipotese.graficos import (
+    construir_g1, construir_g2, construir_g3, construir_g4, construir_poder_interativo, regiao_binomial,
+)
 from hipotese.testes import aplicar_testes
+
+# Maior efeito do gráfico interativo do bônus (#278): 15 pontos percentuais.
+EFEITO_MAXIMO_INTERATIVO = 0.15
 
 # Seções na ordem exigida pelo roteiro, com a issue que preenche cada uma.
 SECOES = [
@@ -308,6 +313,66 @@ def exibir_q3(resultados, tipo_i):
     )
 
 
+@st.cache_data
+def _curva_poder(n, alfa):
+    efeitos = [round(0.005 * passo, 3) for passo in range(int(EFEITO_MAXIMO_INTERATIVO / 0.005) + 1)]
+    return poder.curva_poder(n, efeitos, alfa)
+
+
+def exibir_poder_interativo():
+    st.subheader("Bônus · Poder interativo (#278)")
+    st.markdown(
+        "Escolha o tamanho da amostra, o efeito e o α para ver o poder dos dois testes mudar. "
+        "Com builds independentes, o poder é calculado de forma exata pela distribuição binomial, "
+        "sem nova simulação; com 243 builds, os valores coincidem com a situação independente do G4 "
+        "dentro da margem de Monte Carlo."
+    )
+    colunas = st.columns(3)
+    n = colunas[0].slider("Tamanho da amostra (builds)", 10, 1000, 243, step=1, key="bonus_n")
+    efeito_pp = colunas[1].slider(
+        "Efeito (p.p. acima de 5%)", 0.0, 100 * EFEITO_MAXIMO_INTERATIVO, 100 * EFEITO_EXEMPLO,
+        step=0.5, key="bonus_efeito",
+    )
+    alfa = colunas[2].select_slider(
+        "Nível de significância α", options=[0.01, 0.05, 0.10], value=ALFA,
+        format_func=lambda valor: f"{100 * valor:g}%", key="bonus_alfa",
+    )
+    efeito = efeito_pp / 100
+
+    st.plotly_chart(
+        construir_poder_interativo(_curva_poder(n, alfa), n, efeito, alfa),
+        width="stretch", key="bonus_poder",
+    )
+    metricas = st.columns(4)
+    for coluna, teste in zip(metricas, poder.TESTES):
+        coluna.metric(f"Poder · {teste}", _pct(poder.poder_exato(teste, n, efeito, alfa)))
+    for coluna, teste in zip(metricas[2:], poder.TESTES):
+        coluna.metric(f"Erro tipo I · {teste}", _pct(poder.poder_exato(teste, n, 0.0, alfa)))
+
+    minimo_z, minimo_binomial = (poder.contagem_minima_rejeicao(teste, n, alfa) for teste in poder.TESTES)
+
+    def limiar(minimo):
+        return f"{minimo} falhas" if minimo <= n else "nenhuma contagem"
+
+    if minimo_z == minimo_binomial:
+        comparacao = (
+            f"Com {n} builds e α = {100 * alfa:g}%, os dois testes rejeitam H₀ a partir de "
+            f"**{limiar(minimo_z)}**, então têm o mesmo erro tipo I e o mesmo poder."
+        )
+    else:
+        comparacao = (
+            f"Com {n} builds e α = {100 * alfa:g}%, o Z rejeita H₀ a partir de **{limiar(minimo_z)}** "
+            f"e o binomial exato a partir de **{limiar(minimo_binomial)}**; o teste com limiar menor "
+            "tem mais poder e também mais falsos positivos."
+        )
+    st.markdown(
+        f"{comparacao} Como a contagem de falhas é discreta, as curvas não crescem de forma suave "
+        "com n: a vantagem do Z aparece quando seu limiar fica uma falha abaixo do binomial e "
+        "desaparece quando os limiares coincidem. O cálculo pressupõe builds independentes; "
+        "com rajadas, os dois testes rejeitam mais do que o mostrado aqui, como indica o G3."
+    )
+
+
 def exibir_q1():
     resultados = analisar_erro_tipo_i()
     z, binomial = resultados
@@ -521,6 +586,7 @@ for titulo, issue in SECOES:
         exibir_q2(simulacao)
         exibir_g4(simulacao)
         exibir_q3(simulacao, tipo_i)
+        exibir_poder_interativo()
     elif issue == "#275":
         exibir_testes_reais()
     elif issue == "#276":

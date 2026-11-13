@@ -207,7 +207,10 @@ def test_q2_exibe_os_seis_efeitos_e_as_taxas_independentes():
 
 def test_g4_exibe_os_dois_testes_por_situacao_com_os_valores_do_csv():
     app = executar()
-    g4 = json.loads(app.get("plotly_chart")[-1].proto.spec)
+    g4 = next(
+        spec for spec in (json.loads(grafico.proto.spec) for grafico in app.get("plotly_chart"))
+        if spec["layout"]["title"]["text"].startswith("G4")
+    )
     assert g4["layout"]["title"]["text"].startswith("G4")
     assert len(g4["data"]) == 6
     with ARQUIVO.open(encoding="utf-8", newline="") as arquivo:
@@ -263,3 +266,45 @@ def test_dashboard_final_apresenta_recomendacao_e_limitacao_sem_placeholders():
     assert "prefira o **binomial exato**" in texto
     assert "leve em conta a dependência" in texto
     assert "A coleta cobre um único workflow" in texto
+
+
+def _grafico_bonus(app):
+    return next(
+        spec for spec in (json.loads(grafico.proto.spec) for grafico in app.get("plotly_chart"))
+        if spec["layout"]["title"]["text"].startswith("Poder interativo")
+    )
+
+
+def test_bonus_fica_na_secao_5_com_controles_de_amostra_efeito_e_alfa():
+    app = executar()
+    assert [s.label for s in app.slider] == ["Tamanho da amostra (builds)", "Efeito (p.p. acima de 5%)"]
+    assert [s.value for s in app.slider] == [243, 4.0]
+    assert app.select_slider[0].value == 0.05
+    subtitulos = [s.value for s in app.subheader]
+    assert subtitulos.index("Bônus · Poder interativo (#278)") == subtitulos.index(
+        "Q3 · Quando os dados não se comportam bem (#272)"
+    ) + 1
+    grafico = _grafico_bonus(app)
+    curvas = [traco for traco in grafico["data"] if traco["mode"] == "lines"]
+    assert {curva["name"] for curva in curvas} == set(CORES_TESTES)
+    for curva in curvas:
+        assert curva["line"]["color"] == CORES_TESTES[curva["name"]]
+    assert grafico["layout"]["xaxis"]["title"]["text"].endswith("(p.p.)")
+    assert grafico["layout"]["yaxis"]["title"]["text"].endswith("(%)")
+
+
+def test_bonus_atualiza_o_poder_ao_mudar_amostra_efeito_e_alfa():
+    app = executar()
+    padrao = [m.value for m in app.metric]
+    assert padrao[:2] == ["83,64%", "77,10%"]
+    app.slider(key="bonus_n").set_value(250).run(timeout=10)
+    assert not app.exception
+    assert app.metric[0].value == app.metric[1].value == "81,00%"
+    assert "os dois testes rejeitam H₀ a partir de **19 falhas**" in "\n".join(m.value for m in app.markdown)
+    app.slider(key="bonus_efeito").set_value(8.0)
+    app.select_slider(key="bonus_alfa").set_value(0.01)
+    app.run(timeout=10)
+    assert not app.exception
+    titulo = _grafico_bonus(app)["layout"]["title"]["text"]
+    assert "250 builds" in titulo and "α = 1%" in titulo
+    assert [m.value for m in app.metric] != padrao

@@ -106,6 +106,11 @@ Nenhuma das seis taxas fica perto de 5% por esses critérios.
   independentes, o Z detectou o aumento em 83,40% das amostras e o binomial
   em 76,73%. O Z teve maior poder nos efeitos simulados e também mais
   falsos positivos; os testes têm níveis efetivos de erro tipo I diferentes.
+- **Bônus — Poder interativo:** na seção 5, controles de tamanho da amostra,
+  efeito e α atualizam as curvas e o poder dos dois testes. Com builds
+  independentes, o poder é calculado de forma exata pela binomial, sem nova
+  simulação. Com 250 builds, por exemplo, os dois testes rejeitam a partir de
+  19 falhas e têm o mesmo poder.
 
 ### Aplicação aos dados reais
 
@@ -136,7 +141,7 @@ de dependência e a generalização para outros projetos ou períodos.
 |---|---|
 | [`app.py`](app.py) | Dashboard em Streamlit |
 | [`executar.py`](executar.py) | Execução local e regeneração opcional |
-| [`hipotese/`](hipotese/) | Configuração, simulações, testes estatísticos e gráficos |
+| [`hipotese/`](hipotese/) | Configuração, simulações, testes estatísticos, poder exato e gráficos |
 | [`data/`](data/) | Snapshot, amostra tratada e resultados da simulação |
 | [`tests/`](tests/) | Testes automatizados, incluindo renderização e reprodutibilidade |
 
