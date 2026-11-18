@@ -43,6 +43,29 @@ st.markdown(
     f"[Dashboard]({url_dashboard}) · [Repositório]({URL_REPOSITORIO}) · [GitHub Projects]({URL_PROJECT})"
 )
 
+# Cartões brancos sobre o fundo do tema (.streamlit/config.toml) para leitura no projetor.
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: radial-gradient(circle at top left, #f8fafd 0%, #eef2f7 45%, #e6ebf3 100%);
+    }
+    [data-testid="stHeader"] { background: transparent; }
+    [data-testid="stMetric"], [data-testid="stPlotlyChart"], [data-testid="stTable"],
+    [data-testid="stExpander"] details {
+        background: #ffffff;
+        border: 1px solid #dde3ec;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(28, 37, 51, 0.06);
+    }
+    [data-testid="stMetric"] { padding: 14px 18px; }
+    [data-testid="stPlotlyChart"] { padding: 8px; overflow: hidden; }
+    [data-testid="stTable"] { padding: 4px 8px; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 def _num(valor, casas=2):
     return f"{valor:.{casas}f}".replace(".", ",").replace("-", "−")

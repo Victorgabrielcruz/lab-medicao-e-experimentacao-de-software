@@ -36,6 +36,7 @@ def _layout(figura: go.Figure, titulo: str, eixo_x: str, eixo_y: str) -> None:
         title={"text": titulo, "font": {"size": 20}},
         xaxis_title=eixo_x, yaxis_title=eixo_y,
         template="plotly_white", height=510,
+        paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
         margin={"t": 100, "b": 145, "l": 65, "r": 30},
         legend={"orientation": "h", "yanchor": "top", "y": -0.25, "x": 0},
         hovermode="closest",

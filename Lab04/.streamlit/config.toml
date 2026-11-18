@@ -1,0 +1,7 @@
+# Tema fixo claro para projeção: fundo suave e conteúdo em cartões brancos.
+[theme]
+base = "light"
+primaryColor = "#1f77b4"
+backgroundColor = "#eef2f7"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1c2533"
