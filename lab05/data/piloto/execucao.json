@@ -1,0 +1,30 @@
+{
+  "inicio_utc": "2026-11-19T15:18:49.041908+00:00",
+  "fim_utc": "2026-11-19T15:19:46.873287+00:00",
+  "duracao_parede_s": 57.830424200044945,
+  "codigo_saida": 0,
+  "comando": [
+    "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\data\\.venv-benchmark\\Scripts\\python.exe",
+    "executar.py",
+    "--diretorio",
+    "data\\piloto",
+    "--repeticoes",
+    "3",
+    "--aquecimentos",
+    "1",
+    "--semente",
+    "42"
+  ],
+  "commit_benchmark": "663d51964cbfe221525d059a616ac64eaaa868f1",
+  "cpu": "AMD Ryzen 5 8500G w/ Radeon 740M Graphics",
+  "nucleos_fisicos": 6,
+  "processadores_logicos": 12,
+  "memoria_fisica_bytes": 16221278208,
+  "disco": "WD Green SN350 500GB 2G0C",
+  "tipo_disco": "SSD NVMe",
+  "sistema_arquivos": "NTFS",
+  "plano_energia": "Equilibrado (381b4222-f694-41f0-9685-ff5bb260df2e)",
+  "energia": "Nenhuma bateria retornada por Win32_Battery; alimentação externa não instrumentada.",
+  "controle_ruido": "Sem alteração de energia, encerramento de aplicativos ou isolamento do SO; nenhuma outra tarefa de benchmark/teste iniciada pelo agente durante a coleta.",
+  "finalidade": "Piloto da issue #304; não integrar às 30 repetições da coleta completa."
+}

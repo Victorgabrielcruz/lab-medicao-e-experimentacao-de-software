@@ -1,0 +1,3 @@
+# Preserva os bytes dos artefatos usados nos hashes do resumo do piloto.
+data/piloto/*.csv -text whitespace=cr-at-eol
+data/piloto/*.json -text whitespace=cr-at-eol
