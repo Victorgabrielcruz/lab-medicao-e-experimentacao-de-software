@@ -51,6 +51,14 @@ Para uma coleta curta, mantendo as cargas do protocolo:
 sobrescrita: use outro `--diretorio` para repetir, inclusive se a anterior falhou.
 O piloto formal e a coleta completa devem seguir o plano da S01-06 (#304).
 
+O [piloto da S01-06 e o plano de coleta](docs/04-piloto-plano-coleta.md) registram
+36 medições em `data/piloto/`, a variabilidade e a estimativa de duração da coleta
+completa. Para reproduzir o resumo sem executar novamente o benchmark:
+
+```bash
+python resumir_piloto.py --diretorio data/piloto
+```
+
 ### Como a medição funciona
 
 - Em cada rodada, todas as 12 combinações de configuração e carga são embaralhadas.

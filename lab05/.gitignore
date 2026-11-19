@@ -1,5 +1,12 @@
-# Gerados pela execução local; os dados finais validados são versionados na S02.
-data/
+# Saídas locais; preserva somente os artefatos do piloto documentado na #304.
+data/*
+!data/piloto/
+data/piloto/*
+!data/piloto/resultados.csv
+!data/piloto/ambiente.json
+!data/piloto/execucao.json
+!data/piloto/resumo.csv
+!data/piloto/resumo.json
 .venv/
 __pycache__/
 .pytest_cache/
