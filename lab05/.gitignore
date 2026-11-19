@@ -1,2 +1,5 @@
 # Gerados pela execução local; os dados finais validados são versionados na S02.
 data/
+.venv/
+__pycache__/
+.pytest_cache/
