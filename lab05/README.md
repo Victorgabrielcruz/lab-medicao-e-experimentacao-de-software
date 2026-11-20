@@ -17,6 +17,7 @@ Cada configuração é medida em três cargas (escrita, leitura e mista), com
 ```
 lab05/
 ├── executar.py          # ponto de entrada do experimento
+├── app.py               # dashboard Streamlit com o roteiro do documento final
 ├── experimento/
 │   ├── config.py        # fatores, cargas, repetições e semente
 │   ├── ambiente.py      # registro de versões, hardware e disco
@@ -101,6 +102,27 @@ Cada linha de `resultados.csv` corresponde a uma repetição **medida**:
 A razão de vazão (M3) será calculada na análise, usando as medianas dos grupos.
 O CSV é gravado incrementalmente; em caso de interrupção ele pode estar incompleto.
 A validação de completude antes de analisar/versionar os dados é parte da S02-02 (#307).
+
+## Dashboard e plano de análise — S01-07 (#305)
+
+Com as dependências instaladas, na raiz do repositório:
+
+```bash
+python -m streamlit run lab05/app.py
+```
+
+Ou, dentro de `lab05/`, use `.venv/bin/python -m streamlit run app.py`
+(Windows: `.venv/Scripts/python -m streamlit run app.py`). O dashboard reaproveita
+a estrutura narrativa e o AppTest do Lab04, com as seções **software, pergunta,
+método, resultados, ameaças e impacto**, nessa ordem.
+
+Lê `data/piloto/resultados.csv`, valida com os metadados do piloto e recalcula
+o resumo sem executar o benchmark nem alterar os dados. As 36 medições são
+exploratórias: a inferência e as conclusões dependem da coleta completa.
+
+O [plano de análise](docs/05-plano-analise.md) define descritiva, testes por métrica,
+pareamento por rodada, correção de Holm, tamanho do efeito e intervalos de confiança.
+O AppTest verifica a ordem das seções, leitura do CSV e comportamento sem o piloto.
 
 ## Testes
 
