@@ -99,30 +99,48 @@ Cada linha de `resultados.csv` corresponde a uma repetição **medida**:
 | `linhas_iniciais`, `tamanho_payload` | Estado inicial e tamanho do campo de texto em bytes |
 | Campos do ambiente | Data/hora de início da coleta, versões, sistema, máquina, processador, CPUs, disco, diretório do banco e executável Python |
 
-A razão de vazão (M3) será calculada na análise, usando as medianas dos grupos.
+A razão de vazão (M3) é calculada no dashboard usando as medianas dos grupos;
+no piloto, ela é somente descritiva, sem teste de hipótese ou intervalo inferencial.
 O CSV é gravado incrementalmente; em caso de interrupção ele pode estar incompleto.
 A validação de completude antes de analisar/versionar os dados é parte da S02-02 (#307).
 
 ## Dashboard e plano de análise — S01-07 (#305)
 
-Com as dependências instaladas, na raiz do repositório:
+Com Python 3.12 e as dependências instaladas, execute dentro de `lab05/`
+para carregar também o tema local do Streamlit:
 
 ```bash
-python -m streamlit run lab05/app.py
+cd lab05
+.venv/bin/python -m streamlit run app.py
 ```
 
-Ou, dentro de `lab05/`, use `.venv/bin/python -m streamlit run app.py`
-(Windows: `.venv/Scripts/python -m streamlit run app.py`). O dashboard reaproveita
+No Windows, use `.venv/Scripts/python -m streamlit run app.py`.
+Com Streamlit disponível no ambiente ativo, também funciona a partir da raiz:
+`python -m streamlit run lab05/app.py` (o tema local requer iniciar dentro de `lab05/`).
+O dashboard reaproveita
 a estrutura narrativa e o AppTest do Lab04, com as seções **software, pergunta,
 método, resultados, ameaças e impacto**, nessa ordem.
 
 Lê `data/piloto/resultados.csv`, valida com os metadados do piloto e recalcula
 o resumo sem executar o benchmark nem alterar os dados. As 36 medições são
-exploratórias: a inferência e as conclusões dependem da coleta completa.
+exploratórias: a inferência confirmatória e as conclusões do experimento dependem da
+coleta completa. Abrir o painel ou trocar um filtro não inicia nova coleta.
+
+O painel oferece:
+
+- navegação pelas seis seções do documento;
+- filtros de carga (escrita, leitura e mista) e métrica (tempo ou vazão);
+- boxplots com todos os pontos, interação por medianas e inspeção da ordem de execução;
+- descritiva de M1/M2 com DP amostral, quartis, IQR, extremos e CV;
+- M3, ganho percentual e razão de razões exploratória para H1–H3;
+- ambiente registrado na coleta, sete categorias, ameaças com mitigações e durabilidade;
+- downloads do CSV bruto completo, da descritiva filtrada e do plano de análise.
 
 O [plano de análise](docs/05-plano-analise.md) define descritiva, testes por métrica,
 pareamento por rodada, correção de Holm, tamanho do efeito e intervalos de confiança.
-O AppTest verifica a ordem das seções, leitura do CSV e comportamento sem o piloto.
+O AppTest verifica a ordem das seções, leitura do CSV sem alteração dos artefatos,
+filtros, valores dos gráficos e tabelas, escala logarítmica e falhas do piloto.
+Os cálculos de descritiva e M3 têm testes com valores conhecidos.
 
 ## Testes
 
