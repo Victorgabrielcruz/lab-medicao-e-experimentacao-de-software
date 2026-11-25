@@ -1,4 +1,4 @@
-# Saídas locais; preserva somente os artefatos do piloto documentado na #304.
+# Saídas locais; preserva os artefatos documentados das #304, #306 e #307.
 data/*
 !data/piloto/
 data/piloto/*
@@ -14,6 +14,12 @@ data/coleta-completa-01/*
 !data/coleta-completa-01/execucao.json
 !data/coleta-completa-01/conferencia.json
 !data/coleta-completa-01/lancador.py
+!data/coleta-completa-01/validacao/
+data/coleta-completa-01/validacao/*
+!data/coleta-completa-01/validacao/validacao.json
+!data/coleta-completa-01/validacao/outliers.csv
+!data/coleta-completa-01/validacao/diagnostico-temporal.csv
+!data/coleta-completa-01/validacao/manifesto.json
 .venv/
 __pycache__/
 .pytest_cache/
