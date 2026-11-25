@@ -7,6 +7,13 @@ data/piloto/*
 !data/piloto/execucao.json
 !data/piloto/resumo.csv
 !data/piloto/resumo.json
+!data/coleta-completa-01/
+data/coleta-completa-01/*
+!data/coleta-completa-01/resultados.csv
+!data/coleta-completa-01/ambiente.json
+!data/coleta-completa-01/execucao.json
+!data/coleta-completa-01/conferencia.json
+!data/coleta-completa-01/lancador.py
 .venv/
 __pycache__/
 .pytest_cache/

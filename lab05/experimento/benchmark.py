@@ -5,6 +5,7 @@ import random
 import sqlite3
 import tempfile
 from dataclasses import dataclass
+from collections.abc import Callable
 from pathlib import Path
 from time import perf_counter
 
@@ -131,6 +132,7 @@ def coletar(
     repeticoes: int = config.N_REPETICOES,
     aquecimentos: int = config.N_AQUECIMENTO,
     semente: int = config.SEMENTE,
+    progresso: Callable[[int, int, Execucao], None] | None = None,
 ) -> Path:
     """Salva somente medições; recusa substituir uma coleta já existente.
 
@@ -158,6 +160,8 @@ def coletar(
         for ordem, execucao in enumerate(plano, start=1):
             resultado = medir_execucao(execucao, bancos)
             if execucao.aquecimento:
+                if progresso is not None:
+                    progresso(ordem, len(plano), execucao)
                 continue
             linha = {
                 "ordem_execucao": ordem, **resultado,
@@ -169,4 +173,6 @@ def coletar(
                 escritor.writeheader()
             escritor.writerow(linha)
             arquivo.flush()
+            if progresso is not None:
+                progresso(ordem, len(plano), execucao)
     return caminho

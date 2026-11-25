@@ -1,0 +1,93 @@
+{
+  "data_hora_utc": "2026-11-25T19:50:13.612118+00:00",
+  "tipo": "Conferência operacional da #306; não substitui a validação formal e análise de outliers da #307.",
+  "resultado": "aprovada",
+  "execucoes_planejadas": 396,
+  "aquecimentos_descartados": 36,
+  "medicoes": 360,
+  "grupos": [
+    {
+      "configuracao": "DELETE-FULL",
+      "carga": "escrita",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "DELETE-FULL",
+      "carga": "leitura",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "DELETE-FULL",
+      "carga": "mista",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "DELETE-NORMAL",
+      "carga": "escrita",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "DELETE-NORMAL",
+      "carga": "leitura",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "DELETE-NORMAL",
+      "carga": "mista",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-FULL",
+      "carga": "escrita",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-FULL",
+      "carga": "leitura",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-FULL",
+      "carga": "mista",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-NORMAL",
+      "carga": "escrita",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-NORMAL",
+      "carga": "leitura",
+      "repeticoes": 30
+    },
+    {
+      "configuracao": "WAL-NORMAL",
+      "carga": "mista",
+      "repeticoes": 30
+    }
+  ],
+  "ordem_medida_inicial": 37,
+  "ordem_medida_final": 396,
+  "operacoes_medidas": 1560000,
+  "leituras_medidas": 1368000,
+  "escritas_medidas": 192000,
+  "verificacoes": [
+    "Plano e sementes idênticos ao sorteio de 30/3/42",
+    "30 repetições por grupo, sem lacunas ou duplicatas",
+    "Tempos e vazões positivos e finitos",
+    "Vazão = operações / tempo",
+    "Contagens de operações conforme as cargas",
+    "Campos do ambiente CSV iguais ao JSON",
+    "Hashes dos fontes e do lançador usados na execução",
+    "Nenhum banco temporário remanescente"
+  ],
+  "sha256_artefatos": {
+    "resultados.csv": "595eba4d16b1c8fbe4550a2d2f2d545c13932b49d10e6e3ff93f8b5a9214eacc",
+    "ambiente.json": "492687bbf6ebcc8c0127bbde107adcba50d55f08a02215cc9d53167f501c3cf6",
+    "execucao.json": "4f57d8caea87b8df6316add1762ff137e084874cc3c543ed784d08954e9f41d0",
+    "lancador.py": "7e4b46cd974e2cbfb339103c97359f278977330443f9766da3aee49c253f726a"
+  },
+  "sem_exclusoes": true,
+  "piloto_incorporado": false
+}

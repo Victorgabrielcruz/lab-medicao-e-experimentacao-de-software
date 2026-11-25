@@ -4,8 +4,15 @@ import argparse
 import sys
 from pathlib import Path
 
-from experimento.benchmark import coletar
+from experimento.benchmark import Execucao, coletar
 from experimento.config import DIR_DADOS, N_AQUECIMENTO, N_REPETICOES, SEMENTE
+
+
+def mostrar_progresso(ordem: int, total: int, execucao: Execucao) -> None:
+    fase = "aquecimento" if execucao.aquecimento else "medição"
+    print(f"[{ordem:3d}/{total}] {100 * ordem / total:5.1f}% | {fase} "
+          f"{execucao.repeticao:2d} | {execucao.configuracao.nome:<13} | {execucao.carga.nome}",
+          flush=True)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -16,13 +23,15 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--repeticoes", type=int, default=N_REPETICOES)
     parser.add_argument("--aquecimentos", type=int, default=N_AQUECIMENTO)
     parser.add_argument("--semente", type=int, default=SEMENTE)
+    parser.add_argument("--progresso", action="store_true", help="Mostra cada execução concluída, fora da medição.")
     args = parser.parse_args(argv)
     if args.repeticoes < 1 or args.aquecimentos < 0:
         parser.error("--repeticoes deve ser positivo e --aquecimentos não negativo.")
     print("Executando benchmark; a coleta completa pode levar vários minutos.", flush=True)
     try:
         caminho = coletar(args.diretorio, repeticoes=args.repeticoes,
-                          aquecimentos=args.aquecimentos, semente=args.semente)
+                          aquecimentos=args.aquecimentos, semente=args.semente,
+                          progresso=mostrar_progresso if args.progresso else None)
     except FileExistsError:
         parser.error("Já existe uma coleta nesse diretório. Use --diretorio com outro caminho.")
     print(f"Medições salvas em {caminho}")
