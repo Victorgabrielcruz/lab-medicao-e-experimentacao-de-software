@@ -22,7 +22,9 @@ lab05/
 ├── experimento/
 │   ├── config.py        # fatores, cargas, repetições e semente
 │   ├── ambiente.py      # registro de versões, hardware e disco
-│   └── benchmark.py     # plano aleatório, cargas e medições em CSV
+│   ├── benchmark.py     # plano aleatório, cargas e medições em CSV
+│   ├── validacao.py     # integridade, completude e diagnósticos da #307
+│   └── painel.py        # leitura, descritiva e gráficos da #308
 ├── tests/
 └── data/                # saídas locais (ambiente.json, bancos, CSVs)
 ```
@@ -122,11 +124,11 @@ Cada linha de `resultados.csv` corresponde a uma repetição **medida**:
 | Campos do ambiente | Data/hora de início da coleta, versões, sistema, máquina, processador, CPUs, disco, diretório do banco e executável Python |
 
 A razão de vazão (M3) é calculada no dashboard usando as medianas dos grupos;
-no piloto, ela é somente descritiva, sem teste de hipótese ou intervalo inferencial.
+nesta entrega, ela é descritiva tanto no piloto quanto na coleta completa.
 O CSV é gravado incrementalmente; em caso de interrupção ele pode estar incompleto.
 A validação de completude antes de analisar/versionar os dados é parte da S02-02 (#307).
 
-## Dashboard e plano de análise — S01-07 (#305)
+## Dashboard — plano de análise (#305) e descritiva e gráficos (#308)
 
 Com Python 3.12 e as dependências instaladas, execute dentro de `lab05/`
 para carregar também o tema local do Streamlit:
@@ -143,20 +145,32 @@ O dashboard reaproveita
 a estrutura narrativa e o AppTest do Lab04, com as seções **software, pergunta,
 método, resultados, ameaças e impacto**, nessa ordem.
 
-Lê `data/piloto/resultados.csv`, valida com os metadados do piloto e recalcula
-o resumo sem executar o benchmark nem alterar os dados. As 36 medições são
-exploratórias: a inferência confirmatória e as conclusões do experimento dependem da
-coleta completa. Abrir o painel ou trocar um filtro não inicia nova coleta.
+Abre por padrão **`data/coleta-completa-01/resultados.csv`**, com 360 medições
+e 30 repetições em cada configuração/carga. Confere a publicação aprovada da #307,
+revalida as entradas e verifica sua correspondência com os hashes do manifesto,
+sem executar o benchmark, republicar relatórios ou alterar dados.
+As 23 observações sinalizadas são preservadas integralmente. Falhas de leitura ou
+validação aparecem no painel, sem troca automática de conjunto.
+
+O seletor **Conjunto de dados** permite consultar separadamente o **Piloto**
+(36 medições, 3 por grupo), que não é somado à coleta completa. A #308 descreve
+os dados; a auditoria temporal e a inferência confirmatória permanecem na #309.
+Abrir o painel ou trocar um filtro não inicia nova coleta.
 
 O painel oferece:
 
 - navegação pelas seis seções do documento;
 - filtros de carga (escrita, leitura e mista) e métrica (tempo ou vazão);
-- boxplots com todos os pontos, interação por medianas e inspeção da ordem de execução;
+- boxplots com todos os pontos e quartis coerentes com a validação;
+- comparação por mediana e Q1–Q3 (dispersão, não IC), interação e ordem de execução;
 - descritiva de M1/M2 com DP amostral, quartis, IQR, extremos e CV;
 - M3, ganho percentual e razão de razões exploratória para H1–H3;
 - ambiente registrado na coleta, sete categorias, ameaças com mitigações e durabilidade;
-- downloads do CSV bruto completo, da descritiva filtrada e do plano de análise.
+- tabela de todas as cargas para as duas métricas, com unidades identificadas;
+- downloads do CSV bruto, descritiva filtrada, descritiva completa e plano de análise.
+
+A [entrega da #308](docs/08-descritiva-graficos.md) registra as medidas usadas,
+o resumo dos 12 grupos da coleta completa, a interpretação dos gráficos e seus limites.
 
 O [plano de análise](docs/05-plano-analise.md) define descritiva, testes por métrica,
 pareamento por rodada, correção de Holm, tamanho do efeito e intervalos de confiança.

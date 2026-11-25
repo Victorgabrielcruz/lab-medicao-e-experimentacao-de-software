@@ -1,4 +1,4 @@
-"""Dashboard do experimento SQLite: protocolo e exploração do piloto (#305).
+"""Dashboard do experimento SQLite: descritiva e gráficos dos resultados (#308).
 
 Na raiz do repositório: ``python -m streamlit run lab05/app.py``.
 O dashboard somente lê os artefatos; não executa o benchmark.
@@ -155,63 +155,88 @@ def tabela_numerica(tabela, casas=4, **kwargs):
 
 def exibir_resultados():
     titulo_secao(3)
-    diretorio = config.DIR_DADOS / "piloto"
+    fonte = st.selectbox("Conjunto de dados", ["Coleta completa", "Piloto"], key="coleta")
+    completa = fonte == "Coleta completa"
+    nome = "coleta-completa-01" if completa else "piloto"
+    diretorio = config.DIR_DADOS / nome
     try:
-        piloto = painel.carregar_piloto(diretorio)
+        coleta = (painel.carregar_coleta_completa if completa else painel.carregar_piloto)(diretorio)
     except (OSError, ValueError, KeyError, AttributeError, StopIteration, csv.Error) as erro:
-        st.error(f"Não foi possível ler o piloto: {erro}")
-        st.info("Restaure os arquivos do piloto versionado: resultados.csv, ambiente.json e execucao.json.")
+        st.error(f"Não foi possível ler {fonte.lower()}: {erro}")
+        st.info("Confira os artefatos versionados do conjunto selecionado e, para a coleta completa, o manifesto da validação #307.")
         return
-    parametros = piloto.ambiente["experimento"]
+    parametros = coleta.ambiente["experimento"]
     repeticoes, aquecimentos = parametros["repeticoes"], parametros["aquecimentos"]
-    st.warning(
-        f"Piloto exploratório · {repeticoes} repetições medidas e {aquecimentos} "
-        f"{'aquecimento descartado' if aquecimentos == 1 else 'aquecimentos descartados'} "
-        "por combinação. Os dados não respondem às hipóteses "
-        "confirmatórias. As razões abaixo descrevem esta amostra; não são apresentados "
-        "valores-p ou IC inferenciais do piloto."
-    )
+    if completa:
+        st.success(
+            f"Coleta completa validada estruturalmente · {len(coleta.dados)} medições, "
+            f"{repeticoes} repetições por grupo e {aquecimentos} aquecimentos descartados. "
+            f"{coleta.validacao['outliers_observacoes_unicas']} observações sinalizadas na #307; "
+            "todas preservadas na descritiva e nos gráficos. Nenhuma exclusão."
+        )
+        st.info(
+            "Análise descritiva da #308. A aprovação estrutural não comprova independência "
+            "temporal: auditoria e testes de hipótese permanecem na #309. Não são "
+            "apresentados valores-p ou intervalos de confiança inferenciais."
+        )
+    else:
+        st.warning(
+            f"Piloto exploratório · {repeticoes} repetições medidas e {aquecimentos} "
+            "aquecimento(s) descartado(s) por combinação. Estes dados não respondem às "
+            "hipóteses confirmatórias e não são somados à coleta completa."
+        )
     colunas = st.columns(4)
-    for coluna, nome, valor in zip(colunas,
-        ("Medições do piloto", "Combinações", "Repetições por grupo", "Duração da coleta"),
-        (str(len(piloto.dados)), str(len(piloto.resumo["grupos"])), str(repeticoes),
-         f"{numero(piloto.execucao['duracao_parede_s'], 1)} s")):
-        coluna.metric(nome, valor, border=True)
-    st.caption("Fonte: lab05/data/piloto/resultados.csv · estatísticas recalculadas a partir das medições brutas.")
+    for coluna, rotulo, valor in zip(colunas,
+        ("Medições analisadas", "Combinações", "Repetições por grupo", "Duração da coleta"),
+        (str(len(coleta.dados)), str(len(coleta.resumo["grupos"])), str(repeticoes),
+         f"{numero(coleta.execucao['duracao_parede_s'], 1)} s")):
+        coluna.metric(rotulo, valor, border=True)
+    st.caption(f"Fonte: lab05/data/{nome}/resultados.csv · estatísticas recalculadas a partir de todas as medições brutas.")
     with st.expander("Ambiente e rastreabilidade da coleta"):
-        ambiente = piloto.ambiente
+        ambiente = coleta.ambiente
         st.table([
-            {"Item": nome, "Valor": str(valor)} for nome, valor in (
+            {"Item": item, "Valor": str(valor)} for item, valor in (
                 ("Início (UTC)", ambiente["data_hora_utc"]), ("Sistema", ambiente["sistema"]),
                 ("Python da coleta", ambiente["python_version"]), ("SQLite da coleta", ambiente["sqlite_version"]),
-                ("CPU", piloto.execucao["cpu"]), ("Disco", piloto.execucao["disco"]),
-                ("Sistema de arquivos", piloto.execucao["sistema_arquivos"]),
-                ("Semente", parametros["semente"]), ("Commit do benchmark", piloto.execucao["commit_benchmark"]),
+                ("CPU", coleta.execucao["cpu"]), ("Disco", coleta.execucao["disco"]),
+                ("Sistema de arquivos", coleta.execucao["sistema_arquivos"]),
+                ("Semente", parametros["semente"]),
+                ("Commit de referência", coleta.execucao.get("commit_benchmark", coleta.execucao.get("commit_base"))),
             )
         ])
+        if completa:
+            st.code(coleta.validacao["entradas_sha256"]["resultados.csv"], language=None)
+            st.caption("SHA-256 do CSV conferido com o manifesto da #307; todos os cálculos preservam os dados originais.")
+            documento("07-validacao-dicionario-dados.md", "Validação e dicionário das colunas")
         st.caption("O ambiente acima pertence à coleta. A máquina que abre o dashboard pode ser diferente.")
     filtros = st.columns([1, 1, 1])
     carga = filtros[0].selectbox("Carga de trabalho", [c.nome for c in config.CARGAS], key="carga")
     metrica = filtros[1].selectbox("Métrica", list(painel.METRICAS), key="metrica")
     logaritmica = filtros[2].toggle("Escala logarítmica", key="logaritmica")
     coluna, eixo, sentido = painel.METRICAS[metrica]
-    dados = piloto.dados[piloto.dados.carga == carga]
-    st.caption(f"{eixo} · {sentido.lower()} · pontos individuais preservados; linhas da interação representam medianas.")
+    dados = coleta.dados[coleta.dados.carga == carga]
+    st.caption(f"{eixo} · {sentido.lower()} · {len(dados)} medições da carga selecionada.")
     graficos = st.columns(2)
     with graficos[0]:
         st.plotly_chart(painel.distribuicao(dados, coluna, eixo, carga, logaritmica), width="stretch", key="distribuicao")
     with graficos[1]:
-        st.plotly_chart(painel.interacao(dados, coluna, eixo, carga, logaritmica), width="stretch", key="interacao")
+        st.plotly_chart(painel.comparar_configuracoes(dados, coluna, eixo, carga, logaritmica), width="stretch", key="medianas")
     st.caption(
-        "Com apenas três pontos por grupo, o boxplot é um resumo visual. Linhas não paralelas "
-        "sugerem um padrão a investigar, sem comprovar interação estatística."
+        "Boxplot: todas as observações, inclusive valores extremos. Comparação: pontos "
+        "representam medianas e barras vão de Q1 a Q3; indicam dispersão, não intervalos "
+        "de confiança. A escala logarítmica altera apenas a visualização."
     )
     st.subheader("Descritiva por configuração")
     tabela = painel.descritiva(dados, coluna)
     tabela_numerica(tabela.drop(columns="Carga"), key="descritiva")
-    st.caption(f"Valores em {eixo.split('(', 1)[1].rstrip(')')}, exceto n e CV (%). DP amostral (n−1), quartis lineares e IQR = Q3 − Q1.")
-    st.subheader("Comparações de vazão · efeito observado no piloto")
-    comparacoes = painel.comparacoes(piloto.dados)
+    st.caption(
+        f"Valores em {eixo.split('(', 1)[1].rstrip(')')}, exceto n e CV (%). "
+        "DP amostral (n−1), quartis lineares, IQR = Q3 − Q1 e CV = 100 × DP / média. "
+        "Tempo e vazão têm escala de razão; mediana e IQR resumem os grupos com menor "
+        "sensibilidade a valores extremos. As cargas são analisadas separadamente."
+    )
+    st.subheader("Comparações de vazão · razões descritivas")
+    comparacoes = painel.comparacoes(coleta.dados)
     comparacoes = comparacoes[comparacoes.Carga == carga].drop(columns="Carga").reset_index(drop=True)
     tabela_numerica(comparacoes, casas=2, key="comparacoes")
     h1, h2, h3 = comparacoes["M3 (×)"].tolist()
@@ -219,18 +244,26 @@ def exibir_resultados():
         f"Na carga **{carga}**, a razão entre as medianas de vazão é **{numero(h1)}×** em H1, "
         f"**{numero(h2)}×** em H2 e **{numero(h3)}×** em H3. "
         f"A razão H2/H3 é **{numero(h2 / h3)}×**, uma descrição exploratória da interação. "
-        "Esses números descrevem o piloto e não estabelecem superioridade, equivalência ou causalidade geral."
+        "Esses números descrevem o conjunto selecionado e não estabelecem significância "
+        "estatística, equivalência ou causalidade geral."
     )
     st.caption("M3 = mediana M2 do tratamento / mediana M2 da referência; ganho (%) = 100 × (M3 − 1). M3 acima de 1 indica maior vazão observada.")
-    with st.expander("Ordem de execução e medições brutas"):
+    with st.expander("Interação, ordem de execução e medições brutas"):
+        st.plotly_chart(painel.interacao(dados, coluna, eixo, carga, logaritmica), width="stretch", key="interacao")
+        st.caption("Linhas representam medianas. Linhas não paralelas descrevem um padrão a investigar; não comprovam interação estatística.")
         st.plotly_chart(painel.ordem_execucao(dados, coluna, eixo, carga), width="stretch", key="ordem")
-        st.caption("A ordem inclui os aquecimentos descartados. Este gráfico ajuda a inspecionar deriva temporal; três rodadas não estabelecem independência.")
+        st.caption("A posição inclui os aquecimentos descartados. A inspeção temporal é exploratória; o gráfico não estabelece independência.")
         st.dataframe(dados, hide_index=True, width="stretch", key="brutos")
-    downloads = st.columns(2)
-    downloads[0].download_button("Baixar CSV completo do piloto", (diretorio / "resultados.csv").read_bytes(),
-                                 file_name="piloto-resultados.csv", mime="text/csv", key="csv_piloto")
+    tabela_completa = painel.descritiva_completa(coleta.dados)
+    with st.expander("Descritiva de todas as cargas · M1 e M2"):
+        tabela_numerica(tabela_completa, key="todas_cargas")
+    downloads = st.columns(3)
+    downloads[0].download_button("Baixar CSV bruto selecionado", (diretorio / "resultados.csv").read_bytes(),
+                                 file_name=f"{nome}-resultados.csv", mime="text/csv", key="csv_bruto")
     downloads[1].download_button("Baixar descritiva da seleção", tabela.to_csv(index=False).encode("utf-8-sig"),
-                                 file_name=f"piloto-{carga}-{coluna}-descritiva.csv", mime="text/csv", key="csv_resumo")
+                                 file_name=f"{nome}-{carga}-{coluna}-descritiva.csv", mime="text/csv", key="csv_resumo")
+    downloads[2].download_button("Baixar descritiva de todas as cargas", tabela_completa.to_csv(index=False).encode("utf-8-sig"),
+                                 file_name=f"{nome}-descritiva-completa.csv", mime="text/csv", key="csv_completo")
 
 
 def exibir_ameacas():
@@ -239,13 +272,14 @@ def exibir_ameacas():
         {"Validade": "Interna", "Ameaça": "Cache, CPU/SO, ordem e checkpoints", "Mitigação e limite": "Banco novo, ordem aleatória, condições registradas; cache não é limpo e o SO não é isolado."},
         {"Validade": "Externa", "Ameaça": "Uma máquina, uma versão e cargas sintéticas", "Mitigação e limite": "Relatar ambiente e propor replicações; não generalizar para produção ou concorrência."},
         {"Validade": "Construto", "Ameaça": "Tempo da janela não mede latência individual ou durabilidade", "Mitigação e limite": "Explicitar commits e trecho medido; garantias vêm da documentação, sem ensaio de falha."},
-        {"Validade": "Conclusão", "Ameaça": "Piloto pequeno, dependência e comparações múltiplas", "Mitigação e limite": "Preservar pares e auditar rodadas; Holm, efeitos e IC previstos na análise completa."},
+        {"Validade": "Conclusão", "Ameaça": "Dependência temporal e comparações múltiplas", "Mitigação e limite": "Aprovação estrutural não atesta independência; auditoria, testes, Holm e IC permanecem na #309."},
     ])
     st.markdown(
         "A aleatorização distribui parte do ruído, mas não o elimina. Um banco novo "
         "não significa cache frio. Não remover observações apenas por serem lentas. "
-        "O piloto valida o fluxo de coleta e descreve sua variabilidade; três repetições "
-        "não permitem demonstrar estabilidade, normalidade ou poder para diferenças pequenas."
+        "A coleta completa contém 30 repetições por grupo, mas esse número, isoladamente, "
+        "não comprova estabilidade, normalidade ou poder para diferenças pequenas. "
+        "A descritiva preserva todas as observações sinalizadas pela validação."
     )
 
 
@@ -276,11 +310,11 @@ def exibir_impacto():
             "3. Use a coleta completa validada, efeitos e incerteza antes de recomendar uma mudança."
         )
     st.markdown(
-        "**Conclusão do piloto:** o pipeline produz as 12 combinações planejadas e permite "
-        "examinar tempo, vazão e variabilidade. As diferenças observadas motivam a análise "
-        "completa; não justificam eleger uma configuração universal. "
-        "O próximo marco científico é a coleta de 360 medições, sua validação e a execução "
-        "do plano de análise, preservando o piloto separado."
+        "**Alcance dos resultados:** a coleta completa e sua validação estrutural já foram "
+        "registradas. O painel descreve tempo, vazão e variabilidade nas 12 combinações, "
+        "preservando o piloto separado. As diferenças observadas não justificam eleger "
+        "uma configuração universal; a auditoria temporal e a inferência da #309 ainda "
+        "são necessárias antes de conclusões confirmatórias."
     )
 
 
@@ -292,13 +326,13 @@ def main():
         st.markdown("\n\n".join(f"[{titulo}](#{ancora})" for titulo, ancora in SECOES))
         st.divider()
         st.markdown("**Dados disponíveis**")
-        st.caption("Piloto versionado · análise exploratória")
+        st.caption("Coleta completa e piloto separados · análise descritiva")
         st.link_button("Repositório", config.URL_REPOSITORIO)
         st.link_button("Projeto da disciplina", config.URL_PROJECT)
     st.caption("LABORATÓRIO DE EXPERIMENTAÇÃO DE SOFTWARE · PUC MINAS")
     st.title("SQLite: desempenho e durabilidade")
     st.markdown("Um experimento local sobre os efeitos de **journal_mode** e **synchronous** nas cargas de escrita, leitura e mista.")
-    st.caption("Painel do piloto · protocolo fatorial 2 × 2 · proposta, método e resultados exploratórios")
+    st.caption("Coleta completa · protocolo fatorial 2 × 2 · estatística descritiva e gráficos")
     for exibir in (exibir_software, exibir_pergunta, exibir_metodo, exibir_resultados,
                    exibir_ameacas, exibir_impacto):
         with st.container(border=True):
