@@ -5,3 +5,6 @@ data/piloto/*.json -text whitespace=cr-at-eol
 data/coleta-completa-01/*.csv -text whitespace=cr-at-eol
 data/coleta-completa-01/*.json -text whitespace=cr-at-eol
 data/coleta-completa-01/lancador.py -text whitespace=cr-at-eol
+# Mantém os hashes dos relatórios e do manifesto da validação (#307).
+data/coleta-completa-01/validacao/*.csv -text whitespace=cr-at-eol
+data/coleta-completa-01/validacao/*.json -text whitespace=cr-at-eol

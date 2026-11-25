@@ -17,6 +17,7 @@ Cada configuração é medida em três cargas (escrita, leitura e mista), com
 ```
 lab05/
 ├── executar.py          # ponto de entrada do experimento
+├── validar_dados.py     # validação e manifesto da coleta completa (#307)
 ├── app.py               # dashboard Streamlit com o roteiro do documento final
 ├── experimento/
 │   ├── config.py        # fatores, cargas, repetições e semente
@@ -64,6 +65,22 @@ A [coleta completa da #306](docs/06-coleta-completa.md) está registrada em
 `data/coleta-completa-01/`, com 360 medições, ambiente e conferência operacional.
 O piloto permanece separado. Para acompanhar futuras coletas pelo terminal, acrescente
 `--progresso` ao comando; as mensagens são emitidas fora da janela cronometrada.
+
+Para validar a coleta completa existente, sem executar novamente o benchmark:
+
+```bash
+python validar_dados.py --diretorio data/coleta-completa-01
+```
+
+O comando usa somente a biblioteca padrão e gera `validacao/validacao.json`,
+`outliers.csv`, `diagnostico-temporal.csv` e `manifesto.json`, preservando as entradas.
+Retorna código 0 para aprovação estrutural, 1 para dados reprovados e 2 para erro
+de argumentos ou de publicação. `--saida` permite outro diretório para os relatórios.
+A [validação e o dicionário das 28 colunas](docs/07-validacao-dicionario-dados.md)
+registram 360 medições válidas, 23 observações sinalizadas e nenhuma exclusão.
+O manifesto identifica por SHA-256 o CSV final, que é o próprio arquivo bruto
+versionado na #306. A aprovação não atesta independência temporal: a auditoria
+necessária à inferência continua pendente na #309.
 
 ### Como a medição funciona
 

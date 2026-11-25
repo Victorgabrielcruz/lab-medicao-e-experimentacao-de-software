@@ -1,0 +1,53 @@
+{
+  "versao": 1,
+  "coleta": "coleta-completa-01",
+  "status": "aprovada",
+  "publicado_para_analise_exploratoria": true,
+  "dados": "../resultados.csv",
+  "dicionario": "lab05/docs/07-validacao-dicionario-dados.md",
+  "medicoes": 360,
+  "colunas": [
+    "ordem_execucao",
+    "configuracao",
+    "journal_mode",
+    "synchronous",
+    "carga",
+    "repeticao",
+    "n_operacoes",
+    "n_leituras",
+    "n_escritas",
+    "tempo_total_s",
+    "vazao_ops_s",
+    "semente_carga",
+    "semente",
+    "linhas_iniciais",
+    "tamanho_payload",
+    "data_hora_utc",
+    "sqlite_version",
+    "python_version",
+    "python_implementacao",
+    "sistema",
+    "sistema_versao",
+    "maquina",
+    "processador",
+    "n_cpus",
+    "disco_total_gb",
+    "disco_livre_gb",
+    "diretorio_banco",
+    "executavel_python"
+  ],
+  "entradas_sha256": {
+    "resultados.csv": "595eba4d16b1c8fbe4550a2d2f2d545c13932b49d10e6e3ff93f8b5a9214eacc",
+    "ambiente.json": "492687bbf6ebcc8c0127bbde107adcba50d55f08a02215cc9d53167f501c3cf6",
+    "execucao.json": "4f57d8caea87b8df6316add1762ff137e084874cc3c543ed784d08954e9f41d0",
+    "lancador.py": "7e4b46cd974e2cbfb339103c97359f278977330443f9766da3aee49c253f726a",
+    "conferencia.json": "58a1a0df44d536f3e9a53d4dd9626349c922d5dc26d4c595c263fc13a5f0a454"
+  },
+  "relatorios_sha256": {
+    "validacao.json": "df2a94b82d38565e0f9cade1ceb9ee59a8b142480af49d875e768e60428e3419",
+    "outliers.csv": "2b67232ab66c782b1d7062045ba111f18efcbd9b74e8270b1e67fcbd071f2930",
+    "diagnostico-temporal.csv": "04bbbe9bb29aaa96180ac824dc0aa916905bbd3f828c21792ff316dd96cceb3c"
+  },
+  "inferencia": "Pendente de auditoria temporal em #309: correlações exploratórias não demonstram nem refutam independência; não usar aprovação estrutural como autorização para conclusões confirmatórias.",
+  "observacoes_excluidas": 0
+}
