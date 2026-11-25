@@ -1,0 +1,39 @@
+{
+  "status": "concluida",
+  "inicio_utc": "2026-11-25T19:42:57.835494+00:00",
+  "commit_base": "fbf677aa87689cec30949c90bee1de2be819ff1e",
+  "sha256_fontes": {
+    "executar.py": "48e543ff16fc486eab3efcae5415e78725a918a333d619ed880dc7514dfdfe1a",
+    "experimento/benchmark.py": "08f52657d4d4401f3874a23cdd4022df062e369378368d474c91195f1cf5cc4b",
+    "experimento/config.py": "26301f2aa2bf6c39ea187ac81764ce6bfe087b701245bbb97b9c3b391caa3be0",
+    "experimento/ambiente.py": "36a199a91707a89c1e1618014ce150f44dfa48ac95b19e7db99927f144a4541e"
+  },
+  "sha256_lancador": "7e4b46cd974e2cbfb339103c97359f278977330443f9766da3aee49c253f726a",
+  "comando": [
+    "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\data\\.venv-benchmark\\Scripts\\python.exe",
+    "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\executar.py",
+    "--diretorio",
+    "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\data\\coleta-completa-01",
+    "--repeticoes",
+    "30",
+    "--aquecimentos",
+    "3",
+    "--semente",
+    "42",
+    "--progresso"
+  ],
+  "cpu": "AMD Ryzen 5 8500G w/ Radeon 740M Graphics",
+  "nucleos_fisicos": 6,
+  "processadores_logicos": 12,
+  "memoria_fisica_bytes": 16221278208,
+  "disco": "WD Green SN350 500GB 2G0C",
+  "tipo_disco": "SSD NVMe",
+  "sistema_arquivos": "NTFS",
+  "plano_energia": "Equilibrado (381b4222-f694-41f0-9685-ff5bb260df2e)",
+  "condicoes": "Hardware e plano de energia consultados antes da coleta. Aplicativos existentes não foram encerrados; sem isolamento do SO, limpeza de cache ou desativação de proteções. Alimentação externa não instrumentada. Nenhum teste, análise ou outro benchmark iniciado pelo agente durante a execução.",
+  "progresso": "Uma linha por execução concluída, após o cronômetro e a limpeza; sem alteração das cargas ou da sequência sorteada.",
+  "suspensao_impedida": true,
+  "codigo_saida": 0,
+  "duracao_parede_s": 329.74771890000557,
+  "fim_utc": "2026-11-25T19:48:27.622311+00:00"
+}

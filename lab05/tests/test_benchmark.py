@@ -193,3 +193,34 @@ def test_cli_recusa_parametros_invalidos(tmp_path):
         executar.main(["--diretorio", str(tmp_path / "saida"), "--repeticoes", "0"])
     assert erro.value.code == 2
     assert not (tmp_path / "saida").exists()
+
+
+def test_progresso_inclui_aquecimentos_e_medicoes(tmp_path, desenho_curto, monkeypatch):
+    eventos = []
+    medir_real = benchmark.medir_execucao
+    medindo = False
+
+    def medir(execucao, bancos):
+        nonlocal medindo
+        medindo = True
+        try:
+            return medir_real(execucao, bancos)
+        finally:
+            medindo = False
+
+    def progresso(ordem, total, execucao):
+        assert not medindo
+        eventos.append((ordem, total, execucao.aquecimento))
+
+    monkeypatch.setattr(benchmark, "medir_execucao", medir)
+    benchmark.coletar(tmp_path, repeticoes=1, aquecimentos=1, progresso=progresso)
+    assert eventos == [(i, 24, i <= 12) for i in range(1, 25)]
+    with (tmp_path / "resultados.csv").open(encoding="utf-8") as arquivo:
+        assert len(list(csv.DictReader(arquivo))) == 12
+
+
+def test_cli_mostra_progresso(tmp_path, desenho_curto, capsys):
+    executar.main(["--diretorio", str(tmp_path), "--repeticoes", "1", "--aquecimentos", "0", "--progresso"])
+    saida = capsys.readouterr().out
+    assert "100.0%" in saida
+    assert "[ 12/12]" in saida

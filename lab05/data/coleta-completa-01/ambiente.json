@@ -1,0 +1,45 @@
+{
+  "data_hora_utc": "2026-11-25T19:42:58+00:00",
+  "sqlite_version": "3.53.1",
+  "python_version": "3.12.14",
+  "python_implementacao": "CPython",
+  "sistema": "Windows",
+  "sistema_versao": "10.0.26200",
+  "maquina": "AMD64",
+  "processador": "AMD64 Family 25 Model 120 Stepping 0, AuthenticAMD",
+  "n_cpus": 12,
+  "disco_total_gb": 464.7,
+  "disco_livre_gb": 169.3,
+  "diretorio_banco": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\data\\coleta-completa-01\\bancos",
+  "executavel_python": "C:\\Users\\vgppl\\Documents\\lab-medicao-e-experimentacao-de-software\\lab05\\data\\.venv-benchmark\\Scripts\\python.exe",
+  "experimento": {
+    "repeticoes": 30,
+    "aquecimentos": 3,
+    "semente": 42,
+    "linhas_iniciais": 10000,
+    "tamanho_payload": 256,
+    "configuracoes": [
+      "DELETE-FULL",
+      "DELETE-NORMAL",
+      "WAL-FULL",
+      "WAL-NORMAL"
+    ],
+    "cargas": [
+      {
+        "nome": "escrita",
+        "n_operacoes": 1000,
+        "fracao_leitura": 0.0
+      },
+      {
+        "nome": "leitura",
+        "n_operacoes": 10000,
+        "fracao_leitura": 1.0
+      },
+      {
+        "nome": "mista",
+        "n_operacoes": 2000,
+        "fracao_leitura": 0.7
+      }
+    ]
+  }
+}

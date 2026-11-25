@@ -1,3 +1,7 @@
 # Preserva os bytes dos artefatos usados nos hashes do resumo do piloto.
 data/piloto/*.csv -text whitespace=cr-at-eol
 data/piloto/*.json -text whitespace=cr-at-eol
+# Preserva os bytes dos artefatos brutos da coleta completa (#306).
+data/coleta-completa-01/*.csv -text whitespace=cr-at-eol
+data/coleta-completa-01/*.json -text whitespace=cr-at-eol
+data/coleta-completa-01/lancador.py -text whitespace=cr-at-eol

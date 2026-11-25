@@ -60,6 +60,11 @@ completa. Para reproduzir o resumo sem executar novamente o benchmark:
 python resumir_piloto.py --diretorio data/piloto
 ```
 
+A [coleta completa da #306](docs/06-coleta-completa.md) está registrada em
+`data/coleta-completa-01/`, com 360 medições, ambiente e conferência operacional.
+O piloto permanece separado. Para acompanhar futuras coletas pelo terminal, acrescente
+`--progresso` ao comando; as mensagens são emitidas fora da janela cronometrada.
+
 ### Como a medição funciona
 
 - Em cada rodada, todas as 12 combinações de configuração e carga são embaralhadas.
