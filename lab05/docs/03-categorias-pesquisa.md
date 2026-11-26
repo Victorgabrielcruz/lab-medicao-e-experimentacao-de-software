@@ -1,7 +1,8 @@
 # Classificação da pesquisa (7 categorias) — versão 1
 
-Esta é a primeira versão, feita antes da coleta. A versão revisada, com base no que foi de
-fato executado, entra na S03.
+Esta é a primeira versão, feita antes da coleta, e fica preservada como registro. A versão
+revisada, com base no que foi de fato executado, está em
+[11-categorias-revisadas-conclusoes.md](11-categorias-revisadas-conclusoes.md).
 
 Em cada categoria, além da classificação, registramos **o que poderia contestá-la**. Uma
 classificação que não admite contestação tende a superestimar a força da evidência.
