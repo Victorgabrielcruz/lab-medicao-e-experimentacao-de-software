@@ -158,7 +158,8 @@ grande (cerca de 9 a 12× a mais) e é pago em durabilidade.** O padrão, mantid
    necessariamente.
 
 A tradução desses números em impacto para empresas e usuários, com fontes
-públicas, fica na S03-01 (#311).
+públicas e premissas explícitas, está em
+[12-estimativa-impacto.md](12-estimativa-impacto.md), entrega da S03-01 (#311).
 
 ## 4. Limitações
 
