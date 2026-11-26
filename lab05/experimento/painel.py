@@ -186,3 +186,30 @@ def ordem_execucao(dados, coluna, eixo_y, carga):
     figura.update_layout(legend_title_text="Configuração")
     figura.update_xaxes(title="Posição no plano, incluindo aquecimentos descartados")
     return figura
+
+
+def intervalos_m3(efeitos, carga):
+    tabela = efeitos[efeitos.efeito == "M3"]
+    figura = go.Figure(go.Scatter(
+        x=tabela.hipotese.tolist(), y=tabela.estimativa.tolist(), mode="markers",
+        marker=dict(size=10, color="#268c95"),
+        error_y=dict(type="data", symmetric=False,
+                     array=(tabela.ic_sup - tabela.estimativa).tolist(),
+                     arrayminus=(tabela.estimativa - tabela.ic_inf).tolist()),
+        showlegend=False,
+    ))
+    _formatar_grafico(figura, f"M3 e IC de 95% condicional · {carga}", "Razão de vazão (×)", True)
+    figura.update_xaxes(title="Comparação planejada")
+    figura.add_hline(y=1, line_dash="dash", annotation_text="Razão 1")
+    return figura
+
+
+def serie_pareada(serie, carga, hipotese):
+    figura = go.Figure(go.Scatter(
+        x=serie.rodada.tolist(), y=serie.diferenca_m2.tolist(), mode="lines+markers",
+        customdata=serie.sinal.tolist(), marker_color="#268c95", showlegend=False,
+        hovertemplate="Rodada %{x}<br>Δ M2: %{y:.6g}<br>Sinal: %{customdata}<extra></extra>",
+    ))
+    _formatar_grafico(figura, f"Diferenças pareadas · {carga} · {hipotese}", "Tratamento − referência (operações/s)", False)
+    figura.update_xaxes(title="Rodada medida")
+    return figura

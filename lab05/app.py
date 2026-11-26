@@ -1,15 +1,16 @@
-"""Dashboard do experimento SQLite: descritiva e gráficos dos resultados (#308).
+"""Dashboard do experimento SQLite: descritiva, testes e efeitos (#309).
 
 Na raiz do repositório: ``python -m streamlit run lab05/app.py``.
 O dashboard somente lê os artefatos; não executa o benchmark.
 """
 
 import csv
+import json
 from pathlib import Path
 
 import streamlit as st
 
-from experimento import config, painel
+from experimento import config, inferencia, painel
 
 RAIZ = Path(__file__).resolve().parent
 SECOES = (
@@ -153,6 +154,97 @@ def tabela_numerica(tabela, casas=4, **kwargs):
     st.dataframe(tabela, hide_index=True, width="stretch", column_config=configuracao, **kwargs)
 
 
+@st.cache_data(show_spinner=False)
+def calcular_inferencia(dados):
+    return inferencia.analisar(dados)
+
+
+def exibir_inferencia(coleta, carga):
+    st.subheader("Testes de hipótese e tamanho do efeito · #309")
+    try:
+        analise = calcular_inferencia(coleta.dados)
+    except ValueError as erro:
+        st.error(f"A análise inferencial exige pares completos e válidos: {erro}")
+        return
+    st.info(
+        "Teste dos sinais pareados, bilateral: H0: P(ganho de vazão | não empate) = 0,5. "
+        "O teste não exige normalidade ou simetria. M1 usa os mesmos pares com direção "
+        "invertida; M3 é razão de medianas, sem teste separado. Holm é aplicado às "
+        "nove comparações em conjunto, independentemente dos filtros."
+    )
+    if analise.testes.alerta_temporal.any():
+        st.warning(
+            "A auditoria encontrou alerta temporal. Conclusões confirmatórias nas "
+            "comparações afetadas estão suspensas. Valores-p e IC são apresentados "
+            "como cálculos condicionais, sem corrigir a dependência detectada."
+        )
+    else:
+        st.info(
+            "Não houve alerta nos diagnósticos de sequências após ajuste, mas isso não "
+            "comprova independência. Sinais constantes não permitem esse diagnóstico. "
+            "As decisões e os IC abaixo continuam condicionados à independência das rodadas."
+        )
+    st.dataframe(analise.testes.rename(columns={
+        "carga": "Carga", "hipotese": "Hipótese", "tratamento": "Tratamento",
+        "referencia": "Referência", "n_pares": "Pares", "ganhos": "Ganhos", "perdas": "Perdas",
+        "empates": "Empates", "n_efetivo": "n efetivo", "p_bruto": "p bruto", "p_holm": "p Holm",
+        "rejeita_condicional": "p Holm < 0,05", "alerta_temporal": "Alerta temporal", "decisao": "Decisão",
+    }), hide_index=True, width="stretch", key="testes_hipotese", column_config={
+        "p bruto": st.column_config.NumberColumn(format="%.3g"),
+        "p Holm": st.column_config.NumberColumn(format="%.3g"),
+    })
+    st.caption("Empates não entram no teste dos sinais e permanecem nos efeitos de tempo/vazão e no bootstrap. Não rejeitar H0 não demonstra equivalência.")
+    efeitos_carga = analise.efeitos[analise.efeitos.carga == carga]
+    efeitos_visiveis = efeitos_carga[efeitos_carga.efeito.isin([
+        "Probabilidade de ganho", "Efeito dos sinais (2p−1)", "M3",
+    ])]
+    st.markdown(f"**Efeitos na carga {carga} · IC de 95% condicionais à independência**")
+    tabela_numerica(efeitos_visiveis.rename(columns={
+        "carga": "Carga", "hipotese": "Hipótese", "efeito": "Efeito", "unidade": "Unidade",
+        "estimativa": "Estimativa", "ic_inf": "IC inferior", "ic_sup": "IC superior", "metodo_ic": "Método do IC",
+    }), key="efeitos_ic")
+    st.caption(
+        "A probabilidade de ganho é condicionada aos pares não empatados; 2p−1 é seu "
+        "efeito direcional pareado, não o delta de Cliff para grupos independentes. "
+        "M3 usa razão entre medianas, não mediana das razões. Os IC são marginais e "
+        "não têm ajuste simultâneo para as nove comparações."
+    )
+    st.plotly_chart(painel.intervalos_m3(efeitos_carga, carga), width="stretch", key="ic_m3")
+    with st.expander("Todos os efeitos, diferenças e medianas com IC"):
+        tabela_numerica(analise.efeitos, key="efeitos_completos")
+        tabela_numerica(analise.medianas, key="medianas_ic")
+        st.caption(
+            "Bootstrap percentil de 10.000 reamostragens, semente 42. Em cada carga, "
+            "a rodada inteira é reamostrada nas quatro configurações e nas duas métricas. "
+            "Diferença M1 = tratamento − referência (s); redução M1 positiva indica menor "
+            "tempo. Diferença M2 e ganho M2 positivos indicam maior vazão."
+        )
+    with st.expander("Auditoria dos pressupostos e das séries pareadas"):
+        st.markdown(
+            "Pareamento por carga/rodada e semente exata; uma coleta e um ambiente. "
+            "A auditoria usa sequências dos sinais e das diferenças em torno da mediana "
+            "(runs exato, família diagnóstica separada com 18 posições e Holm). "
+            "Diagnósticos indefinidos são exibidos sem valor-p. Spearman e lag 1 são "
+            "descritivos, sem p assintótico ou limiar automático de independência."
+        )
+        st.dataframe(analise.auditoria, hide_index=True, width="stretch", key="auditoria",
+                     column_config={"p_bruto": st.column_config.NumberColumn(format="%.3g"),
+                                    "p_holm": st.column_config.NumberColumn(format="%.3g")})
+        tabela_numerica(analise.diagnosticos, key="diagnosticos")
+        hipotese = st.selectbox("Comparação para inspecionar as rodadas", ["H1", "H2", "H3"], key="auditoria_hipotese")
+        serie = analise.series[(analise.series.carga == carga) & (analise.series.hipotese == hipotese)]
+        st.plotly_chart(painel.serie_pareada(serie, carga, hipotese), width="stretch", key="serie_pareada")
+        st.code(" ".join("+" if s > 0 else "−" if s < 0 else "0" for s in serie.sinal), language=None)
+        st.caption("Sinais das diferenças de M2, da rodada 1 à 30. Sequência constante é inconclusiva para diagnosticar dependência, não evidência de independência.")
+    relatorio = analise.como_dict()
+    relatorio["origem"] = {"coleta": "coleta-completa-01",
+                           "sha256_csv": coleta.validacao["entradas_sha256"]["resultados.csv"]}
+    st.download_button("Baixar análise completa (JSON)", json.dumps(relatorio, ensure_ascii=False, indent=2, allow_nan=False),
+                       file_name="coleta-completa-01-analise.json", mime="application/json", key="json_analise")
+    st.caption(f"Versões da análise: Python {analise.parametros['python']}, NumPy {analise.parametros['numpy']}, SciPy {analise.parametros['scipy']}. As versões da coleta são registradas separadamente.")
+    documento("09-testes-efeitos.md", "Métodos, auditoria, resultados e limites da #309")
+
+
 def exibir_resultados():
     titulo_secao(3)
     fonte = st.selectbox("Conjunto de dados", ["Coleta completa", "Piloto"], key="coleta")
@@ -175,9 +267,9 @@ def exibir_resultados():
             "todas preservadas na descritiva e nos gráficos. Nenhuma exclusão."
         )
         st.info(
-            "Análise descritiva da #308. A aprovação estrutural não comprova independência "
-            "temporal: auditoria e testes de hipótese permanecem na #309. Não são "
-            "apresentados valores-p ou intervalos de confiança inferenciais."
+            "Descritiva da #308 e testes/efeitos da #309. A aprovação estrutural não "
+            "comprova independência temporal; a auditoria e os resultados condicionais "
+            "estão apresentados após a descritiva."
         )
     else:
         st.warning(
@@ -264,6 +356,10 @@ def exibir_resultados():
                                  file_name=f"{nome}-{carga}-{coluna}-descritiva.csv", mime="text/csv", key="csv_resumo")
     downloads[2].download_button("Baixar descritiva de todas as cargas", tabela_completa.to_csv(index=False).encode("utf-8-sig"),
                                  file_name=f"{nome}-descritiva-completa.csv", mime="text/csv", key="csv_completo")
+    if completa:
+        exibir_inferencia(coleta, carga)
+    else:
+        st.info("A inferência da #309 é calculada somente sobre a coleta completa. O piloto permanece descritivo, sem testes de hipótese ou IC inferenciais.")
 
 
 def exibir_ameacas():
@@ -272,7 +368,7 @@ def exibir_ameacas():
         {"Validade": "Interna", "Ameaça": "Cache, CPU/SO, ordem e checkpoints", "Mitigação e limite": "Banco novo, ordem aleatória, condições registradas; cache não é limpo e o SO não é isolado."},
         {"Validade": "Externa", "Ameaça": "Uma máquina, uma versão e cargas sintéticas", "Mitigação e limite": "Relatar ambiente e propor replicações; não generalizar para produção ou concorrência."},
         {"Validade": "Construto", "Ameaça": "Tempo da janela não mede latência individual ou durabilidade", "Mitigação e limite": "Explicitar commits e trecho medido; garantias vêm da documentação, sem ensaio de falha."},
-        {"Validade": "Conclusão", "Ameaça": "Dependência temporal e comparações múltiplas", "Mitigação e limite": "Aprovação estrutural não atesta independência; auditoria, testes, Holm e IC permanecem na #309."},
+        {"Validade": "Conclusão", "Ameaça": "Dependência temporal e comparações múltiplas", "Mitigação e limite": "Auditoria de sequências; Holm nas nove comparações; valores-p e IC condicionais à independência. Alertas suspendem conclusões."},
     ])
     st.markdown(
         "A aleatorização distribui parte do ruído, mas não o elimina. Um banco novo "
@@ -313,8 +409,8 @@ def exibir_impacto():
         "**Alcance dos resultados:** a coleta completa e sua validação estrutural já foram "
         "registradas. O painel descreve tempo, vazão e variabilidade nas 12 combinações, "
         "preservando o piloto separado. As diferenças observadas não justificam eleger "
-        "uma configuração universal; a auditoria temporal e a inferência da #309 ainda "
-        "são necessárias antes de conclusões confirmatórias."
+        "uma configuração universal. Os testes e IC do painel são condicionais à "
+        "independência entre rodadas; diagnósticos sem alerta não comprovam esse pressuposto."
     )
 
 
@@ -326,13 +422,13 @@ def main():
         st.markdown("\n\n".join(f"[{titulo}](#{ancora})" for titulo, ancora in SECOES))
         st.divider()
         st.markdown("**Dados disponíveis**")
-        st.caption("Coleta completa e piloto separados · análise descritiva")
+        st.caption("Coleta completa e piloto separados · análises por conjunto")
         st.link_button("Repositório", config.URL_REPOSITORIO)
         st.link_button("Projeto da disciplina", config.URL_PROJECT)
     st.caption("LABORATÓRIO DE EXPERIMENTAÇÃO DE SOFTWARE · PUC MINAS")
     st.title("SQLite: desempenho e durabilidade")
     st.markdown("Um experimento local sobre os efeitos de **journal_mode** e **synchronous** nas cargas de escrita, leitura e mista.")
-    st.caption("Coleta completa · protocolo fatorial 2 × 2 · estatística descritiva e gráficos")
+    st.caption("Coleta completa · protocolo fatorial 2 × 2 · descritiva, testes pareados e efeitos")
     for exibir in (exibir_software, exibir_pergunta, exibir_metodo, exibir_resultados,
                    exibir_ameacas, exibir_impacto):
         with st.container(border=True):

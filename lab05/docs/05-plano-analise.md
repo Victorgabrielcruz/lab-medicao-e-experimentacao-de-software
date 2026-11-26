@@ -140,3 +140,17 @@ concorrência ou mensuração de consumo de recursos.
 Fontes consultadas em 19/11/2026. A seleção do teste dos sinais é uma decisão deste
 plano, fundamentada no pareamento implementado e na ausência de evidência suficiente
 para assumir normalidade ou simetria; não é uma conclusão inferida dos valores-p.
+
+## Implementação e auditoria operacional — #309
+
+O plano foi implementado na #309, com detalhes e resultados em
+[09-testes-efeitos.md](09-testes-efeitos.md). As nove hipóteses, teste dos sinais,
+Holm, efeitos, bootstrap percentil pareado, 10.000 reamostragens e semente 42
+foram mantidos. A auditoria temporal foi operacionalizada depois da coleta:
+sequências dos sinais e das diferenças em torno da mediana, com runs exato e Holm
+em uma família diagnóstica separada de 18 posições, além de correlações e inspeção
+das séries. Esse detalhamento não estava pré-especificado na S01.
+Alertas suspendem conclusões confirmatórias; a ausência de alerta não comprova
+independência. Todos os valores-p e IC são apresentados como condicionais a esse
+pressuposto. Não houve alteração de dados ou substituição do teste por outro mais
+favorável. O plano original acima permanece como registro do que foi previsto.

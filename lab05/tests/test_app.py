@@ -71,8 +71,9 @@ def test_filtros_atualizam_graficos_tabelas_e_comparacoes(carga, metrica, coluna
     assert not app.exception
     bruto = pd.read_csv(pasta / "resultados.csv")
     bruto = bruto[bruto.carga == carga]
-    figuras = [json.loads(g.proto.spec) for g in app.get("plotly_chart")]
-    assert len(figuras) == 4
+    todas_figuras = [json.loads(g.proto.spec) for g in app.get("plotly_chart")]
+    assert len(todas_figuras) == (6 if fonte == "Coleta completa" else 4)
+    figuras = todas_figuras[:4]
     assert all(carga in f["layout"]["title"]["text"] for f in figuras)
     assert sum(len(t["y"][0]) for t in figuras[0]["data"]) == n
     for trace in figuras[0]["data"]:
@@ -105,7 +106,7 @@ def test_escala_logaritmica_atualiza_distribuicao_e_interacao():
     app = executar()
     app.toggle(key="logaritmica").set_value(True).run()
     assert not app.exception
-    figuras = [json.loads(g.proto.spec) for g in app.get("plotly_chart")]
+    figuras = [json.loads(g.proto.spec) for g in app.get("plotly_chart")][:4]
     assert [f["layout"]["yaxis"]["type"] for f in figuras] == ["log", "log", "log", "linear"]
 
 
@@ -140,3 +141,46 @@ def test_falha_da_coleta_mantem_roteiro_sem_troca_silenciosa(tmp_path, monkeypat
     assert len(app.error) == 1
     assert f"Não foi possível ler {fonte.lower()}" in app.error[0].value
     assert not app.metric
+
+
+def test_inferencia_mantem_nove_testes_apos_filtrar_carga_e_metrica():
+    app = executar()
+    testes = app.dataframe[4].value.copy()
+    assert len(testes) == 9
+    assert list(testes["n efetivo"]) == [30] * 9
+    assert testes["p Holm < 0,05"].sum() == 7
+    assert testes["Decisão"].str.contains("condicional").all()
+    app.selectbox(key="carga").select("leitura")
+    app.selectbox(key="metrica").select("Vazão (M2)").run()
+    assert not app.exception
+    pd.testing.assert_frame_equal(app.dataframe[4].value, testes)
+    efeitos = app.dataframe[5].value
+    assert set(efeitos.Carga) == {"leitura"}
+    assert len(efeitos) == 9
+    assert set(efeitos.Efeito) == {"M3", "Probabilidade de ganho", "Efeito dos sinais (2p−1)"}
+
+
+def test_piloto_nao_recebe_testes_ou_intervalos_inferenciais():
+    app = executar()
+    app.selectbox(key="coleta").select("Piloto").run()
+    assert not app.exception
+    assert len(app.dataframe) == 4
+    assert not any("Testes de hipótese e tamanho do efeito" in s.value for s in app.subheader)
+    assert any("sem testes de hipótese ou IC inferenciais" in i.value for i in app.info)
+
+
+def test_graficos_de_ic_e_series_refletem_os_resultados_exibidos():
+    app = executar()
+    figuras = [json.loads(g.proto.spec) for g in app.get("plotly_chart")]
+    m3 = app.dataframe[5].value
+    m3 = m3[m3.Efeito == "M3"]
+    pontos = figuras[4]["data"][0]
+    assert pontos["y"] == pytest.approx(m3.Estimativa.tolist())
+    assert pontos["error_y"]["array"] == pytest.approx((m3["IC superior"] - m3.Estimativa).tolist())
+    assert pontos["error_y"]["arrayminus"] == pytest.approx((m3.Estimativa - m3["IC inferior"]).tolist())
+    app.selectbox(key="auditoria_hipotese").select("H3").run()
+    assert not app.exception
+    figura = json.loads(app.get("plotly_chart")[-1].proto.spec)
+    assert "H3" in figura["layout"]["title"]["text"]
+    assert figura["data"][0]["x"] == list(range(1, 31))
+    assert len(figura["data"][0]["customdata"]) == 30
