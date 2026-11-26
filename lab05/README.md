@@ -18,13 +18,15 @@ Cada configuração é medida em três cargas (escrita, leitura e mista), com
 lab05/
 ├── executar.py          # ponto de entrada do experimento
 ├── validar_dados.py     # validação e manifesto da coleta completa (#307)
+├── analisar_dados.py    # testes, efeitos e IC sem benchmark (#309)
 ├── app.py               # dashboard Streamlit com o roteiro do documento final
 ├── experimento/
 │   ├── config.py        # fatores, cargas, repetições e semente
 │   ├── ambiente.py      # registro de versões, hardware e disco
 │   ├── benchmark.py     # plano aleatório, cargas e medições em CSV
 │   ├── validacao.py     # integridade, completude e diagnósticos da #307
-│   └── painel.py        # leitura, descritiva e gráficos da #308
+│   ├── painel.py        # leitura, descritiva e gráficos
+│   └── inferencia.py    # testes pareados, efeitos, IC e auditoria da #309
 ├── tests/
 └── data/                # saídas locais (ambiente.json, bancos, CSVs)
 ```
@@ -124,11 +126,11 @@ Cada linha de `resultados.csv` corresponde a uma repetição **medida**:
 | Campos do ambiente | Data/hora de início da coleta, versões, sistema, máquina, processador, CPUs, disco, diretório do banco e executável Python |
 
 A razão de vazão (M3) é calculada no dashboard usando as medianas dos grupos;
-nesta entrega, ela é descritiva tanto no piloto quanto na coleta completa.
+na coleta completa recebe IC bootstrap pareado e, no piloto, permanece descritiva.
 O CSV é gravado incrementalmente; em caso de interrupção ele pode estar incompleto.
 A validação de completude antes de analisar/versionar os dados é parte da S02-02 (#307).
 
-## Dashboard — plano de análise (#305) e descritiva e gráficos (#308)
+## Dashboard — plano (#305), descritiva (#308) e testes e efeitos (#309)
 
 Com Python 3.12 e as dependências instaladas, execute dentro de `lab05/`
 para carregar também o tema local do Streamlit:
@@ -154,7 +156,7 @@ validação aparecem no painel, sem troca automática de conjunto.
 
 O seletor **Conjunto de dados** permite consultar separadamente o **Piloto**
 (36 medições, 3 por grupo), que não é somado à coleta completa. A #308 descreve
-os dados; a auditoria temporal e a inferência confirmatória permanecem na #309.
+os dados; a #309 acrescenta testes e efeitos condicionais à independência entre rodadas.
 Abrir o painel ou trocar um filtro não inicia nova coleta.
 
 O painel oferece:
@@ -168,6 +170,9 @@ O painel oferece:
 - ambiente registrado na coleta, sete categorias, ameaças com mitigações e durabilidade;
 - tabela de todas as cargas para as duas métricas, com unidades identificadas;
 - downloads do CSV bruto, descritiva filtrada, descritiva completa e plano de análise.
+- nove testes dos sinais pareados, valores-p brutos e ajustados por Holm;
+- probabilidade de ganho, efeito direcional pareado, diferenças de tempo/vazão e M3 com IC;
+- auditoria temporal, séries das diferenças/sinais e relatório completo em JSON.
 
 A [entrega da #308](docs/08-descritiva-graficos.md) registra as medidas usadas,
 o resumo dos 12 grupos da coleta completa, a interpretação dos gráficos e seus limites.
@@ -177,6 +182,28 @@ pareamento por rodada, correção de Holm, tamanho do efeito e intervalos de con
 O AppTest verifica a ordem das seções, leitura do CSV sem alteração dos artefatos,
 filtros, valores dos gráficos e tabelas, escala logarítmica e falhas do piloto.
 Os cálculos de descritiva e M3 têm testes com valores conhecidos.
+
+## Reproduzir testes, efeitos e IC — #309
+
+Dentro de `lab05/`, com as dependências instaladas:
+
+```bash
+python analisar_dados.py --saida /tmp/lab05-analise.json
+```
+
+No Windows, substitua a saída por um caminho local. Sem `--saida`, imprime JSON em
+stdout. O comando recusa sobrescrever arquivos e não altera a coleta ou os relatórios.
+O [método e os resultados da #309](docs/09-testes-efeitos.md) documentam a auditoria,
+o escopo dos testes e os intervalos. M1 não duplica a família de M2; M3 não tem teste
+separado. São nove comparações, bilaterais, com Holm e α = 0,05. Os IC bootstrap
+percentis usam 10.000 reamostragens de rodadas pareadas e semente 42; a probabilidade
+de ganho usa IC binomial exato. Os IC são marginais, sem ajuste simultâneo.
+
+Na auditoria, ausência de alerta não comprova independência. Sinais constantes são
+inconclusivos para esse diagnóstico. Valores-p e IC permanecem **condicionais à
+independência entre rodadas**, e alertas suspendem conclusões confirmatórias.
+O piloto não recebe testes ou IC inferenciais. A análise informa suas próprias
+versões de Python e bibliotecas, separadas das versões registradas na coleta.
 
 ## Testes
 
