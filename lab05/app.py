@@ -10,7 +10,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from experimento import config, inferencia, painel
+from experimento import config, impacto, inferencia, painel
 
 RAIZ = Path(__file__).resolve().parent
 SECOES = (
@@ -360,6 +360,7 @@ def exibir_resultados():
         exibir_inferencia(coleta, carga)
     else:
         st.info("A inferência da #309 é calculada somente sobre a coleta completa. O piloto permanece descritivo, sem testes de hipótese ou IC inferenciais.")
+    return coleta
 
 
 def exibir_ameacas():
@@ -379,8 +380,106 @@ def exibir_ameacas():
     )
 
 
-def exibir_impacto():
+def exibir_cenario_impacto(coleta):
+    st.subheader("Estimativa para uma empresa · cenário hipotético")
+    st.info(
+        "Este cenário replica proporcionalmente um resultado local. Dispositivos e frequência "
+        "de uso são hipóteses ajustáveis, sem estimativa de adoção real de uma empresa. "
+        "O parâmetro é a mediana da diferença pareada de tempo da coleta completa."
+    )
+    escolhas = st.columns(2)
+    carga = escolhas[0].selectbox("Carga do cenário", [c.nome for c in config.CARGAS], key="impacto_carga")
+    hipotese = escolhas[1].selectbox("Comparação do cenário", ["H1", "H2", "H3"], key="impacto_hipotese")
+    premissas = st.columns(2)
+    dispositivos = premissas[0].number_input("Dispositivos no cenário (hipótese)", min_value=0,
+                                            max_value=1_000_000, value=10_000, step=1_000, key="impacto_dispositivos")
+    lotes = premissas[1].number_input("Lotes por dispositivo/dia (hipótese)", min_value=0,
+                                     max_value=10_000, value=1, step=1, key="impacto_lotes")
+    analise = calcular_inferencia(coleta.dados)
+    cenario = impacto.estimar(analise.efeitos, carga=carga, hipotese=hipotese,
+                              dispositivos=dispositivos, lotes_por_dia=lotes)
+    carga_config = next(c for c in config.CARGAS if c.nome == carga)
+    leituras = round(carga_config.n_operacoes * carga_config.fracao_leitura)
+    st.markdown(
+        f"**{cenario.tratamento} × {cenario.referencia}** · cada lote representa "
+        f"**{numero(cenario.operacoes_por_lote, 0)} operações**: {numero(leituras, 0)} leituras "
+        f"e {numero(cenario.operacoes_por_lote - leituras, 0)} escritas, com um commit por escrita. "
+        "As leituras são em autocommit. O modelo repete lotes equivalentes ao benchmark."
+    )
+    colunas = st.columns(3)
+    colunas[0].metric("Redução por lote (s)", numero(cenario.reducao_por_lote_s, 6), border=True)
+    colunas[1].metric("Redução por dispositivo/dia (s)", numero(cenario.reducao_dispositivo_dia_s, 6), border=True)
+    colunas[2].metric("Horas equivalentes/dia", numero(cenario.horas_equivalentes_dia, 3), border=True)
+    st.markdown(
+        f"O cenário contém **{numero(cenario.lotes_total_dia, 0)} lotes/dia**, ou "
+        f"**{numero(cenario.operacoes_total_dia, 0)} operações/dia**. "
+        f"IC local de 95% escalado: **[{numero(cenario.horas_ic_inf, 3)}; "
+        f"{numero(cenario.horas_ic_sup, 3)}] h equivalentes/dia**. "
+        "Valores negativos indicam acréscimo de tempo."
+    )
+    st.caption(
+        "Fórmula: horas equivalentes/dia = −mediana(tempo tratamento − tempo referência) "
+        "× dispositivos × lotes por dispositivo/dia ÷ 3.600. O sinal e os extremos do IC "
+        "são invertidos ao converter diferença em redução."
+    )
+    st.caption(
+        "A faixa escala o IC marginal local, condicional à independência entre rodadas; "
+        "não é intervalo de predição da frota. Multiplicar uma mediana não produz a mediana "
+        "de uma soma. Horas equivalentes são tempo agregado de execução, não horas de pessoas "
+        "ou redução do prazo de uma operação em paralelo."
+    )
+    st.markdown(
+        f"**Referência pública de escala:** {numero(dispositivos, 0)} dispositivos equivalem "
+        f"numericamente a **{numero(cenario.razao_referencia_publica_pct, 6)}%** de uma referência "
+        "arredondada de **3 bilhões**, baseada no número histórico publicado pelo Google em "
+        "13/05/2025 (a fonte informa mais de 3 bilhões). Essa razão não estima participação "
+        "de mercado, usuários únicos ou uma frota atual de 2026. "
+        f"[Fonte Google]({impacto.FONTES[0]['url']}) · acesso: 25/11/2026. "
+        "O número público dimensiona o contexto e não multiplica o ganho local por toda a base Android."
+    )
+    if cenario.horas_ic_inf <= 0 <= cenario.horas_ic_sup:
+        st.info("A faixa local escalada inclui zero: este cenário também admite ausência de redução ou acréscimo de tempo.")
+    if carga == "leitura":
+        st.info("A leitura do experimento usa SELECTs isolados em autocommit. O resultado não estima desempenho de leituras agrupadas em uma transação.")
+    tabela = impacto.cenarios_alternativos(analise.efeitos, dispositivos, lotes)
+    with st.expander("Comparar cenários alternativos com as mesmas premissas"):
+        tabela_numerica(tabela[["carga", "hipotese", "operacoes_por_lote", "reducao_por_lote_s",
+                                "horas_equivalentes_dia", "horas_ic_inf", "horas_ic_sup"]].rename(columns={
+            "carga": "Carga", "hipotese": "Comparação", "operacoes_por_lote": "Operações/lote",
+            "reducao_por_lote_s": "Redução por lote (s)", "horas_equivalentes_dia": "h equivalentes/dia",
+            "horas_ic_inf": "Faixa inferior (h/dia)", "horas_ic_sup": "Faixa superior (h/dia)",
+        }), key="cenarios_impacto")
+        st.caption("As linhas são cenários alternativos, não parcelas para somar. A mesma quantidade de lotes contém volumes diferentes conforme a carga.")
+    relatorio = {
+        "tipo": "cenário proporcional hipotético; não é previsão populacional",
+        "cenario": cenario.como_dict(), "fontes_publicas": impacto.FONTES,
+        "origem": {"coleta": "coleta-completa-01", "sha256_csv": coleta.validacao["entradas_sha256"]["resultados.csv"]},
+        "parametros_analise_local": analise.parametros, "limites": impacto.LIMITES,
+    }
+    st.download_button("Baixar cenário de impacto (JSON)", json.dumps(relatorio, ensure_ascii=False, indent=2, allow_nan=False),
+                       file_name="sqlite-cenario-impacto.json", mime="application/json", key="json_impacto")
+
+
+def exibir_impacto(coleta=None):
     titulo_secao(5)
+    st.subheader("Escala pública de adoção · fontes e data de acesso")
+    st.markdown(
+        "O Google informou **mais de 3 bilhões de dispositivos Android ativos** em 13/05/2025. "
+        "Os autores do SQLite estimam **mais de 1 trilhão de bancos ativos** e registram "
+        "sua presença em dispositivos Android. São unidades e métodos diferentes: "
+        "bancos e dispositivos não são contagens de pessoas nem população observada no experimento."
+    )
+    st.table([
+        {"Fonte": f"[{f['publicador']} · {f['titulo']}]({f['url']})",
+         "Número ou papel": (f"{f['qualificador']} {numero(f['numero'], 0)} {f['unidade']}" if "numero" in f else f["natureza"]),
+         "Publicação / atualização": f.get("publicado_em", f.get("atualizado_em", "não informada na seção")),
+         "Acesso": f["acessado_em"]}
+        for f in impacto.FONTES
+    ])
+    if coleta is not None and coleta.validacao is not None:
+        exibir_cenario_impacto(coleta)
+    else:
+        st.info("A estimativa quantitativa exige a coleta completa validada. Com o piloto ou dados indisponíveis, a seção mantém as fontes e os limites, sem calcular projeções.")
     st.markdown(
         "O estudo orienta uma decisão de configuração em aplicações **desktop, móveis "
         "e embarcadas**. Na prática, o ganho depende da carga, do disco e da política "
@@ -412,6 +511,10 @@ def exibir_impacto():
         "uma configuração universal. Os testes e IC do painel são condicionais à "
         "independência entre rodadas; diagnósticos sem alerta não comprovam esse pressuposto."
     )
+    st.subheader("O que não é possível afirmar")
+    st.markdown("\n".join(f"- {limite}" for limite in impacto.LIMITES))
+    documento("12-estimativa-impacto.md", "Estimativa de impacto, fontes e limites da #311")
+    documento("11-categorias-revisadas-conclusoes.md", "Conclusões e categorias revisadas da #312")
 
 
 def main():
@@ -429,10 +532,15 @@ def main():
     st.title("SQLite: desempenho e durabilidade")
     st.markdown("Um experimento local sobre os efeitos de **journal_mode** e **synchronous** nas cargas de escrita, leitura e mista.")
     st.caption("Coleta completa · protocolo fatorial 2 × 2 · descritiva, testes pareados e efeitos")
-    for exibir in (exibir_software, exibir_pergunta, exibir_metodo, exibir_resultados,
-                   exibir_ameacas, exibir_impacto):
+    for exibir in (exibir_software, exibir_pergunta, exibir_metodo):
         with st.container(border=True):
             exibir()
+    with st.container(border=True):
+        coleta = exibir_resultados()
+    with st.container(border=True):
+        exibir_ameacas()
+    with st.container(border=True):
+        exibir_impacto(coleta)
     st.caption("Dados sintéticos locais · sem acesso a bancos de produção · cálculos feitos a partir do CSV versionado")
 
 

@@ -184,3 +184,55 @@ def test_graficos_de_ic_e_series_refletem_os_resultados_exibidos():
     assert "H3" in figura["layout"]["title"]["text"]
     assert figura["data"][0]["x"] == list(range(1, 31))
     assert len(figura["data"][0]["customdata"]) == 30
+
+
+def numero_pt(valor):
+    return float(valor.replace(".", "").replace(",", "."))
+
+
+def test_impacto_tem_fontes_datas_limites_e_calculo_pareado():
+    app = executar()
+    texto = "\n".join(m.value for m in app.markdown)
+    for trecho in ("cenário hipotético", "3 bilhões", "1 trilhão", "não é intervalo de predição",
+                   "horas de pessoas", "autocommit"):
+        assert trecho in texto or any(trecho in c.value for c in app.caption) or trecho in "\n".join(s.value for s in app.subheader)
+    fontes = next(t.value for t in app.table if "Número ou papel" in t.value.columns)
+    assert set(fontes.Acesso) == {"2026-11-25"}
+    assert any("blog.google" in f for f in fontes.Fonte)
+    assert any("sqlite.org/mostdeployed.html" in f for f in fontes.Fonte)
+    bruto = pd.read_csv(COMPLETA / "resultados.csv")
+    tempos = bruto[bruto.carga == "escrita"].pivot(index="repeticao", columns="configuracao", values="tempo_total_s")
+    reducao = -(tempos["WAL-FULL"] - tempos["DELETE-FULL"]).median()
+    assert numero_pt(app.metric[-3].value) == pytest.approx(reducao, abs=0.0000005)
+    assert numero_pt(app.metric[-1].value) == pytest.approx(reducao * 10_000 / 3600, abs=0.0005)
+    assert len(app.dataframe[-1].value) == 9
+
+
+def test_impacto_atualiza_volume_sem_alterar_estimativa_local():
+    app = executar()
+    local = app.metric[-3].value
+    app.number_input(key="impacto_dispositivos").set_value(20_000)
+    app.number_input(key="impacto_lotes").set_value(2).run()
+    assert not app.exception
+    assert app.metric[-3].value == local
+    esperado = numero_pt(local) * 20_000 * 2 / 3600
+    assert numero_pt(app.metric[-1].value) == pytest.approx(esperado, abs=0.001)
+
+
+def test_piloto_nao_produz_estimativa_de_impacto():
+    app = executar()
+    app.selectbox(key="coleta").select("Piloto").run()
+    assert not app.exception
+    assert not app.number_input
+    assert len(app.dataframe) == 4
+    assert any("estimativa quantitativa exige a coleta completa" in i.value for i in app.info)
+
+
+def test_cenario_leitura_informa_limite_e_preserva_sinal_dos_resultados():
+    app = executar()
+    app.selectbox(key="impacto_carga").select("leitura")
+    app.selectbox(key="impacto_hipotese").select("H3").run()
+    assert not app.exception
+    assert any("SELECTs isolados em autocommit" in i.value for i in app.info)
+    assert any("faixa local escalada inclui zero" in i.value for i in app.info)
+    assert numero_pt(app.metric[-3].value) < 0

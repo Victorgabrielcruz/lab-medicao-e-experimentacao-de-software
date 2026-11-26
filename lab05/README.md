@@ -26,7 +26,8 @@ lab05/
 │   ├── benchmark.py     # plano aleatório, cargas e medições em CSV
 │   ├── validacao.py     # integridade, completude e diagnósticos da #307
 │   ├── painel.py        # leitura, descritiva e gráficos
-│   └── inferencia.py    # testes pareados, efeitos, IC e auditoria da #309
+│   ├── inferencia.py    # testes pareados, efeitos, IC e auditoria da #309
+│   └── impacto.py       # cenários, fontes públicas e premissas da #311
 ├── tests/
 └── data/                # saídas locais (ambiente.json, bancos, CSVs)
 ```
@@ -84,7 +85,7 @@ A [validação e o dicionário das 28 colunas](docs/07-validacao-dicionario-dado
 registram 360 medições válidas, 23 observações sinalizadas e nenhuma exclusão.
 O manifesto identifica por SHA-256 o CSV final, que é o próprio arquivo bruto
 versionado na #306. A aprovação não atesta independência temporal: a auditoria
-necessária à inferência continua pendente na #309.
+e o escopo da inferência condicional estão documentados na #309.
 
 ### Como a medição funciona
 
@@ -204,6 +205,29 @@ inconclusivos para esse diagnóstico. Valores-p e IC permanecem **condicionais �
 independência entre rodadas**, e alertas suspendem conclusões confirmatórias.
 O piloto não recebe testes ou IC inferenciais. A análise informa suas próprias
 versões de Python e bibliotecas, separadas das versões registradas na coleta.
+
+## Impacto para usuários e empresas — #311
+
+A seção 6 inclui uma [estimativa de impacto documentada](docs/12-estimativa-impacto.md)
+e fontes primárias com acesso em **25/11/2026**: Google (mais de 3 bilhões de
+dispositivos Android, informação histórica de 13/05/2025), SQLite (estimativa de
+mais de 1 trilhão de bancos ativos) e documentação de durabilidade.
+
+O cenário permite ajustar dispositivos, lotes por dispositivo/dia, carga e
+comparação. Os valores iniciais de **10.000 dispositivos e um lote/dia são
+hipóteses ilustrativas**. As diferenças pareadas de tempo e seus IC vêm da coleta
+completa e da #309. O número público dimensiona a escala; não se aplica o ganho
+a toda a população Android ou a todos os bancos SQLite.
+
+Na escrita H1, o cenário inicial corresponde a aproximadamente **2,057 s por
+dispositivo/dia** e **5,713 h equivalentes/dia agregadas**. São referências
+proporcionais de tempo de execução, sem previsão para uma frota ou conversão em
+horas humanas, dinheiro ou energia. O IC local escalado é condicional e não cobre
+incerteza de uso/adesão ou heterogeneidade dos dispositivos. O painel explicita
+esses limites e exporta JSON com premissas, fontes, datas e hash do CSV.
+
+No piloto ou na ausência de dados completos válidos, a seção mantém as fontes e
+os limites sem calcular projeções. Os dados e a análise da #309 não são alterados.
 
 ## Testes
 
